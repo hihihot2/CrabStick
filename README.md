@@ -5,8 +5,8 @@
 - 기간 : 7/26 ~ 8/19일 (약 4주)
 - 개발환경
 -     Server : 미들웨어(AWS-RDS) / Oracle DB
--     Web : JDK8 / Tomcat8 / Eclipse / Spring / Todd
--     Android : JDK8 / androidStudio
+     Web : JDK8 / Tomcat8 / Eclipse / Spring / Todd
+     Android : JDK8 / androidStudio
 --------------------------------------------------------------------------------
 Root 폴더 : 본인컴퓨터위치/CrabStick
 Web 어플리케이션 폴더 위치 : CrabStick/web_project
