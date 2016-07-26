@@ -11,6 +11,6 @@
 Root 폴더 : 본인컴퓨터위치/CrabStick
 
 Web 어플리케이션 폴더 위치 : CrabStick/web_project
-(CrabStick 폴더안에 web_project를 Root로 가지는 폴더에 생성)
+(CrabStick 폴더안에 web_project를 Root로 가지는 폴더에 생성)\n
 Android 어플리케이션 폴더 위치  : CrabStick/app_project
-(CrabStick 폴더안에 app_project를 Root로 가지는 폴더에 생성)
+(CrabStick 폴더안에 app_project를 Root로 가지는 폴더에 생성)\n
