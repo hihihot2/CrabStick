@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+<mapper namespace="com.crabstick.myapp.login.LoginMapper">
+
+	<resultMap type="com.crabstick.myapp.login.Members" id="MemberResultMap">
+		<result property="mem_no" column="mem_no"/>
+		<result property="mem_id" column="mem_id"/>
+		<result property="mem_pwd" column="mem_pwd" />
+		<result property="mem_name" column="mem_name" />
+		<result property="mem_outchk" column="mem_outchk" />
+		<result property="mem_admchk" column="mem_admchk" />
+	</resultMap>	
+
+	<insert id="insert" parameterType="com.crabstick.myapp.login.LoginMapper">
+		INSERT INTO members(mem_no, mem_id, mem_pwd, mem_name) values(seq_mem.nextval,?,?,?)
+	</insert>
+	
+	
+	
+</mapper>
