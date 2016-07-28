@@ -30,7 +30,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "test", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, Model model) {
 		Workbook sb = null;
 		ModelAndView mav = new ModelAndView("home");

@@ -8,6 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<jsp:include page="top.jsp"></jsp:include>
+	<c:choose>
+		<c:when test="${ID ne null}"><input type="button" value="logout" onclick="action_do('logout')"></c:when>
+		<c:otherwise><input type="button" value="login" onclick="action_do('login')"></c:otherwise>
+	</c:choose>
+	<hr>
 </body>
 </html>

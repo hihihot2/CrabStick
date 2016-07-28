@@ -21,11 +21,11 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.crapstrick.myapp" />
+	<context:component-scan base-package="com.crabstick.myapp" />
 	
 			<beans:bean id="dataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName">
-			<beans:value>core.log.jdbc.driver.OracleDriver</beans:value>
+			<beans:value>oracle.jdbc.driver.OracleDriver</beans:value><!-- core.log.jdbc.driver.OracleDriver -->
 		</beans:property>
 		<beans:property name="url">
 			<beans:value>jdbc:oracle:thin:@kitriinstance.c80acoljchik.ap-northeast-2.rds.amazonaws.com:1521:ORCL</beans:value>
@@ -46,7 +46,7 @@
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource" />
 		<beans:property name="typeAliasesPackage" value="mybatis" />
-		<beans:property name="mapperLocations" value="classpath:/com/website/myapp/res/*.xml" />		
+		<beans:property name="mapperLocations" value="classpath:/com/crabstick/myapp/res/*.xml" />		
 	</beans:bean>
 	
 	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
