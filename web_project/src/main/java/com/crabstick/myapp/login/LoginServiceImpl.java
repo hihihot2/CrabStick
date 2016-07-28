@@ -13,20 +13,19 @@ public class LoginServiceImpl implements LoginService {
 	
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
-	}
-
-	
+	}	
 
 	@Override
 	public void mem_join(Members m) {
-/*		LoginMapper loginmapper = new 
-*/
+	LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);
+	loginmapper.insert(m);
+
 	}
 
 	@Override
 	public int mem_login(Members m) {
-		// TODO Auto-generated method stub
-		return 0;
+		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
+		return loginmapper.login(m);
 	}
 
 }

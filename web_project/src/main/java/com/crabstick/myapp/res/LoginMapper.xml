@@ -18,6 +18,8 @@
 		INSERT INTO members(mem_no, mem_id, mem_pwd, mem_name) values(seq_mem.nextval,?,?,?)
 	</insert>
 	
-	
+	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} 
+	</select>
 	
 </mapper>
