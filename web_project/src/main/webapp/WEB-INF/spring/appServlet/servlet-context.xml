@@ -25,7 +25,7 @@
 	
 			<beans:bean id="dataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName">
-			<beans:value>core.log.jdbc.driver.OracleDriver</beans:value>
+			<beans:value>oracle.jdbc.driver.OracleDriver</beans:value><!-- core.log.jdbc.driver.OracleDriver -->
 		</beans:property>
 		<beans:property name="url">
 			<beans:value>jdbc:oracle:thin:@kitriinstance.c80acoljchik.ap-northeast-2.rds.amazonaws.com:1521:ORCL</beans:value>
