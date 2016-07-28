@@ -21,5 +21,7 @@
 	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
 		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} 
 	</select>
-	
+	<select id="selectno" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+			SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
+	</select>
 </mapper>

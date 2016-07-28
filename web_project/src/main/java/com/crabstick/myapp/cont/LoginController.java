@@ -33,21 +33,20 @@ public class LoginController {
 
 	@RequestMapping(value = "/logincont/login.do")
 	public ModelAndView login(Members m, HttpSession hs) {
-		String result = null;		
+		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
 		int chk = service.mem_login(m);
 		System.out.println(chk);
 		if (chk != 0) {
 			System.out.println("로그인 성공");			
-			//id를 세션값으로 준다.
-			hs.getAttribute(m.getMem_id());
-			ModelAndView mav = new ModelAndView("/main");			
+			//num을 세션값으로 준다.
+			int no = service.getmem_no(m);
+			hs.setAttribute("no",no);
+			mav.addObject("chk", chk);
 			return mav;
 		}else{
 			System.out.println("로그인 실패");
-			ModelAndView mav = new ModelAndView("/login/loginform");
-			result = "fail";
-			mav.addObject("result", result);
+			mav.addObject("chk", chk);
 			return mav;
 
 		}
