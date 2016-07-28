@@ -21,8 +21,40 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.crabstick.myapp" />
+	<context:component-scan base-package="com.crapstrick.myapp" />
 	
+			<beans:bean id="dataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName">
+			<beans:value>core.log.jdbc.driver.OracleDriver</beans:value>
+		</beans:property>
+		<beans:property name="url">
+			<beans:value>jdbc:oracle:thin:@kitriinstance.c80acoljchik.ap-northeast-2.rds.amazonaws.com:1521:ORCL</beans:value>
+		</beans:property>
+		<beans:property name="username">
+			<beans:value>travelapp</beans:value>
+		</beans:property>
+		<beans:property name="password">
+			<beans:value>travelapp</beans:value>
+		</beans:property>
+	</beans:bean>
 	
+	<!-- 트랜잭션 -->
+	<beans:bean id="transactionManager"	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="typeAliasesPackage" value="mybatis" />
+		<beans:property name="mapperLocations" value="classpath:/com/website/myapp/res/*.xml" />		
+	</beans:bean>
+	
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg name="sqlSessionFactory" 
+		ref="sqlSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 </beans:beans>
