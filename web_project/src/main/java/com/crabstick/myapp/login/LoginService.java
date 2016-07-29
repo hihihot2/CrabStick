@@ -5,4 +5,5 @@ public interface LoginService {
 	int mem_login(Members m);
 	int getmem_no(Members m);
 	int getmem_id(String mem_id);
+	String getmem_pass(Members m);
 }

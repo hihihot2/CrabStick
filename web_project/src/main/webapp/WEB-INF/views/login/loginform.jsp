@@ -33,6 +33,10 @@
 		document.loginform.action = "${pageContext.request.contextPath}/";
 		document.loginform.submit();
 	}
+	function find_pass(){
+		document.loginform.action = "${pageContext.request.contextPath}/logincont/findpass.do";
+		document.loginform.submit();
+	}
 	
 	function keyevent() {
 		if (event.keyCode == 13) {
@@ -51,7 +55,7 @@
 <form name="loginform" method="post">
 id : <input type="text" name="mem_id" onkeydown="keyevent()">
 password : <input type="password" name="mem_pwd" onkeydown="keyevent()"><br>
-<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()">
+<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()"> <input type="button" value="회원비밀번호 찾기" onclick="find_pass()">
 </form> 
 </body>
 </html>

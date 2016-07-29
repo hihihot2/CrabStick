@@ -10,8 +10,6 @@ public class Members {
 	char mem_admchk;
 	
 	
-	
-	
 	public Members() {
 		super();
 		// TODO Auto-generated constructor stub

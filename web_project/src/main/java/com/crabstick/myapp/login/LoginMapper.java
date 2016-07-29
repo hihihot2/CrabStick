@@ -5,5 +5,6 @@ public interface LoginMapper {
 	int login(Members m);
 	int selectno(Members m);
 	int selectid(String mem_id);
+	String search_pass(Members m);
 }
  
