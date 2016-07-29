@@ -6,5 +6,8 @@ public interface LoginMapper {
 	int selectno(Members m);
 	int selectid(String mem_id);
 	String search_pass(Members m);
+	Members selectall(int mem_no);
+	void delmem(int mem_no);
+	int delchk(Members m);
 }
  
