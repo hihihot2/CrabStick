@@ -18,7 +18,7 @@
 				document.loginpage.action="${pageContext.request.contextPath}/logincont/logout.do";
 				document.loginpage.submit();
 			}
-		}		
+		}	
 	}
 
 
