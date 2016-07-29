@@ -15,13 +15,15 @@
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.login.LoginMapper">
-		INSERT INTO members(mem_no, mem_id, mem_pwd, mem_name, mem_outchk) values(seq_mem.nextval,?,?,?,'Y',1)
-	</insert>
-	
+		INSERT INTO members(mem_no, mem_id, mem_pwd, mem_name, mem_outchk, mem_admchk) values(seq_mem.nextval,?,?,?,'Y','1')
+	</insert>	
 	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
 		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} 
 	</select>
 	<select id="selectno" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
-			SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
+		SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
+	</select>	
+	<select id="selectid" resultType="int" parameterType="String">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id}
 	</select>
 </mapper>

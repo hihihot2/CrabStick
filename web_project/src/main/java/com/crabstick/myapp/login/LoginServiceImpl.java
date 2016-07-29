@@ -34,4 +34,10 @@ public class LoginServiceImpl implements LoginService {
 		return loginmapper.selectno(m);
 	}
 
+	@Override
+	public int getmem_id(String mem_id) {
+		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
+		return loginmapper.selectid(mem_id);
+	}
+
 }

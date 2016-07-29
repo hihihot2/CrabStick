@@ -7,31 +7,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
-
-function login_do(){
-		var params = "mem_id="+document.loginform.mem_id.value+"&mem_pwd="+document.loginform.mem_pwd.value;
+	function login_do() {
+		var params = "mem_id=" + document.loginform.mem_id.value + "&mem_pwd="+ document.loginform.mem_pwd.value;
 		sendRequest("${pageContext.request.contextPath}/logincont/login.do", params, login_result, "POST");
-	} 
- 	function login_result(){
-		if(httpRequest.readyState == 4){
-			if(httpRequest.status == 200){
-				var str = httpRequest.responseText;				
-				var rep = eval("("+str+")");
-				if(rep == 0){
+	}
+	function login_result() {
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var str = httpRequest.responseText;
+				var rep = eval("(" + str + ")");
+				if (rep == 0) {
 					alert("아이디나 패스워드가 일치하지 않습니다.")
-				}else{
-					document.loginform.action="${pageContext.request.contextPath}/";
-					document.loginform.submit();	
-				}			
+				} else {
+					document.loginform.action = "${pageContext.request.contextPath}/";
+					document.loginform.submit();
+				}
 			}
 		}
-	} 
-	
- 	function join_go(){
-		document.loginform.action="${pageContext.request.contextPath}/logincont/joinpage.do";
-		document.loginform.submit();		
 	}
-
+	function join_go() {
+		document.loginform.action = "${pageContext.request.contextPath}/logincont/joinpage.do";
+		document.loginform.submit();
+	}
+	function cancel_do(){
+		document.loginform.action = "${pageContext.request.contextPath}/";
+		document.loginform.submit();
+	}
+	
+	function keyevent() {
+		if (event.keyCode == 13) {
+			login_do();
+		}
+	}
+	
 </script>
 
 
@@ -40,10 +48,10 @@ function login_do(){
 <body>
 
 
-<form name="loginform" action="${pageContext.request.contextPath}/">
-id : <input type="text" name="mem_id">
-password : <input type="password" name="mem_pwd"><br>
-<input type="button" value="로그인" onclick="login_do()"><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()">
+<form name="loginform" method="post">
+id : <input type="text" name="mem_id" onkeydown="keyevent()">
+password : <input type="password" name="mem_pwd" onkeydown="keyevent()"><br>
+<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()">
 </form> 
 </body>
 </html>
