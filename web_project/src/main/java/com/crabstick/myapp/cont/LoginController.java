@@ -51,5 +51,10 @@ public class LoginController {
 
 		}
 	}
+	@RequestMapping(value="/logincont/logout.do")
+	public String logout(){
+		System.out.println("Login Controller >> logout");
+		return "/";
+	}
 
 }

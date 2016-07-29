@@ -11,7 +11,7 @@
 			document.loginpage.action="${pageContext.request.contextPath}/logincont/loginpage.do";
 			document.loginpage.submit();
 		}else if(type=='logout'){
-			
+			document.loginpage.action="${pageContext.request.contextPath}/logincont/logout.do";
 		}
 		
 	}
