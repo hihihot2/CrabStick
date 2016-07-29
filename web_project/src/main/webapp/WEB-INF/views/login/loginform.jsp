@@ -10,7 +10,7 @@
 
 function login_do(){
 		var params = "mem_id="+document.loginform.mem_id.value+"&mem_pwd="+document.loginform.mem_pwd.value;
-		sendRequest("${pageContext.request.contextPath}/logincont/login.do", params, login_result, "GET");
+		sendRequest("${pageContext.request.contextPath}/logincont/login.do", params, login_result, "POST");
 	} 
  	function login_result(){
 		if(httpRequest.readyState == 4){
