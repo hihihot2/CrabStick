@@ -6,8 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script type="text/javascript">
+	function startPlan(){
+		location.href="${pageContext.request.contextPath}/viewcont/plan.do";
+	}
+</script>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<input type="button" value="Wi-Fi 보이기" onclick="markOnWiFi()">
+	<input type="button" value="플래너 시작하기" onclick="startPlan()">
+	
+	
+
 </body>
 </html>
