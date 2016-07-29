@@ -7,10 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+<script type="text/javascript">
+	function startPlan(){
+		location.href="${pageContext.request.contextPath}/viewcont/plan.do";
+	}
+</script>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
 	<input type="button" value="Wi-Fi 보이기" onclick="markOnWiFi()">
+	<input type="button" value="플래너 시작하기" onclick="startPlan()">
 	<div id="map" style="width:100%;height:400px;"></div>
 
 	<script>
