@@ -15,15 +15,25 @@
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.login.LoginMapper">
-		INSERT INTO members(mem_no, mem_id, mem_pwd, mem_name, mem_outchk, mem_admchk) values(seq_mem.nextval,?,?,?,'Y','1')
+		INSERT INTO members values(SEQ_MEM.nextVal,#{mem_id},#{mem_pwd},#{mem_name},'Y','1')
 	</insert>	
 	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
-		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} 
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} and mem_outchk='Y'
 	</select>
 	<select id="selectno" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
 		SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
 	</select>	
 	<select id="selectid" resultType="int" parameterType="String">
 		SELECT count(*) FROM members WHERE mem_id=#{mem_id}
+	</select>	
+	<select id="selectall" resultType="com.crabstick.myapp.login.Members" parameterType="int">
+		SELECT * FROM members WHERE mem_no=#{mem_no}
+	</select>	
+	<select id="delchk" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}
 	</select>
+	<update id="delmem" parameterType="int">
+		UPDATE members SET mem_outchk='N' WHERE mem_no=#{mem_no}
+	</update>
+	
 </mapper>
