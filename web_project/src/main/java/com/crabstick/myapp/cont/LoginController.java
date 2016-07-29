@@ -31,7 +31,13 @@ public class LoginController {
 		return "login/loginform";
 	}
 
-	@RequestMapping(value = "/logincont/login.do")
+	@RequestMapping(value = "/logincont/logout.do")
+	public String logout(HttpSession hs) {		
+		hs.invalidate();		
+		return "main";
+	}	
+	
+	@RequestMapping(value = "/logincont/login.do", method = RequestMethod.POST)
 	public ModelAndView login(Members m, HttpSession hs) {
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
