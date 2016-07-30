@@ -38,7 +38,6 @@
 	}
 	function join_do() {
 		var chk = document.joinform.chk.value;
-		alert(chk)
 		var pwd = document.joinform.mem_pwd.value;
 		var pwdchk = document.joinform.mem_pwdchk.value;
 		var mail = document.joinform.email_select.value;	
