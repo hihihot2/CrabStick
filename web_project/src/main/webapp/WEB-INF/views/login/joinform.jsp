@@ -53,7 +53,7 @@
 <body>
 <form name="joinform" method="post">
 <input type="hidden" name="chk" value="0">
-아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요"> <input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
+아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요" onkeyup="id_chk()"> <input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
 비밀번호 : <input type="password" name="mem_pwd"><br>
 비밀번호확인 : <input type="password" name="mem_pwdchk"><br>
 이름 : <input type="text" name="mem_name"><br>
