@@ -15,7 +15,6 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="Wi-Fi 보이기" onclick="markOnWiFi()">
 	<input type="button" value="플래너 시작하기" onclick="startPlan()">
 	
 	
