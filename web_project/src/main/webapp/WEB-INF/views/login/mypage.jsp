@@ -34,7 +34,7 @@
 id : ${members.mem_id}<br>
 이름 : ${members.mem_no}<br>
 <input type="hidden" name="mem_id" value="${members.mem_id}">
-<input type="button" value="정보수정" onclick="edit_do('edit')"><input type="button" value="탈퇴" onclick="edit_do('dropout')">
+<input type="button" value="탈퇴" onclick="edit_do('dropout')">
 </form>
 </body>
 </html>
