@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*"%>
+<%@ page import="com.crabstick.api.foursquare.objects.*" %>
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +13,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 var worker;
-
 	function markOnWifi(){
 		var chk = document.getElementById("showwifichk").value;
 		if(chk == 0){
@@ -62,6 +63,8 @@ var worker;
 					<tr>
 						<td>
 							<input type="hidden" id="showwifichk" value="0">
+							<input type="button" value="무료 Wifi" onclick="markOnWifi()" onkeyup="">
+							<input type="button" value="myPath" onclick="getPath()">
 						</td>
 					</tr>
 				</table>
@@ -78,8 +81,6 @@ var map; //지도 저장 객체
 var myPath = []; //선택한 경로 저장 배열
 var markers = [];//생성된 마커를 담을 배열
 var zoom; //zoom 상태 판별
-var cities = [["서울", 37.5666102, 126.9783881, 1],
-              ["부산", 35.1798159, 129.0750222, 2]];
 
 //라인 생성
 var polyline = new naver.maps.Polyline({
@@ -94,36 +95,125 @@ function init(){
 	//넘겨온 선택지 값 판별
 	var loc_num = <%= request.getAttribute("loc_num")%>
 	var lat = <%= request.getAttribute("lat") %>
-	var lang = <%= request.getAttribute("lang")%>
+	var lng = <%= request.getAttribute("lang")%>
 	
 	// 지도 생성 
 	map = new naver.maps.Map('map', {
-	    center: new naver.maps.LatLng(37.5666102,126.9783881), //서울역 기준
-	    zoom: 6
+	    center: new naver.maps.LatLng(lat,lng), //서울역 기준
+	    zoom: 7
 	});
 	
-	for(var i = 0 ; i < cities.length ; i++){
-		var marker = new naver.maps.Marker({
-			title: cities[i][0],
-			position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
-			map: map
-		});
-		markers.push(marker);
-	}
+	//설문조사 -> 
+	
+	/* <c:forEach var="group" items="${VENUES}">
+		<c:forEach var="venue" items="${group.items}">
+			marker('${venue.location.lat }','${venue.location.lng }');
+		</c:forEach>
+	</c:forEach> */
 }
-</script>
-<c:forEach var="group" items="${VENUES}">
-	<c:forEach var="venue" items="${group.items}">
-		<script>var marker = new naver.maps.Marker({
-			position: new naver.maps.LatLng('${venue.location.lat}', '${venue.location.lng}'),
-			map: map
-		});</script>
-	</c:forEach>
-</c:forEach>
-<script type="text/javascript">var marker = new naver.maps.Marker({
-	position: new naver.maps.LatLng(37.5666102,126.555),
-	map: map
+
+function marker(lat, lng){
+	var marker = new naver.maps.Marker({
+		position: new naver.maps.LatLng(lat, lng),
+		map: map
+	});
+	markers.push(marker);
+}
+//이벤트 리스너
+//화면 invalidate() -> 화면 경계상의 마커 재표시
+naver.maps.Event.addListener(map, 'idle', function() {
+	alert("h");
+	for(var i = 0 ; i < markers.length ; i++){
+		//markers[i].setMap(map);
+	}
+    //updateMarkers(map, markers);
 });
+
+//줌 상태 처리
+/* naver.maps.Event.addListener(map, 'zoom_changed', function() {
+	zoom = map.getZoom();
+	updateMaps(map, markers, zoom);
+}); */
+
+
+//지도 상 클릭 이벤트 처리
+naver.maps.Event.addListener(map, 'click', function(e) {
+	alert("h");
+	var path = polyline.getPath();
+	path.push(e.coord);
+	myPath = polyline.getPath();
+	
+	var marker = new naver.maps.Marker({
+			position: e.coord,
+			map: map
+	});
+	//마커 클릭시 이벤트 처리
+	naver.maps.Event.addListener(marker, 'click', function(e) {
+		var infowindow = new naver.maps.InfoWindow({
+			content: "마커 클릭 -> 윈도우 생성"
+		});
+		infowindow.open(map, marker);
+	});
+});
+
+
+// 지도 좌표 경계 객체 생성
+var bounds = map.getBounds(),
+southWest = bounds.getSW(),
+northEast = bounds.getNE(),
+lngSpan = northEast.lng() - southWest.lng(),
+latSpan = northEast.lat() - southWest.lat();
+
+
+/* function updateMaps(map, markers, zoom){
+	var mapBounds = map.getBounds();
+	var marker, position;
+	
+	for(var i = 0 ; i < markers.length ; i++){
+		marker = markers[i];
+		position = marker.getPosition();
+		
+		if(mapBounds.hasLatLng(position)){
+			if(zoom >= cities[i][3]){
+				showMarker(map, marker);
+			}else {
+				hideMarker(map, marker);
+			}
+		}else {
+			hideMarker(map, marker);
+		}
+	}
+} */
+
+function updateMarkers(map, markers) {
+
+    var mapBounds = map.getBounds();
+    var marker, position;
+
+    for (var i = 0; i < markers.length; i++) {
+
+        marker = markers[i]
+        position = marker.getPosition();
+
+        if (mapBounds.hasLatLng(position)) {
+            showMarker(map, marker);
+        } else {
+            hideMarker(map, marker);
+        }
+    }
+}
+
+function showMarker(map, marker) {
+
+    if (marker.setMap()) return;
+    marker.setMap(map);
+}
+
+function hideMarker(map, marker) {
+
+    if (!marker.setMap()) return;
+    marker.setMap(null);
+}
 </script>
 </body>
 </html>

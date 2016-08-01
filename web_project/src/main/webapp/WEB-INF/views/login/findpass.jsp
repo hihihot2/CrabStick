@@ -27,15 +27,19 @@
 				if(rep == 0){
 					document.getElementById("findpass").innerHTML = "<font color=red>사용자의 비밀번호를 찾을 수 없습니다 </font>"
 				} else {
-					document.getElementById("findpass").innerHTML = "<font color=blue>사용자의 비밀번호 : " + rep + "</font>"
+					document.getElementById("findpass").innerHTML = "<font color=blue>사용자의 비밀번호가 이메일로 전송되었습니다.</font>"
 				}
 			}
 		}
 	}
-	function cancle_do(){
-		document.joinform.action = "${pageContext.request.contextPath}/";
-		document.joinform.submit();	
+	function send_pass(){
+		document.findpass.action = "${pageContext.request.contextPath}/emailCont/mail.do";
+		document.findpass.submit();	
 	}
+ 	function cancle_do(){
+		document.findpass.action = "${pageContext.request.contextPath}/";
+		document.findpass.submit();	
+	} 
 	
 </script>
 <title>Insert title here</title>
@@ -44,7 +48,9 @@
 <form name="findpass" method="post">
 아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요"> <br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
-<input type="button" value="찾기" onclick="find_pass()"><input type="button" value="취소" onclick="cancle_do()">
+<input type="button" value="찾기" onclick="find_pass()">
+<!-- <input type="button" value="취소" onclick="cancle_do()"> -->
+<input type="button" value="보내기" onclick="send_pass()">
 <div id="findpass"></div>
 </form>
 
