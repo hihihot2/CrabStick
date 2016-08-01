@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,8 +73,6 @@ var worker;
 		</tr>
 	</table>
 </div>
-
-
 <script>
 //변수 등록
 var map; //지도 저장 객체
@@ -100,18 +99,25 @@ function init(){
 	
 	// 지도 생성 
 	map = new naver.maps.Map('map', {
-	    center: new naver.maps.LatLng(lat,lang), //서울역 기준
+	    center: new naver.maps.LatLng(37.5666102,126.9783881), //서울역 기준
 	    zoom: 6
 	});
 	
-	/* for(var i = 0 ; i < cities.length ; i++){
+	for(var i = 0 ; i < cities.length ; i++){
 		var marker = new naver.maps.Marker({
 			title: cities[i][0],
 			position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
-			map: null
+			map: map
 		});
 		markers.push(marker);
-	} */
+	}
+}
+
+function marker(lat, lng){
+	var marker = new naver.maps.Marker({
+		position: new naver.maps.LatLng(lat, lng),
+		map: map
+	});
 }
 //이벤트 리스너
 //화면 invalidate() -> 화면 경계상의 마커 재표시
@@ -123,7 +129,7 @@ naver.maps.Event.addListener(map, 'idle', function() {
 naver.maps.Event.addListener(map, 'zoom_changed', function() {
 	zoom = map.getZoom();
 	//alert(zoom);
-	updateMaps(map, markers, zoom);
+	//updateMaps(map, markers, zoom);
 });
 
 
@@ -292,6 +298,14 @@ var markerList = [];
 				}
 			}
 		} */
+</script>
+<%-- <c:forEach var="group" items="${VENUES}">
+	<c:forEach var="venue" items="${group.items}">
+		<script>marker('${venue.location.lat }','${venue.location.lng }')</script>
+	</c:forEach>
+</c:forEach> --%>
+<script type="text/javascript">
+	marker(37.5666102,126.97838818);
 </script>
 </body>
 </html>
