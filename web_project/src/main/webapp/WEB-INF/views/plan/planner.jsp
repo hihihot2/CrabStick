@@ -61,7 +61,7 @@ var worker;
 					<tr>
 						<td>
 							<input type="hidden" id="showwifichk" value="0">
-							<input type="button" value="무료 Wifi" onclick="markOnWifi()">
+							<input type="button" value="무료 Wifi" onclick="markOnWifi()" onkeyup="">
 						</td>
 					</tr>
 				</table>
