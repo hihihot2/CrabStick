@@ -27,20 +27,19 @@
 				if(rep == 0){
 					document.getElementById("findpass").innerHTML = "<font color=red>사용자의 비밀번호를 찾을 수 없습니다 </font>"
 				} else {
-					document.getElementById("findpass").innerHTML = "<font color=blue>사용자의 비밀번호 : " + rep + "</font>"
+					document.getElementById("findpass").innerHTML = "<font color=blue>사용자의 비밀번호가 이메일로 전송되었습니다.</font>"
 				}
 			}
 		}
 	}
 	function send_pass(){
-		alert('1')
 		document.findpass.action = "${pageContext.request.contextPath}/emailCont/mail.do";
 		document.findpass.submit();	
 	}
-/* 	function cancle_do(){
-		document.joinform.action = "${pageContext.request.contextPath}/";
-		document.joinform.submit();	
-	} */
+ 	function cancle_do(){
+		document.findpass.action = "${pageContext.request.contextPath}/";
+		document.findpass.submit();	
+	} 
 	
 </script>
 <title>Insert title here</title>
