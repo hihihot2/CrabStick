@@ -50,7 +50,7 @@ var worker;
 	}
 </script>
 </head>
-<body onload="a()">
+<body onload="init()">
 <jsp:include page="../top.jsp"></jsp:include>
 
 <div><!-- 전체 화면 영역 -->
@@ -75,15 +75,9 @@ var worker;
 
 
 <script>
-// 지도 생성 
-var mapOptions = {
-	    center: new naver.maps.LatLng(37.5545373,126.9706856), //서울역 기준
-	    zoom: 2
-	};
-var map = new naver.maps.Map('map', mapOptions);
-
 //변수 등록
-var myPath = [];
+var map; //지도 저장 객체
+var myPath = []; //선택한 경로 저장 배열
 var markers = [];//생성된 마커를 담을 배열
 var zoom; //zoom 상태 판별
 var cities = [["서울", 37.5666102, 126.9783881, 1],
@@ -97,16 +91,27 @@ var polyline = new naver.maps.Polyline({
 	strokeWeight: 2
 });
 
-function initMarker(){
+//초기화 함수
+function init(){
+	//넘겨온 선택지 값 판별
+	var loc_num = <%= request.getAttribute("loc_num")%>
+	var lat = <%= request.getAttribute("lat") %>
+	var lang = <%= request.getAttribute("lang")%>
 	
-	for(var i = 0 ; i < cities.length ; i++){
+	// 지도 생성 
+	map = new naver.maps.Map('map', {
+	    center: new naver.maps.LatLng(lat,lang), //서울역 기준
+	    zoom: 6
+	});
+	
+	/* for(var i = 0 ; i < cities.length ; i++){
 		var marker = new naver.maps.Marker({
 			title: cities[i][0],
 			position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
 			map: null
 		});
 		markers.push(marker);
-	}
+	} */
 }
 //이벤트 리스너
 //화면 invalidate() -> 화면 경계상의 마커 재표시
