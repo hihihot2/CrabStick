@@ -61,7 +61,7 @@ var worker;
 					<tr>
 						<td>
 							<input type="hidden" id="showwifichk" value="0">
-							<input type="button" value="무료 Wifi" onclick="markOnWifi()">
+							<input type="button" value="무료 Wifi" onclick="markOnWifi()" onkeyup="">
 						</td>
 					</tr>
 				</table>
@@ -82,8 +82,9 @@ var mapOptions = {
 	};
 var map = new naver.maps.Map('map', mapOptions);
 
-//생성된 마커를 담을 배열
-var markers = [];
+//변수 등록
+var markers = [];//생성된 마커를 담을 배열
+var zoom
 
 //라인 생성
 var polyline = new naver.maps.Polyline({
@@ -96,6 +97,10 @@ var polyline = new naver.maps.Polyline({
 //이벤트 리스너
 naver.maps.Event.addListener(map, 'idle', function() {
     updateMarkers(map, markers);
+});
+
+naver.maps.Event.addListener(map, 'zoom_changed', function() {
+	alert('zoom_change');
 });
 
 

@@ -18,9 +18,7 @@
 			}else{			
 				document.mypage.action="${pageContext.request.contextPath}/logincont/dropoutpage.do"
 				document.mypage.submit()
-				
 			}
-			
 		}
 	}
 
@@ -32,7 +30,7 @@
 
 <form name="mypage">
 id : ${members.mem_id}<br>
-이름 : ${members.mem_no}<br>
+이름 : ${members.mem_name}<br>
 <input type="hidden" name="mem_id" value="${members.mem_id}">
 <input type="button" value="탈퇴" onclick="edit_do('dropout')">
 </form>
