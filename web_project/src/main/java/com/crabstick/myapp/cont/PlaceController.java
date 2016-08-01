@@ -26,24 +26,11 @@ public class PlaceController {
 		
 		try {
 			venueGroups = foursquare.getVenues();
-			
-			for(Group group : venueGroups) {
-				for(Venue venue : group.getItems()) {
-					System.out.println("----------------------------------------------------");
-					System.out.println("Venue name: " + venue.getName());
-					
-					if(venue.isHasMenu()) {
-						System.out.println("has menu");
-					} else {
-						System.out.println("has not menu");
-					}
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ModelAndView mav = new ModelAndView("plan/planner");
+		ModelAndView mav = new ModelAndView("plan/showMap");
 		mav.addObject("VENUES", venueGroups);
 		
 		return mav;
