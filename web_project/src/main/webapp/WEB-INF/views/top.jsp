@@ -20,6 +20,10 @@
 			}
 		}	
 	}
+	function mypage_do(){
+		document.loginpage.action="${pageContext.request.contextPath}/logincont/mypage.do";
+		document.loginpage.submit();
+	}
 
 
 </script>
@@ -29,8 +33,8 @@
 <body>
 	<form name="loginpage">
 	<c:choose>
-		<c:when test="${no ne null}"><input type="button" value="logout" onclick="action_do('logout')"></c:when>
-		<c:otherwise><input type="submit" value="login" onclick="action_do('login')"></c:otherwise>
+		<c:when test="${no ne null}"><input type="button" value="logout" onclick="action_do('logout')"><input type="button" value="내정보" onclick="mypage_do()"></c:when>
+		<c:otherwise><input type="button" value="login" onclick="action_do('login')"></c:otherwise>
 	</c:choose>
 	<hr>
 	</form>

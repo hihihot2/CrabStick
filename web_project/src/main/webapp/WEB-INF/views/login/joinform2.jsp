@@ -7,18 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
-	function id_chk(){		
-		var mem_id = document.joinform.mem_id.value;		
+	function id_chk(){
+		var mem_id = document.joinform.mem_id.value;
+		var params = "mem_id="+document.joinform.mem_id.value;		
 		if(mem_id == ""){
 			alert('아이디를 입력하세요')
-		}else if(!mem_id.match('.com')){
-			alert('메일형식이 맞지 않습니다.')
-		}else if(!mem_id.match('@')){
-			alert('메일형식이 맞지 않습니다.')			
 		}else{
-			var params = "mem_id="+document.joinform.mem_id.value;
 			sendRequest("${pageContext.request.contextPath}/logincont/idchk.do", params, id_chkresult, 'POST')	
-		}	
+		}		
 	}
 	function id_chkresult() {
 		if (httpRequest.readyState == 4) {
@@ -37,43 +33,30 @@
 	function join_do() {
 		var chk = document.joinform.chk.value;
 		var pwd = document.joinform.mem_pwd.value;
-		var name = document.joinform.mem_name.value;
-		var pwdlength = pwd.length
-		//아이디 중복체크 여부확인 chk값이  1이여야함
+		var pwdchk = document.joinform.mem_pwdchk.value;
 		if(chk == 0){
 			alert('아이디 중복체크 하세요')
-		//비밀번호가 공백일경우
-		}else if(name==""){
-			alert('이름을 입력해주세요')	
-		//select된 mail주소가 self(직접입력)일경우	
-		}else if(pwd==""){
-			alert('비밀번호를 설정해주세요')	
-			//select된 mail주소가 self(직접입력)일경우	
-		}else if(5 >= pwdlength){
-			alert("비밀번호는 6자리 이상으로 설정해주세요")			
+		}else if(pwd!=pwdchk){
+			alert('비밀번호가 일치하지 않습니다.')		
 		}else{
 			document.joinform.action="${pageContext.request.contextPath}/logincont/join.do";
 			document.joinform.submit();
-		}	
+		}		
 	}
-	
 	function cancle_do(){
 		document.joinform.action = "${pageContext.request.contextPath}/";
 		document.joinform.submit();	
 	}
-	
 </script>
 <title>Insert title here</title>
 </head>
 <body>
 <form name="joinform" method="post">
 <input type="hidden" name="chk" value="0">
-아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요">
-
-
-<input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
-비밀번호 : <input type="password" name="mem_pwd" placeholder="비밀번호를 입력하세요"><br>
-이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
+아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요" onkeyup="id_chk()"> <input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
+비밀번호 : <input type="password" name="mem_pwd"><br>
+비밀번호확인 : <input type="password" name="mem_pwdchk"><br>
+이름 : <input type="text" name="mem_name"><br>
 <input type="button" value="완료" onclick="join_do()"><input type="button" value="취소" onclick="cancle_do()">
 </form>
 
