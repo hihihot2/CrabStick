@@ -19,10 +19,7 @@ import com.crabstick.myapp.Location;
 @Controller
 public class PlanController {
 
-	@RequestMapping(value="plancont/loc.do") //viewController -> PlanController
-	public String locations(){
-		return "plan/location";
-	}
+	
 	
 	@RequestMapping(value="plancont/sel_loc.do") //location.jsp -> select User's wish destination
 	public ModelAndView select_location(@RequestParam(value="loc_num")int loc_num){
