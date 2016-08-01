@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.crapstrick.myapp">
+	<logger name="com.crabstick.myapp">
 		<level value="info" />
 	</logger>
 	

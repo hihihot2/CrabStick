@@ -68,6 +68,27 @@ public class LoginController {
 	public String joinpagego() {		
 		return "login/joinform";		
 	}	
+	@RequestMapping(value = "/logincont/findpass.do")
+	public String findpass() {		
+		return "redirect:/logincont/findpassgo.do";		
+	}
+	@RequestMapping(value = "/logincont/findpassgo.do")
+	public String findpassgo() {		
+		return "login/findpass";		
+	}	
+	
+	@RequestMapping(value="/logincont/searchpass.do", method = RequestMethod.POST)
+	public ModelAndView searchpass(Members m) {
+		System.out.println("비밀번호찾는중");		
+		ModelAndView mav = new ModelAndView("login/findpassJSON");
+		String pass = service.getmem_pass(m);
+		if(pass==null){
+			pass = "0";
+		}
+		mav.addObject("pass", pass);
+		System.out.println("비밀번호찾기완료");		
+		return mav;
+	}	
 	//회원가입시 아이디 중복체크
 	@RequestMapping(value="/logincont/idchk.do", method = RequestMethod.POST)
 	public ModelAndView idchk(@RequestParam(value="mem_id")String mem_id) {

@@ -8,7 +8,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 	function login_do() {
-		var params = "mem_id=" + document.loginform.mem_id.value + "&mem_pwd="+ document.loginform.mem_pwd.value;
+		
+		var params = "mem_id=" + document.loginform.mem_id.value+"@"+document.loginform.email2.value + "&mem_pwd="+ document.loginform.mem_pwd.value;
 		sendRequest("${pageContext.request.contextPath}/logincont/login.do", params, login_result, "POST");
 	}
 	function login_result() {
@@ -33,10 +34,31 @@
 		document.loginform.action = "${pageContext.request.contextPath}/";
 		document.loginform.submit();
 	}
+	function find_pass(){
+		document.loginform.action = "${pageContext.request.contextPath}/logincont/findpass.do";
+		document.loginform.submit();
+	}
 	
 	function keyevent() {
 		if (event.keyCode == 13) {
 			login_do();
+		}
+	}
+	function checkemailaddy() {
+		var mail = document.loginform.email_select.value;
+
+		if (loginform.email_select.value == 'self') {
+			loginform.email2.readOnly = false;
+			loginform.email2.value = '';
+			loginform.email2.focus();
+		} else {
+			loginform.email2.readOnly = "readonly";
+			if (mail == 0) {
+				document.loginform.email2.value = ""
+			} else {
+				loginform.email2.value = loginform.email_select.value;
+
+			}
 		}
 	}
 	
@@ -49,9 +71,19 @@
 
 
 <form name="loginform" method="post">
-id : <input type="text" name="mem_id" onkeydown="keyevent()">
+id : <input type="text" name="mem_id" onkeydown="keyevent()">@<input name="email2" type="text" class="box" id="email2" size="20" readonly="readonly">
+<select name="email_select" id="email_select" onChange="checkemailaddy()">
+ <option value="0">선택하세요</option>
+ <option value="naver.com">naver.com</option>
+ <option value="daum.com">daum.com</option>
+ <option value="google.com">google.com</option>
+ <option value="yahoo.com">yahoo.com</option>
+ <option value="self">직접입력</option>
+</select><br>
+
+
 password : <input type="password" name="mem_pwd" onkeydown="keyevent()"><br>
-<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()">
+<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()"> <input type="button" value="회원비밀번호 찾기" onclick="find_pass()">
 </form> 
 </body>
 </html>

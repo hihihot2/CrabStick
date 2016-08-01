@@ -75,25 +75,57 @@ var worker;
 
 
 <script>
-<%-- var loc = <%=request.getAttribute("LOC") %>; --%>
-//alert(loc);
+// 지도 생성 
 var mapOptions = {
 	    center: new naver.maps.LatLng(37.5545373,126.9706856), //서울역 기준
 	    zoom: 8
 	};
 var map = new naver.maps.Map('map', mapOptions);
 
+//생성된 마커를 담을 배열
+var markers = [];
+
+//라인 생성
+var polyline = new naver.maps.Polyline({
+	map:map,
+	path: [],
+	strokeColor: '#FF9B00',
+	strokeWeight: 2
+});
+
+//이벤트 리스너
 naver.maps.Event.addListener(map, 'idle', function() {
     updateMarkers(map, markers);
 });
 
+
+naver.maps.Event.addListener(map, 'click', function(e) {
+	//alert(e.coord);
+	var path = polyline.getPath();
+	path.push(e.coord);
+	
+	var marker = new naver.maps.Marker({
+			position: e.coord,
+			map: map
+	});
+	naver.maps.Event.addListener(marker, 'click', function(e) {
+		var infowindow = new naver.maps.InfoWindow({
+			content: "마커 클릭 -> 윈도우 생성"
+		});
+		infowindow.open(map, marker);
+	});
+})
+
+
+// 지도 좌표 경계 객체 생성
 var bounds = map.getBounds(),
 southWest = bounds.getSW(),
 northEast = bounds.getNE(),
 lngSpan = northEast.lng() - southWest.lng(),
 latSpan = northEast.lat() - southWest.lat();
 
-var markers = [];
+
+
 
 function updateMarkers(map, markers) {
 
@@ -195,7 +227,7 @@ var markerList = [];
 	            top: e.offset.y
 	        }).html(coordHtml);
 	    }); */
-	    function markOnWiFi(){
+	    /* function markOnWiFi(){
 	    	sendRequest("${pageContext.request.contextPath}/test", null, markOn, 'POST');
 	    }
 	    function markOn(){
@@ -211,7 +243,7 @@ var markerList = [];
 					alert("실패: " + httpRequest.status);
 				}
 			}
-		}
+		} */
 </script>
 </body>
 </html>

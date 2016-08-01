@@ -41,6 +41,11 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
+	public String getmem_pass(Members m) {
+		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);
+		return loginmapper.search_pass(m);
+	}
+	
 	public Members getmem_all(int mem_no) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
 		return loginmapper.selectall(mem_no);
