@@ -11,17 +11,6 @@
 <script type="text/javascript">
 var worker;
 
-	function initMarker(){
-		for(var i = 0 ; i < cities.length ; i++){
-			var marker = new naver.maps.Marker({
-				title: cities[i][0],
-				position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
-				map: null
-			});
-			markers.push(marker);
-		}
-	}
-
 	function markOnWifi(){
 		var chk = document.getElementById("showwifichk").value;
 		if(chk == 0){
@@ -61,7 +50,7 @@ var worker;
 	}
 </script>
 </head>
-<body onload="initMarker()">
+<body onload="a()">
 <jsp:include page="../top.jsp"></jsp:include>
 
 <div><!-- 전체 화면 영역 -->
@@ -108,6 +97,17 @@ var polyline = new naver.maps.Polyline({
 	strokeWeight: 2
 });
 
+function initMarker(){
+	
+	for(var i = 0 ; i < cities.length ; i++){
+		var marker = new naver.maps.Marker({
+			title: cities[i][0],
+			position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
+			map: null
+		});
+		markers.push(marker);
+	}
+}
 //이벤트 리스너
 //화면 invalidate() -> 화면 경계상의 마커 재표시
 naver.maps.Event.addListener(map, 'idle', function() {
