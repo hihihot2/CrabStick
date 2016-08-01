@@ -32,10 +32,15 @@
 			}
 		}
 	}
-	function cancle_do(){
+	function send_pass(){
+		alert('1')
+		document.findpass.action = "${pageContext.request.contextPath}/emailCont/mail.do";
+		document.findpass.submit();	
+	}
+/* 	function cancle_do(){
 		document.joinform.action = "${pageContext.request.contextPath}/";
 		document.joinform.submit();	
-	}
+	} */
 	
 </script>
 <title>Insert title here</title>
@@ -44,7 +49,9 @@
 <form name="findpass" method="post">
 아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요"> <br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
-<input type="button" value="찾기" onclick="find_pass()"><input type="button" value="취소" onclick="cancle_do()">
+<input type="button" value="찾기" onclick="find_pass()">
+<!-- <input type="button" value="취소" onclick="cancle_do()"> -->
+<input type="button" value="보내기" onclick="send_pass()">
 <div id="findpass"></div>
 </form>
 
