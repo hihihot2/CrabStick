@@ -12,10 +12,11 @@
 		<result property="mem_name" column="mem_name" />
 		<result property="mem_outchk" column="mem_outchk" />
 		<result property="mem_admchk" column="mem_admchk" />
+		<result property="mem_survey" column="mem_survey" />
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.login.LoginMapper">
-		INSERT INTO members values(SEQ_MEM.nextVal,#{mem_id},#{mem_pwd},#{mem_name},'Y','1')
+		INSERT INTO members values(SEQ_MEM.nextVal,#{mem_id},#{mem_pwd},#{mem_name},'Y','1',#{mem_survey})
 	</insert>	
 	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
 		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} and mem_outchk='Y'
