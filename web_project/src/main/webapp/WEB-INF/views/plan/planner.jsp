@@ -11,6 +11,17 @@
 <script type="text/javascript">
 var worker;
 
+	function initMarker(){
+		for(var i = 0 ; i < cities.length ; i++){
+			var marker = new naver.maps.Marker({
+				title: cities[i][0],
+				position: new naver.maps.LatLng(cities[i][1], cities[i][2]),
+				map: null
+			});
+			markers.push(marker);
+		}
+	}
+
 	function markOnWifi(){
 		var chk = document.getElementById("showwifichk").value;
 		if(chk == 0){
@@ -50,7 +61,7 @@ var worker;
 	}
 </script>
 </head>
-<body>
+<body onload="initMarker()">
 <jsp:include page="../top.jsp"></jsp:include>
 
 <div><!-- 전체 화면 영역 -->
@@ -78,13 +89,16 @@ var worker;
 // 지도 생성 
 var mapOptions = {
 	    center: new naver.maps.LatLng(37.5545373,126.9706856), //서울역 기준
-	    zoom: 8
+	    zoom: 2
 	};
 var map = new naver.maps.Map('map', mapOptions);
 
 //변수 등록
+var myPath = [];
 var markers = [];//생성된 마커를 담을 배열
-var zoom
+var zoom; //zoom 상태 판별
+var cities = [["서울", 37.5666102, 126.9783881, 1],
+              ["부산", 35.1798159, 129.0750222, 2]];
 
 //라인 생성
 var polyline = new naver.maps.Polyline({
@@ -95,15 +109,20 @@ var polyline = new naver.maps.Polyline({
 });
 
 //이벤트 리스너
+//화면 invalidate() -> 화면 경계상의 마커 재표시
 naver.maps.Event.addListener(map, 'idle', function() {
-    updateMarkers(map, markers);
+    //updateMarkers(map, markers);
 });
 
+//줌 상태 처리
 naver.maps.Event.addListener(map, 'zoom_changed', function() {
-	alert('zoom_change');
+	zoom = map.getZoom();
+	//alert(zoom);
+	updateMaps(map, markers, zoom);
 });
 
 
+//지도 상 클릭 이벤트 처리
 naver.maps.Event.addListener(map, 'click', function(e) {
 	//alert(e.coord);
 	var path = polyline.getPath();
@@ -113,6 +132,7 @@ naver.maps.Event.addListener(map, 'click', function(e) {
 			position: e.coord,
 			map: map
 	});
+	//마커 클릭시 이벤트 처리
 	naver.maps.Event.addListener(marker, 'click', function(e) {
 		var infowindow = new naver.maps.InfoWindow({
 			content: "마커 클릭 -> 윈도우 생성"
@@ -130,7 +150,25 @@ lngSpan = northEast.lng() - southWest.lng(),
 latSpan = northEast.lat() - southWest.lat();
 
 
-
+function updateMaps(map, markers, zoom){
+	var mapBounds = map.getBounds();
+	var marker, position;
+	
+	for(var i = 0 ; i < markers.length ; i++){
+		marker = markers[i];
+		position = marker.getPosition();
+		
+		if(mapBounds.hasLatLng(position)){
+			if(zoom >= cities[i][3]){
+				showMarker(map, marker);
+			}else {
+				hideMarker(map, marker);
+			}
+		}else {
+			hideMarker(map, marker);
+		}
+	}
+}
 
 function updateMarkers(map, markers) {
 
