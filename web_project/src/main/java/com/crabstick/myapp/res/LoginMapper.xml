@@ -5,7 +5,7 @@
 	 
 <mapper namespace="com.crabstick.myapp.login.LoginMapper">
 
-	<resultMap type="com.crabstick.myapp.login.Members" id="MemberResultMap">
+	<resultMap type="com.crabstick.myapp.login.Member" id="MemberResultMap">
 		<result property="mem_no" column="mem_no"/>
 		<result property="mem_id" column="mem_id"/>
 		<result property="mem_pwd" column="mem_pwd" />
@@ -27,7 +27,7 @@
 	<select id="selectid" resultType="int" parameterType="String">
 		SELECT count(*) FROM members WHERE mem_id=#{mem_id}
 	</select>	
-	<select id="selectall" resultType="com.crabstick.myapp.login.Members" parameterType="int">
+	<select id="selectall" resultType="com.crabstick.myapp.login.Member" parameterType="int">
 		SELECT * FROM members WHERE mem_no=#{mem_no}
 	</select>	
 	<select id="delchk" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">

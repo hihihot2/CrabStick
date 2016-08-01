@@ -24,29 +24,17 @@ public class PlaceController {
 		foursquare.addField(Foursquare.EXPLORE_PARAMETER_LL, "37.485430,126.897108");
 		//foursquare.addField(Foursquare.EXPLORE_PARAMETER_SECTION, "food");
 		foursquare.addField(Foursquare.EXPLORE_PARAMETER_RADIUS, "10000");
+
 		ArrayList<Group> venueGroups = null;
 		System.out.println("plancont >> Choose location : "+loc_num);
 		
 		try {
 			venueGroups = foursquare.getVenues();
-			
-			for(Group group : venueGroups) {
-				for(Venue venue : group.getItems()) {
-					System.out.println("----------------------------------------------------");
-					System.out.println("Venue name: " + venue.getName());
-					
-					if(venue.isHasMenu()) {
-						System.out.println("has menu");
-					} else {
-						System.out.println("has not menu");
-					}
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ModelAndView mav = new ModelAndView("plan/planner");
+		ModelAndView mav = new ModelAndView("plan/showMap");
 		mav.addObject("VENUES", venueGroups);
 		
 		switch(loc_num){

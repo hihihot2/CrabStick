@@ -1,6 +1,6 @@
 package com.crabstick.myapp.login;
 
-public class Members {
+public class Member {
 	
 	int mem_no;
 	String mem_id;
@@ -10,12 +10,12 @@ public class Members {
 	char mem_admchk;
 	String mem_survey;
 
-	public Members() {
+	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}	
 	
-	public Members(int mem_no, String mem_id, String mem_pwd, String mem_name, char mem_outchk, char mem_admchk,
+	public Member(int mem_no, String mem_id, String mem_pwd, String mem_name, char mem_outchk, char mem_admchk,
 			String mem_survey) {
 		super();
 		this.mem_no = mem_no;

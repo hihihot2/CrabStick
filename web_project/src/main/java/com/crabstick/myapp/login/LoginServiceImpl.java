@@ -16,20 +16,20 @@ public class LoginServiceImpl implements LoginService {
 	}	
 
 	@Override
-	public void mem_join(Members m) {
+	public void mem_join(Member m) {
 	LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);
 	loginmapper.insert(m);
 
 	}
 
 	@Override
-	public int mem_login(Members m) {
+	public int mem_login(Member m) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
 		return loginmapper.login(m);
 	}
 
 	@Override
-	public int getmem_no(Members m) {
+	public int getmem_no(Member m) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
 		return loginmapper.selectno(m);
 	}
@@ -41,12 +41,12 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String getmem_pass(Members m) {
+	public String getmem_pass(Member m) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);
 		return loginmapper.search_pass(m);
 	}
 	
-	public Members getmem_all(int mem_no) {
+	public Member getmem_all(int mem_no) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
 		return loginmapper.selectall(mem_no);
 	}
@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public int del_memchk(Members m) {
+	public int del_memchk(Member m) {
 		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
 		return loginmapper.delchk(m);
 	}
