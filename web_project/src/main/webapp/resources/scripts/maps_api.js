@@ -33,12 +33,14 @@ var marker = new naver.maps.Marker({
 });
 
 /**
- * KVO 클래스는 KVO(Key-Value Observing) 패턴을 정의하는 클래스입니다.
+ * Event 클래스는 이벤트 패턴을 정의하는 클래스입니다.
  * 이 클래스는 Event의 구현 일부를 상속받으며, 
  * NAVER 지도 API v3의 주요 클래스는 이 클래스를 상속받아 구현되었습니다.
  * naver.maps.Event.addListener(targetObject, eventName, listener);
  * eventName
- * -idle: 
+ * -idle: 지도의 움직임이 종료되었을 때(유휴 상태) 이벤트가 발생합니다.
+ * -click: 
+ * -zoom_changed: 지도 줌 레벨이 변경되면 이벤트가 발생합니다.
  */
 naver.maps.Event.addListener(markers, 'click', function(e) {
 	alert('hi');
