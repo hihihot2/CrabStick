@@ -43,7 +43,7 @@ public class HomeController {
 		ArrayList<Location> loc = new ArrayList<Location>();
 		
 		if(file != null)
-			System.out.println("File Open");
+			System.out.println("File Open"); 
 		
 		try {
 			sb = new XSSFWorkbook(new FileInputStream(file));
