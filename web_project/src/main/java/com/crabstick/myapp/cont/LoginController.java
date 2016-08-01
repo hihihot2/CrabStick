@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.crabstick.myapp.login.LoginService;
-import com.crabstick.myapp.login.Members;
+import com.crabstick.myapp.login.Member;
 
 @Controller
 public class LoginController {
@@ -41,7 +41,7 @@ public class LoginController {
 
 	// 로그인시작
 	@RequestMapping(value = "/logincont/login.do", method = RequestMethod.POST)
-	public ModelAndView login(Members m, HttpSession hs) {
+	public ModelAndView login(Member m, HttpSession hs) {
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
 		int chk = service.mem_login(m);
@@ -82,7 +82,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/logincont/join.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String join(Members m) {
+	public String join(Member m) {
 		System.out.println("회원가입 시작");
 		service.mem_join(m);
 		System.out.println("저장완료");
@@ -100,7 +100,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/logincont/searchpass.do", method = RequestMethod.POST)
-	public ModelAndView searchpass(Members m) {
+	public ModelAndView searchpass(Member m) {
 		System.out.println("비밀번호찾는중");
 		ModelAndView mav = new ModelAndView("login/findpassJSON");
 		String pass = service.getmem_pass(m);
@@ -120,7 +120,7 @@ public class LoginController {
 		int mem_no = (Integer) hs.getAttribute("no");
 		System.out.println(mem_no);
 		System.out.println("마이페이지로 가기");
-		Members members = service.getmem_all(mem_no);
+		Member members = service.getmem_all(mem_no);
 		System.out.println(members.getMem_id());
 		mav.addObject("members", members);
 		return mav;
@@ -142,7 +142,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/logincont/dropout.do")
-	public ModelAndView dropout(Members m, HttpSession hs) {
+	public ModelAndView dropout(Member m, HttpSession hs) {
 		System.out.println("삭제시작");
 		ModelAndView mav = new ModelAndView("login/delchkJSON");
 		int chk = service.del_memchk(m);

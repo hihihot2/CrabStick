@@ -22,6 +22,7 @@ public class PlaceController {
 	public ModelAndView getRestaurants(@RequestParam(value="city") String city) {
 		Foursquare foursquare = new Foursquare(clientId, clientSecret, Foursquare.API_EXPLORE);
 		foursquare.addField(Foursquare.EXPLORE_PARAMETER_LL, "37.485430,126.897108");
+//		foursquare.addField(Foursquare., value);
 		ArrayList<Group> venueGroups = null;
 		
 		try {
