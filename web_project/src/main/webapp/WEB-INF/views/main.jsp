@@ -9,44 +9,12 @@
 
 <script type="text/javascript">
 	function startPlan(){
-		location.href="${pageContext.request.contextPath}/viewcont/plan.do";
+		location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
 	}
 </script>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan()">	<br>
-
-
-<div style='width:50%; float:left'> 
-
-<table border="1" >
-	<tr>
-		<td colspan="2" height="160px" width="200px" >지도</td>
-	</tr>
-	<tr>
-		<td colspan="2">봉기의 서울나들이</td>
-	</tr>
-	<tr>
-		<td>3일간</td><td>2016년 9월</td>
-	</tr>
-</table>
-<table border="1" >
-	<tr>
-		<td colspan="2" height="160px" width="200px" >지도</td>
-	</tr>
-	<tr>
-		<td colspan="2">봉기의 서울나들이</td>
-	</tr>
-	<tr>
-		<td>3일간</td><td>2016년 9월</td>
-	</tr>
-</table>
-</div>
-
-
-
+	<input type="button" value="플래너 시작하기" onclick="startPlan()">
 </body>
-
-
 </html>
