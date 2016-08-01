@@ -15,6 +15,61 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan()">
+	<input type="button" value="플래너 시작하기" onclick="startPlan()"><br>
+
+<div style="border: 0px; float: left; width: 250px; padding:20px;">
+  <table border="1" >
+      <tr>
+          <td colspan="2" height="160px" width="250px" >지도</td>
+      </tr>
+      <tr>
+          <td colspan="2">봉기의 서울나들이</td>
+      </tr>
+      <tr>
+          <td>3일간</td><td>2016년 9월</td>
+      </tr>
+  </table>
+</div>
+<div style="border: 0px; float: left; width: 250px; padding:20px;">
+  <table border="1" >
+      <tr>
+          <td colspan="2" height="160px" width="250px" >지도</td>
+      </tr>
+      <tr>
+          <td colspan="2">봉기의 서울나들이</td>
+      </tr>
+      <tr>
+          <td>3일간</td><td>2016년 9월</td>
+      </tr>
+  </table>
+</div>
+<div style="border: 0px; float: left; width: 250px; padding:20px;">
+  <table border="1" >
+      <tr>
+          <td colspan="2" height="160px" width="250px" >지도</td>
+      </tr>
+      <tr>
+          <td colspan="2">봉기의 서울나들이</td>
+      </tr>
+      <tr>
+          <td>3일간</td><td>2016년 9월</td>
+      </tr>
+  </table>
+</div>
+<div style="border: 0px; float: left; width: 250px; padding:20px;">
+  <table border="1" >
+      <tr>
+          <td colspan="2" height="160px" width="250px" >지도</td>
+      </tr>
+      <tr>
+          <td colspan="2">봉기의 서울나들이</td>
+      </tr>
+      <tr>
+          <td>3일간</td><td>2016년 9월</td>
+      </tr>
+  </table>
+</div>
+
+
 </body>
 </html>
