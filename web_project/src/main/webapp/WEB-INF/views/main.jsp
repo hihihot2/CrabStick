@@ -17,7 +17,7 @@
 	<jsp:include page="top.jsp"></jsp:include>
 	<input type="button" value="플래너 시작하기" onclick="startPlan()">
 	
-	
+	<a href="location.href=${pageContext.request.contextPath }/viewcont/goToCity.do?city=seoul">서울로 가기</a>
 
 </body>
 </html>
