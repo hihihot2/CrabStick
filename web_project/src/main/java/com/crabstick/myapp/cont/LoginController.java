@@ -84,4 +84,44 @@ public class LoginController {
 		System.out.println("저장완료");		
 		return "redirect:/logincont/login.do";
 	}	
+	
+	
+	@RequestMapping(value="/survey/main.do", method = RequestMethod.GET)
+	public String startSurvey(){
+		System.out.println("회원 성향 서베이 시작");
+		return "survey/survey";
+		
+	}
+	
+	@RequestMapping(value="/survey/survey.do", method = RequestMethod.POST)
+	public ModelAndView surveypage(@RequestParam(value="survey_Level") String survey_Level, @RequestParam(value="survey_Answer") String survey_Answer){
+		ModelAndView mav =null;
+		if (survey_Level.equals("1")){
+			mav = new ModelAndView("survey/survey");
+			survey_Level = "1";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer",survey_Answer);
+		} else if (survey_Level.equals("2")){
+			mav = new ModelAndView("survey/survey");
+			survey_Level = "2";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer",survey_Answer);
+		} else if (survey_Level.equals("3")){
+			mav = new ModelAndView("survey/survey");
+			survey_Level = "3";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer",survey_Answer);
+		} else if (survey_Level.equals("4")){
+			mav = new ModelAndView("survey/survey");
+			survey_Level = "4";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer",survey_Answer);	
+		} else {
+			mav = new ModelAndView("login/joinform");
+			System.out.println(survey_Answer);
+			mav.addObject("survey_Answer",survey_Answer);
+		}
+		return mav;
+		
+	}
 }
