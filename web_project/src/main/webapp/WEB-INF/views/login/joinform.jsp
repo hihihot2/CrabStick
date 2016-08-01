@@ -69,11 +69,10 @@
 <form name="joinform" method="post">
 <input type="hidden" name="chk" value="0">
 아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요">
-
-
 <input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
 비밀번호 : <input type="password" name="mem_pwd" placeholder="비밀번호를 입력하세요"><br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
+<input type="hidden" name="mem_survey" value="${survey_Answer}">
 <input type="button" value="완료" onclick="join_do()"><input type="button" value="취소" onclick="cancle_do()">
 </form>
 

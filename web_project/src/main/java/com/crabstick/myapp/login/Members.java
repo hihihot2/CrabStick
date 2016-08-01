@@ -8,14 +8,15 @@ public class Members {
 	String mem_name;
 	char mem_outchk;
 	char mem_admchk;
-	
-	
+	String mem_survey;
+
 	public Members() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
+	}	
 	
-	public Members(int mem_no, String mem_id, String mem_pwd, String mem_name, char mem_outchk, char mem_admchk) {
+	public Members(int mem_no, String mem_id, String mem_pwd, String mem_name, char mem_outchk, char mem_admchk,
+			String mem_survey) {
 		super();
 		this.mem_no = mem_no;
 		this.mem_id = mem_id;
@@ -23,8 +24,9 @@ public class Members {
 		this.mem_name = mem_name;
 		this.mem_outchk = mem_outchk;
 		this.mem_admchk = mem_admchk;
+		this.mem_survey = mem_survey;
 	}
-	
+
 	public int getMem_no() {
 		return mem_no;
 	}
@@ -60,6 +62,13 @@ public class Members {
 	}
 	public void setMem_admchk(char mem_admchk) {
 		this.mem_admchk = mem_admchk;
+	}
+	public String getMem_survey() {
+		return mem_survey;
+	}
+
+	public void setMem_survey(String mem_survey) {
+		this.mem_survey = mem_survey;
 	}
 
 }
