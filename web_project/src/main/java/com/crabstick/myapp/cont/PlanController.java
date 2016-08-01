@@ -27,19 +27,19 @@ public class PlanController {
 		ModelAndView mav = new ModelAndView("plan/planner");
 		
 		switch(loc_num){
-		case 1: //서울
+		case 0: //서울
 			mav.addObject("lat", 37.5666102);
 			mav.addObject("lang", 126.9783881);
 			break;
-		case 2:
+		case 1:
 			mav.addObject("lat", 35.1798159);
 			mav.addObject("lang", 129.0750222);
+			break;
+		case 2:
 			break;
 		case 3:
 			break;
 		case 4:
-			break;
-		case 5:
 			break;
 		}
 		mav.addObject("loc_num", loc_num);
