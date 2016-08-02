@@ -60,8 +60,6 @@ public class PlaceController {
 		}
 		*/
 		
-		
-		
 		ModelAndView mav = new ModelAndView("plan/showMap");
 		mav.addObject("VENUES", venueGroups);
 		
