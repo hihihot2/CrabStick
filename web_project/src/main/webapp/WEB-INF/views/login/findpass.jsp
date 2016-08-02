@@ -24,18 +24,22 @@
 			if (httpRequest.status == 200) {
 				var str = httpRequest.responseText;
 				var rep = eval("(" + str + ")");
+				var html = "<input type='text' name='certify'/> "+
+				           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>"
 				if(rep == 0){
-					document.getElementById("findpass").innerHTML = "<font color=red>사용자의 비밀번호를 찾을 수 없습니다 </font>"
+					document.getElementById("resultpass").innerHTML = 
+						"<font color=red>사용자의 비밀번호를 찾을 수 없습니다 </font>"
 				} else {
-					document.getElementById("findpass").innerHTML = "<font color=blue>사용자의 비밀번호가 이메일로 전송되었습니다.</font>"
+					document.getElementById("resultpass").innerHTML =
+						"<font color=red>사용자의 비밀번호를 찾았당</font><br>" + html
 				}
 			}
 		}
 	}
-	/* function send_pass(){
-		document.findpass.action = "${pageContext.request.contextPath}/emailCont/mail.do";
-		document.findpass.submit();	
-	} */
+	function sumbit_cert(){
+		document.findpass.action = "${pageContext.request.contextPath}/emailCont/chkPass.do";
+		document.findpass.submit();
+	}
  	function cancle_do(){
 		document.findpass.action = "${pageContext.request.contextPath}/";
 		document.findpass.submit();	
@@ -50,10 +54,8 @@
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
 <input type="button" value="취소" onclick="cancle_do()">
 <input type="button" value="보내기" onclick="find_pass()">
-<div id="findpass"></div>
+<div id="resultpass"></div>
 </form>
-
-
 
 </body>
 </html>
