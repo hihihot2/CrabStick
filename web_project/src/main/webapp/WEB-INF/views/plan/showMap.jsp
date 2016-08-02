@@ -48,7 +48,7 @@
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
 				//windowPlace('${venue.name}','${venue.location}');
-				setListener('${venue.name}');
+				setListener("${venue.name}");
 			</c:forEach>
 		</c:forEach>
 		
@@ -61,10 +61,6 @@
 					position: e.coord,
 					map: map
 			});		
-			
-			//venue폼에 위도 경도 저장
-			document.ven_form.ven_lati.value = e.coord.lat()
-			document.ven_form.ven_long.value = e.coord.lng()
 			
 			//마커 클릭시 이벤트 처리
 			naver.maps.Event.addListener(marker, 'click', function(e) {
@@ -85,7 +81,7 @@
 
 	
 
-	function addpath() {
+/* 	function addpath() {
 		var sw = document.getElementById("pathbtn").value;
 		if(sw == '+일정추가'){
 			document.getElementById("path").style.display = ""
@@ -95,14 +91,21 @@
 			document.getElementById("pathbtn").value="+일정추가"
 		}
 		
-	}
-	function addpath(){
+	} */
+	function addvenue(){
+
 		var newvenue = document.createElement("div");
 		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
-		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'><br>";		
+		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'>"
+		+"<input type='hidden' name='ven_order' value='1'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
+		var order = document.ven_form.ven_order.value;
+		alert(order)
+		order++;
+		
+		
 		return newvenue;
 	}
 	function path_done(){
@@ -126,13 +129,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addpath()">
+							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addvenue()">
 							</td>
 						</tr>
 					</table>
 					<br>
 					
-				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+				<form name="ven_form[]" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 					<div id="addvenue">					
 					</div>
 					<input type="button" value="완료" onclick="path_done()">					

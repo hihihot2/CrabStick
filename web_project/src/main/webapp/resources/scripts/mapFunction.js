@@ -25,7 +25,7 @@
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-					+name+'<input type="button" value="+" onclick="addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+')"></div>');//
+					+name+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+name+'")></div>');//
 			if(infowindow.getMap()){
 				infowindow.close();
 			}else {
@@ -33,9 +33,21 @@
 			}
 		})
 	}
-	function addPath(lat, lng){
+	function addPath(lat, lng, name){
+		//venue폼에 위도 경도 저장
+
+			document.ven_form[i].ven_name.value = name;
+			document.ven_form[i].ven_lati.value = lat;
+			document.ven_form[i].ven_long.value = lng;
+		
+
+		
+		
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
+		
+
+		
 	}
 	
 	//화면 업데이트 경계내부의 marker만 표시
