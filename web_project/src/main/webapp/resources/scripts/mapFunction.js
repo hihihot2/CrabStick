@@ -2,6 +2,9 @@
  * Naver Api 사용한 기능구현
  */
 //마커 생성
+
+
+
 	function setPlace(lat, lng) {
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -37,19 +40,19 @@
 	}
 	function addPath(lat, lng, name){
 		//venue폼에 위도 경도 저장
-
-			document.ven_form.ven_name.value = decodeURIComponent(name);
-			document.ven_form.ven_lati.value = lat;
-			document.ven_form.ven_long.value = lng;		
-		
-			if(ven_form.ven_name.length <= 1){
+			var length = document.ven_form.ven_name.length
+			alert(document.ven_form.ven_name.length)
+			if(document.ven_form.ven_name.length <= length){
 				alert('배열일때만 와라')
-				document.ven_form.ven_name[i].value = name;
+				document.ven_form.ven_name[i].value = decodeURIComponent(name);
 				document.ven_form.ven_lati[i].value = lat;
 				document.ven_form.ven_long[i].value = lng;		
-				
+			}else{
+				alert('배열이 아닐때 와라')
+				document.ven_form.ven_name.value = decodeURIComponent(name);
+				document.ven_form.ven_lati.value = lat;
+				document.ven_form.ven_long.value = lng;	
 			}
-			i++
 			
 	//경로 추가
 		var path = polyline.getPath();

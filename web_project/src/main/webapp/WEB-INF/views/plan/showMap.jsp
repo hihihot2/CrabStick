@@ -13,6 +13,7 @@
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 	//변수 등록
+	var i = -1;
 	var map; //지도 저장 객체
 	var myPath = []; //선택한 경로 저장 배열
 	var markers = [];//생성된 마커를 담을 배열
@@ -93,8 +94,7 @@
 		}
 		
 	} */
-	function addvenue(){
-
+	function addvenue(){				
 		var newvenue = document.createElement("div");
 		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
 		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'>"
@@ -102,10 +102,7 @@
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
-		var order = document.ven_form.ven_order.value;
-		order++;
-		
-		
+		i = i+1;			
 		return newvenue;
 	}
 	function path_done(){
