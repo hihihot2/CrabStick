@@ -16,6 +16,7 @@
 	var map; //지도 저장 객체
 	var myPath = []; //선택한 경로 저장 배열
 	var markers = [];//생성된 마커를 담을 배열
+	var infowindows = [];//생성된 윈도우를 담을 배열
 	var zoom; //zoom 상태 판별
 	var polyline; //라인 변수
 	var eventListener = [];
@@ -39,17 +40,20 @@
 			map:map, //라인을 표시할 지도 객체
 			path: [], //라인 좌표를 저장할 배열
 			strokeColor: '#FF9B00', //라인컬러
-			strokeWeight: 2 //라인 두깨
+			strokeWeight: 3 //라인 두깨
 		});
 		
 		//도시별, 유저별로 시작점 포인트 생성
 		<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
-				markPlace('${venue.location.lat }', '${venue.location.lng }');
+				setPlace('${venue.location.lat }', '${venue.location.lng }');
+				//windowPlace('${venue.name}','${venue.location}');
+				setListener();
 			</c:forEach>
 		</c:forEach>
 		
-		var mapEvent = new naver.maps.Event.addListener(map, 'click', function(e) {
+		//Map Click이벤트 처리 ->marker 생성 window 생성
+		naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
 			path.push(e.coord);
 			myPath.push(e.coord.lat(), e.coord.lng());
@@ -68,31 +72,23 @@
 		
 			var tmp = document.getElementById("plan");
 		});
-		//eventListener.push(mapEvent);
 		
-		var mapEvent = new naver.maps.Event.addListener(map, 'rightclick', function(e) {
+		naver.maps.Event.addListener(map, 'rightclick', function(e) {
 			var tmp = ">";
 			for(var i = 0 ; i < myPath.length ; i++){
 				tmp += myPath[i]+",";
 			}
-			alert(tmp);
-		})
-	}
-
-	//마커 생성
-	function markPlace(lat, lng) {
-		var marker = new naver.maps.Marker({
-			position : new naver.maps.LatLng(lat, lng),
-			map : map
-		//position: 마커의 위치를 나타내는 지도 좌표
-		//map: 마커를 표시할 map 객체
-		//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
-		//animaion: 지도에 마커 추가시에 시작할 에니메이션 설정
-		//title: 마우스 오버시 나타나는 문자열
-		//clickable: 기본 true, 마커 클릭 허용 여부
+			alert(infowindows[0]);
+		});
+		
+		naver.maps.Event.addListener(map, 'idle', function(e) {
+			updateMarkers(map, markers);
 		});
 	}
 
+	
+
+	////////
 	function addpath() {
 		var sw = document.getElementById("pathbtn").value;
 		if(sw == '+일정추가'){
@@ -115,6 +111,7 @@
 	
 	
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <body onload="init()">
 	<jsp:include page="../top.jsp"></jsp:include>
 
