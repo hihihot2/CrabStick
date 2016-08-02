@@ -19,12 +19,13 @@
 	}
 	//리스너 생성
 	function setListener(name){
+		var enc = encodeURIComponent(name);
 		var len = markers.length-1;
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
 					+'<h3>'+name+'</h3>'
-					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+regExp(name)+'")>'
+					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
 					+'</div>'
 					);
 			if(infowindow.getMap()){
@@ -36,10 +37,10 @@
 	}
 	function addPath(lat, lng, name){
 		//venue폼에 위도 경도 저장
-		var i = "0"		
-		document.ven_form.ven_name.value = name;
-		document.ven_form.ven_lati.value = lat;
-		document.ven_form.ven_long.value = lng;	
+
+			document.ven_form.ven_name.value = decodeURIComponent(name);
+			document.ven_form.ven_lati.value = lat;
+			document.ven_form.ven_long.value = lng;		
 		
 			if(ven_form.ven_name.length <= 1){
 				alert('배열일때만 와라')
@@ -101,13 +102,13 @@
 	    if (!marker.setMap()) return;
 	    marker.setMap(null);
 	}
-	
+	//정규식 변환 함수
 	function regExp(str){
-		var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+		var reg = /\s[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
 		
 		if(reg.test(str)){
 			//특수문자 제거
-			var t = str.replace(regExp, "");
+			var t = str.replace(reg, "");
 		}else{
 			var t = str;
 		}

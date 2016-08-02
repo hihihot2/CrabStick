@@ -48,13 +48,13 @@
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
 
-				//setListener(regExp("${venue.name}".toLowerCase()));
 				setListener("${venue.name}".toLowerCase());
+				//setListener("${venue.name}".toLowerCase());
 			</c:forEach>
 		</c:forEach>
 		
 		//Map Click이벤트 처리 ->marker 생성 window 생성
-		naver.maps.Event.addListener(map, 'click', function(e) {
+		/* naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
 			path.push(e.coord);
 			myPath.push(e.coord.lat(), e.coord.lng());			
@@ -72,9 +72,9 @@
 			});
 		
 			var tmp = document.getElementById("plan");
-		});
-		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
+		}); */
 		
+		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
 		});
