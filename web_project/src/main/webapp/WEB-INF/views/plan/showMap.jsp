@@ -48,7 +48,7 @@
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
 				//windowPlace('${venue.name}','${venue.location}');
-				setListener();
+				setListener('${venue.name}');
 			</c:forEach>
 		</c:forEach>
 		
@@ -76,15 +76,7 @@
 		
 			var tmp = document.getElementById("plan");
 		});
-		
-		var mapEvent = new naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			var tmp = "";
-
-			for(var i = 0 ; i < myPath.length ; i++){
-				tmp += myPath[i]+",";
-			}
-			alert(infowindows[0]);
-		});
+		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
