@@ -71,4 +71,10 @@ public class Member {
 		this.mem_survey = mem_survey;
 	}
 
+	@Override
+	public String toString() {
+		return "Member [mem_no=" + mem_no + ", mem_id=" + mem_id + ", mem_pwd=" + mem_pwd + ", mem_name=" + mem_name
+				+ ", mem_outchk=" + mem_outchk + ", mem_admchk=" + mem_admchk + ", mem_survey=" + mem_survey + "]";
+	}
+	
 }
