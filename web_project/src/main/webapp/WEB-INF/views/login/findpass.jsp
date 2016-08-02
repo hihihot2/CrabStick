@@ -16,7 +16,7 @@
 		} else if(mem_name == ""){
 			alert('이름을 입력하세요')
 		} else{
-			sendRequest("${pageContext.request.contextPath}/logincont/searchpass.do", params, pass_findresult, 'POST')	
+			sendRequest("${pageContext.request.contextPath}/emailCont/mail.do", params, pass_findresult, 'POST')	
 		}		
 	}
 	function pass_findresult() {
@@ -32,10 +32,10 @@
 			}
 		}
 	}
-	function send_pass(){
+	/* function send_pass(){
 		document.findpass.action = "${pageContext.request.contextPath}/emailCont/mail.do";
 		document.findpass.submit();	
-	}
+	} */
  	function cancle_do(){
 		document.findpass.action = "${pageContext.request.contextPath}/";
 		document.findpass.submit();	
@@ -48,9 +48,8 @@
 <form name="findpass" method="post">
 아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요"> <br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
-<input type="button" value="찾기" onclick="find_pass()">
-<!-- <input type="button" value="취소" onclick="cancle_do()"> -->
-<input type="button" value="보내기" onclick="send_pass()">
+<input type="button" value="취소" onclick="cancle_do()">
+<input type="button" value="보내기" onclick="find_pass()">
 <div id="findpass"></div>
 </form>
 

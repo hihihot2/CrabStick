@@ -29,26 +29,29 @@ public class MailController {
 	@RequestMapping(value = "/emailCont/mail.do")
 	public ModelAndView sendMail(Member m) {
 		ModelAndView mav = new ModelAndView("login/findpassJSON");
-		m.setMem_id("bongki1234@naver.com");
-		m.setMem_name("123456");
+		String id =  m.getMem_id();
 		String pass = service.getmem_pass(m);
+		
 		if (pass == null) {
 			pass = "0";
 		}
 		mav.addObject("pass", pass);
 		System.out.println("비밀번호찾기완료");
-		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-			messageHelper.setTo(m.getMem_id());
-			messageHelper.setText(pass);
-			messageHelper.setFrom(from);
-			messageHelper.setSubject(subject);
-			mailSender.send(message);
-		} catch(Exception e){
-			System.out.println(e);
+		if(!pass.equals("0")){
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				messageHelper.setTo(id);
+				messageHelper.setText(pass);
+				messageHelper.setFrom(from);
+				messageHelper.setSubject(subject);
+				mailSender.send(message);
+				System.out.println("전송완료");
+			} catch(Exception e){
+				System.out.println(e);
+			}
 		}
-		System.out.println("전송완료");
+		
 		return mav;
 	}
 	
