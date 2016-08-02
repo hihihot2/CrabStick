@@ -56,12 +56,16 @@
 		naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
 			path.push(e.coord);
-			myPath.push(e.coord.lat(), e.coord.lng());
+			myPath.push(e.coord.lat(), e.coord.lng());			
+			document.ven_form.ven_long.value = e.coord.lng()
+			document.ven_form.ven_lati.value = e.coord.lat()
 			
 			var marker = new naver.maps.Marker({
 					position: e.coord,
 					map: map
-			});
+			});		
+			
+			
 			//마커 클릭시 이벤트 처리
 			naver.maps.Event.addListener(marker, 'click', function(e) {
 				var infowindow = new naver.maps.InfoWindow({
@@ -73,8 +77,9 @@
 			var tmp = document.getElementById("plan");
 		});
 		
-		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			var tmp = ">";
+		var mapEvent = new naver.maps.Event.addListener(map, 'rightclick', function(e) {
+			var tmp = "";
+
 			for(var i = 0 ; i < myPath.length ; i++){
 				tmp += myPath[i]+",";
 			}
@@ -100,13 +105,17 @@
 		}
 		
 	}
-	function addvenue(){
+	function addpath(){
 		var newvenue = document.createElement("div");
-		var html = "새 장소 "
+		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
+		+"<input type='text' placeholder='위도'><input type='text' placeholder='경도'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
 		return newvenue;
+	}
+	function path_done(){
+		
 	}
 	
 	
@@ -132,20 +141,12 @@
 						</tr>
 					</table>
 					<br>
-					<div id="path" style="display: none;">
-						<form name="plan_form" style="position: static;">
-							<input type="text" name="ven_name" placeholder="장소이름을 입력하세요."style="width: 60%; height: 25px; font-size: 14px;">								
-							<br>																														
-							<input type="text" name="ven_lato" placeholder="위도" style="width: 60%; height: 25px; font-size: 14px;"><br>								
-							<input type="text" name="ven_long" placeholder="경도" style="width: 60%; height: 25px; font-size: 14px;">					
-							
-							<br>
-							<input type="button" value="추가" onclick="addvenue()"><input type="button" value="취소" onclick="cancle_do()">
-						</form>
-					</div>
-					<div id="addvenue">
 					
+					<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+					<div id="addvenue">					
 					</div>
+					<input type="button" value="완료" onclick="path_done()">					
+					</form>
 
 				</td>
 				<td style="width: 80%;">
