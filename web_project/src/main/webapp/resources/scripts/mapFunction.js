@@ -2,8 +2,7 @@
  * Naver Api 사용한 기능구현
  */
 //마커 생성
-
-
+	var i = -1;
 
 	function setPlace(lat, lng) {
 		var marker = new naver.maps.Marker({
@@ -43,16 +42,22 @@
 		infowindow.close();
 	}
 	function addPath(lat, lng, name){
+		
+		var newvenue = document.createElement("div");
+		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><br>"
+		+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
+		+"<input type='hidden' name='ven_order' value='1'><br>";		
+		newvenue.innerHTML = html;
+		var addvenue =  document.getElementById("addvenue")
+		addvenue.appendChild(newvenue);
+		i = i+1;					
 		//venue폼에 위도 경도 저장
 			var length = document.ven_form.ven_name.length
-			alert(document.ven_form.ven_name.length)
 			if(document.ven_form.ven_name.length <= length){
-				alert('배열일때만 와라')
 				document.ven_form.ven_name[i].value = decodeURIComponent(name);
 				document.ven_form.ven_lati[i].value = lat;
 				document.ven_form.ven_long[i].value = lng;		
 			}else{
-				alert('배열이 아닐때 와라')
 				document.ven_form.ven_name.value = decodeURIComponent(name);
 				document.ven_form.ven_lati.value = lat;
 				document.ven_form.ven_long.value = lng;	
