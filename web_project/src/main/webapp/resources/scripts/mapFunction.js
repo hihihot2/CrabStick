@@ -14,9 +14,7 @@
 		//clickable: 기본 true, 마커 클릭 허용 여부
 		});
 		markers.push(marker);
-		var infowindow = new naver.maps.InfoWindow({
-			//content: '<div style="width:400px;height:300px;text-align:top;">'+loc+'<input type="button" value="+" onclick="addPath()"></div>'
-		});
+		var infowindow = new naver.maps.InfoWindow();
 		infowindows.push(infowindow);
 	}
 	//리스너 생성
@@ -25,7 +23,10 @@
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-					+name+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+name+'")></div>');//
+					+'<h3>'+name+'</h3>'
+					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+regExp(name)+'")>'
+					+'</div>'
+					);
 			if(infowindow.getMap()){
 				infowindow.close();
 			}else {
@@ -36,17 +37,28 @@
 	function addPath(lat, lng, name){
 		//venue폼에 위도 경도 저장
 
-			document.ven_form[i].ven_name.value = name;
-			document.ven_form[i].ven_lati.value = lat;
-			document.ven_form[i].ven_long.value = lng;
+			document.ven_form.ven_name.value = name;
+			document.ven_form.ven_lati.value = lat;
+			document.ven_form.ven_long.value = lng;		
 		
-
-		
-		
+	//경로 추가
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
 		
 
+		
+	}
+	//추가 경로 삭제
+	function delPath(){
+		var path = polyline.getPath();
+		path.pop();
+	}
+	//경로 초기화
+	function resetPath(){
+		var path = polyline.getPath();
+		for(var i = 0 ; i < path.length ; i++){
+			path.pop();
+		}
 		
 	}
 	
@@ -81,4 +93,14 @@
 	    marker.setMap(null);
 	}
 	
-	
+	function regExp(str){
+		var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+		
+		if(reg.test(str)){
+			//특수문자 제거
+			var t = str.replace(regExp, "");
+		}else{
+			var t = str;
+		}
+		return t;
+	}

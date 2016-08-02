@@ -47,8 +47,9 @@
 		<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
-				//windowPlace('${venue.name}','${venue.location}');
-				setListener("${venue.name}");
+
+				//setListener(regExp("${venue.name}".toLowerCase()));
+				setListener("${venue.name}".toLowerCase());
 			</c:forEach>
 		</c:forEach>
 		
@@ -135,7 +136,7 @@
 					</table>
 					<br>
 					
-				<form name="ven_form[]" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 					<div id="addvenue">					
 					</div>
 					<input type="button" value="완료" onclick="path_done()">					
