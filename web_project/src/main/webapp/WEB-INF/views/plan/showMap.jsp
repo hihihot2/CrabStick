@@ -57,14 +57,14 @@
 			var path = polyline.getPath();
 			path.push(e.coord);
 			myPath.push(e.coord.lat(), e.coord.lng());			
-			document.ven_form.ven_long.value = e.coord.lng()
-			document.ven_form.ven_lati.value = e.coord.lat()
-			
 			var marker = new naver.maps.Marker({
 					position: e.coord,
 					map: map
 			});		
 			
+			//venue폼에 위도 경도 저장
+			document.ven_form.ven_lati.value = e.coord.lat()
+			document.ven_form.ven_long.value = e.coord.lng()
 			
 			//마커 클릭시 이벤트 처리
 			naver.maps.Event.addListener(marker, 'click', function(e) {
@@ -108,7 +108,7 @@
 	function addpath(){
 		var newvenue = document.createElement("div");
 		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
-		+"<input type='text' placeholder='위도'><input type='text' placeholder='경도'><br>";		
+		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
@@ -142,11 +142,11 @@
 					</table>
 					<br>
 					
-					<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 					<div id="addvenue">					
 					</div>
 					<input type="button" value="완료" onclick="path_done()">					
-					</form>
+				</form>
 
 				</td>
 				<td style="width: 80%;">
