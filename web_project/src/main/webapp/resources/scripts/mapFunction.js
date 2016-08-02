@@ -3,6 +3,7 @@
  */
 //마커 생성
 	var i = -1;
+	var count = 1;
 
 	function setPlace(lat, lng) {
 		var marker = new naver.maps.Marker({
@@ -46,9 +47,11 @@
 		var newvenue = document.createElement("div");
 		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><br>"
 		+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
-		+"<input type='hidden' name='ven_order' value='1'><br>";		
+		+"<input type='hidden' name='ven_order' value='count'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
+		count++;
+
 		addvenue.appendChild(newvenue);
 		i = i+1;					
 		//venue폼에 위도 경도 저장

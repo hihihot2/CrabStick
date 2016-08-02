@@ -81,34 +81,12 @@
 		});
 	}
 
-	
 
-/* 	function addpath() {
-		var sw = document.getElementById("pathbtn").value;
-		if(sw == '+일정추가'){
-			document.getElementById("path").style.display = ""
-			document.getElementById("pathbtn").value="취소"
-		}else if(sw == '취소'){
-			document.getElementById("path").style.display = "none"
-			document.getElementById("pathbtn").value="+일정추가"
-		}
+	function addpath(){				
 		
-	} */
-	function addvenue(){				
-		var newvenue = document.createElement("div");
-		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
-		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'>"
-		+"<input type='hidden' name='ven_order' value='count'><br>";		
-		newvenue.innerHTML = html;
-		var addvenue =  document.getElementById("addvenue")
-		addvenue.appendChild(newvenue);
-		count++;
-		return newvenue;
-	}
-	function path_done(){
-		
-	}
 	
+	}
+
 	
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
@@ -119,6 +97,7 @@
 		<table style="width: 100%; height: 100%;">
 			<tr>
 				<td style="width: 20%;" valign="top">
+				
 					<table style="width: 100%; height: 10%;">
 						<tr>
 							<td><input type="hidden" id="showwifichk" value="0">
@@ -126,7 +105,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addvenue()">
+							<td><input type="button" value="+일정추가" onclick="addpath()">
 							</td>
 						</tr>
 					</table>
