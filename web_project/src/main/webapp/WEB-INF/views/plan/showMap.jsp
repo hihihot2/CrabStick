@@ -103,7 +103,6 @@
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
 		var order = document.ven_form.ven_order.value;
-		alert(order)
 		order++;
 		
 		

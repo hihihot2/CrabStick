@@ -36,11 +36,20 @@
 	}
 	function addPath(lat, lng, name){
 		//venue폼에 위도 경도 저장
-
-			document.ven_form.ven_name.value = name;
-			document.ven_form.ven_lati.value = lat;
-			document.ven_form.ven_long.value = lng;		
+		var i = "0"		
+		document.ven_form.ven_name.value = name;
+		document.ven_form.ven_lati.value = lat;
+		document.ven_form.ven_long.value = lng;	
 		
+			if(ven_form.ven_name.length <= 1){
+				alert('배열일때만 와라')
+				document.ven_form.ven_name[i].value = name;
+				document.ven_form.ven_lati[i].value = lat;
+				document.ven_form.ven_long[i].value = lng;		
+				
+			}
+			i++
+			
 	//경로 추가
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
