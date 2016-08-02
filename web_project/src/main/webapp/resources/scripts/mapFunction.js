@@ -24,7 +24,7 @@
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-					+'<h3>'+name+'</h3>'
+					+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
 					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
 					+'</div>'
 					);
@@ -34,6 +34,10 @@
 				infowindow.open(map, marker);
 			}
 		})
+	}
+	function closeWindow(len){
+		var infowindow = infowindows[len];
+		infowindow.close();
 	}
 	function addPath(lat, lng, name){
 		//venue폼에 위도 경도 저장
@@ -54,9 +58,6 @@
 	//경로 추가
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
-		
-
-		
 	}
 	//추가 경로 삭제
 	function delPath(){
