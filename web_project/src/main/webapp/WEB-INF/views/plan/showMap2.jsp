@@ -40,29 +40,18 @@
 		});
 	}
 
-	function addpath() {
-		var sw = document.getElementById("pathbtn").value;
-		if(sw == '+일정추가'){
-			document.getElementById("path").style.display = ""
-			document.getElementById("pathbtn").value="취소"
-		}else if(sw == '취소'){
-			document.getElementById("path").style.display = "none"
-			document.getElementById("pathbtn").value="+일정추가"
+	function addvenue() {
+		var sw = document.plan_form.sw.value;
+		if(sw == '0'){
+			document.getElementById("plan").style.display = ""
+			document.getElementById("planbtn").value="취소"
+			sw = '1';
+		}else if(sw == '1'){
+			document.getElementById("plan").style.display = "none"
+			sw = '0';
 		}
 		
 	}
-	function addvenue(){
-		var newvenue = document.createElement("div");
-		var html = "새 장소 "
-		newvenue.innerHTML = html;
-		var addvenue =  document.getElementById("addvenue")
-		addvenue.appendChild(newvenue);
-		return newvenue;
-	}
-	
-	
-	
-	
 </script>
 <body onload="init()">
 	<jsp:include page="../top.jsp"></jsp:include>
@@ -79,24 +68,38 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addpath()">
+							<td><input type="button" id="planbtn" name="plan" value="+일정추가" onclick="addvenue()">
 							</td>
 						</tr>
 					</table>
 					<br>
-					<div id="path" style="display: none;">
+					<div id="plan" style="display: none;">
 						<form name="plan_form" style="position: static;">
-							<input type="text" name="ven_name" placeholder="장소이름을 입력하세요."style="width: 60%; height: 25px; font-size: 14px;">								
-							<br>																														
-							<input type="text" name="ven_lato" placeholder="위도" style="width: 60%; height: 25px; font-size: 14px;"><br>								
-							<input type="text" name="ven_long" placeholder="경도" style="width: 60%; height: 25px; font-size: 14px;">					
-							
+							<input type="text" name="plan_name" placeholder="계획이름을 입력하세요."style="width: 60%; height: 25px; font-size: 14px;">								
+							<textarea rows="5" cols="30" placeholder="내용을 입력하세요" name="plan_commt"></textarea>								
 							<br>
-							<input type="button" value="추가" onclick="addvenue()"><input type="button" value="취소" onclick="cancle_do()">
+							<input type="text" name="plan_cost" placeholder="예상금액을 입력하세요."style="width: 40%; height: 25px; font-size: 14px;">원
+							<select style="margin-left: 40px" name="plan_persons">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>										
+							</select>명		
+							<br>																														
+								<input type="radio" name="plan_style" value="1">맛집
+								<input type="radio" name="plan_style" value="2">자연
+								<input type="radio" name="plan_style" value="3">쇼핑
+								<input type="radio" name="plan_style" value="4">관광																
+							<input type="hidden" name="sw" value="0">
+							<br>
+							<input type="button" value="완료" onclick="plan_do()"><input type="button" value="취소" onclick="cancle_do()">
 						</form>
-					</div>
-					<div id="addvenue">
-					
 					</div>
 
 				</td>
