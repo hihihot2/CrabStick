@@ -84,7 +84,6 @@
 
 	
 
-	////////
 	function addpath() {
 		var sw = document.getElementById("pathbtn").value;
 		if(sw == '+일정추가'){
@@ -114,7 +113,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <body onload="init()">
 	<jsp:include page="../top.jsp"></jsp:include>
-
 	<div>
 		<!-- 전체 화면 영역 -->
 		<table style="width: 100%; height: 100%;">
