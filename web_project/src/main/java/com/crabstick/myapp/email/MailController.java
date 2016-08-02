@@ -59,12 +59,20 @@ public class MailController {
 		return mav;
 	}
 	@RequestMapping(value = "/emailCont/chkPass.do")
-	public String chkcert_num(Member m, @RequestParam(value="certify") int certify) {
+	public ModelAndView chkcert_num(Member m, @RequestParam(value="certify") int certify) {
 		if(certify != cert_num){
-			System.out.println("페스워드불일치");
-			return "redirect:/logincont/findpassgo.do";
+			System.out.println("인증불일치");
+			ModelAndView mav = new ModelAndView("login/findpass");
+			return mav;
 		}
-		System.out.println("여기까지왔나?");
-		return "login/changepass"; 
+		ModelAndView mav = new ModelAndView("login/changepass");
+		String pass = service.getmem_pass(m);
+		m.setMem_pwd(pass);
+		int no = service.getmem_no(m);
+		m.setMem_no(no);
+		System.out.println(no);
+		System.out.println(m.toString());
+		mav.addObject("mem_no", no);
+		return mav;
 	}
 }
