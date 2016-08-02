@@ -47,13 +47,14 @@
 		<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
-				//windowPlace('${venue.name}','${venue.location}');
-				setListener('${venue.name}');
+
+				setListener("${venue.name}".toLowerCase());
+				//setListener("${venue.name}".toLowerCase());
 			</c:forEach>
 		</c:forEach>
 		
 		//Map Click이벤트 처리 ->marker 생성 window 생성
-		naver.maps.Event.addListener(map, 'click', function(e) {
+		/* naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
 			path.push(e.coord);
 			myPath.push(e.coord.lat(), e.coord.lng());			
@@ -61,10 +62,6 @@
 					position: e.coord,
 					map: map
 			});		
-			
-			//venue폼에 위도 경도 저장
-			document.ven_form.ven_lati.value = e.coord.lat()
-			document.ven_form.ven_long.value = e.coord.lng()
 			
 			//마커 클릭시 이벤트 처리
 			naver.maps.Event.addListener(marker, 'click', function(e) {
@@ -75,17 +72,9 @@
 			});
 		
 			var tmp = document.getElementById("plan");
-		});
+		}); */
 		
-		var mapEvent = new naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			var tmp = "";
-
-			for(var i = 0 ; i < myPath.length ; i++){
-				tmp += myPath[i]+",";
-			}
-			alert(infowindows[0]);
-		});
-		
+		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
 		});
@@ -93,8 +82,7 @@
 
 	
 
-	////////
-	function addpath() {
+/* 	function addpath() {
 		var sw = document.getElementById("pathbtn").value;
 		if(sw == '+일정추가'){
 			document.getElementById("path").style.display = ""
@@ -104,14 +92,20 @@
 			document.getElementById("pathbtn").value="+일정추가"
 		}
 		
-	}
-	function addpath(){
+	} */
+	function addvenue(){
+
 		var newvenue = document.createElement("div");
 		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요'><br>"
-		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'><br>";		
+		+"<input type='text' name='ven_lati' placeholder='위도'><input type='text' name='ven_long' placeholder='경도'>"
+		+"<input type='hidden' name='ven_order' value='1'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
 		addvenue.appendChild(newvenue);
+		var order = document.ven_form.ven_order.value;
+		order++;
+		
+		
 		return newvenue;
 	}
 	function path_done(){
@@ -123,7 +117,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <body onload="init()">
 	<jsp:include page="../top.jsp"></jsp:include>
-
 	<div>
 		<!-- 전체 화면 영역 -->
 		<table style="width: 100%; height: 100%;">
@@ -136,7 +129,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addpath()">
+							<td><input type="button" id="pathbtn" value="+일정추가" onclick="addvenue()">
 							</td>
 						</tr>
 					</table>
