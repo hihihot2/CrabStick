@@ -48,7 +48,7 @@
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
 				//windowPlace('${venue.name}','${venue.location}');
-				setListener();
+				setListener('${venue.name}');
 			</c:forEach>
 		</c:forEach>
 		

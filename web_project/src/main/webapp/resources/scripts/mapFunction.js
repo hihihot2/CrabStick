@@ -24,12 +24,12 @@
 		
 	}
 	//리스너 생성
-	function setListener(){
+	function setListener(name){
 		var len = markers.length-1;
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
-			infowindow.setContent('<div style="width:400px;height:300px;text-align:top;">'
-					+e.coord+'<input type="button" value="+" onclick="addPath('+e.coord.lat()+','+e.coord.lng()+')"></div>');//
+			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
+					+name+'<input type="button" value="+" onclick="addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+')"></div>');//
 			if(infowindow.getMap()){
 				infowindow.close();
 			}else {
