@@ -14,9 +14,7 @@
 		//clickable: 기본 true, 마커 클릭 허용 여부
 		});
 		markers.push(marker);
-		var infowindow = new naver.maps.InfoWindow({
-			//content: '<div style="width:400px;height:300px;text-align:top;">'+loc+'<input type="button" value="+" onclick="addPath()"></div>'
-		});
+		var infowindow = new naver.maps.InfoWindow();
 		infowindows.push(infowindow);
 	}
 	//리스너 생성
@@ -25,7 +23,10 @@
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-					+name+'<input type="button" value="+" onclick="addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+')"></div>');//
+					+'<h3>'+name+'</h3>'
+					+'<input type="button" value="+" onclick="addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+')">'
+					+'</div>'
+					);
 			if(infowindow.getMap()){
 				infowindow.close();
 			}else {
@@ -33,9 +34,23 @@
 			}
 		})
 	}
+	//경로 추가
 	function addPath(lat, lng){
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
+	}
+	//추가 경로 삭제
+	function delPath(){
+		var path = polyline.getPath();
+		path.pop();
+	}
+	//경로 초기화
+	function resetPath(){
+		var path = polyline.getPath();
+		for(var i = 0 ; i < path.length ; i++){
+			path.pop();
+		}
+		
 	}
 	
 	//화면 업데이트 경계내부의 marker만 표시
