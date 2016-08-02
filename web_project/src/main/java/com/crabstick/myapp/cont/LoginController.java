@@ -99,7 +99,7 @@ public class LoginController {
 		return "login/findpass";
 	}
 
-	@RequestMapping(value = "/logincont/searchpass.do", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/logincont/searchpass.do", method = RequestMethod.POST)
 	public ModelAndView searchpass(Member m) {
 		System.out.println("비밀번호찾는중");
 		ModelAndView mav = new ModelAndView("login/findpassJSON");
@@ -110,6 +110,13 @@ public class LoginController {
 		mav.addObject("pass", pass);
 		System.out.println("비밀번호찾기완료");
 		return mav;
+	}*/
+	@RequestMapping(value = "/logincont/editpass.do", method = RequestMethod.POST)
+	public String searchpass(Member m) {
+		System.out.println(m.toString());
+		service.updatePass(m);
+		System.out.println("패스워드 수정완료");
+		return "main";
 	}
 
 	// mypage로 값보내기
@@ -138,9 +145,7 @@ public class LoginController {
 	public String startSurvey() {
 		System.out.println("회원 성향 서베이 시작");
 		return "survey/survey";
-
 	}
-
 	@RequestMapping(value = "/logincont/dropout.do")
 	public ModelAndView dropout(Member m, HttpSession hs) {
 		System.out.println("삭제시작");

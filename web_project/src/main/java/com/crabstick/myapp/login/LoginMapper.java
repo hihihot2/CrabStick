@@ -9,5 +9,6 @@ public interface LoginMapper {
 	Member selectall(int mem_no);
 	void delmem(int mem_no);
 	int delchk(Member m);
+	void updatePass(Member m);
 }
  

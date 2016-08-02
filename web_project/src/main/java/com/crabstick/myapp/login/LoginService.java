@@ -9,4 +9,5 @@ public interface LoginService {
 	Member getmem_all(int mem_no);
 	void del_mem(int mem_no);
 	int del_memchk(Member m);
+	void updatePass(Member m);
 }

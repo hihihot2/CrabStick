@@ -63,4 +63,10 @@ public class LoginServiceImpl implements LoginService {
 		return loginmapper.delchk(m);
 	}
 
+	@Override
+	public void updatePass(Member m) {
+		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);		
+		loginmapper.updatePass(m);
+	}
+
 }

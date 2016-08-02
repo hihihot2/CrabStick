@@ -39,5 +39,8 @@
 	<update id="delmem" parameterType="int">
 		UPDATE members SET mem_outchk='N' WHERE mem_no=#{mem_no}
 	</update>
+	<update id="updatePass" parameterType="com.crabstick.myapp.login.LoginMapper">
+		UPDATE members SET mem_pwd=#{mem_pwd} WHERE mem_no=#{mem_no}
+	</update>
 	
 </mapper>
