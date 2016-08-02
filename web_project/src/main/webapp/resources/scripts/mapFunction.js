@@ -19,10 +19,6 @@
 		});
 		infowindows.push(infowindow);
 	}
-	//윈도우 생성
-	function windowPlace(name, loc){
-		
-	}
 	//리스너 생성
 	function setListener(name){
 		var len = markers.length-1;
