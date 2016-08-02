@@ -12,21 +12,74 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
-	var map;
+	//변수 등록
+	var map; //지도 저장 객체
+	var myPath = []; //선택한 경로 저장 배열
+	var markers = [];//생성된 마커를 담을 배열
+	var zoom; //zoom 상태 판별
+	var polyline; //라인 변수
+	var eventListener = [];
+	
+	var plan = document.getElementById("plan");
+	
 	function init() {
+		//넘겨온 선택지 값 판별
+		var loc_num = <%= request.getAttribute("loc_num")%>
+		var lat = <%= request.getAttribute("lat") %>
+		var lng = <%= request.getAttribute("lang")%>
+		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
-			center : new naver.maps.LatLng(37.5666102, 126.9783881), //서울역 기준
+			center : new naver.maps.LatLng(lat, lng),
 			zoom : 6
 		});
-
+		
+		//라인 생성
+		polyline = new naver.maps.Polyline({
+			map:map, //라인을 표시할 지도 객체
+			path: [], //라인 좌표를 저장할 배열
+			strokeColor: '#FF9B00', //라인컬러
+			strokeWeight: 2 //라인 두깨
+		});
+		
+		//도시별, 유저별로 시작점 포인트 생성
 		<c:forEach var="group" items="${VENUES }">
-		<c:forEach var="venue" items="${group.items }">
-		markPlace('${venue.location.lat }', '${venue.location.lng }');
+			<c:forEach var="venue" items="${group.items }">
+				markPlace('${venue.location.lat }', '${venue.location.lng }');
+			</c:forEach>
 		</c:forEach>
-		</c:forEach>
+		
+		var mapEvent = new naver.maps.Event.addListener(map, 'click', function(e) {
+			var path = polyline.getPath();
+			path.push(e.coord);
+			myPath.push(e.coord.lat(), e.coord.lng());
+			
+			var marker = new naver.maps.Marker({
+					position: e.coord,
+					map: map
+			});
+			//마커 클릭시 이벤트 처리
+			naver.maps.Event.addListener(marker, 'click', function(e) {
+				var infowindow = new naver.maps.InfoWindow({
+					content: "마커 클릭 -> 윈도우 생성"
+				});
+				infowindow.open(map, marker);
+			});
+		
+			var tmp = document.getElementById("plan");
+		});
+		//eventListener.push(mapEvent);
+		
+		var mapEvent = new naver.maps.Event.addListener(map, 'rightclick', function(e) {
+			var tmp = ">";
+			for(var i = 0 ; i < myPath.length ; i++){
+				tmp += myPath[i]+",";
+			}
+			alert(tmp);
+		})
 	}
 
+	//마커 생성
 	function markPlace(lat, lng) {
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -59,8 +112,6 @@
 		addvenue.appendChild(newvenue);
 		return newvenue;
 	}
-	
-	
 	
 	
 </script>
@@ -106,6 +157,8 @@
 			</tr>
 		</table>
 	</div>
-
+	<script>
+		
+	</script>
 </body>
 </html>
