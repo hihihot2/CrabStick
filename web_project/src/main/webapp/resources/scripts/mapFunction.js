@@ -21,10 +21,10 @@
 	function setListener(name){
 		var len = markers.length-1;
 		naver.maps.Event.addListener(markers[len], 'click', function(e) {
-			var marker = markers[len], infowindow = infowindows[len];
+			var marker = markers[len], infowindow = infowindows[len];alert(str);
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
 					+'<h3>'+name+'</h3>'
-					+'<input type="button" value="+" onclick="addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+')">'
+					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+regExp(name)+'")>'
 					+'</div>'
 					);
 			if(infowindow.getMap()){
@@ -35,7 +35,7 @@
 		})
 	}
 	//경로 추가
-	function addPath(lat, lng){
+	function addPath(lat, lng, name){
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
 	}
@@ -84,4 +84,14 @@
 	    marker.setMap(null);
 	}
 	
-	
+	function regExp(str){
+		var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+		
+		if(reg.test(str)){
+			//특수문자 제거
+			var t = str.replace(regExp, "");
+		}else{
+			var t = str;
+		}
+		return t;
+	}

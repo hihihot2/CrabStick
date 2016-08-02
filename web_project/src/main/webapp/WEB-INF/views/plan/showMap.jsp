@@ -47,7 +47,8 @@
 		<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
-				setListener("${venue.name}");
+				//setListener(regExp("${venue.name}".toLowerCase()));
+				setListener("${venue.name}".toLowerCase());
 			</c:forEach>
 		</c:forEach>
 		
