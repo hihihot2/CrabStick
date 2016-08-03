@@ -30,7 +30,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 			return recommendationMapper.natural_City_Rank();
 		} else if (answer.equals("유적지")){
 			return recommendationMapper.historical_City_Rank();
-		} else {//상관없음
+		} else {//상관없음 아직 구현 안함
 			return null;
 		}
 		

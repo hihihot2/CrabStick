@@ -53,7 +53,7 @@
 	<form name="loginpage">
 		
 		<nav class="navbar navbar-default" data-spy="affix"
-			data-offset-top="30" style="background-color: #FFFFFF">
+			data-offset-top="30" style="background-color: #FFFFFF" >
 			<ul class="nav navbar-nav">
 				<li><a href="#">LOGO, Our Web site Name</a></li>
 			</ul>
