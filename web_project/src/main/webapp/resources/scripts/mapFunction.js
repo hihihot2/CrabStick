@@ -1,10 +1,11 @@
 /**
- * Naver Api 사용한 기능구현
+ * Naver Api 기능구현
  */
-//마커 생성
 	var i = -1;
 	var count = 1;
+	var pathNum = 0;
 
+	//위치 생성
 	function setPlace(lat, lng) {
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -28,7 +29,7 @@
 			var marker = markers[len], infowindow = infowindows[len];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
 					+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
-					+'<input type="button" value="+" onclick=addPath('+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
+					+'<input type="button" value="+" onclick=addPath('+len+','+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
 					+'</div>'
 					);
 			if(infowindow.getMap()){
@@ -42,15 +43,16 @@
 		var infowindow = infowindows[len];
 		infowindow.close();
 	}
-	function addPath(lat, lng, name){
-		
+	function addPath(len, lat, lng, name){
+		var infowindow = infowindows[len];
 		var newvenue = document.createElement("div");
-		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><br>"
+		newvenue.id = 'path'+pathNum;
+		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+pathNum+")><br>"
 		+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
 		+"<input type='hidden' name='ven_order' value='count'><br>";		
 		newvenue.innerHTML = html;
 		var addvenue =  document.getElementById("addvenue")
-		count++;
+		count++;pathNum++;
 
 		addvenue.appendChild(newvenue);
 		i = i+1;					
@@ -65,15 +67,25 @@
 				document.ven_form.ven_lati.value = lat;
 				document.ven_form.ven_long.value = lng;	
 			}
-			
-	//경로 추가
+		//경로 추가
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
+		/*var tmp = "";
+		for(var i = 0 ; i < path.length ; i++){
+			tmp += path[i]+",";
+		}
+		alert(tmp);*/
+		if(infowindow.getMap()){
+			infowindow.close();
+		}
 	}
 	//추가 경로 삭제
-	function delPath(){
+	function delPath(num){
+		var iDiv = document.getElementById("path"+num);
+		var addvenue =  iDiv.parentNode;
+		addvenue.removeChild(iDiv);
 		var path = polyline.getPath();
-		path.pop();
+		path.splice(num, 1);
 	}
 	//경로 초기화
 	function resetPath(){
