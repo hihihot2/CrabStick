@@ -79,6 +79,10 @@
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
 		});
+		
+		naver.maps.Event.addListener(map, 'rightclick', function(e) {
+			alert(polyline.getPath());
+		})
 	}
 
 
