@@ -80,8 +80,6 @@
 			updateMarkers(map, markers);
 		});
 	}
-
-
 	function addpath(){				
 		
 	
