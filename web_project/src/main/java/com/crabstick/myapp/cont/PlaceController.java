@@ -1,17 +1,12 @@
 package com.crabstick.myapp.cont;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.crabstick.api.expedia.Expedia;
-import com.crabstick.api.expedia.objects.Hotel;
-import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
 
@@ -23,14 +18,15 @@ public class PlaceController {
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
 
 	@RequestMapping(value="/placeCont/getRestaurants.do")
-	public ModelAndView getRestaurants(@RequestParam(value="city") String city,@RequestParam(value="loc_num")int loc_num) {
+	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude) {
 		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, "37.485430,126.897108");
+		System.out.println(city_latitude+","+city_longitude);
+		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
 
 		ArrayList<Group> venueGroups = null;
-		System.out.println("plancont >> Choose location : "+loc_num);
+		
 		
 		try {
 			venueGroups = foursquare.getVenues();
@@ -62,24 +58,8 @@ public class PlaceController {
 		
 		ModelAndView mav = new ModelAndView("plan/showMap");
 		mav.addObject("VENUES", venueGroups);
-		
-		switch(loc_num){
-		case 0: //서울
-			mav.addObject("lat", 37.5666102);
-			mav.addObject("lang", 126.9783881);
-			break;
-		case 1:
-			mav.addObject("lat", 35.1798159);
-			mav.addObject("lang", 129.0750222);
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		}
-		
+		mav.addObject("lat",city_latitude);
+		mav.addObject("lang",city_longitude);
 		return mav;
 	}
 }
