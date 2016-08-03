@@ -34,10 +34,7 @@
 			}
 		}
 	}
-	function join_go() {
-		document.loginform.action = "${pageContext.request.contextPath}/logincont/joinpage.do";
-		document.loginform.submit();
-	}
+	
 	function cancel_do(){
 		document.loginform.action = "${pageContext.request.contextPath}/";
 		document.loginform.submit();
@@ -63,7 +60,7 @@
 <form name="loginform" method="post">
 id : <input type="text" name="mem_id" onkeydown="keyevent()"><br>
 password : <input type="password" name="mem_pwd" onkeydown="keyevent()"><br>
-<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()"> <input type="button" value="회원가입" onclick="join_go()"> <input type="button" value="회원비밀번호 찾기" onclick="find_pass()">
+<input type="button" value="로그인" onclick="login_do()" onkeypress=""><input type="button" value="cancel" onclick="cancel_do()">  <input type="button" value="회원비밀번호 찾기" onclick="find_pass()">
 </form> 
 </body>
 </html>
