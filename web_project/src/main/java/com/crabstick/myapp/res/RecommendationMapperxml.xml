@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+<mapper namespace="com.crabstick.myapp.recommendation.RecommendationMapper">
+
+	<resultMap type="com.crabstick.myapp.recommendation.City" id="CityResultMap">
+		<result property="loc_no" column="loc_no"/>
+		<result property="loc_name" column="loc_name"/>
+		<result property="loc_lati" column="loc_lati" />
+		<result property="loc_long" column="loc_long" />
+		<result property="loc_ctweight" column="loc_ctweight" />
+		<result property="loc_hiweight" column="loc_hiweight" />
+		<result property="loc_ntweight" column="loc_ntweight" />
+	</resultMap>	
+
+	
+	<select id="large_City_Rank" resultMap="CityResultMap" >
+		SELECT * FROM locations ORDER BY loc_ctweight DESC
+	</select>
+	<select id="natural_City_Rank" resultMap="CityResultMap" >
+		SELECT * FROM locations ORDER BY loc_ntweight DESC
+	</select>
+	<select id="historical_City_Rank" resultMap="CityResultMap" >
+		SELECT * FROM locations ORDER BY loc_hiweight DESC
+	</select>
+	
+	
+</mapper>
