@@ -7,9 +7,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js">
+<% Cookie[] cookies = request.getCookies(); 
+String autoID = "";
+String autoPwd = "";
+String autoLogin = "";
+
+for(Cookie cookie : cookies){
+	if(cookie.getName().equals("autoID")){
+		autoID = cookie.getValue();
+	} else if (cookie.getName().equals("autoPwd")){
+		autoPwd = cookie.getValue();
+	} else if (cookie.getName().equals("autoLogin")){
+		autoLogin = cookie.getValue();
+	}
+}
+%>
+
+$(document).ready(function(){
+	var autoL = "<%= autoLogin %>";
+	if(autoLogin == "true"){
+		$("#userPw").val("<%=autoPwd%>");
+		$("#userID").val("<%=autoID%>");
+		$("#loginBtn").click;
+	}
+});
+</script>
 <script type="text/javascript">
 	function login_do() {
-		var id = document.loginform.mem_id.value;
+		var id = document.loginform.mem_id.value
 		var pwd = document.loginform.mem_pwd.value
 
 		if (id == "") {
@@ -18,7 +44,8 @@
 			alert('비밀번호를 입력해주세요')
 		} else {
 			var params = "mem_id=" + document.loginform.mem_id.value
-					+ "&mem_pwd=" + document.loginform.mem_pwd.value;
+					+ "&mem_pwd=" + document.loginform.mem_pwd.value
+					+ "&always_login=" + document.loginform.always_login.value;
 			sendRequest(
 					"${pageContext.request.contextPath}/logincont/login.do",
 					params, login_result, "POST");
@@ -128,13 +155,12 @@ span.psw {
 	<form name="loginform" method="post" style="background-color: #f1f1f1">
 
 		<div class="container">
-
 			<input type="text" placeholder="Enter Your E-mail address"
 				name="mem_id" required onkeydown="keyevent()"> <input
 				type="password" placeholder="Enter Your Password" name="mem_pwd"
-				required onkeydown="keyevent()"> <input type="button"
-				value="로그인" onclick="login_do()" onkeypress=""> <input
-				type="checkbox" checked="checked"> Remember me <br>
+				required onkeydown="keyevent()"> 
+				<input type="button" value="로그인" onclick="login_do()" name="loginBtn" onkeypress=""> 
+				<input type="checkbox" name="always_login" value="auto"> Remember me<br>
 			<button type="button" class="cancelbtn" onclick="cancel_do">Cancel</button>
 			<span class="psw"><a href="javascript:find_pass">비밀번호를
 					잊어버리셨나욤?</a></span>
