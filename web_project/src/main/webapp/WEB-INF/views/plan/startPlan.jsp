@@ -17,7 +17,7 @@ locations<br>
 <table>
 	<tr><td onclick="select_loc('seoul', 0)">서울</td></tr>
 	<tr><td onclick="select_loc('busan', 1)">부산</td></tr>
-	<tr><td onclick="select_loc('jeju', 2)">제주도</td></tr>
+	<tr><td onclick="select_loc('jeju', 2)">제주222222222도</td></tr>
 	<tr><td onclick="select_loc('gwangju', 3)">광주</td></tr>
 	<tr><td onclick="select_loc('daegu', 4)">대구</td></tr>
 <!-- 	<tr><td>
