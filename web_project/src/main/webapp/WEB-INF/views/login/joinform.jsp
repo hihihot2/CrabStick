@@ -52,9 +52,25 @@
 		}else if(5 >= pwdlength){
 			alert("비밀번호는 6자리 이상으로 설정해주세요")			
 		}else{
-			document.joinform.action="${pageContext.request.contextPath}/logincont/join.do";
-			document.joinform.submit();
+			var params = "mem_id="+document.joinform.mem_id.value;
+			sendRequest("${pageContext.request.contextPath}/emailCont/sentMsg.do", params, chk_mail, 'POST')
 		}	
+	}
+	
+	function chk_mail() {
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var html = "<input type='text' name='certify'/> "+
+		           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>"
+		        alert("가입예정자의 이메일로 메일을 첨부하였습니다 확인바랍니다.")
+				document.getElementById("msgconfirm").innerHTML = '<h3>인증번호입력 : </h3>' + html 
+			}
+		}
+	}
+	
+	function sumbit_cert(){
+		document.joinform.action="${pageContext.request.contextPath}/logincont/join.do";
+		document.joinform.submit();
 	}
 	
 	function cancle_do(){
@@ -75,8 +91,7 @@
 <input type="hidden" name="mem_survey" value="${survey_Answer}">
 <input type="button" value="완료" onclick="join_do()"><input type="button" value="취소" onclick="cancle_do()">
 </form>
-
-
+<div id="msgconfirm"></div><br>
 
 </body>
 </html>
