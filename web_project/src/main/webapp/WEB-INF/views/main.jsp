@@ -15,7 +15,9 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan()"><br>
+	<input type="button" value="플래너 시작하기" onclick="startPlan()">
+	<input type="button" value="내가세운 계획 보기" onclick="viewPlan()">
+	<br>
 
 <div style="border: 0px; float: left; width: 250px; padding:20px;">
   <table border="1" >
