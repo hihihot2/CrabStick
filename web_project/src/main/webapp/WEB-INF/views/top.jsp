@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,18 +25,51 @@
 		document.loginpage.submit();
 	}
 
+	function join_go() {
+		document.loginpage.action = "${pageContext.request.contextPath}/logincont/joinpage.do";
+		document.loginpage.submit();
+	}
 
 </script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+/* Note: Try to remove the following lines to see the effect of CSS positioning */
+.affix {
+	top: 0;
+	width: 100%;
+}
+</style>
 
 <title>Insert title here</title>
+
 </head>
 <body>
 	<form name="loginpage">
-	<c:choose>
-		<c:when test="${no ne null}"><input type="button" value="logout" onclick="action_do('logout')"><input type="button" value="내정보" onclick="mypage_do()"></c:when>
-		<c:otherwise><input type="button" value="login" onclick="action_do('login')"></c:otherwise>
-	</c:choose>
-	<hr>
+		
+		<nav class="navbar navbar-default" data-spy="affix"
+			data-offset-top="30" style="background-color: #FFFFFF" >
+			<ul class="nav navbar-nav">
+				<li><a href="#">LOGO, Our Web site Name</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
+				<c:choose>
+					<c:when test="${no ne null}">
+						<li><a href="javascript:action_do('logout')"><span class="glyphicon glyphicon-log-out" style="padding-right: 5px"></span>Log Out</a></li>
+						<li><a href="javascript:mypage_do()"><span class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My page<span class="badge" style="padding-left: 5px">5</span></a></li>
+					</c:when>
+					<c:otherwise> 
+						<li><a href="javascript:action_do('login')"><span class="glyphicon glyphicon-log-in" style="padding-right: 5px"></span>Log In</a></li>
+						<li><a href="javascript:join_go()"><span class="glyphicon glyphicon-globe" style="padding-right: 5px"></span>Join Us</a></li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</nav>
 	</form>
 </body>
 </html>

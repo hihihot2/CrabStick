@@ -75,4 +75,24 @@ public class MailController {
 		mav.addObject("mem_no", no);
 		return mav;
 	}
+	@RequestMapping(value = "/emailCont/sentMsg.do")
+	public ModelAndView sendMsg(@RequestParam(value="mem_id") String id) {
+		ModelAndView mav = new ModelAndView("login/joinform");
+		subject = "회원가입 인증 안내입니다.";
+		int load_num = certifyID.generateNum();
+		cert_num = load_num;
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			messageHelper.setTo(id);
+			messageHelper.setText("인증번호 : " + load_num);
+			messageHelper.setFrom(from);
+			messageHelper.setSubject(subject);
+			mailSender.send(message);
+			System.out.println("전송완료 " + load_num);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return mav;
+	}
 }
