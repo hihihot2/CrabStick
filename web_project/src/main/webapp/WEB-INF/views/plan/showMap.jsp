@@ -22,7 +22,11 @@
 	var polyline; //라인 변수
 	var eventListener = [];
 	
-	var plan = document.getElementById("plan");
+	var HOME_PATH = window.HOME_PATH || '.',
+    urlPrefix = HOME_PATH +'/',
+    urlSuffix = '.json',
+    regionGeoJson = [],
+    loadCount = 0;
 	
 	function init() {
 		//넘겨온 선택지 값 판별
@@ -54,6 +58,15 @@
 			</c:forEach>
 		</c:forEach>
 		
+		
+		$.ajax({
+		    url: '../resources/geocode.xml',
+		    dataType: 'xml',
+		    success: startDataLayer
+		});
+
+		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
+		
 		//Map Click이벤트 처리 ->marker 생성 window 생성
 		/* naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
@@ -84,13 +97,6 @@
 			alert(polyline.getPath());
 		})
 	}
-
-
-	function addpath(){				
-		
-	
-	}
-
 	
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
