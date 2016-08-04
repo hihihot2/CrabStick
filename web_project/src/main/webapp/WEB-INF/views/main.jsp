@@ -9,28 +9,6 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript">
-$(function(){
-	$(document).ready(function(){
-		<% Cookie[] cookies = request.getCookies(); 
-		String autoID = "";
-		String autoPwd = "";
-		String autoLogin = "";
-		if(cookies!=null){
-			for(Cookie cookie : cookies){
-				if(cookie.getName().equals("autoID")){
-					autoID = cookie.getValue();
-					out.println(autoID);
-				} else if (cookie.getName().equals("autoPwd")){
-					autoPwd = cookie.getValue();
-				} else if (cookie.getName().equals("autoLogin")){
-					autoLogin = cookie.getValue();
-				}
-			}
-		}
-		%>
-		alert('autoL = ' + 'autoID = ' + '<%=autoID%>');
-	});
-});
 	function startPlan(sessionNo){
 		if(sessionNo == null){
 			// 로그인 안 되어있을시 로그인 페이지로 이동
