@@ -41,13 +41,12 @@ public class LoginController {
 			HttpServletRequest req) {
 		hs.invalidate();
 		Cookie[] cookies = req.getCookies();
-		if (cookies != null) { // 쿠키가 Null이 아니라면
-			for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-					cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
-					rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
-			}
-			System.out.println("쿠키 해제됨");
-		}
+		for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
+			cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
+			rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
+			System.out.println(cookies[i].getValue());
+		}	
+		System.out.println("쿠키 해제됨");
 		return "main";
 	}
 
@@ -55,17 +54,14 @@ public class LoginController {
 	@RequestMapping(value = "/logincont/login.do", method = RequestMethod.POST)
 	public ModelAndView login(Member m, HttpSession hs, HttpServletResponse rsp,
 			HttpServletRequest req) {
+		
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
 		String isChk= req.getParameter("always_login");
-		if(isChk == null){
-			isChk = "";
-		}
 		int chk = service.mem_login(m);
 		System.out.println(isChk);
 		if (chk != 0) {
 			if (isChk.equals("auto")) {
-				// 자동로그인 >> 세션값 유지
 				Cookie autoLogin = new Cookie("autoLogin", "ture");
 				Cookie autoID = new Cookie("autoID", m.getMem_id());
 				Cookie autoPass = new Cookie("autoPwd", m.getMem_pwd());
@@ -75,18 +71,10 @@ public class LoginController {
 				rsp.addCookie(autoID);
 				rsp.addCookie(autoPass);
 				rsp.addCookie(autoLogin);
-				System.out.println("쿠키 저장됨");
-			} else if (isChk.equals("")){
-				Cookie[] cookies = req.getCookies();
-				if (cookies != null) { // 쿠키가 Null이 아니라면
-					for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-						cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
-						rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
-					}
-				}
-				System.out.println("쿠키 해제됨");
-			}
-			////////////////////////////////
+				System.out.println(autoLogin.getValue());
+				System.out.println(autoID.getValue());
+				System.out.println(autoPass.getValue());
+			} 
 			System.out.println("로그인 성공");
 			int no = service.getmem_no(m);
 			hs.setAttribute("no", no); // no == 세션값

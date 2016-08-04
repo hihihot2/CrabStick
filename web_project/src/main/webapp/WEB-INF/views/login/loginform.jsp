@@ -7,33 +7,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js">
-<% Cookie[] cookies = request.getCookies(); 
-String autoID = "";
-String autoPwd = "";
-String autoLogin = "";
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript">
 
-for(Cookie cookie : cookies){
-	if(cookie.getName().equals("autoID")){
-		autoID = cookie.getValue();
-	} else if (cookie.getName().equals("autoPwd")){
-		autoPwd = cookie.getValue();
-	} else if (cookie.getName().equals("autoLogin")){
-		autoLogin = cookie.getValue();
-	}
-}
-%>
-
-$(document).ready(function(){
-	var autoL = "<%= autoLogin %>";
-	if(autoLogin == "true"){
-		$("#userPw").val("<%=autoPwd%>");
-		$("#userID").val("<%=autoID%>");
-		$("#loginBtn").click;
+$(function(){
+$("#cb_saveId").on("click", function(){
+	var _this = this;
+	var isRemember;
+	
+	if($(_this).is(":checked")) {
+	isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
+	if(!isRemember)    
+	$(_this).attr("checked", false);
 	}
 });
-</script>
-<script type="text/javascript">
+
+
+
+});
 	function login_do() {
 		var id = document.loginform.mem_id.value
 		var pwd = document.loginform.mem_pwd.value
@@ -43,6 +35,11 @@ $(document).ready(function(){
 		} else if (pwd == "") {
 			alert('비밀번호를 입력해주세요')
 		} else {
+			if(document.loginform.always_login.checked){
+				document.loginform.always_login.value = "auto"
+			} else {
+				document.loginform.always_login.value = ""
+			}
 			var params = "mem_id=" + document.loginform.mem_id.value
 					+ "&mem_pwd=" + document.loginform.mem_pwd.value
 					+ "&always_login=" + document.loginform.always_login.value;
@@ -156,11 +153,12 @@ span.psw {
 
 		<div class="container">
 			<input type="text" placeholder="Enter Your E-mail address"
-				name="mem_id" required onkeydown="keyevent()"> <input
-				type="password" placeholder="Enter Your Password" name="mem_pwd"
-				required onkeydown="keyevent()"> 
-				<input type="button" value="로그인" onclick="login_do()" name="loginBtn" onkeypress=""> 
-				<input type="checkbox" name="always_login" value="auto"> Remember me<br>
+				name="mem_id" id="userid" required onkeydown="keyevent()"> 
+				<input type="password" placeholder="Enter Your Password" 
+				name="mem_pwd" id="userpw" required onkeydown="keyevent()"> 
+				<input type="button" value="로그인" onclick="login_do()" name="loginBtn" 
+				id = "loginbtn" onkeypress=""> 
+				<input type="checkbox" name="always_login" id="cb_saveId"> Remember me<br>
 			<button type="button" class="cancelbtn" onclick="cancel_do">Cancel</button>
 			<span class="psw"><a href="javascript:find_pass">비밀번호를
 					잊어버리셨나욤?</a></span>
