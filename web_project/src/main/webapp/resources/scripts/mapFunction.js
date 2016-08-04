@@ -4,6 +4,7 @@
 	var i = -1;
 	var count = 1;
 	var pathNum = 0;
+	
 
 	//위치 생성
 	function setPlace(lat, lng) {
@@ -45,36 +46,12 @@
 	}
 	function addPath(len, lat, lng, name){
 		var infowindow = infowindows[len];
-		var newvenue = document.createElement("div");
-		newvenue.id = 'path'+pathNum;
-		var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+pathNum+")><br>"
-		+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
-		+"<input type='hidden' name='ven_order' value='count'><br>";		
-		newvenue.innerHTML = html;
-		var addvenue =  document.getElementById("addvenue")
-		count++;pathNum++;
-
-		addvenue.appendChild(newvenue);
-		i = i+1;					
-		//venue폼에 위도 경도 저장
-			var length = document.ven_form.ven_name.length
-			if(document.ven_form.ven_name.length <= length){
-				document.ven_form.ven_name[i].value = decodeURIComponent(name);
-				document.ven_form.ven_lati[i].value = lat;
-				document.ven_form.ven_long[i].value = lng;		
-			}else{
-				document.ven_form.ven_name.value = decodeURIComponent(name);
-				document.ven_form.ven_lati.value = lat;
-				document.ven_form.ven_long.value = lng;	
-			}
-		//경로 추가
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
-		/*var tmp = "";
-		for(var i = 0 ; i < path.length ; i++){
-			tmp += path[i]+",";
-		}
-		alert(tmp);*/
+		pathObj.push(decodeURIComponent(name));
+		
+		updateList(); //화면 업데이트
+		
 		if(infowindow.getMap()){
 			infowindow.close();
 		}
@@ -85,7 +62,9 @@
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
 		var path = polyline.getPath();
-		path.splice(num, 1);
+		path.removeAt(num);
+		pathObj.splice(num, 1);
+		updateList();
 	}
 	//경로 초기화
 	function resetPath(){
@@ -94,6 +73,38 @@
 			path.pop();
 		}
 		
+	}
+	function updateList(){
+		var pathNum = 0;
+		var path = polyline.getPath();
+		var addvenue =  document.getElementById("addvenue");
+		//기존 리스트 삭제
+		deleteList(addvenue);
+		//변경된 값을 가진 새로운 리스트 생성
+		for(var i = 0 ; i < path.length ; i++){
+			var newvenue = document.createElement("div");
+			newvenue.id = 'path'+i;
+			var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+i+")><br>"
+			+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
+			+"<input type='hidden' name='ven_order' value='count'><br>";		
+			newvenue.innerHTML = html;
+			addvenue.appendChild(newvenue);
+			var length = document.ven_form.ven_name.length;
+			if(document.ven_form.ven_name.length <= length){
+				document.ven_form.ven_name[i].value = decodeURIComponent(pathObj[i]);
+				document.ven_form.ven_lati[i].value = path.getAt(i).lat();
+				document.ven_form.ven_long[i].value = path.getAt(i).lng();		
+			}else{
+				document.ven_form.ven_name.value = decodeURIComponent(pathObj[i]);
+				document.ven_form.ven_lati.value = path.getAt(i).lat();
+				document.ven_form.ven_long.value = path.getAt(i).lng();	
+			}
+		}
+	}
+	function deleteList(parentNode){
+		while(parentNode.hasChildNodes()){
+			parentNode.removeChild(parentNode.firstChild);
+		}
 	}
 	
 	//화면 업데이트 경계내부의 marker만 표시

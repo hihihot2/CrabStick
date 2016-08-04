@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript">
+	function home(){
+		location.href="${pageContext.request.contextPath}/";
+	}
 	function action_do(type){		
 		if(type == 'login'){
 			document.loginpage.action="${pageContext.request.contextPath}/logincont/loginpage.do";
@@ -58,7 +61,7 @@
 		<nav class="navbar navbar-default" data-spy="affix"
 			data-offset-top="30" style="background-color: #FFFFFF" >
 			<ul class="nav navbar-nav">
-				<li><a href="${pageContext.request.contextPath }/">LOGO, Our Web site Name</a></li>
+				<li><a href="javascript:home()">LOGO, Our Web site Name</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
 				<c:choose>

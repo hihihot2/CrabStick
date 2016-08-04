@@ -21,6 +21,7 @@
 	var zoom; //zoom 상태 판별
 	var polyline; //라인 변수
 	var eventListener = [];
+	var pathObj = [];
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -52,18 +53,17 @@
 		<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
 				setPlace('${venue.location.lat }', '${venue.location.lng }');
-
 				setListener("${venue.name}".toLowerCase());
 				//setListener("${venue.name}".toLowerCase());
 			</c:forEach>
 		</c:forEach>
 		
 		
-		$.ajax({
+		/* $.ajax({
 		    url: '../resources/geocode.xml',
 		    dataType: 'xml',
 		    success: startDataLayer
-		});
+		}); */
 
 		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
 		
@@ -94,7 +94,7 @@
 		});
 		
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(polyline.getPath());
+			alert(pathObj.toString());
 		})
 	}
 	
