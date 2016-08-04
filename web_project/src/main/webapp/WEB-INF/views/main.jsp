@@ -8,15 +8,31 @@
 <title>Insert title here</title>
 
 <script type="text/javascript">
-	function startPlan(){
-		location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
+	function startPlan(sessionNo){
+		if(sessionNo == null){
+			// 로그인 안 되어있을시 로그인 페이지로 이동
+			action_do('login')
+		} else {
+			// 로그인 되어있을시
+			location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
+		}
+	}
+	
+	function showMyPlans(sessionNo) {
+		if(sessionNo == null){
+			// 로그인 안 되어있을시 로그인 페이지로 이동
+			action_do('login')
+		} else {
+			// 로그인 되어있을시
+			// TODO: 내 플랜 보기 코드 수행
+		}
 	}
 </script>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan()">
-	<input type="button" value="내가세운 계획 보기" onclick="viewPlan()">
+	<input type="button" value="플래너 시작하기" onclick="startPlan(${no})">
+	<input type="button" value="내가세운 계획 보기" onclick="showMyPlans(${no})">
 	<br>
 
 <div style="border: 0px; float: left; width: 250px; padding:20px;">
