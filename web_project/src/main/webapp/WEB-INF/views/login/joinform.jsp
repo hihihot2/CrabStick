@@ -45,6 +45,9 @@
 			alert("비밀번호는 6자리 이상으로 설정해주세요")			
 		}else{
 			var params = "mem_id="+document.joinform.mem_id.value;
+			var html = "<input type='text' name='certify'/> "+
+	           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>" 
+			document.getElementById("msgconfirm").innerHTML = '<h3>회원의 이메일주소로 인증번호를 전송하였습니다. <h3><br><h3>인증번호입력 : </h3>' + html
 			sendRequest("${pageContext.request.contextPath}/emailCont/sentMsg.do", params, chk_mail, 'POST')
 		}	
 	}
@@ -52,10 +55,7 @@
 	function chk_mail() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var html = "<input type='text' name='certify'/> "+
-		           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>"
-		        alert("가입예정자의 이메일로 메일을 첨부하였습니다 확인바랍니다.")
-				document.getElementById("msgconfirm").innerHTML = '<h3>인증번호입력 : </h3>' + html 
+
 			}
 		}
 	}
