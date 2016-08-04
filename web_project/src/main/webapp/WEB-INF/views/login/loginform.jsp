@@ -149,21 +149,18 @@ span.psw {
 }
 </style>
 <body>
-
 	<h1 align="center">WELCOME</h1>
 
 	<form name="loginform" method="post" style="background-color: #f1f1f1">
 
 		<div class="container">
-			<input type="text" placeholder="Enter Your E-mail address"
-				name="mem_id" required onkeydown="keyevent()"> <input
-				type="password" placeholder="Enter Your Password" name="mem_pwd"
-				required onkeydown="keyevent()"> 
-				<input type="button" value="로그인" onclick="login_do()" name="loginBtn" onkeypress=""> 
-				<input type="checkbox" name="always_login" value="auto"> Remember me<br>
-			<button type="button" class="cancelbtn" onclick="cancel_do">Cancel</button>
-			<span class="psw"><a href="javascript:find_pass">비밀번호를
-					잊어버리셨나욤?</a></span>
+			<input type="text" placeholder="Enter Your E-mail address"	name="mem_id" required onkeydown="keyevent()">
+			<input type="password" placeholder="Enter Your Password" name="mem_pwd"	required onkeydown="keyevent()"> 
+			<input type="button" value="로그인" onclick="login_do()" name="loginBtn" onkeypress=""> 
+			<input type="checkbox" name="always_login" value="auto"> Remember me<br>
+			<p class="psw"><a href="javascript:find_pass">비밀번호를 잊어버리셨나욤?</a></p>
+			<!-- <button type="button" class="cancelbtn" onclick="cancel_do">Cancel</button> -->
+			<p>계정이 없으세요? <a href='${pageContext.request.contextPath}/logincont/joinpage.do'>가입하기 »</a></p>
 		</div>
 
 	</form>

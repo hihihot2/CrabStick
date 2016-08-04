@@ -63,7 +63,7 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+	<jsp:include page="../top.jsp"></jsp:include>
 
 	<form method="POST" name="survey_form"
 		action="${pageContext.request.contextPath }/survey/survey.do"

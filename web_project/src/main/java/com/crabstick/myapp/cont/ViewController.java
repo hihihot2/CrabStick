@@ -31,7 +31,10 @@ public class ViewController {
 		this.recommendationService = recommendationService;
 	}
 	
-	
+	@RequestMapping(value = "/")
+	public String main() {
+		return "main";
+	}
 	
 	/********** 동희 작업구역 **********/
 	@RequestMapping(value="/viewcont/goToCity.do")

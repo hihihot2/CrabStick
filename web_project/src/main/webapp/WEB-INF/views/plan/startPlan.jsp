@@ -17,6 +17,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="../top.jsp"></jsp:include>
 	locations
 	<br>
 

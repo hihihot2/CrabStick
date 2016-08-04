@@ -24,11 +24,6 @@ public class LoginController {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/")
-	public String main() {
-		return "main";
-	}
-
 	@RequestMapping(value = "/logincont/loginpage.do", method = RequestMethod.GET)
 	public String loginpage() {
 		System.out.println("로그인페이지로이동");
@@ -41,14 +36,14 @@ public class LoginController {
 			HttpServletRequest req) {
 		hs.invalidate();
 		Cookie[] cookies = req.getCookies();
-		if (cookies != null) { // 쿠키가 Null이 아니라면
+		if (cookies != null) { // 쿠키가 null이 아니라면
 			for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
 					cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
 					rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
 			}
 			System.out.println("쿠키 해제됨");
 		}
-		return "main";
+		return "redirect:/";
 	}
 
 	// 로그인시작
@@ -91,12 +86,12 @@ public class LoginController {
 			int no = service.getmem_no(m);
 			hs.setAttribute("no", no); // no == 세션값
 			mav.addObject("chk", chk);
-			return mav;
 		} else {
 			System.out.println("로그인 실패");
 			mav.addObject("chk", chk);
-			return mav;
 		}
+		
+		return mav;
 	}
 
 	@RequestMapping(value = "/logincont/joinpage.do")
