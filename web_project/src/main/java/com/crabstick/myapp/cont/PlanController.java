@@ -6,6 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,8 +26,37 @@ import com.crabstick.myapp.Location;
 @Controller
 public class PlanController {
 
-	
-	
+	@RequestMapping(value="plancont/searchloc.do")
+	public ModelAndView searchLocation(@RequestParam(value="data")String data){
+		System.out.println("planCont >> "+data);
+		ModelAndView mav = new ModelAndView("plan/searchLocXML");
+		String clientId = "ej3ANIP8b0vPSY8tXHEG";
+		String clientSecret = "FNeWBxiKdd";
+		String url = "https://openapi.naver.com/v1/search/local.xml?query="+data;
+		
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet request = new HttpGet(url);
+		
+		request.addHeader("Content-Type", "application/xml");
+		request.addHeader("X-Naver-Client-Id", clientId);
+		request.addHeader("X-Naver-Client-Secret", clientSecret);
+		try {
+			HttpResponse response = client.execute(request);
+			System.out.println(response.getStatusLine().getStatusCode());
+			HttpEntity entity = response.getEntity();
+			String str = EntityUtils.toString(entity);
+			System.out.println(str);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return mav;
+	}
 	@RequestMapping(value="plancont/sel_loc.do") //location.jsp -> select User's wish destination
 	public ModelAndView select_location(@RequestParam(value="loc_num")int loc_num){
 		System.out.println("plancont >> Choose location : "+loc_num);

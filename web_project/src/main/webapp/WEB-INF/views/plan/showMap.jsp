@@ -8,9 +8,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript"
-	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
-<script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -58,12 +58,11 @@
 			</c:forEach>
 		</c:forEach>
 		
-		
-		/* $.ajax({
-		    url: '../resources/geocode.xml',
-		    dataType: 'xml',
-		    success: startDataLayer
-		}); */
+		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
+		        + '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="검색">' 
+		        + '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
+				+ '</div>');
+		contentEl.appendTo(map.getElement());
 
 		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
 		
@@ -111,7 +110,7 @@
 					<table style="width: 100%; height: 10%;">
 						<tr>
 							<td><input type="hidden" id="showwifichk" value="0">
-								<input type="button"  value="무료 Wifi" onclick="markOnWifi()">
+								<input type="button"  value="일정 초기화" onclick="resetPath()">
 							</td>
 						</tr>
 						<tr>
