@@ -8,17 +8,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 	function id_chk(){		
-		var mem_id = document.joinform.mem_id.value;		
-		if(mem_id == ""){
-			alert('아이디를 입력하세요')
-		}else if(!mem_id.match('.com')){
-			alert('메일형식이 맞지 않습니다.')
-		}else if(!mem_id.match('@')){
-			alert('메일형식이 맞지 않습니다.')			
-		}else{
 			var params = "mem_id="+document.joinform.mem_id.value;
 			sendRequest("${pageContext.request.contextPath}/logincont/idchk.do", params, id_chkresult, 'POST')	
-		}	
+		
 	}
 	function id_chkresult() {
 		if (httpRequest.readyState == 4) {
@@ -84,8 +76,8 @@
 <body>
 <form name="joinform" method="post">
 <input type="hidden" name="chk" value="0">
-아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요">
-<input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
+아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요" onkeyup="id_chk()">
+<div id="checkid"></div><br>
 비밀번호 : <input type="password" name="mem_pwd" placeholder="비밀번호를 입력하세요"><br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
 <input type="hidden" name="mem_survey" value="${survey_Answer}">

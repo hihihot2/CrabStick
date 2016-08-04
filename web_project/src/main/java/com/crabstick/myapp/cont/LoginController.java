@@ -80,8 +80,8 @@ public class LoginController {
 				Cookie[] cookies = req.getCookies();
 				if (cookies != null) { // 쿠키가 Null이 아니라면
 					for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-							cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
-							rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
+						cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
+						rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
 					}
 				}
 				System.out.println("쿠키 해제됨");
@@ -113,9 +113,16 @@ public class LoginController {
 	@RequestMapping(value = "/logincont/idchk.do", method = RequestMethod.POST)
 	public ModelAndView idchk(@RequestParam(value = "mem_id") String mem_id) {
 		System.out.println("아이디 중복체크 시작" + mem_id);
+		int chk = 0;
 		ModelAndView mav = new ModelAndView("login/idchkJSON");
-		int chk = service.getmem_id(mem_id);
-		System.out.println(chk);
+		String[] idSpl = mem_id.split("@");
+		System.out.println("길이" + idSpl.length);
+		System.out.println("0번째 길이" + idSpl[0].length());
+		if (idSpl.length == 2 && idSpl[0].length() != 0) {
+			chk = service.getmem_id(mem_id);
+		} else {
+			chk = 1;
+		}
 		mav.addObject("chk", chk);
 		return mav;
 	}
