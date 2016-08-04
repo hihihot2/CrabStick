@@ -3,6 +3,8 @@ package com.crabstick.myapp.cont;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,35 @@ public class ViewController {
 		this.recommendationService = recommendationService;
 	}
 	
-	
+	@RequestMapping(value = "/")
+	public String main(HttpSession session, HttpServletRequest req) {
+		/*Cookie[] cookies = req.getCookies(); 
+		String autoID = "";
+		String autoPwd = "";
+		String autoLogin = "";
+		Member m = new Member();
+		System.out.println(cookies[3]);
+		if (cookies[3]) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("autoID")) {
+					autoID = cookie.getValue();
+				} else if (cookie.getName().equals("autoPwd")) {
+					autoPwd = cookie.getValue();
+				} else if (cookie.getName().equals("autoLogin")) {
+					autoLogin = cookie.getValue();
+				}
+			}
+			if (autoLogin.equals("ture")) {
+				m.setMem_id(autoID);
+				m.setMem_pwd(autoPwd);
+				int no = service.getmem_no(m);
+				session.setAttribute("no", no);
+			}
+		} else {
+			return "main";
+		}*/
+		return "main";
+	}
 	
 	/********** 동희 작업구역 **********/
 	@RequestMapping(value="/viewcont/goToCity.do")

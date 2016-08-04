@@ -22,6 +22,7 @@
 	var polyline; //라인 변수
 	var eventListener = [];
 	var pathObj = [];
+	var loc_no;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -31,7 +32,7 @@
 	
 	function init() {
 		//넘겨온 선택지 값 판별
-		var loc_num = <%= request.getAttribute("loc_num")%>
+		loc_no = <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
 		
@@ -97,6 +98,27 @@
 		})
 	}
 	
+
+	function pathComplete(form) {
+
+		var arr = new Array();
+
+		for(var i = 0 ; i < path.length ; i++){
+			var object = new Object();
+			object.ven_name = ven_form.ven_name[i].value;
+			object.ven_lati = ven_form.ven_lati[i].value;
+			object.ven_long = ven_form.ven_long[i].value;
+			object.ven_order = ven_form.ven_order[i].value;
+			object.loc_no = ven_form.loc_no[i].value;
+			arr.push(object);
+		}
+
+		console.log(arr);
+		alert(arr);
+
+		location.href = "${pageContext.request.contextPath }/getObjects.do?json="
+				+ JSON.stringify(arr);
+	}
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <body onload="init()">
@@ -112,18 +134,14 @@
 							<td><input type="hidden" id="showwifichk" value="0">
 								<input type="button"  value="일정 초기화" onclick="resetPath()">
 							</td>
-						</tr>
-						<tr>
-							<td><input type="button" value="+일정추가" onclick="addpath()">
-							</td>
-						</tr>
+						</tr>					
 					</table>
 					<br>
 					
 				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 					<div id="addvenue">					
 					</div>
-					<input type="button" value="완료" onclick="path_done()">					
+					<input type="button" value="완료" onclick="pathComplete(this.form)">					
 				</form>
 
 				</td>
