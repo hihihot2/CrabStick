@@ -54,9 +54,7 @@ public class LoginController {
 	@RequestMapping(value = "/logincont/login.do", method = RequestMethod.POST)
 	public ModelAndView login(Member m, HttpSession hs, HttpServletResponse rsp,
 			HttpServletRequest req) {
-		Cookie autoLogin = new Cookie("autoLogin", "ture");
-		Cookie autoID = new Cookie("autoID", m.getMem_id());
-		Cookie autoPass = new Cookie("autoPwd", m.getMem_pwd());
+		
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
 		String isChk= req.getParameter("always_login");
@@ -64,7 +62,9 @@ public class LoginController {
 		System.out.println(isChk);
 		if (chk != 0) {
 			if (isChk.equals("auto")) {
-				// 자동로그인 >> 세션값 유지
+				Cookie autoLogin = new Cookie("autoLogin", "ture");
+				Cookie autoID = new Cookie("autoID", m.getMem_id());
+				Cookie autoPass = new Cookie("autoPwd", m.getMem_pwd());
 				autoLogin.setMaxAge(1000);
 				autoID.setMaxAge(1000);
 				autoPass.setMaxAge(1000);
@@ -74,17 +74,16 @@ public class LoginController {
 				System.out.println(autoLogin.getValue());
 				System.out.println(autoID.getValue());
 				System.out.println(autoPass.getValue());
-			} else if (isChk.equals("")){
+			} /*else if (isChk.equals("")){
 				Cookie[] cookies = req.getCookies();
 				for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-					cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
-					rsp.addCookie(cookies[i]); // 수정한 쿠키를 응답에
+					if(cookies[i].getValue().equals(m.getMem_id()) || cookies[i].getValue().equals(m.getMem_pwd())){
+						cookies[i].setMaxAge(0); 
+						rsp.addCookie(cookies[i]); 
+						System.out.println(cookies[i].getValue());
+					}
 				}	
-				System.out.println("쿠키 해제됨");
-				System.out.println(autoLogin.getValue());
-				System.out.println(autoID.getValue());
-				System.out.println(autoPass.getValue());
-			}
+			}*/
 			////////////////////////////////
 			System.out.println("로그인 성공");
 			int no = service.getmem_no(m);
