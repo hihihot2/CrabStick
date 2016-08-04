@@ -155,7 +155,7 @@ span.psw {
 			<input type="password" placeholder="Enter Your Password" name="mem_pwd" id="userpw" required onkeydown="keyevent()"> 
 			<input type="button" value="로그인" onclick="login_do()" name="loginBtn" id = "loginbtn" onkeypress="">  
 			<input type="checkbox" name="always_login" id="cb_saveId"> Remember me<br>
-			<p class="psw"><a href="javascript:find_pass">비밀번호를 잊어버리셨나욤?</a></p>
+			<p class="psw"><a href="javascript:find_pass()">비밀번호를 잊어버리셨나욤?</a></p>
 			<p>계정이 없으세요? <a href='${pageContext.request.contextPath}/logincont/joinpage.do'>가입하기 »</a></p>
 		</div>
 
