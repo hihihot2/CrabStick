@@ -18,7 +18,7 @@ public class PlaceController {
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
 
 	@RequestMapping(value="/placeCont/getRestaurants.do")
-	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude) {
+	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude, @RequestParam(value="cityno") String cityno) {
 		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
 		System.out.println(city_latitude+","+city_longitude);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
@@ -60,6 +60,7 @@ public class PlaceController {
 		mav.addObject("VENUES", venueGroups);
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
+		mav.addObject("loc_no",cityno);
 		return mav;
 	}
 }

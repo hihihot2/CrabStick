@@ -2,7 +2,7 @@
  * Naver Api 기능구현
  */
 	var i = -1;
-	var count = 1;
+	var count = 0;
 	var pathNum = 0;
 	
 
@@ -49,7 +49,7 @@
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
 		pathObj.push(decodeURIComponent(name));
-		
+		count++
 		updateList(); //화면 업데이트
 		
 		if(infowindow.getMap()){
@@ -86,7 +86,7 @@
 			newvenue.id = 'path'+i;
 			var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+i+")><br>"
 			+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
-			+"<input type='hidden' name='ven_order' value='count'><br>";		
+			+"<input type='hidden' name='ven_order' value='count'><input type='hidden' name='loc_no' value='loc_no'><br>";		
 			newvenue.innerHTML = html;
 			addvenue.appendChild(newvenue);
 			var length = document.ven_form.ven_name.length;

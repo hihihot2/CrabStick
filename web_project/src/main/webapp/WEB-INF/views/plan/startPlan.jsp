@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-	function select_loc(latitude, longitude) {
+	function select_loc(latitude, longitude, locno) {
 		alert("위도"+latitude +"경도"+longitude);
 		
 		
 		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
-				+latitude+"&city_longitude="+longitude;
+				+latitude+"&city_longitude="+longitude+"&cityno="+locno;
 	}
 </script>
 </head>
@@ -26,7 +26,7 @@
 
 		<c:forEach var="List" items="${city_List}">
 			<tr>
-				<td onclick="select_loc('${List.loc_lati}','${List.loc_long}')">${List.loc_name}</td>
+				<td onclick="select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}')">${List.loc_name}</td>
 			</tr>
 		</c:forEach>
 
