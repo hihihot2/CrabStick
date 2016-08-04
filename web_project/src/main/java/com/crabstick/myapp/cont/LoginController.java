@@ -69,17 +69,7 @@ public class LoginController {
 				System.out.println(autoLogin.getValue());
 				System.out.println(autoID.getValue());
 				System.out.println(autoPass.getValue());
-			} /*else if (isChk.equals("")){
-				Cookie[] cookies = req.getCookies();
-				for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-					if(cookies[i].getValue().equals(m.getMem_id()) || cookies[i].getValue().equals(m.getMem_pwd())){
-						cookies[i].setMaxAge(0); 
-						rsp.addCookie(cookies[i]); 
-						System.out.println(cookies[i].getValue());
-					}
-				}	
-			}*/
-			////////////////////////////////
+			} 
 			System.out.println("로그인 성공");
 			int no = service.getmem_no(m);
 			hs.setAttribute("no", no); // no == 세션값
@@ -106,9 +96,16 @@ public class LoginController {
 	@RequestMapping(value = "/logincont/idchk.do", method = RequestMethod.POST)
 	public ModelAndView idchk(@RequestParam(value = "mem_id") String mem_id) {
 		System.out.println("아이디 중복체크 시작" + mem_id);
+		int chk = 0;
 		ModelAndView mav = new ModelAndView("login/idchkJSON");
-		int chk = service.getmem_id(mem_id);
-		System.out.println(chk);
+		String[] idSpl = mem_id.split("@");
+		System.out.println("길이" + idSpl.length);
+		System.out.println("0번째 길이" + idSpl[0].length());
+		if (idSpl.length == 2 && idSpl[0].length() != 0) {
+			chk = service.getmem_id(mem_id);
+		} else {
+			chk = 1;
+		}
 		mav.addObject("chk", chk);
 		return mav;
 	}
