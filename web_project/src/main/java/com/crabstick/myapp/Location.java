@@ -1,13 +1,21 @@
 package com.crabstick.myapp;
 
 public class Location {
+	private String title;
 	private Double lat;
-	private Double lang;
+	private Double lng;
 	public Location(){}
-	public Location(Double lat, Double lang) {
+	public Location(String title, Double lat, Double lng) {
 		super();
+		this.title = title;
 		this.lat = lat;
-		this.lang = lang;
+		this.lng = lng;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public Double getLat() {
 		return lat;
@@ -15,10 +23,14 @@ public class Location {
 	public void setLat(Double lat) {
 		this.lat = lat;
 	}
-	public Double getLang() {
-		return lang;
+	public Double getLng() {
+		return lng;
 	}
-	public void setLang(Double lang) {
-		this.lang = lang;
+	public void setLng(Double lng) {
+		this.lng = lng;
+	}
+	@Override
+	public String toString() {
+		return "Location [title=" + title + ", lat=" + lat + ", lng=" + lng + "]";
 	}
 }

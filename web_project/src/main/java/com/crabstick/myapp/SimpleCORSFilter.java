@@ -46,7 +46,9 @@ public class SimpleCORSFilter implements Filter{
          * 이 부분이 가장 중요한 부분입니다. * 는 모든 도메인에 대해 허용하겠다는 의미입니다. 즉 어떤 웹사이트라도 이 서버에 접근하여 AJAX 요청하여 결과를 가져갈 수 있도록 허용하겠다는 의미입니다.
          * 만약 보안 이슈가 있어서 특정 도메인만 허용해야 한다면 * 대신 특정 도메인만을 지정할 수 있습니다.
          */
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        //response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "https://openapi.naver.com/v1/search/local.xml");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8805");
         chain.doFilter(req, res);
 	}
 	@Override

@@ -20,12 +20,15 @@
 				var str = httpRequest.responseText;
 				var o = eval("(" + str + ")");
 				var myDiv = document.getElementById("resultView");
-				var html = "<table border='1'><tr><th>no</th>"
-					+"<th>name</th></tr>";
+				var html = "<table border='0'><tr><th>   no   </th>"
+					+"<th>    name    </th></tr>";
 					for(i=0;i<o.length;i++){
 						html += "<tr>";
 						html += "<td>"+o[i].num+"</td>";
-						html += "<td>"+o[i].name+"</td>";
+						html += "<td>";
+						html += "<a href='${pageContext.request.contextPath }"
+						+"/placeCont/getRestaurants.do?city_latitude="
+						+o[i].lati+"&city_longitude="+o[i].long2+"&cityno="+o[i].num+"'>" + o[i].name + "</a></td>"
 						html += "</tr>";
 					}
 					html += "</table>";
@@ -70,8 +73,7 @@
 		</div>
 	</c:forEach>
 	<form name="searchform">
-	<input type="text" name="locSearch" onkeyup="search_loc()"/>
-	<!-- <input type="button" value="locSearch" onClick="search_loc()" />  -->
+	<input type="text" name="locSearch" onkeyup="search_loc()" />
 	<br>
 	<div id="resultView"></div>
 	</form>

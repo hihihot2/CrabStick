@@ -45,10 +45,6 @@ function sendSearchRequest(url, params, callback, method) {
 		httpUrl = httpUrl + "?" + httpParams;
 	}
 	httpRequest.open(httpMethod, httpUrl, true);
-	httpRequest.setRequestHeader('Access-Control-Allow-Origin','*');
-	httpRequest.setRequestHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-	httpRequest.setRequestHeader('Access-Control-Max-Age','3600');
-	httpRequest.setRequestHeader('Access-Control-Allow-Headers','Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization');
 	httpRequest.setRequestHeader('Content-Type', 'application/xml');
 	httpRequest.setRequestHeader('X-Naver-Client-Id', 'ej3ANIP8b0vPSY8tXHEG');
 	httpRequest.setRequestHeader('X-Naver-Client-Secret', 'FNeWBxiKdd');

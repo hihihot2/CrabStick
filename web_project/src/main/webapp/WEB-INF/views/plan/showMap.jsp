@@ -71,6 +71,12 @@
 		        + '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
+		
+		var contentEl2 = $('<div style="width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+		        + '<input type="checkbox" value="호텔"> 호텔<br>' 
+		        + '<input type="checkbox" value="맛집"> 맛집<br>'
+				+ '</div>');
+		contentEl2.appendTo(map.getElement());
 
 		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
 		

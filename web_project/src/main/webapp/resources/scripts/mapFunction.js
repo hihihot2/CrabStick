@@ -157,17 +157,19 @@
 	//지역 검색
 	function requestSearch(){
 		var data = document.getElementById("searchData").value;
-		var params = "query="+data;
-		/*var params = "data="+data;
-		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');*/
-		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');
+		
+		var params = "data="+data;
+		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
+		/*var params = "query="+data;
+		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
 	function setSearchPlace(){
-		alert(httpRequest.readyState);
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var str = httpRequest.responseXML;
+				var str = httpRequest.responseText;
 				alert(str);
+			}else {
+				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
 		}
 	}
