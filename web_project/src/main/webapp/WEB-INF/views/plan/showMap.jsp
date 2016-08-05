@@ -32,8 +32,9 @@
     loadCount = 0;
 	
 	
-
+	//맛집 마커찍기
 	function checkcategory_rest(){ //레스토랑
+		category = document.getElementsByName("categorychk");		
 		if(category[1].checked){
 			<c:forEach var="group" items="${VENUES }">
 			<c:forEach var="venue" items="${group.items }">
@@ -47,10 +48,9 @@
 	}
 	
 	
-	//도시별, 유저별로 시작점 포인트 생성
+	//호텔 마커찍기
 	function checkcategory_hotel(){ // 호텔
 		category = document.getElementsByName("categorychk");		
-		
 		if(category[0].checked){
 		 	<c:forEach var="hotel" items="${HOTELS }">
 				setPlace('${hotel.latitude }', '${hotel.longitude }');
