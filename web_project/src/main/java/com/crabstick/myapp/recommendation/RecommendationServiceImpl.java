@@ -36,4 +36,18 @@ public class RecommendationServiceImpl implements RecommendationService {
 		
 	}
 
+	@Override
+	public ArrayList<City> recommendation_City_TOP5(String answer) {
+		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
+		if (answer.equals("대도시")){
+			return recommendationMapper.large_City_Rank_TOP5();
+		} else if (answer.equals("자연경관")){
+			return recommendationMapper.natural_City_Rank_TOP5();
+		} else if (answer.equals("유적지")){
+			return recommendationMapper.historical_City_Rank_TOP5();
+		} else {//상관없음 아직 구현 안함
+			return null;
+		}
+	}
+
 }
