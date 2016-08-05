@@ -5,7 +5,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery.cookie.js"></script>
 <script type="text/javascript">
+
+$(function(){
+	$("#logout").on("click", function(){
+		!$.cookie('autoPlug');
+	})
+})
 	function home(){
 		location.href="${pageContext.request.contextPath}/";
 	}
@@ -66,7 +75,7 @@
 			<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
 				<c:choose>
 					<c:when test="${no ne null}">
-						<li><a href="javascript:action_do('logout')"><span class="glyphicon glyphicon-log-out" style="padding-right: 5px"></span>Log Out</a></li>
+						<li><a href="javascript:action_do('logout')" id="logout"><span class="glyphicon glyphicon-log-out" style="padding-right: 5px"></span>Log Out</a></li>
 						<li><a href="javascript:mypage_do()"><span class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My page<span class="badge" style="padding-left: 5px">5</span></a></li>
 					</c:when>
 					<c:otherwise> 

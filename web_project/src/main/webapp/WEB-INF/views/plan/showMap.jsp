@@ -31,9 +31,38 @@
     regionGeoJson = [],
     loadCount = 0;
 	
+	
+
+	function checkcategory_rest(){ //레스토랑
+		if(category[1].checked){
+			<c:forEach var="group" items="${VENUES }">
+			<c:forEach var="venue" items="${group.items }">
+				setPlace('${venue.location.lat }', '${venue.location.lng }');
+				setListener("${venue.name}".toLowerCase());
+			</c:forEach>
+		</c:forEach>	
+		}else if(!category[1].checked){
+			alert('맛집 체크해제')
+		}
+	}
+	
+	
+	//도시별, 유저별로 시작점 포인트 생성
+	function checkcategory_hotel(){ // 호텔
+		category = document.getElementsByName("categorychk");		
+		
+		if(category[0].checked){
+		 	<c:forEach var="hotel" items="${HOTELS }">
+				setPlace('${hotel.latitude }', '${hotel.longitude }');
+				setListener("${hotel.name}".toLowerCase());
+			</c:forEach>
+		} else if(!category[0].checked){		
+			alert('호텔 체크해제')
+		} 
+	}
 	function init() {
 		//넘겨온 선택지 값 판별
-		loc_no = <%= request.getAttribute("loc_no")%>
+		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
 		
@@ -50,30 +79,22 @@
 			strokeColor: '#FF9B00', //라인컬러
 			strokeWeight: 3 //라인 두깨
 		});
-		
-		//도시별, 유저별로 시작점 포인트 생성
-		<c:forEach var="group" items="${VENUES }">
-			<c:forEach var="venue" items="${group.items }">
-				setPlace('${venue.location.lat }', '${venue.location.lng }');
-				setListener("${venue.name}".toLowerCase());
-				//setListener("${venue.name}".toLowerCase());
-			</c:forEach>
-		</c:forEach>
-		
+
+
+
 		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
-		        + '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="검색">' 
-		        + '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
+				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="검색">'
+				+ '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
-		
+
 		var contentEl2 = $('<div style="width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
-		        + '<input type="checkbox" value="호텔"> 호텔<br>' 
-		        + '<input type="checkbox" value="맛집"> 맛집<br>'
-				+ '</div>');
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_hotel()"> 호텔<br>'
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_rest()"> 맛집<br>' + '</div>');
 		contentEl2.appendTo(map.getElement());
 
 		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
-		
+
 		//Map Click이벤트 처리 ->marker 생성 window 생성
 		/* naver.maps.Event.addListener(map, 'click', function(e) {
 			var path = polyline.getPath();
@@ -94,26 +115,25 @@
 		
 			var tmp = document.getElementById("plan");
 		}); */
-		
+
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
 		});
-		
+
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
 			alert(pathObj.toString());
 		})
 	}
-	
 
 	function pathComplete(form) {
 		var arr = new Array();
 		var path = polyline.getPath();
-		var flag = confirm("일정을 저장하시겠습니까?")		
-		if(!flag){
+		var flag = confirm("일정을 저장하시겠습니까?")
+		if (!flag) {
 			return;
-		}else{
-			for(var i = 0 ; i < path.length ; i++){
+		} else {
+			for (var i = 0; i < path.length; i++) {
 				var object = new Object();
 				object.ven_name = form.ven_name[i].value;
 				object.ven_lati = form.ven_lati[i].value;
@@ -122,9 +142,10 @@
 				arr.push(object);
 			}
 			console.log(arr);
-			alert(arr);			
-			location.href = "${pageContext.request.contextPath }/planCont/addPath.do?json="+JSON.stringify(arr);
-		}		
+			alert(arr);
+			location.href = "${pageContext.request.contextPath }/planCont/addPath.do?json="
+					+ JSON.stringify(arr);
+		}
 	}
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
