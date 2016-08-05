@@ -4,8 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,6 +33,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.crabstick.myapp.Location;
 
@@ -40,6 +53,11 @@ public class PlanController {
 		
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(url);
+		Document document = null;
+		InputSource is = null;
+		XPath xpath = null;
+		List<Location> list = new ArrayList<Location>();
+		
 		
 		request.addHeader("Content-Type", "application/xml");
 		request.addHeader("X-Naver-Client-Id", clientId);
@@ -48,12 +66,37 @@ public class PlanController {
 			HttpResponse response = client.execute(request);
 			System.out.println(response.getStatusLine().getStatusCode());
 			HttpEntity entity = response.getEntity();
-			String str = EntityUtils.toString(entity);
-			System.out.println(str);
+			
+			is = new InputSource(new StringReader(EntityUtils.toString(entity)));
+			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+			
+			xpath = XPathFactory.newInstance().newXPath();
+			
+			NodeList title = (NodeList) xpath.evaluate("//channel/item/title", document, XPathConstants.NODESET);
+			NodeList mapx = (NodeList) xpath.evaluate("//channel/item/mapx", document, XPathConstants.NODESET);
+			NodeList mapy = (NodeList) xpath.evaluate("//channel/item/mapy", document, XPathConstants.NODESET);
+			for(int i = 0 ; i < title.getLength() ; i++){
+				list.add(new Location(
+						title.item(i).getTextContent(),
+						Double.parseDouble(mapx.item(i).getTextContent()),
+						Double.parseDouble(mapy.item(i).getTextContent())
+						));
+				System.out.println(list.get(i));
+			}
+			mav.addObject("SLIST", list);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -114,10 +157,10 @@ public class PlanController {
 				//lat.add(Double.parseDouble(row.getCell(12).toString()));
 				//lang.add(Double.parseDouble(row.getCell(13).toString()));
 				//System.out.println(row.getCell(12));
-				loc.add(new Location(
+				/*loc.add(new Location(
 						Double.parseDouble(row.getCell(12).toString()),
 						Double.parseDouble(row.getCell(13).toString())
-						));
+						));*/
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

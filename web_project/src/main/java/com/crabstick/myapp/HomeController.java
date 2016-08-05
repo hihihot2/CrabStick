@@ -55,10 +55,10 @@ public class HomeController {
 				//lat.add(Double.parseDouble(row.getCell(12).toString()));
 				//lang.add(Double.parseDouble(row.getCell(13).toString()));
 				//System.out.println(row.getCell(12));
-				loc.add(new Location(
+				/*loc.add(new Location(
 						Double.parseDouble(row.getCell(12).toString()),
 						Double.parseDouble(row.getCell(13).toString())
-						));
+						));*/
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
