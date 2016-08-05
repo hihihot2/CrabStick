@@ -107,11 +107,11 @@
 			venueList.appendChild(newVenue);
 			var length = document.venueForm.venueName.length;
 			if(document.venueForm.venueName.length <= length){
-				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i]);
+				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude[i].value = path.getAt(i).lat();
 				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();		
 			} else {
-				document.venueForm.venueName.value = decodeURIComponent(pathObj[i]);
+				document.venueForm.venueName.value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude.value = path.getAt(i).lat();
 				document.venueForm.venueLongitude.value = path.getAt(i).lng();	
 			}
