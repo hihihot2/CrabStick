@@ -60,6 +60,12 @@
 			</c:forEach>
 		</c:forEach>
 		
+		<c:forEach var="hotels" items="${HOTELS }">
+
+		
+		</c:forEach>
+
+		
 		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
 		        + '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="검색">' 
 		        + '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
