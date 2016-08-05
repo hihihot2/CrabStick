@@ -4,16 +4,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/scripts/jquery.cookie.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery.cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(function(){
-	$("#logout").on("click", function(){
-		!$.cookie('autoPlug');
-	})
+	
+	//이곳에 쿠키
+	$.cookie('autoID', null,  { expires: -1, path: '/myapp/', secure: false })
+	$.cookie('autoPW', null, { expires: -1, path: '/myapp/', secure: false })
+	$.cookie('autoPlug', null, { expires: -1, path: '/myapp/', secure: false })	
+	
 })
 	function home(){
 		location.href="${pageContext.request.contextPath}/";
