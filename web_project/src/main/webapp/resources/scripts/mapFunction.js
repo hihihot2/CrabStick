@@ -68,9 +68,11 @@
 	//경로 초기화
 	function resetPath(){
 		var path = polyline.getPath();
-		for(var i = 0 ; i < path.length ; i++){
-			path.pop();
+		path.clear();
+		for(var i = 0 ; i <= pathObj.length ; i++){
+			pathObj.shift();
 		}
+		updateList();
 		
 	}
 	function updateList(){
@@ -147,4 +149,27 @@
 			var t = str;
 		}
 		return t;
+	}
+	//키 이벤트 처리 함수 -> 엔터 확인
+	function keyEventChk(){
+		if(event.keyCode == 13){
+			requestSearch();
+		}
+	}
+	//지역 검색
+	function requestSearch(){
+		var data = document.getElementById("searchData").value;
+		var params = "query="+data;
+		/*var params = "data="+data;
+		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');*/
+		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace(), 'GET');
+	}
+	function setSearchPlace(){
+		alert(httpRequest.readyState);
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var str = httpRequest.responseText;
+				alert(str);
+			}
+		}
 	}
