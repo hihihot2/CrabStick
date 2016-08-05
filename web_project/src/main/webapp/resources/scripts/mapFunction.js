@@ -22,6 +22,13 @@
 		var infowindow = new naver.maps.InfoWindow();
 		infowindows.push(infowindow);
 	}
+	function hideMarker(map, marker) {
+		
+	    if (!marker.setMap()) return;
+	    marker.setMap(null);
+	}
+	
+	
 	//리스너 생성
 	function setListener(name){
 		var enc = encodeURIComponent(name);
@@ -136,6 +143,13 @@
 	    if (!marker.setMap()) return;
 	    marker.setMap(null);
 	}
+	//마커 삭제
+	function deleteMarker(){
+		for(var i = 0 ; i < markers.length ; i++){
+			markers[i].setMap(null);
+			infowindows[i].setMap(null);
+		}
+	}
 	//정규식 변환 함수
 	function regExp(str){
 		var reg = /\s[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
@@ -166,8 +180,27 @@
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var str = httpRequest.responseText;
-				alert(str);
+				var responseList = httpRequest.responseText;
+				alert(responseList);
+				var search = eval("("+ responseList +")");
+				alert(search.length);
+				deleteMarker();
+				markers = new Array();infowindows = new Array();
+				for(var i = 0 ; i < search.length ; i++){
+					var marker = new naver.maps.Marker({
+						position : new naver.maps.Point(search[i].lat, search[i].lng),
+						map : map
+					//position: 마커의 위치를 나타내는 지도 좌표
+					//map: 마커를 표시할 map 객체
+					//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
+					//animaion: 지도에 마커 추가시에 시작할 에니메이션 설정
+					//title: 마우스 오버시 나타나는 문자열
+					//clickable: 기본 true, 마커 클릭 허용 여부
+					});
+					markers.push(marker);
+					var infowindow = new naver.maps.InfoWindow();
+					infowindows.push(infowindow);
+				}
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
