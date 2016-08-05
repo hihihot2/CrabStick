@@ -6,12 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
-<script type="text/javascript"
-	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
-	<style type="text/css" src=""></style>
+<title>:: 계획 만들기 ::</title>
+<style type="text/css" src=""></style>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -137,6 +137,7 @@
 				var object = new Object();
 				object.ven_name = form.ven_name[i].value;
 				object.ven_lati = form.ven_lati[i].value;
+
 				object.ven_long = form.ven_long[i].value;
 				object.loc_no = form.loc_no[i].value;
 				arr.push(object);
@@ -148,39 +149,123 @@
 		}
 	}
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
+
+<!----------- 동희 작업구역 ------------>
+<script type="text/javascript">
+	(function($) {
+		$(document).ready(function() {
+			// #planCost, #planPersons에 숫자만 입력받게 하기
+			$('#planCost, #planPersons').keydown(function(event) {
+				var keyId = event.keyCode;
+				if( (keyId >= 48 && keyId <= 57) || (keyId >= 96 && keyId <= 105) || keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 ) {
+					return;
+				} else {
+					return false;
+				}
+			}).keyup(function(event) {
+				var keyId = event.keyCode;
+				if( keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 ) {
+					return;
+				} else {
+					$(event.target).val($(event.target).val().replace(/[^0-9]/g, ""));
+				}
+			})
+			
+			$('#venueComment').change(function() {
+				// TODO: 코멘트 추가
+			})
+		})
+	})(jQuery)
+</script>
+
+<style type="text/css">
+	.SideBar, .Map {
+		float: left;
+	}
+	
+	.SideBar {
+		width: 20%;
+		padding: 10px; 
+	}
+	
+	.Map {
+		width: 80%;
+		padding: 10px;
+	}
+	
+	#planName, #planComment, #planCost, #planPersons, #planStyle {
+		width: 100%;
+		height: 30px;
+		margin-top: 5px;
+	}
+	
+	.planInfo{
+		margin-bottom: 10px;
+	}
+	
+	#addPath, #invalidatePath {
+		width: 49%;
+	}
+	
+	#inputDiv {
+		float: left;
+		width: 80%;
+		
+	}
+	
+	#cancelDiv {
+		float: left;
+		width: 20%;
+		height: 100%;
+	}
+	
+	#cancelImg {
+		margin: 30%;
+		width: 40%;
+	}
+	
+	#venueName, #venueComment {
+		width: 100%;
+	}
+</style>
+<!---------------------------------->
+
 <body onload="init()">
 	<jsp:include page="../top.jsp"></jsp:include>
-	<div>
-		<!-- 전체 화면 영역 -->
-		<table style="width: 100%; height: 100%;">
-			<tr>
-				<td style="width: 20%;" valign="top">
-				
-					<table style="width: 100%; height: 10%;">
-						<tr>
-							<td><input type="hidden" id="showwifichk" value="0">
-								<input type="button"  value="일정 초기화" onclick="resetPath()">
-							</td>
-						</tr>					
-					</table>
-					<br>
-					
-				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
-					<div id="addvenue">					
-					</div>
-					<input type="button" value="완료" onclick="pathComplete(this.form)">					
+	<div class='AppContainer'>
+	<!-- 전체 화면 영역 -->
+		<div class='SideBar'>
+		<!-- 좌측 사이드바 -->
+			<div class='planInfo'>
+			<!-- 계획 정보 입력 -->
+				<form action="">
+					<input type='text' id='planName' placeholder='계획1'>
+					<input type='text' id='planComment' placeholder='계획 설명'>
+					<input type="text" id='planCost' placeholder='여행 비용' >
+					<input type="text" id='planPersons' placeholder='여행 인원'>
+					<select id='planStyle'>
+						<option label='문화 탐방' value='1'>
+						<option label='식도락' value='2'>
+						<option label='쇼핑' value='3'>
+						<option label='휴식' value='4'>
+					</select>
 				</form>
-
-				</td>
-				<td style="width: 80%;">
-					<div id="map" style="height: 900px;"></div>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<script>
+			</div>
+			
+			<div class='pathList'>
+			<!-- 경로 정보 입력 -->
+				<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+					<div id='venueList'></div>
+					<input type="button" id='addPath' value="일정 추가" onclick="pathComplete(this.form)">					
+					<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
+				</form>
+			</div>
+		</div>		
 		
-	</script>
+		<div class='Map'>
+		<!-- 네이버 지도 -->
+			<div id="map" style="height: 900px;"></div>
+		</div>
+	</div>
 </body>
 </html>
