@@ -85,7 +85,7 @@
 			newvenue.id = 'path'+i;
 			var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+i+")><br>"
 			+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
-			+"<input type='hidden' name='ven_order' value='""'><input type='hidden' name='loc_no' value='"+loc_no+"'><br>";		
+			+"<input type='hidden' name='loc_no' value='"+loc_no+"'><br>";		
 			newvenue.innerHTML = html;
 			addvenue.appendChild(newvenue);
 			var length = document.ven_form.ven_name.length;
