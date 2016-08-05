@@ -92,10 +92,15 @@ public class ViewController {
 			System.out.println("비로그인");
 			return null;
 		}
-		
-
-		
-		
 	}
 	/*******************************/
+	@RequestMapping(value="/viewCont/search.do")
+	public ModelAndView searchLoc(@RequestParam(value="loc_name")String loc_name){
+		ModelAndView mav =  new ModelAndView("plan/searchByResult");
+		System.out.println("검색시작");
+		ArrayList<City> resultList = recommendationService.searchByName(loc_name);
+		System.out.println(resultList.toString());
+		mav.addObject("resultList", resultList);
+		return mav;
+	}
 }

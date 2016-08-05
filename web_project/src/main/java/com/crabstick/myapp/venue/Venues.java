@@ -1,6 +1,6 @@
 package com.crabstick.myapp.venue;
 
-public class Venue {
+public class Venues {
 
 	private int ven_no;
 	private String ven_name;
@@ -13,10 +13,10 @@ public class Venue {
 	private int loc_no;
 	
 	
-	public Venue() {
+	public Venues() {
 		super();
 	}
-	public Venue(int ven_no, String ven_name, String ven_lati, String ven_long, String ven_commt, String ven_type,
+	public Venues(int ven_no, String ven_name, String ven_lati, String ven_long, String ven_commt, String ven_type,
 			int ven_order, int path_no, int loc_no) {
 		super();
 		this.ven_no = ven_no;

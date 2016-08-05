@@ -6,11 +6,45 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
+	function search_loc(){
+		var loc_name = document.searchform.locSearch.value;
+		var params = "loc_name=" + loc_name;
+		sendRequest("${pageContext.request.contextPath}/viewCont/search.do", params, search_result, 'POST');
+	}
+	
+	function search_result(){
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var str = httpRequest.responseText;
+				var o = eval("(" + str + ")");
+				var myDiv = document.getElementById("resultView");
+				var html = "<table border='0'><tr><th>   no   </th>"
+					+"<th>    name    </th></tr>";
+					for(i=0;i<o.length;i++){
+						html += "<tr>";
+						html += "<td>"+o[i].num+"</td>";
+						html += "<td>";
+						html += "<a href='${pageContext.request.contextPath }"
+						+"/placeCont/getRestaurants.do?city_latitude="
+						+o[i].lati+"&city_longitude="+o[i].long2+"&cityno="+o[i].num+"'>" + o[i].name + "</a></td>"
+						html += "</tr>";
+					}
+					html += "</table>";
+					myDiv.innerHTML = html;
+			}
+		}
+	}
+	
+	function keyevent() {
+		if (event.keyCode == 13) {
+			search_loc();
+		}
+	}
+
 	function select_loc(latitude, longitude, locno) {
 		alert("위도"+latitude +"경도"+longitude);
-		
-		
 		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
 				+latitude+"&city_longitude="+longitude+"&cityno="+locno;
 	}
@@ -38,5 +72,10 @@
 			</table>
 		</div>
 	</c:forEach>
+	<form name="searchform">
+	<input type="text" name="locSearch" onkeyup="search_loc()" />
+	<br>
+	<div id="resultView"></div>
+	</form>
 </body>
 </html>

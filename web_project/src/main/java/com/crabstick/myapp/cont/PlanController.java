@@ -15,6 +15,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import javax.annotation.Resource;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -38,10 +43,40 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.crabstick.api.foursquare.objects.Venue;
 import com.crabstick.myapp.Location;
+import com.crabstick.myapp.login.LoginService;
+import com.crabstick.myapp.path.Path;
+import com.crabstick.myapp.path.PathService;
+import com.crabstick.myapp.plan.Plan;
+import com.crabstick.myapp.plan.PlanService;
+import com.crabstick.myapp.venue.VenueService;
+import com.crabstick.myapp.venue.Venues;
 
 @Controller
 public class PlanController {
+	
+	@Resource(name = "venueService")
+	private VenueService venueservice;
+	public void setService(VenueService venueservice) {
+		this.venueservice = venueservice;
+	}
+	
+	@Resource(name = "pathService")
+	private PathService pathservice;
+	public void setService(PathService pathservice) {
+		this.pathservice = pathservice;
+	}
+	
+	@Resource(name = "planService")
+	private PlanService planservice;
+	public void setService(PlanService planservice) {
+		this.planservice = planservice;
+	}
+	
+	
+	
+	
 
 	@RequestMapping(value="plancont/searchloc.do")
 	public ModelAndView searchLocation(@RequestParam(value="data")String data){
@@ -179,13 +214,36 @@ public class PlanController {
 	@RequestMapping(value="/planCont/addPath.do")
 	public void addPath(@RequestParam("json")String json) {
 		System.out.println("일정추가 시작");
+		Date date = new Date(0);
+		 
+		System.out.println(date);
+		
 		if(json != null) {
 			System.out.println("json: " + json);
 			JSONArray jsonArray = (JSONArray)JSONValue.parse(json);
 			Iterator iterator = jsonArray.iterator();
 			int count = 1;
+			Venues v = new Venues();
+			Path pa = new Path();			
+			Plan p = new Plan();
+			
+			
+			
+			
+			
+/*			planservice.insertPlan(p);
+*/			
+			
+			/*pa.setPath_name("첫째날");
+			pa.setPlan_no(count);			
+			pathservice.insertPath(pa);			
+			
+			
+			
+			System.out.println("path_no = " + pa.getPath_no());
 			while(iterator.hasNext()) {
 				JSONObject object = (JSONObject) iterator.next();
+				
 				System.out.println("-------------------");
 				System.out.println(object.get("ven_name"));
 				System.out.println(object.get("ven_lati"));
@@ -193,7 +251,18 @@ public class PlanController {
 				System.out.println(object.get("ven_order"));
 				System.out.println(object.get("loc_no"));
 				
+				v.setVen_name((String) object.get("ven_name"));
+				v.setVen_lati((String) object.get("ven_lati"));
+				v.setVen_long((String) object.get("ven_long"));
+				v.setVen_commt("Test");
+				v.setVen_order(count);
+				v.setPath_no(pa.getPath_no());
+				v.setVen_type("1");
+				v.setLoc_no((Integer.parseInt(object.get("loc_no").toString())));
+				count++;							
+				venueservice.insertVenue(v);
 			}
+			*/
 		} else {
 			System.out.println("응 널이야~");
 		}
