@@ -10,4 +10,5 @@ public interface RecommendationMapper {
 	ArrayList<City> historical_City_Rank_TOP5();
 	ArrayList<City> large_City_Rank_TOP5();
 	ArrayList<City> natural_City_Rank_TOP5();
+	ArrayList<City> searchByName(String loc_name);
 }
