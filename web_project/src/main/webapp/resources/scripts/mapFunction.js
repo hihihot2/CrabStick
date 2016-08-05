@@ -48,7 +48,10 @@
 		var infowindow = infowindows[len];
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
-		pathObj.push(decodeURIComponent(name));
+		var venue = new Object();
+		venue.name = name;
+		venue.comment = '';
+		pathObj.push(venue);
 		updateList(); //화면 업데이트
 		
 		if(infowindow.getMap()){
@@ -76,33 +79,41 @@
 	function updateList(){
 		var pathNum = 0;
 		var path = polyline.getPath();
-		var addvenue =  document.getElementById("addvenue");
+		var venueList = document.getElementById("venueList");
 		//기존 리스트 삭제
-		deleteList(addvenue);
+		deleteList(venueList);
 		//변경된 값을 가진 새로운 리스트 생성
 		for(var i = 0 ; i < path.length ; i++){
-			var newvenue = document.createElement("div");
-			newvenue.id = 'path'+i;
-			var html = "<input type='text' name='ven_name' placeholder='장소이름을 입력하세요' readonly='readonly'><input type='button' value='cancel' onclick=delPath("+i+")><br>"
-			+"<input type='hidden' name='ven_lati' placeholder='위도'><input type='hidden' name='ven_long' placeholder='경도'>"
-			+"<input type='hidden' name='loc_no' value='"+loc_no+"'><br>";		
-			newvenue.innerHTML = html;
-			addvenue.appendChild(newvenue);
-			var length = document.ven_form.ven_name.length;
-			if(document.ven_form.ven_name.length <= length){
-				document.ven_form.ven_name[i].value = decodeURIComponent(pathObj[i]);
-				document.ven_form.ven_lati[i].value = path.getAt(i).lat();
-				document.ven_form.ven_long[i].value = path.getAt(i).lng();		
-			}else{
-				document.ven_form.ven_name.value = decodeURIComponent(pathObj[i]);
-				document.ven_form.ven_lati.value = path.getAt(i).lat();
-				document.ven_form.ven_long.value = path.getAt(i).lng();	
+			var newVenue = document.createElement("div");
+			newVenue.id = 'venue_'+i;
+			var html = "<div id='inputDiv'>"
+						+	"<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.'></p>"
+						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>"
+						+"</div>"
+						+"<div id='cancelDiv'>"
+						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png'/>"
+						+"</div>"
+						+"<input type='hidden' name='venueLatitude' id='venueLatitude'>"
+						+"<input type='hidden' name='venueLongitude' id='venueLongitude'>"
+						+"<input type='hidden' name='venueLocation' id='venueLocation'>"
+			newVenue.innerHTML = html;
+			venueList.appendChild(newVenue);
+			var length = document.venueForm.venueName.length;
+			if(document.venueForm.venueName.length <= length){
+				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i]);
+				document.venueForm.venueLatitude[i].value = path.getAt(i).lat();
+				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();		
+			} else {
+				document.venueForm.venueName.value = decodeURIComponent(pathObj[i]);
+				document.venueForm.venueLatitude.value = path.getAt(i).lat();
+				document.venueForm.venueLongitude.value = path.getAt(i).lng();	
 			}
 		}
 	}
 	function deleteList(parentNode){
 		while(parentNode.hasChildNodes()){
-			parentNode.removeChild(parentNode.firstChild);
+			var childNode = parentNode.firstChild;
+			parentNode.removeChild(childNode);
 		}
 	}
 	
