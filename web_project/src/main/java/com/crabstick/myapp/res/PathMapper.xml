@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+<mapper namespace="com.crabstick.myapp.path.PathMapper">
+
+	<resultMap type="com.crabstick.myapp.path.Path" id="PathResultMap">
+		<result property="path_no" column="path_no"/>
+		<result property="path_name" column="path_name"/>
+		<result property="path_date" column="path_date" />
+		<result property="plan_no" column="plan_no" />		
+	</resultMap>	
+
+	<insert id="insert" parameterType="com.crabstick.myapp.path.PathMapper">
+		INSERT INTO Paths values(SEQ_PATH.nextVal,#{path_name},SYSDATE,#{mem_name},#{plan_no})
+	</insert>	
+	
+	
+</mapper>

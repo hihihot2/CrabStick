@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+<mapper namespace="com.crabstick.myapp.plan.PlanMapper">
+
+	<resultMap type="com.crabstick.myapp.plan.Plan" id="PlanResultMap">
+		<result property="plan_no" column="plan_no"/>
+		<result property="plan_name" column="plan_name"/>
+		<result property="plan_commt" column="plan_commt" />
+		<result property="plan_cost" column="plan_cost" />
+		<result property="plan_persons" column="plan_persons" />
+		<result property="plan_writedate" column="plan_writedate" />
+		<result property="plan_style" column="plan_style" />
+		<result property="mem_no" column="mem_no" />
+	</resultMap>	
+
+	<insert id="insert" parameterType="com.crabstick.myapp.plan.PlanMapper">
+		INSERT INTO Plans values(SEQ_PLAN.nextVal,#{plan_name},#{plan_commt},#{plan_cost},#{plan_persons},SYSDATE,'1',#{mem_no})
+	</insert>	
+	
+	
+</mapper>

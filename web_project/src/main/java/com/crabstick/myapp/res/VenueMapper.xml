@@ -18,31 +18,8 @@
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.venue.VenueMapper">
-		INSERT INTO Venues values(SEQ_VEN.nextVal,#{mem_id},#{mem_pwd},#{mem_name},'Y','1',#{mem_survey})
+		INSERT INTO Venues values(SEQ_VEN.nextVal,#{ven_name},#{ven_lati},#{ven_commt},#{ven_type},#{ven_order},#{path_no},#{loc_no})
 	</insert>	
-	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
-		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} and mem_outchk='Y'
-	</select>
-	<select id="selectno" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
-		SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
-	</select>	
-	<select id="selectid" resultType="int" parameterType="String">
-		SELECT count(*) FROM members WHERE mem_id=#{mem_id}
-	</select>	
-	<select id="selectall" resultType="com.crabstick.myapp.login.Member" parameterType="int">
-		SELECT * FROM members WHERE mem_no=#{mem_no}
-	</select>	
-	<select id="delchk" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
-		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}
-	</select>
-	<select id="search_pass" resultType="String" parameterType="com.crabstick.myapp.login.LoginMapper">
-		SELECT mem_pwd FROM members WHERE mem_id=#{mem_id} and mem_name=#{mem_name}
-	</select>
-	<update id="delmem" parameterType="int">
-		UPDATE members SET mem_outchk='N' WHERE mem_no=#{mem_no}
-	</update>
-	<update id="updatePass" parameterType="com.crabstick.myapp.login.LoginMapper">
-		UPDATE members SET mem_pwd=#{mem_pwd} WHERE mem_no=#{mem_no}
-	</update>
+	
 	
 </mapper>
