@@ -11,6 +11,7 @@
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+	<style type="text/css" src=""></style>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -39,7 +40,7 @@
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
 			center : new naver.maps.LatLng(lat, lng),
-			zoom : 6
+			zoom : 7
 		});
 		
 		//라인 생성

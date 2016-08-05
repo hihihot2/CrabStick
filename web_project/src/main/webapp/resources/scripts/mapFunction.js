@@ -70,9 +70,7 @@
 	function resetPath(){
 		var path = polyline.getPath();
 		path.clear();
-		for(var i = 0 ; i <= pathObj.length ; i++){
-			pathObj.shift();
-		}
+		pathObj = new Array();
 		updateList();
 		
 	}
@@ -163,13 +161,13 @@
 		var params = "query="+data;
 		/*var params = "data="+data;
 		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');*/
-		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace(), 'GET');
+		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');
 	}
 	function setSearchPlace(){
 		alert(httpRequest.readyState);
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var str = httpRequest.responseText;
+				var str = httpRequest.responseXML;
 				alert(str);
 			}
 		}

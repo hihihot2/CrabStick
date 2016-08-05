@@ -49,5 +49,5 @@ function sendSearchRequest(url, params, callback, method) {
 	httpRequest.setRequestHeader('X-Naver-Client-Id', 'ej3ANIP8b0vPSY8tXHEG');
 	httpRequest.setRequestHeader('X-Naver-Client-Secret', 'FNeWBxiKdd');
 	httpRequest.onreadystatechange = callback;
-	httpRequest.send(httpMethod == 'GET' ? httpParams : null);
+	httpRequest.send(httpMethod == 'POST' ? httpParams : null);
 }
