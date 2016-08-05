@@ -40,8 +40,7 @@ public class ViewController {
 		String autoPwd = "";
 		String autoLogin = "";
 		Member m = new Member();
-		System.out.println(cookies[3]);
-		if (cookies[3]) {
+		if (cookies) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("autoID")) {
 					autoID = cookie.getValue();
