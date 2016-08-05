@@ -50,4 +50,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 		}
 	}
 
+
+	@Override
+	public ArrayList<City> searchByName(String loc_name) {
+		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
+		return recommendationMapper.searchByName(loc_name);
+	}
+
 }

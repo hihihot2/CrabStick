@@ -55,7 +55,7 @@
 	function chk_mail() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-
+				/// 비동기식 전달을위해선언, 값없음
 			}
 		}
 	}

@@ -12,8 +12,8 @@
 		<result property="plan_no" column="plan_no" />		
 	</resultMap>	
 
-	<insert id="insert" parameterType="com.crabstick.myapp.path.PathMapper">
-		INSERT INTO Paths values(SEQ_PATH.nextVal,#{path_name},SYSDATE,#{mem_name},#{plan_no})
+	<insert id="insert" parameterType="com.crabstick.myapp.path.PathMapper" useGeneratedKeys="true" keyProperty="path_no" keyColumn="path_no">
+		INSERT INTO Paths values(SEQ_PATH.nextVal,#{path_name},SYSDATE,#{plan_no})
 	</insert>	
 	
 	
