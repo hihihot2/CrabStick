@@ -33,6 +33,12 @@
 			}
 		}
 	}
+	
+	function keyevent() {
+		if (event.keyCode == 13) {
+			search_loc();
+		}
+	}
 
 	function select_loc(latitude, longitude, locno) {
 		alert("위도"+latitude +"경도"+longitude);
@@ -64,8 +70,8 @@
 		</div>
 	</c:forEach>
 	<form name="searchform">
-	<input type="text" name="locSearch" /> 
-	<input type="button" value="도시검색" onclick="search_loc()">
+	<input type="text" name="locSearch" onkeyup="search_loc()"/>
+	<!-- <input type="button" value="locSearch" onClick="search_loc()" />  -->
 	<br>
 	<div id="resultView"></div>
 	</form>
