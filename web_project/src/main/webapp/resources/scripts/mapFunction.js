@@ -22,6 +22,13 @@
 		var infowindow = new naver.maps.InfoWindow();
 		infowindows.push(infowindow);
 	}
+	function hideMarker(map, marker) {
+		
+	    if (!marker.setMap()) return;
+	    marker.setMap(null);
+	}
+	
+	
 	//리스너 생성
 	function setListener(name){
 		var enc = encodeURIComponent(name);

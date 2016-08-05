@@ -43,10 +43,7 @@ public class PlaceController {
 		
 		try {
 			venueGroups = foursquare.getVenues();
-			hotels = expedia.getHotels();
-			for(Hotel hotel : hotels.getHotelList()) {
-				System.out.println("Hotel Name: " + hotel.getName() +", Address: " + hotel.getAddress());
-			}
+			hotels = expedia.getHotels();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +75,7 @@ public class PlaceController {
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
-		mav.addObject("HOTELS", hotels);
+		mav.addObject("HOTELS", hotels.getHotelList());
 		return mav;
 	}
 	
