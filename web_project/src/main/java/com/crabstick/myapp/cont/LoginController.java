@@ -74,10 +74,19 @@ public class LoginController {
 				rsp.addCookie(autoLogin);
 				Cookie[] cookies = req.getCookies();
 				for(int i=0; i<cookies.length; i++){
-					System.out.println(cookies[i].getValue());
+					System.out.println("쿠키저장됨" + cookies[i].getValue() + "  " + cookies[i].getName());
 				}
-				System.out.println("세션저장성공");
-			} 
+			} else {
+				Cookie[] cookies = req.getCookies();
+				if(cookies!=null){
+					for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
+						cookies[i].setValue("");
+						cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
+						rsp.addCookie(cookies[i]); 
+						System.out.println("쿠키 해제됨" + cookies[i].getName() + cookies[i].getValue());
+					}	
+				}
+			}
 			System.out.println("로그인성공");
 			int no = service.getmem_no(m);
 			hs.setAttribute("no", no); // no == 세션값

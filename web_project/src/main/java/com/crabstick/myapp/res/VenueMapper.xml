@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+<mapper namespace="com.crabstick.myapp.venue.VenueMapper">
+
+	<resultMap type="com.crabstick.myapp.venue.Venue" id="VenueResultMap">
+		<result property="ven_no" column="ven_no"/>
+		<result property="ven_name" column="ven_name"/>
+		<result property="ven_lati" column="ven_lati" />
+		<result property="ven_long" column="ven_long" />
+		<result property="ven_commt" column="ven_commt" />
+		<result property="ven_type" column="ven_type" />
+		<result property="ven_order" column="ven_order" />
+		<result property="path_no" column="path_no" />
+		<result property="loc_no" column="loc_no" />
+	</resultMap>	
+
+	<insert id="insert" parameterType="com.crabstick.myapp.venue.VenueMapper">
+		INSERT INTO Venues values(SEQ_VEN.nextVal,#{mem_id},#{mem_pwd},#{mem_name},'Y','1',#{mem_survey})
+	</insert>	
+	<select id="login" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd} and mem_outchk='Y'
+	</select>
+	<select id="selectno" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT mem_no FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}	
+	</select>	
+	<select id="selectid" resultType="int" parameterType="String">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id}
+	</select>	
+	<select id="selectall" resultType="com.crabstick.myapp.login.Member" parameterType="int">
+		SELECT * FROM members WHERE mem_no=#{mem_no}
+	</select>	
+	<select id="delchk" resultType="int" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT count(*) FROM members WHERE mem_id=#{mem_id} and mem_pwd=#{mem_pwd}
+	</select>
+	<select id="search_pass" resultType="String" parameterType="com.crabstick.myapp.login.LoginMapper">
+		SELECT mem_pwd FROM members WHERE mem_id=#{mem_id} and mem_name=#{mem_name}
+	</select>
+	<update id="delmem" parameterType="int">
+		UPDATE members SET mem_outchk='N' WHERE mem_no=#{mem_no}
+	</update>
+	<update id="updatePass" parameterType="com.crabstick.myapp.login.LoginMapper">
+		UPDATE members SET mem_pwd=#{mem_pwd} WHERE mem_no=#{mem_no}
+	</update>
+	
+</mapper>

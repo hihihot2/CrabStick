@@ -1,7 +1,11 @@
 package com.crabstick.myapp.cont;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,5 +66,28 @@ public class PlaceController {
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
 		return mav;
+	}
+	
+	@RequestMapping(value="/placeCont/addPath.do")
+	public void addPath(@RequestParam("json")String json) {
+		System.out.println("일정추가 시작");
+		if(json != null) {
+			System.out.println("json: " + json);
+			JSONArray jsonArray = (JSONArray)JSONValue.parse(json);
+			Iterator iterator = jsonArray.iterator();
+			int count = 1;
+			while(iterator.hasNext()) {
+				JSONObject object = (JSONObject) iterator.next();
+				System.out.println("-------------------");
+				System.out.println(object.get("ven_name"));
+				System.out.println(object.get("ven_lati"));
+				System.out.println(object.get("ven_long"));
+				System.out.println(object.get("ven_order"));
+				System.out.println(object.get("loc_no"));
+				
+			}
+		} else {
+			System.out.println("응 널이야~");
+		}
 	}
 }

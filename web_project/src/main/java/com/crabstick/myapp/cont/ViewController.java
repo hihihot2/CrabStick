@@ -85,8 +85,7 @@ public class ViewController {
 		    String[] survey = member.getMem_survey().split(":");
 		    
 		    //TODO 설문 결과 값을 매개변수로 하여, 추천 도시 값 얻어오기
-		    ArrayList<City> city_List = recommendationService.recommendation_City(survey[2]);
-		    
+		    ArrayList<City> city_List = recommendationService.recommendation_City_TOP5(survey[2]);
 		    mav.addObject("city_List", city_List);
 		    return mav;
 		} else { // (2) 비 로그인

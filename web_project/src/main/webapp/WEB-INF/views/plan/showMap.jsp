@@ -101,24 +101,28 @@
 	
 
 	function pathComplete(form) {
-
 		var arr = new Array();
-
-		for(var i = 0 ; i < path.length ; i++){
-			var object = new Object();
-			object.ven_name = ven_form.ven_name[i].value;
-			object.ven_lati = ven_form.ven_lati[i].value;
-			object.ven_long = ven_form.ven_long[i].value;
-			object.ven_order = ven_form.ven_order[i].value;
-			object.loc_no = ven_form.loc_no[i].value;
-			arr.push(object);
-		}
-
-		console.log(arr);
-		alert(arr);
-
-		location.href = "${pageContext.request.contextPath }/getObjects.do?json="
-				+ JSON.stringify(arr);
+		var path = polyline.getPath();
+		alert(path.length)
+		var flag = confirm("일정을 저장하시겠습니까?")
+		
+		if(!flag){
+			return;
+		}else{
+			for(var i = 0 ; i < path.length ; i++){
+				var object = new Object();
+				object.ven_name = ven_form.ven_name[i].value;
+				object.ven_lati = ven_form.ven_lati[i].value;
+				object.ven_long = ven_form.ven_long[i].value;
+				object.ven_order = ven_form.ven_order[i].value;
+				object.loc_no = ven_form.loc_no[i].value;
+				arr.push(object);
+			}
+			console.log(arr);
+			alert(arr);
+			
+			location.href = "${pageContext.request.contextPath }/placeCont/addPath.do?json="+JSON.stringify(arr);
+		}		
 	}
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
