@@ -59,11 +59,12 @@ public class LoginController {
 		
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
-		String isChk= req.getParameter("always_login");
+		String autoChk= req.getParameter("always_login");
 		int chk = service.mem_login(m);
-		int no = service.getmem_no(m);
+		System.out.println(chk);
 		if (chk != 0) {
-			if (isChk.equals("auto")) {
+			int no = service.getmem_no(m);
+			if (autoChk.equals("auto")) {
 				Cookie autoNo = new Cookie("autoNo", Integer.toString(no));
 				autoNo.setMaxAge(1000);
 				autoNo.setPath("/myapp/");
@@ -76,7 +77,6 @@ public class LoginController {
 			System.out.println("로그인 실패");
 			mav.addObject("chk", chk);
 		}
-		
 		return mav;
 	}
 
