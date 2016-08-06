@@ -183,6 +183,11 @@ public class LoginController {
 		System.out.println("회원 성향 서베이 시작");
 		return "survey/survey";
 	}
+	@RequestMapping(value = "/survey/remain.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String reSurvey() {
+		System.out.println("회원 수정>>survey");
+		return "survey/resurvey";
+	}
 	@RequestMapping(value = "/logincont/dropout.do")
 	public ModelAndView dropout(Member m, HttpSession hs) {
 		System.out.println("삭제시작");
@@ -202,7 +207,7 @@ public class LoginController {
         return mav;
 	}
 
-	@RequestMapping(value = "/survey/survey.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/survey/survey.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView surveypage(@RequestParam(value = "survey_Level") String survey_Level,
 			@RequestParam(value = "survey_Answer") String survey_Answer) {
 		ModelAndView mav = null;
@@ -232,6 +237,39 @@ public class LoginController {
 			mav.addObject("survey_Answer", survey_Answer);
 		}
 		return mav;
-
+	}
+	
+	@RequestMapping(value = "/survey/resurvey.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView resurveypage(@RequestParam(value = "survey_Level") String survey_Level,
+			@RequestParam(value = "survey_Answer") String survey_Answer, HttpSession hs) {
+		ModelAndView mav = null;
+		if (survey_Level.equals("1")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "1";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("2")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "2";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("3")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "3";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("4")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "4";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else {
+			mav = new ModelAndView("login/mypage");
+			System.out.println(survey_Answer);
+			int no = (Integer) hs.getAttribute("no");
+			service.updateSurvey(survey_Answer, no);
+			mav.addObject("survey_Answer", survey_Answer);
+		}
+		return mav;
 	}
 }

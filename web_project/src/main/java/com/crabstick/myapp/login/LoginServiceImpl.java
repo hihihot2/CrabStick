@@ -69,4 +69,13 @@ public class LoginServiceImpl implements LoginService {
 		loginmapper.updatePass(m);
 	}
 
+	@Override
+	public void updateSurvey(String survey_Answer, int no) {
+		LoginMapper loginmapper = sqlSession.getMapper(LoginMapper.class);
+		Member m = new Member();
+		m.setMem_no(no);
+		m.setMem_survey(survey_Answer);
+		loginmapper.updateSurvey(m);
+	}
+
 }

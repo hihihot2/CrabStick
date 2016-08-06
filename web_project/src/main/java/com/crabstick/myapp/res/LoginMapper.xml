@@ -42,5 +42,7 @@
 	<update id="updatePass" parameterType="com.crabstick.myapp.login.LoginMapper">
 		UPDATE members SET mem_pwd=#{mem_pwd} WHERE mem_no=#{mem_no}
 	</update>
-	
+	<update id="updateSurvey" parameterType="com.crabstick.myapp.login.LoginMapper">
+		UPDATE members SET mem_survey=#{mem_survey} WHERE mem_no=#{mem_no}
+	</update>
 </mapper>

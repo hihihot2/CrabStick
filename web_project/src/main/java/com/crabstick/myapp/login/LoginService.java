@@ -10,4 +10,5 @@ public interface LoginService {
 	void del_mem(int mem_no);
 	int del_memchk(Member m);
 	void updatePass(Member m);
+	void updateSurvey(String survey_Answer, int no);
 }

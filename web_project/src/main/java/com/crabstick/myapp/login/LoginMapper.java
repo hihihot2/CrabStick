@@ -10,5 +10,6 @@ public interface LoginMapper {
 	void delmem(int mem_no);
 	int delchk(Member m);
 	void updatePass(Member m);
+	void updateSurvey(Member m);
 }
  
