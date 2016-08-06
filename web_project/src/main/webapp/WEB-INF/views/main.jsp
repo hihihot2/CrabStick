@@ -6,13 +6,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" ></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
-	function startPlan(sessionNo){
+$(function($){
+	$("#logout").on("click", function(){
+		$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+		$.removeCookie('autoNo', { expires: -1, path: '/myapp/', secure: false })
+	}) 
+})
+	function startPlan(sessionNo){	
 		if(sessionNo == null){
 			// 로그인 안 되어있을시 로그인 페이지로 이동
-			action_do('login')
+			action_do('login')	
 		} else {
 			// 로그인 되어있을시
 			location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";

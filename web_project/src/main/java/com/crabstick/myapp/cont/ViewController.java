@@ -35,30 +35,23 @@ public class ViewController {
 	
 	@RequestMapping(value = "/")
 	public String main(HttpSession session, HttpServletRequest req) {
-		/*Cookie[] cookies = req.getCookies(); 
-		String autoID = "";
-		String autoPwd = "";
-		String autoLogin = "";
-		Member m = new Member();
-		if (cookies) {
+		Cookie[] cookies = req.getCookies();
+		String autoPlug="";
+		String autoNo="";
+		if (cookies!=null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("autoID")) {
-					autoID = cookie.getValue();
-				} else if (cookie.getName().equals("autoPwd")) {
-					autoPwd = cookie.getValue();
-				} else if (cookie.getName().equals("autoLogin")) {
-					autoLogin = cookie.getValue();
+				if (cookie.getName().equals("autoPlug")) {
+					autoPlug = cookie.getValue();
+				} else if (cookie.getName().equals("autoNo")) {
+					autoNo = cookie.getValue();
 				}
 			}
-			if (autoLogin.equals("ture")) {
-				m.setMem_id(autoID);
-				m.setMem_pwd(autoPwd);
-				int no = service.getmem_no(m);
-				session.setAttribute("no", no);
+			if (autoPlug.equals("true")) {
+				session.setAttribute("no", Integer.parseInt(autoNo));
 			}
 		} else {
 			return "main";
-		}*/
+		}
 		return "main";
 	}
 	

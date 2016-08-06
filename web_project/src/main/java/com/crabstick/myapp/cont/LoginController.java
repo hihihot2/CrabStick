@@ -59,39 +59,17 @@ public class LoginController {
 		
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
-		/*String isChk= req.getParameter("always_login");*/
+		String isChk= req.getParameter("always_login");
 		int chk = service.mem_login(m);
+		int no = service.getmem_no(m);
 		if (chk != 0) {
-			/*if (isChk.equals("auto")) {
-				Cookie autoLogin = new Cookie("autoLogin", "ture");
-				Cookie autoID = new Cookie("autoID", m.getMem_id());
-				Cookie autoPass = new Cookie("autoPwd", m.getMem_pwd());
-				autoLogin.setMaxAge(1000);
-				autoID.setMaxAge(1000);
-				autoPass.setMaxAge(1000);
-				autoLogin.setPath("/");
-				autoID.setPath("/");
-				autoPass.setPath("/");
-				rsp.addCookie(autoID);
-				rsp.addCookie(autoPass);
-				rsp.addCookie(autoLogin);
-				Cookie[] cookies = req.getCookies();
-				for(int i=0; i<cookies.length; i++){
-					System.out.println("쿠키저장됨" + cookies[i].getValue() + "  " + cookies[i].getName());
-				}
-			} else {
-				Cookie[] cookies = req.getCookies();
-				if(cookies!=null){
-					for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-						cookies[i].setValue("");
-						cookies[i].setMaxAge(0); // 쿠키의 유효시간을 0 으로 셋팅한다.
-						rsp.addCookie(cookies[i]); 
-						System.out.println("쿠키 해제됨" + cookies[i].getName() + cookies[i].getValue());
-					}	
-				}
-			}*/
+			if (isChk.equals("auto")) {
+				Cookie autoNo = new Cookie("autoNo", Integer.toString(no));
+				autoNo.setMaxAge(1000);
+				autoNo.setPath("/myapp/");
+				rsp.addCookie(autoNo);
+			} 
 			System.out.println("로그인성공");
-			int no = service.getmem_no(m);
 			hs.setAttribute("no", no); // no == 세션값
 			mav.addObject("chk", chk);
 		} else {

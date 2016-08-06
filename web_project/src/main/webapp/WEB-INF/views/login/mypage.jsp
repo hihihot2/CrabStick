@@ -46,7 +46,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<jsp:include page="../top.jsp"></jsp:include>
 <form name="mypage" method="POST">
 id : ${members.mem_id}<br>
 이름 : ${members.mem_name}<br>

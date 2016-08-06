@@ -6,6 +6,8 @@
 <html>
 <head>
 <script type="text/javascript">
+history.go(1); //========================> 이것을 해주면된다 
+
 	function start_() {
 		var form = document.survey_form;
 		form.survey_Level.value = 1;

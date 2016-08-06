@@ -9,7 +9,7 @@
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/scripts/jquery.cookie.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(function(){
@@ -25,10 +25,7 @@ $(function(){
 			isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
 			if(!isRemember){    
 				$(_this).attr("checked", false);
-			
 			} else {
-				$.cookie('autoID', $("#userid").val(),  { expires: 7, path: '/myapp/', secure: false })
-				$.cookie('autoPW', $("#userpw").val(), { expires: 7, path: '/myapp/', secure: false })
 				$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
 			}
 		} 
@@ -47,14 +44,14 @@ $(function(){
 		} else if (pwd == "") {
 			alert('비밀번호를 입력해주세요')
 		} else {
-			/* if(document.loginform.always_login.checked){
+			if(document.loginform.always_login.checked){
 				document.loginform.always_login.value = "auto"
 			} else {
 				document.loginform.always_login.value = ""
-			} */
+			}
 			var params = "mem_id=" + document.loginform.mem_id.value
 					+ "&mem_pwd=" + document.loginform.mem_pwd.value
-					/* + "&always_login=" + document.loginform.always_login.value; */
+					+ "&always_login=" + document.loginform.always_login.value;
 			sendRequest(
 					"${pageContext.request.contextPath}/logincont/login.do",
 					params, login_result, "POST");
