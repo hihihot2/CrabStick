@@ -83,14 +83,12 @@ public class PlanController {
 		ModelAndView mav = new ModelAndView("plan/searchLocXML");
 		String searchUrl = "https://openapi.naver.com/v1/search/local.xml?query="+data;
 		
-		
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = new HttpGet(searchUrl);
 		Document document = null;
 		InputSource is = null;
 		XPath xpath = null;
 		List<Location> list = new ArrayList<Location>();
-		
 		
 		request.addHeader("Content-Type", "application/xml");
 		request.addHeader("X-Naver-Client-Id", clientId);
@@ -107,10 +105,11 @@ public class PlanController {
 			NodeList title = (NodeList) xpath.evaluate("//channel/item/title", document, XPathConstants.NODESET);
 			NodeList addr = (NodeList) xpath.evaluate("//channel/item/address", document, XPathConstants.NODESET);
 			
-			for(int i = 0 ; i < addr.getLength() ; i++){
-				Location loc = getLatLng(addr.item(i).getTextContent());
+			for(int i = 0 ; i < title.getLength() ; i++){
+				/*Location loc = getLatLng(addr.item(i).getTextContent());
 				loc.setTitle(title.item(i).getTextContent());
-				list.add(loc);
+				list.add(loc);*/
+				list.add(new Location(title.item(i).getTextContent(),0.0, 0.0));
 			}
 			mav.addObject("SLIST", list);
 		} catch (ClientProtocolException e) {

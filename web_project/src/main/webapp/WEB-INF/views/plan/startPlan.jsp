@@ -44,7 +44,6 @@
 	}
 
 	function select_loc(latitude, longitude, locno) {
-		alert("위도"+latitude +"경도"+longitude);
 		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
 				+latitude+"&city_longitude="+longitude+"&cityno="+locno;
 	}

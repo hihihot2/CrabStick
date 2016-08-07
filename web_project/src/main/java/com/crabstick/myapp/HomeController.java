@@ -73,5 +73,8 @@ public class HomeController {
 		mav.addObject("LOC", loc);
 		return mav;
 	}
-	
+	@RequestMapping(value="test2")
+	public String test2(){
+		return "home";
+	}
 }

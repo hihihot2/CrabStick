@@ -7,11 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>:: 계획 만들기 ::</title>
-<style type="text/css" src=""></style>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -60,7 +61,7 @@
 			alert('호텔 체크해제')
 		} 
 	}
-	function init() {
+	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
@@ -77,44 +78,45 @@
 			map:map, //라인을 표시할 지도 객체
 			path: [], //라인 좌표를 저장할 배열
 			strokeColor: '#FF9B00', //라인컬러
-			strokeWeight: 3 //라인 두깨
+			strokeWeight: 4 //라인 두깨
 		});
-
-
-
+		
 		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
-				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="검색">'
+				+ '<input id="searchData" style="width:250px" type="text" onkeyup="requestSearch()" placeholder="장소를 검색하세요">'
 				+ '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
-
-		var contentEl2 = $('<div style="width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_hotel()"> 호텔<br>'
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_rest()"> 맛집<br>' + '</div>');
-		contentEl2.appendTo(map.getElement());
-
-		//sendRequest(urlPrefix + "1" + urlSuffix, null, getGeo, 'POST')
-
-		//Map Click이벤트 처리 ->marker 생성 window 생성
-		/* naver.maps.Event.addListener(map, 'click', function(e) {
-			var path = polyline.getPath();
-			path.push(e.coord);
-			myPath.push(e.coord.lat(), e.coord.lng());			
-			var marker = new naver.maps.Marker({
-					position: e.coord,
-					map: map
-			});		
+		$('#searchData').autocomplete({
+			source: searchList,
+			select: function(event, ui){
+				alert("1");
+			},
+			focus: null
+		});
+		$(document).ready(function(){
 			
-			//마커 클릭시 이벤트 처리
-			naver.maps.Event.addListener(marker, 'click', function(e) {
-				var infowindow = new naver.maps.InfoWindow({
-					content: "마커 클릭 -> 윈도우 생성"
-				});
-				infowindow.open(map, marker);
-			});
+		})
 		
-			var tmp = document.getElementById("plan");
-		}); */
+		/* $('#searchData').on('keyup', function(){
+			if(event.keyCode == 13){
+				var data = $(this).val();
+				$.ajax({
+					url: '${pageContext.request.contextPath}/plancont/searchloc.do?query='+data,
+					type: 'GET',
+					success: function(e) {
+						alert(e);
+					}
+				});
+			}
+		}) */
+
+		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_hotel()"> 호텔<br>'
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_rest()"> 맛집<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_attraction()"> 명소<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_traffic()"> 교통<br>' 
+				+ '</div>');
+		contentEl2.appendTo(map.getElement());
 
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
@@ -124,7 +126,10 @@
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
 			alert(pathObj.toString());
 		})
-	}
+		
+		
+	});
+	
 
 	function pathComplete(form) {
 		var arr = new Array();
@@ -147,7 +152,7 @@
 			location.href = "${pageContext.request.contextPath }/planCont/addPath.do?json="
 					+ JSON.stringify(arr);
 		}
-	}
+	}	
 </script>
 
 <!----------- 동희 작업구역 ------------>
@@ -230,7 +235,7 @@
 </style>
 <!---------------------------------->
 
-<body onload="init()">
+<body>
 	<jsp:include page="../top.jsp"></jsp:include>
 	<div class='AppContainer'>
 	<!-- 전체 화면 영역 -->
@@ -267,5 +272,6 @@
 			<div id="map" style="height: 900px;"></div>
 		</div>
 	</div>
+	
 </body>
 </html>

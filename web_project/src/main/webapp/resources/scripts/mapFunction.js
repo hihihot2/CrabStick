@@ -4,7 +4,7 @@
 	var i = -1;
 	var count = 0;
 	var pathNum = 0;
-	
+	var searchList = [];
 
 	//위치 생성
 	function setPlace(lat, lng) {
@@ -173,6 +173,17 @@
 		}
 		return t;
 	}
+	//정규식 태그제거 함수
+	function regTag(str){
+		var reg = /(<([^>]+)>)/gi;
+		
+		if(reg.test(str)){
+			var t = str.replace(reg, "");
+		}else{
+			var t= str;
+		}
+		return t;
+	}
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
 		if(event.keyCode == 13){
@@ -182,35 +193,25 @@
 	//지역 검색
 	function requestSearch(){
 		var data = document.getElementById("searchData").value;
+		/*if(searchList.length != 0){
+			searchList = [];
+		}*/
 		
 		var params = "data="+data;
 		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
+
 		/*var params = "query="+data;
 		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
+
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
 				var responseList = httpRequest.responseText;
-				alert(responseList);
 				var search = eval("("+ responseList +")");
-				alert(search.length);
-				deleteMarker();
-				markers = new Array();infowindows = new Array();
 				for(var i = 0 ; i < search.length ; i++){
-					var marker = new naver.maps.Marker({
-						position : new naver.maps.Point(search[i].lat, search[i].lng),
-						map : map
-					//position: 마커의 위치를 나타내는 지도 좌표
-					//map: 마커를 표시할 map 객체
-					//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
-					//animaion: 지도에 마커 추가시에 시작할 에니메이션 설정
-					//title: 마우스 오버시 나타나는 문자열
-					//clickable: 기본 true, 마커 클릭 허용 여부
-					});
-					markers.push(marker);
-					var infowindow = new naver.maps.InfoWindow();
-					infowindows.push(infowindow);
+					var before = search[i].title;
+					searchList.push(regTag(before));
 				}
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
