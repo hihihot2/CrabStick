@@ -58,6 +58,7 @@ public class ViewController {
 		    ArrayList<City> city_List = recommendationService.recommendation_City(survey[2]);
 		    
 		    mav.addObject("city_List", city_List);
+		    mav.addObject("travel_purpose", survey[0]);
 		    return mav;
 		} else { // (2) 비 로그인
 			System.out.println("비로그인");
