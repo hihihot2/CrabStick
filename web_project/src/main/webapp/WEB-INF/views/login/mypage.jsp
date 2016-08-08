@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 	function edit_do(type){
 		if(type=='edit'){
@@ -15,7 +18,11 @@
 				return
 			} else {
 				if(password1!=password2){
+					alert('비밀번호가 일치하지 않습니다. 다시 확인하세요')
 					return
+				} else if(password1.length < 6){
+					alert('비밀번호는 6자리 이상을 설정하세요')
+					return 
 				} else {
 					document.mypage.action="${pageContext.request.contextPath}/logincont/editpass.do"
 					document.mypage.submit()
