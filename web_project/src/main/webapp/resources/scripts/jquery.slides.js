@@ -456,7 +456,7 @@
         if (number > -1) {
           slidesControl.children(":not(:eq(" + currentSlide + "))").css({
             display: "none",
-            left: 0,
+            left: 100px,
             zIndex: 0
           });
         }

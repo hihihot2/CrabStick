@@ -32,9 +32,16 @@
 	}
 	
 
+
+
 </script>
 </head>
 <body>
+	<jsp:include page="top.jsp"></jsp:include>
+	<input type="button" value="플래너 시작하기" onclick="startPlan(${no})">
+	<input type="button" value="내가세운 계획 보기" onclick="showMyPlans(${no})">
+	<br>
+	
 
 	<!-- 네비게이션 밑 부분 -->
 	<div class="jumbotron text-center">

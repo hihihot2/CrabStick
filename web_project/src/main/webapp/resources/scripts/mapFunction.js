@@ -5,12 +5,23 @@
 	var count = 0;
 	var pathNum = 0;
 	var searchList = [];
+	var city_code;
+	var siguncode;
 
 	//위치 생성
-	function setPlace(lat, lng) {
+	function setPlace(lat, lng, type) {
+		var url;
+		switch(type){
+		case 0: url = "../resources/png/hotel.png";break;
+		case 1: url = "../resources/png/food.png";break;
+		case 2: url = "../resources/png/attraction.png";break;
+		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
-			map : map
+			map : map,
+			icon : {
+				url: url
+			}
 		//position: 마커의 위치를 나타내는 지도 좌표
 		//map: 마커를 표시할 map 객체
 		//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
@@ -18,23 +29,22 @@
 		//title: 마우스 오버시 나타나는 문자열
 		//clickable: 기본 true, 마커 클릭 허용 여부
 		});
-		markers.push(marker);
+		var subMarker = new Array();
+		subMarker.push(type);
+		subMarker.push(marker);
+		markers.push(subMarker);
 		var infowindow = new naver.maps.InfoWindow();
-		infowindows.push(infowindow);
-	}
-	function hideMarker(map, marker) {
-		
-	    if (!marker.setMap()) return;
-	    marker.setMap(null);
-	}
-	
-	
+		var subWindow = new Array();
+		subWindow.push(type);
+		subWindow.push(infowindow);
+		infowindows.push(subWindow);
+	}	
 	//리스너 생성
-	function setListener(name){
+	function setListener(name, type){
 		var enc = encodeURIComponent(name);
 		var len = markers.length-1;
-		naver.maps.Event.addListener(markers[len], 'click', function(e) {
-			var marker = markers[len], infowindow = infowindows[len];
+		naver.maps.Event.addListener(markers[len][1], 'click', function(e) {
+			var marker = markers[len][1], infowindow = infowindows[len][1];
 			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
 					+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
 					+'<input type="button" value="+" onclick=addPath('+len+','+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
@@ -48,11 +58,11 @@
 		})
 	}
 	function closeWindow(len){
-		var infowindow = infowindows[len];
+		var infowindow = infowindows[len][1];
 		infowindow.close();
 	}
 	function addPath(len, lat, lng, name){
-		var infowindow = infowindows[len];
+		var infowindow = infowindows[len][1];
 		var path = polyline.getPath();
 		path.push(new naver.maps.LatLng(lat,lng));
 		var venue = new Object();
@@ -132,7 +142,7 @@
 
 	    for (var i = 0; i < markers.length; i++) {
 
-	        marker = markers[i]
+	        marker = markers[i][1];
 	        position = marker.getPosition();
 
 	        if (mapBounds.hasLatLng(position)) {
@@ -203,7 +213,6 @@
 		/*var params = "query="+data;
 		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
-
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
@@ -217,4 +226,41 @@
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
 		}
+	}
+	//카테고리 Ajax 검색
+	function checkcategory(i,lat,lng){
+		var categories = document.getElementsByName("categorychk");
+		if(categories[i].checked){
+			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode;
+			sendRequest("../placeCont/branch.do", params, markBranch, 'POST');
+		}else{
+			unmarkBranch(i);
+		}
+	}
+	function markBranch(){
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var result = httpRequest.responseText;
+				var list = eval("("+ result +")");
+				for(var i = 0 ; i < result.length ; i++){
+					setPlace(list[i].lat, list[i].lng, list[i].type);
+					setListener(list[i].name, list[i].type);
+				}
+			}else {
+				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
+			}
+		}
+	}
+	function unmarkBranch(type){
+		var tmp = new Array();
+		for(var i = 0 ; i < markers.length ; i++){
+			if(markers[i][0] != type){
+				var subTmp = new Array();
+				tmp.push(markers[i]);
+			}else{
+				var marker = markers[i][1];
+				marker.setMap(null);
+			}
+		}
+		markers = tmp;
 	}
