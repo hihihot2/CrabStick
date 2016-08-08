@@ -8,8 +8,21 @@
 <head>
 <title>Planner</title>
 
+
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" ></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+  
+  
+ $(function($){
+     $("#logout").on("click", function(){
+         $.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+         $.removeCookie('autoNo', { expires: -1, path: '/myapp/', secure: false })
+     }) 
+ })
 
 	function startPlan(sessionNo){	
 		if(sessionNo == null){
@@ -37,12 +50,6 @@
 </script>
 </head>
 <body>
-	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan(${no})">
-	<input type="button" value="내가세운 계획 보기" onclick="showMyPlans(${no})">
-	<br>
-	
-
 	<!-- 네비게이션 밑 부분 -->
 	<div class="jumbotron text-center">
 		<h1>여행을 떠나보세요</h1>
@@ -103,11 +110,6 @@
 		<div id="myCarousel" class="carousel slide text-center"
 			data-ride="carousel">
 			<!-- Indicators -->
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				<li data-target="#myCarousel" data-slide-to="1"></li>
-				<li data-target="#myCarousel" data-slide-to="2"></li>
-			</ol>
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
