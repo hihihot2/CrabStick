@@ -94,7 +94,6 @@
 		</div>
 	</c:forEach>
 	<form name="searchform">
-	<input type="text" name="locSearch" onkeyup="search_loc()" />
 	<br>
 	<div id="resultView"></div>
 	</form>
