@@ -160,12 +160,12 @@ $(function($){
 			effect: {
 				slide: {
 				// 슬라이드 효과
-					speed: 600
+					speed: 800
 					// 0.2초만에 바뀜
 				},
 				fade: {
 				// 페이드 효과
-					speed: 300,
+					speed: 400,
 					// 0.3초만에 바뀜
 					crossfade: true
 					// 다음이미지와 겹쳐서 나타남 유무
@@ -202,11 +202,11 @@ $(function($){
 	<br>
 	
 	 
- <div id="slides" style="width: 50%;height: 50%" align="center">
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"><!--1번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"><!--2번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"><!--3번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-4.jpg"><!--4번 사진-->
+ <div id="slides" style="width: 40%;height: 40%">
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--1번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--2번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--3번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--4번 사진-->
   </div>
   <div id="slidesjs-log"></div>
 
