@@ -5,6 +5,7 @@
 	var count = 0;
 	var pathNum = 0;
 	var searchList = [];
+	var commentList = new Array();	// 장소 메모 리스트
 
 	//위치 생성
 	function setPlace(lat, lng) {
@@ -65,16 +66,7 @@
 			infowindow.close();
 		}
 	}
-	//추가 경로 삭제
-	function delPath(num){
-		var iDiv = document.getElementById("path"+num);
-		var addvenue =  iDiv.parentNode;
-		addvenue.removeChild(iDiv);
-		var path = polyline.getPath();
-		path.removeAt(num);
-		pathObj.splice(num, 1);
-		updateList();
-	}
+	
 	//경로 초기화
 	function resetPath(){
 		var path = polyline.getPath();
@@ -98,7 +90,7 @@
 						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>"
 						+"</div>"
 						+"<div id='cancelDiv'>"
-						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png'/>"
+						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>"
 						+"</div>"
 						+"<input type='hidden' name='venueLatitude' id='venueLatitude'>"
 						+"<input type='hidden' name='venueLongitude' id='venueLongitude'>"
@@ -109,17 +101,50 @@
 			if(document.venueForm.venueName.length <= length){
 				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude[i].value = path.getAt(i).lat();
-				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();		
+				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();
+				document.venueForm.venueComment[i].value = commentList[i];
 			} else {
 				document.venueForm.venueName.value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude.value = path.getAt(i).lat();
-				document.venueForm.venueLongitude.value = path.getAt(i).lng();	
+				document.venueForm.venueLongitude.value = path.getAt(i).lng();
+				document.venueForm.venueComment.value = commentList[i];
 			}
 		}
 	}
+	
+	//추가 경로 삭제
+	function delPath(num){
+		var iDiv = document.getElementById("venue_"+num);
+		var addvenue =  iDiv.parentNode;
+		addvenue.removeChild(iDiv);
+		var path = polyline.getPath();
+		path.removeAt(num);
+		pathObj.splice(num, 1);
+		updateList();
+	}
+	
+	(function($) {
+		$(document).ready(function() {
+			$('#cancelImg').click(function() {
+				
+			})
+		})
+	})(jQuery);
+	
+	// 화면의 리스트 삭제
 	function deleteList(parentNode){
+		commentList = new Array();
 		while(parentNode.hasChildNodes()){
 			var childNode = parentNode.firstChild;
+			(function($) {
+				var comment = $(childNode).find('input#venueComment')
+				console.log('메모: ' + comment.val());
+				if(comment.val() == null) {
+					commentList.push("");
+				} else {
+					commentList.push(comment.val());
+				}
+			})(jQuery);
 			parentNode.removeChild(childNode);
 		}
 	}

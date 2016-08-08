@@ -7,6 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>:: 계획 만들기 ::</title>
+<style type="text/css">
+	.test {
+		border:2px solid red;
+        background-color: #808080;
+	}
+</style>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -76,7 +82,7 @@
 		//라인 생성
 		polyline = new naver.maps.Polyline({
 			map:map, //라인을 표시할 지도 객체
-			path: [], //라인 좌표를 저장할 배열
+			path: new Array(), //라인 좌표를 저장할 배열
 			strokeColor: '#FF9B00', //라인컬러
 			strokeWeight: 4 //라인 두깨
 		});

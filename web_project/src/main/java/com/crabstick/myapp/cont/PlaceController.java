@@ -75,7 +75,7 @@ public class PlaceController {
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
-		mav.addObject("HOTELS", hotels.getHotelList());
+//		mav.addObject("HOTELS", hotels.getHotelList());
 		return mav;
 	}
 	
