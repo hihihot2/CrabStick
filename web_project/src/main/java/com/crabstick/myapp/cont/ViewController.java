@@ -99,4 +99,13 @@ public class ViewController {
 		mav.addObject("resultList", resultList);
 		return mav;
 	}
+	@RequestMapping(value="/viewCont/detailDOC.do")
+	public ModelAndView windowShow(@RequestParam(value="loc_name")String loc_name){
+		ModelAndView mav = new ModelAndView("plan/showLocation");
+		System.out.println(loc_name);
+		ArrayList<City> detailList = recommendationService.searchByName(loc_name);
+		System.out.println(detailList.toString());
+		mav.addObject("detailList", detailList);
+		return mav;
+	}
 }
