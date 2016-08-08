@@ -127,7 +127,7 @@
 		});
 
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(pathObj.toString());
+			alert(markers.length);
 		})
 		
 		

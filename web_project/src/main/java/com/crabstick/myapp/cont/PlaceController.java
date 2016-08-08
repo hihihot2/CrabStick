@@ -52,6 +52,7 @@ public class PlaceController {
 				e.printStackTrace();
 			}
 			mav.addObject("HOTELS", hotels.getHotelList());
+			
 		}else if(branch == 1){ //맛집 파싱
 			
 		}else if(branch == 2){
@@ -59,6 +60,7 @@ public class PlaceController {
 		}else if(branch == 3){
 			
 		}
+		mav.addObject("type", branch);
 		return mav;
 	}
 	

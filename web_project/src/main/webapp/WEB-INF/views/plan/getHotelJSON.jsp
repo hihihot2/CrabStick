@@ -3,6 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 [
 <c:forEach var="hotel" items="${HOTELS}" varStatus="status">
-	{name:'${hotel.name}', lat:${hotel.latitude}, lng:${hotel.longitude}}<c:if test="${!status.last}">,</c:if>
+	{name:'${hotel.name}', lat:${hotel.latitude}, lng:${hotel.longitude}, type:${type}}<c:if test="${!status.last}">,</c:if>
 </c:forEach>
 ]
