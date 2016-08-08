@@ -61,6 +61,9 @@
 			alert('호텔 체크해제')
 		} 
 	}
+	
+	
+	
 	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
