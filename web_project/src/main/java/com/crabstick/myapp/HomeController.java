@@ -32,7 +32,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "test", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, Model model) {
-		System.out.println("hi");
+		System.out.println("hi2");
 		Workbook sb = null;
 		ModelAndView mav = new ModelAndView("home");
 		String path = 

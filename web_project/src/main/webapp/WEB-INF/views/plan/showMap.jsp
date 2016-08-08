@@ -67,11 +67,16 @@
 			alert('호텔 체크해제')
 		} 
 	}
+	
+	
+	
 	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
+		city_code = <%= request.getAttribute("city_code")%>;
+		siguncode = <%= request.getAttribute("siguncode")%>;
 		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
@@ -117,10 +122,10 @@
 		}) */
 
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_hotel()"> 호텔<br>'
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_rest()"> 맛집<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_attraction()"> 명소<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_traffic()"> 교통<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 휴식<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 
@@ -130,7 +135,7 @@
 		});
 
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(pathObj.toString());
+			alert(markers.length);
 		})
 		
 		
