@@ -19,7 +19,6 @@ public class PathServiceImpl implements PathService {
 	public void insertPath(Path pa) {
 		PathMapper pathmapper = sqlSession.getMapper(PathMapper.class);
 		pathmapper.insert(pa);
-
 	}
 
 }

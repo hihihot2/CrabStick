@@ -1,6 +1,7 @@
 /**
  * Naver Api 기능구현
  */
+	
 	var i = -1;
 	var count = 0;
 	var pathNum = 0;
@@ -68,6 +69,7 @@
 		var venue = new Object();
 		venue.name = name;
 		venue.comment = '';
+		venue.type = '1';		// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 		pathObj.push(venue);
 		updateList(); //화면 업데이트
 		
@@ -75,16 +77,7 @@
 			infowindow.close();
 		}
 	}
-	//추가 경로 삭제
-	function delPath(num){
-		var iDiv = document.getElementById("path"+num);
-		var addvenue =  iDiv.parentNode;
-		addvenue.removeChild(iDiv);
-		var path = polyline.getPath();
-		path.removeAt(num);
-		pathObj.splice(num, 1);
-		updateList();
-	}
+	
 	//경로 초기화
 	function resetPath(){
 		var path = polyline.getPath();
@@ -104,11 +97,11 @@
 			var newVenue = document.createElement("div");
 			newVenue.id = 'venue_'+i;
 			var html = "<div id='inputDiv'>"
-						+	"<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.'></p>"
-						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>"
+						+	"<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.' onkeyup='modifyName("+i+",this.form)'></p>"
+						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.' onkeyup='modifyComment("+i+",this.form)'></p>"
 						+"</div>"
 						+"<div id='cancelDiv'>"
-						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png'/>"
+						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>"
 						+"</div>"
 						+"<input type='hidden' name='venueLatitude' id='venueLatitude'>"
 						+"<input type='hidden' name='venueLongitude' id='venueLongitude'>"
@@ -119,14 +112,45 @@
 			if(document.venueForm.venueName.length <= length){
 				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude[i].value = path.getAt(i).lat();
-				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();		
+				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();
+				document.venueForm.venueComment[i].value = decodeURIComponent(pathObj[i].comment);
 			} else {
 				document.venueForm.venueName.value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude.value = path.getAt(i).lat();
-				document.venueForm.venueLongitude.value = path.getAt(i).lng();	
+				document.venueForm.venueLongitude.value = path.getAt(i).lng();
+				document.venueForm.venueComment.value = decodeURIComponent(pathObj[i].comment);
 			}
 		}
 	}
+	
+	function modifyName(num, form) {
+		if(form.venueName.length < 2) {
+			pathObj[num].name = form.venueName.value;
+		} else {
+			pathObj[num].name = form.venueName[num].value;
+		}
+	}
+	
+	function modifyComment(num, form) {
+		if(form.venueComment.length < 2) {
+			pathObj[num].comment = form.venueComment.value;			
+		} else {
+			pathObj[num].comment = form.venueComment[num].value;
+		}
+	}
+	
+	//추가 경로 삭제
+	function delPath(num){
+		var iDiv = document.getElementById("venue_"+num);
+		var addvenue =  iDiv.parentNode;
+		addvenue.removeChild(iDiv);
+		var path = polyline.getPath();
+		path.removeAt(num);
+		pathObj.splice(num, 1);
+		updateList();
+	}
+	
+	// 화면의 리스트 삭제
 	function deleteList(parentNode){
 		while(parentNode.hasChildNodes()){
 			var childNode = parentNode.firstChild;

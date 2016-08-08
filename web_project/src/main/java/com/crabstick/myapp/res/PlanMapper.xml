@@ -17,7 +17,11 @@
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.plan.PlanMapper">
-		INSERT INTO Plans values(SEQ_PLAN.nextVal,#{plan_name},#{plan_commt},#{plan_cost},#{plan_persons},SYSDATE,'1',#{mem_no})
+		INSERT INTO plans VALUES(SEQ_PLAN.NEXTVAL, #{plan_name}, #{plan_commt}, #{plan_cost}, #{plan_persons}, SYSDATE, #{plan_style}, #{mem_no})
+		
+		<selectKey keyProperty="plan_no" resultType="Integer" order="AFTER">
+			SELECT SEQ_PLAN.CURRVAL FROM DUAL
+		</selectKey>
 	</insert>	
 	
 	

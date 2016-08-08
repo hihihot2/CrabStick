@@ -5,7 +5,7 @@
 	 
 <mapper namespace="com.crabstick.myapp.venue.VenueMapper">
 
-	<resultMap type="com.crabstick.myapp.venue.Venues" id="VenueResultMap">
+	<resultMap type="com.crabstick.myapp.venue.Venue" id="VenueResultMap">
 		<result property="ven_no" column="ven_no"/>
 		<result property="ven_name" column="ven_name"/>
 		<result property="ven_lati" column="ven_lati" />
@@ -18,7 +18,7 @@
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.venue.VenueMapper">
-		INSERT INTO Venues values(SEQ_VEN.nextVal,#{ven_name},#{ven_lati},#{ven_long},#{ven_commt},#{ven_type},#{ven_order},#{path_no},#{loc_no})
+		INSERT INTO venues VALUES(SEQ_VEN.NEXTVAL, #{ven_name}, #{ven_lati}, #{ven_long}, #{ven_commt}, #{ven_type}, #{ven_order}, #{path_no}, #{loc_no})
 	</insert>	
 	
 	
