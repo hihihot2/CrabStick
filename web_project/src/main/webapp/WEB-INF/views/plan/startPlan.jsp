@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 	function search_loc(){
 		var loc_name = document.searchform.locSearch.value;
@@ -43,10 +46,11 @@
 		}
 	}
 
-	function select_loc(latitude, longitude, locno) {
+	function select_loc(latitude, longitude, locno, code, siguncode) {
 		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
-				+latitude+"&city_longitude="+longitude+"&cityno="+locno;
+				+latitude+"&city_longitude="+longitude+"&cityno="+locno+"&city_code="+code+"&city_siguncode="+siguncode;
 	}
+	
 </script>
 </head>
 <body>
@@ -62,7 +66,7 @@
 				</tr>
 				<tr>
 					<td colspan="2"
-						onclick="select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}')">${List.loc_name}</td>
+						onclick="select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}','${List.loc_code}','${List.loc_siguncode}')">${List.loc_name}</td>
 				</tr>
 				<tr>
 					<td>${List.loc_no}</td>
