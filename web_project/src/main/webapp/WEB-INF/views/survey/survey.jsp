@@ -66,11 +66,11 @@
 	<jsp:include page="../top.jsp"></jsp:include>
 
 	<form method="POST" name="survey_form"
-		action="${pageContext.request.contextPath }/survey/survey.do"
-		style="border: 3px; border-color: #f1f1f1">
+		action="${pageContext.request.contextPath }/survey/survey.do">
 
 		<c:set value="${survey_Level}" var="level"></c:set>
 		<c:set value="${survey_Answer}" var="answer"></c:set>
+		
 		<c:choose>
 			<c:when test="${level eq null}">
 				<div class="container">
@@ -78,7 +78,7 @@
 					<h3>저희가 최적화시켜 맞춤형으로 추천해드립니다.</h3>
 					<div class="btn-group">
 						<button type="button" class="btn btn-primary" onclick="start_()">자신의
-							여행 성향 측정하러 가기</button>
+							여행 성향 측정하러 가기 >></button>
 					</div>
 				</div>
 				<input type="hidden" name="survey_Level">
