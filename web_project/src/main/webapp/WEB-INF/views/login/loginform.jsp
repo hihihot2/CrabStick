@@ -28,7 +28,9 @@ $(function(){
 			} else {
 				$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
 			}
-		} 
+		} else {
+			$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+		}
 	}
 });
 

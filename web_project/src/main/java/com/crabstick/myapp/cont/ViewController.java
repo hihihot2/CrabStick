@@ -86,6 +86,9 @@ public class ViewController {
 			return null;
 		}
 	}
+	
+	
+	
 	/*******************************/
 	@RequestMapping(value="/viewCont/search.do")
 	public ModelAndView searchLoc(@RequestParam(value="loc_name")String loc_name){
