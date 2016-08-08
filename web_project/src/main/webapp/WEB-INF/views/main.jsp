@@ -202,11 +202,11 @@ $(function($){
 	<br>
 	
 	 
- <div id="slides" style="width: 45%;height: 35%">
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"><!--1번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"><!--2번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"><!--3번 사진-->
-    <img src="http://slidesjs.com/examples/standard/img/example-slide-4.jpg"><!--4번 사진-->
+ <div id="slides" style="width: 40%;height: 40%">
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--1번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--2번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--3번 사진-->
+    <img src="http://i.imgur.com/yUrVqoB.jpg"><!--4번 사진-->
   </div>
   <div id="slidesjs-log"></div>
 
