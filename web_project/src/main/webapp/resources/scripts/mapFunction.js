@@ -5,12 +5,23 @@
 	var count = 0;
 	var pathNum = 0;
 	var searchList = [];
+	var city_code;
+	var siguncode;
 
 	//위치 생성
 	function setPlace(lat, lng, type) {
+		var url;
+		switch(type){
+		case 0: url = "../resources/png/hotel.png";break;
+		case 1: url = "../resources/png/food.png";break;
+		case 2: url = "../resources/png/attraction.png";break;
+		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
-			map : map
+			map : map,
+			icon : {
+				url: url
+			}
 		//position: 마커의 위치를 나타내는 지도 좌표
 		//map: 마커를 표시할 map 객체
 		//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
@@ -202,7 +213,6 @@
 		/*var params = "query="+data;
 		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
-
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
@@ -217,10 +227,11 @@
 			}
 		}
 	}
+	//카테고리 Ajax 검색
 	function checkcategory(i,lat,lng){
 		var categories = document.getElementsByName("categorychk");
 		if(categories[i].checked){
-			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng;
+			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode;
 			sendRequest("../placeCont/branch.do", params, markBranch, 'POST');
 		}else{
 			unmarkBranch(i);

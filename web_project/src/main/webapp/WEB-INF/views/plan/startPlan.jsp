@@ -47,7 +47,7 @@
 	}
 
 	function select_loc(latitude, longitude, locno, code, siguncode) {
-		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
+		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
 				+latitude+"&city_longitude="+longitude+"&cityno="+locno+"&city_code="+code+"&city_siguncode="+siguncode;
 	}
 	

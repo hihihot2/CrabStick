@@ -69,6 +69,8 @@
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
+		city_code = <%= request.getAttribute("city_code")%>;
+		siguncode = <%= request.getAttribute("siguncode")%>;
 		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
