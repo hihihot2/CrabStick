@@ -24,6 +24,36 @@ public class PlaceController {
 	private String expediaConsumerKey = "D9o6vpXU1ANf0zteRzFIAS83NkccKkoJ";
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
 
+	@RequestMapping(value="/placeCont/branch.do")
+	public ModelAndView setBranch(@RequestParam(value="branch")int branch, @RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng){
+		System.out.println("placeCont >> setBranch");
+		ModelAndView mav = null;
+		if(branch == 0){ //호텔 파싱
+			mav = new ModelAndView("plan/getHotelJSON");
+			Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_LATTITUDE, lat);
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_LONGITUDE, lng);
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
+			
+			Response hotels = null;
+			try {
+				hotels = expedia.getHotels();			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			mav.addObject("HOTELS", hotels.getHotelList());
+		}else if(branch == 1){ //맛집 파싱
+			
+		}else if(branch == 2){
+			
+		}else if(branch == 3){
+			
+		}
+		return mav;
+	}
+	
 	@RequestMapping(value="/placeCont/getRestaurants.do")
 	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude, @RequestParam(value="cityno") String cityno) {
 		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);

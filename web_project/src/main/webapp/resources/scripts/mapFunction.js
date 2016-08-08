@@ -218,3 +218,22 @@
 			}
 		}
 	}
+	function checkcategory(i,lat,lng){
+		var categories = document.getElementsByName("categorychk");
+		if(categories[i].checked){
+			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng;
+			sendRequest("../placeCont/branch.do", params, markBranch, 'POST');
+		}else{
+			
+		}
+	}
+	function markBranch(){
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var result = httpRequest.responseText;
+				alert(result);
+			}else {
+				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
+			}
+		}
+	}
