@@ -135,36 +135,19 @@
 		
 		
 	});
-	
-
-	function pathComplete(form) {
-		var arr = new Array();
-		var path = polyline.getPath();
-		var flag = confirm("일정을 저장하시겠습니까?")
-		if (!flag) {
-			return;
-		} else {
-			for (var i = 0; i < path.length; i++) {
-				var object = new Object();
-				object.ven_name = form.ven_name[i].value;
-				object.ven_lati = form.ven_lati[i].value;
-
-				object.ven_long = form.ven_long[i].value;
-				object.loc_no = form.loc_no[i].value;
-				arr.push(object);
-			}
-			console.log(arr);
-			alert(arr);
-			location.href = "${pageContext.request.contextPath }/planCont/addPath.do?json="
-					+ JSON.stringify(arr);
-		}
-	}	
 </script>
 
 <!----------- 동희 작업구역 ------------>
 <script type="text/javascript">
 	(function($) {
 		$(document).ready(function() {
+			var date = new Date();
+			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "의 나의 여행";
+			var defaultPlanComment = "여행 넘나 재밌는 것~";
+			
+			$('input#planName').attr('placeholder', '여행 이름이에요. 예) ' + defaultPlanName);
+			$('input#planComment').attr('placeholder', '여행 설명이에요. 예) ' + defaultPlanComment);
+			
 			// #planCost, #planPersons에 숫자만 입력받게 하기
 			$('#planCost, #planPersons').keydown(function(event) {
 				var keyId = event.keyCode;
@@ -182,8 +165,58 @@
 				}
 			})
 			
-			$('#venueComment').change(function() {
-				// TODO: 코멘트 추가
+			// 서버에 경로 저장후 왼쪽 리스트에 하나로 묶어서 저장하기.
+			$('input#addPath').click(function() {
+				var arr = new Array();
+				
+				for(var i = 0; i < pathObj.length; i++) {
+					var object = new Object();
+					object.venueName = decodeURIComponent(pathObj[i].name);
+					object.venueComment = pathObj[i].comment;
+					object.venueType = pathObj[i].type;
+					object.lat = polyline.getPath().getAt(i).lat().toString();
+					object.lng = polyline.getPath().getAt(i).lng().toString();
+					arr.push(object);
+				}
+				
+				var plan = new Object();
+				if($('input#planName').val() == '') {
+					plan.planName = defaultPlanName;	
+				} else {
+					plan.planName = $('input#planName').val();					
+				}
+				
+				if($('input#planComment').val() == '') {
+					plan.planComment = defaultPlanComment;
+				} else {
+					plan.planComment = $('input#planComment').val();					
+				}
+				
+				if($('input#planCost').val() == '') {
+					plan.planCost = 0;
+				} else {
+					plan.planCost = $('input#planCost').val() * 1;
+				}
+				
+				if($('input#planPersons').val() == '') {
+					plan.planPersons = 1;	
+				} else {
+					plan.planPersons = $('input#planPersons').val() * 1;					
+				}
+				plan.planStyle = $('select#planStyle option:selected').val() * 1;
+				plan.path = arr;
+				
+				console.log(JSON.stringify(plan));
+				
+				$.ajax({
+					url:"${pageContext.request.contextPath }/planCont/addPath.do",
+					dataType:'json',
+					type:'GET',
+					data: {plan: JSON.stringify(plan)},
+					success:function(result) {
+						alert('전송됨')						
+					}
+				})
 			})
 		})
 	})(jQuery)
@@ -250,10 +283,10 @@
 			<div class='planInfo'>
 			<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='text' id='planName' placeholder='계획1'>
-					<input type='text' id='planComment' placeholder='계획 설명'>
+					<input type='text' id='planName'>
+					<input type='text' id='planComment'>
 					<input type="text" id='planCost' placeholder='여행 비용' >
-					<input type="text" id='planPersons' placeholder='여행 인원'>
+					<input type="text" id='planPersons' placeholder='여행 인원 (기본 값: 1)'>
 					<select id='planStyle'>
 						<option label='문화 탐방' value='1'>
 						<option label='식도락' value='2'>
@@ -267,7 +300,7 @@
 			<!-- 경로 정보 입력 -->
 				<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 					<div id='venueList'></div>
-					<input type="button" id='addPath' value="일정 추가" onclick="pathComplete(this.form)">					
+					<input type="button" id='addPath' value="일정 추가"">					
 					<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
 				</form>
 			</div>

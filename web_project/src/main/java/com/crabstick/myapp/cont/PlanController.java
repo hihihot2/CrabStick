@@ -7,12 +7,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -31,13 +31,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -47,31 +47,30 @@ import com.crabstick.myapp.path.Path;
 import com.crabstick.myapp.path.PathService;
 import com.crabstick.myapp.plan.Plan;
 import com.crabstick.myapp.plan.PlanService;
+import com.crabstick.myapp.venue.Venue;
 import com.crabstick.myapp.venue.VenueService;
-import com.crabstick.myapp.venue.Venues;
 
 @Controller
 public class PlanController {
 	
 	@Resource(name = "venueService")
-	private VenueService venueservice;
-	public void setService(VenueService venueservice) {
-		this.venueservice = venueservice;
+	private VenueService venueService;
+	public void setService(VenueService venueService) {
+		this.venueService = venueService;
 	}
 	
 	@Resource(name = "pathService")
-	private PathService pathservice;
-	public void setService(PathService pathservice) {
-		this.pathservice = pathservice;
+	private PathService pathService;
+	public void setService(PathService pathService) {
+		this.pathService = pathService;
 	}
 	
 	@Resource(name = "planService")
-	private PlanService planservice;
-	public void setService(PlanService planservice) {
-		this.planservice = planservice;
+	private PlanService planService;
+	public void setService(PlanService planService) {
+		this.planService = planService;
 	}
 	
-
 	private String clientId = "ej3ANIP8b0vPSY8tXHEG";
 	private String clientSecret = "FNeWBxiKdd";
 	
@@ -249,60 +248,49 @@ public class PlanController {
 	}
 	
 	@RequestMapping(value="/planCont/addPath.do")
-	public void addPath(@RequestParam("json")String json) {
+	public String addPath(@RequestParam("plan")String plan, HttpSession session) {
 		System.out.println("일정추가 시작");
-		Date date = new Date(0);
-		 
-		System.out.println(date);
-		
-		if(json != null) {
-			System.out.println("json: " + json);
-			JSONArray jsonArray = (JSONArray)JSONValue.parse(json);
-			Iterator iterator = jsonArray.iterator();
-			int count = 1;
-			Venues v = new Venues();
-			Path pa = new Path();			
-			Plan p = new Plan();
+		if(plan != null) {
+			System.out.println("plan: " + plan);
+			JSONObject planObject = (JSONObject)JSONValue.parse(plan);
+			String planName = (String) planObject.get("planName");
+			String planComment = (String) planObject.get("planComment");
+			long planCost = (Long) planObject.get("planCost");
+			long planPersons = (Long) planObject.get("planPersons");
+			long planStyle = (Long) planObject.get("planStyle");
+			int memberNo = Integer.parseInt(session.getAttribute("no").toString());
 			
+			Plan newPlan = new Plan(0, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
+			planService.insertPlan(newPlan);
+			int planNo = newPlan.getPlan_no();
+			System.out.println("Plan No: " + planNo);
 			
+			Path newPath = new Path(0, "일정 1", null, planNo);
+			pathService.insertPath(newPath);
+			int pathNo = newPath.getPath_no();
+			System.out.println("Path No: " + pathNo);
 			
-			
-			
-/*			planservice.insertPlan(p);
-*/			
-			
-			/*pa.setPath_name("첫째날");
-			pa.setPlan_no(count);			
-			pathservice.insertPath(pa);			
-			
-			
-			
-			System.out.println("path_no = " + pa.getPath_no());
+			JSONArray path = (JSONArray) planObject.get("path");
+			Iterator iterator = path.iterator();
+			int order = 1;
 			while(iterator.hasNext()) {
-				JSONObject object = (JSONObject) iterator.next();
+				JSONObject venue = (JSONObject) iterator.next();
+				String venueName = (String) venue.get("venueName");
+				String venueComment = (String) venue.get("venueComment");
+				String venueType = (String) venue.get("venueType");
+				String lat = (String) venue.get("lat");
+				String lng = (String) venue.get("lng");
 				
-				System.out.println("-------------------");
-				System.out.println(object.get("ven_name"));
-				System.out.println(object.get("ven_lati"));
-				System.out.println(object.get("ven_long"));
-				System.out.println(object.get("ven_order"));
-				System.out.println(object.get("loc_no"));
-				
-				v.setVen_name((String) object.get("ven_name"));
-				v.setVen_lati((String) object.get("ven_lati"));
-				v.setVen_long((String) object.get("ven_long"));
-				v.setVen_commt("Test");
-				v.setVen_order(count);
-				v.setPath_no(pa.getPath_no());
-				v.setVen_type("1");
-				v.setLoc_no((Integer.parseInt(object.get("loc_no").toString())));
-				count++;							
-				venueservice.insertVenue(v);
+				venueService.insertVenue(new Venue(0, venueName, lat, lng, venueComment, venueType, order, pathNo, 1));
+				order++;
 			}
-			*/
+			
+			
 		} else {
 			System.out.println("응 널이야~");
 		}
+		
+		return null;
 	}
 	
 }
