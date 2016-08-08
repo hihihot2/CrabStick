@@ -1,6 +1,9 @@
 package com.crabstick.myapp.cont;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -21,11 +24,6 @@ public class LoginController {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/")
-	public String main() {
-		return "main";
-	}
-
 	@RequestMapping(value = "/logincont/loginpage.do", method = RequestMethod.GET)
 	public String loginpage() {
 		System.out.println("로그인페이지로이동");
@@ -34,30 +32,52 @@ public class LoginController {
 
 	// 로그아웃
 	@RequestMapping(value = "/logincont/logout.do")
-	public String logout(HttpSession hs) {
+	public String logout(HttpSession hs, HttpServletResponse rsp,
+			HttpServletRequest req) {
 		hs.invalidate();
-		return "main";
+		/*Cookie[] cookies = req.getCookies();
+		for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
+			System.out.println(cookies[i].getValue());
+		}	
+		if(cookies!=null){
+			for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
+				cookies[i].setValue("");
+				cookies[i].setMaxAge(-1); // 쿠키의 유효시간을 0 으로 셋팅한다.
+				cookies[i].setPath(null);
+				rsp.addCookie(cookies[i]); 
+				System.out.println(cookies[i].getValue());
+			}	
+			System.out.println("쿠키 해제됨");
+		}*/
+		return "redirect:/";
 	}
 
 	// 로그인시작
 	@RequestMapping(value = "/logincont/login.do", method = RequestMethod.POST)
-	public ModelAndView login(Member m, HttpSession hs) {
+	public ModelAndView login(Member m, HttpSession hs, HttpServletResponse rsp,
+			HttpServletRequest req) {
+		
 		ModelAndView mav = new ModelAndView("/login/loginchkJSON");
 		System.out.println("로그인시작");
+		String autoChk= req.getParameter("always_login");
 		int chk = service.mem_login(m);
 		System.out.println(chk);
 		if (chk != 0) {
-			System.out.println("로그인 성공");
-			// num을 세션값으로 준다.
 			int no = service.getmem_no(m);
-			hs.setAttribute("no", no);
+			if (autoChk.equals("auto")) {
+				Cookie autoNo = new Cookie("autoNo", Integer.toString(no));
+				autoNo.setMaxAge(1000);
+				autoNo.setPath("/myapp/");
+				rsp.addCookie(autoNo);
+			} 
+			System.out.println("로그인성공");
+			hs.setAttribute("no", no); // no == 세션값
 			mav.addObject("chk", chk);
-			return mav;
 		} else {
 			System.out.println("로그인 실패");
 			mav.addObject("chk", chk);
-			return mav;
 		}
+		return mav;
 	}
 
 	@RequestMapping(value = "/logincont/joinpage.do")
@@ -74,9 +94,16 @@ public class LoginController {
 	@RequestMapping(value = "/logincont/idchk.do", method = RequestMethod.POST)
 	public ModelAndView idchk(@RequestParam(value = "mem_id") String mem_id) {
 		System.out.println("아이디 중복체크 시작" + mem_id);
+		int chk = 0;
 		ModelAndView mav = new ModelAndView("login/idchkJSON");
-		int chk = service.getmem_id(mem_id);
-		System.out.println(chk);
+		String[] idSpl = mem_id.split("@");
+		System.out.println("길이" + idSpl.length);
+		System.out.println("0번째 길이" + idSpl[0].length());
+		if (idSpl.length == 2 && idSpl[0].length() != 0) {
+			chk = service.getmem_id(mem_id);
+		} else {
+			chk = 1;
+		}
 		mav.addObject("chk", chk);
 		return mav;
 	}
@@ -99,18 +126,6 @@ public class LoginController {
 		return "login/findpass";
 	}
 
-/*	@RequestMapping(value = "/logincont/searchpass.do", method = RequestMethod.POST)
-	public ModelAndView searchpass(Member m) {
-		System.out.println("비밀번호찾는중");
-		ModelAndView mav = new ModelAndView("login/findpassJSON");
-		String pass = service.getmem_pass(m);
-		if (pass == null) {
-			pass = "0";
-		}
-		mav.addObject("pass", pass);
-		System.out.println("비밀번호찾기완료");
-		return mav;
-	}*/
 	@RequestMapping(value = "/logincont/editpass.do", method = RequestMethod.POST)
 	public String searchpass(Member m) {
 		System.out.println(m.toString());
@@ -146,6 +161,11 @@ public class LoginController {
 		System.out.println("회원 성향 서베이 시작");
 		return "survey/survey";
 	}
+	@RequestMapping(value = "/survey/remain.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String reSurvey() {
+		System.out.println("회원 수정>>survey");
+		return "survey/resurvey";
+	}
 	@RequestMapping(value = "/logincont/dropout.do")
 	public ModelAndView dropout(Member m, HttpSession hs) {
 		System.out.println("삭제시작");
@@ -165,7 +185,7 @@ public class LoginController {
         return mav;
 	}
 
-	@RequestMapping(value = "/survey/survey.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/survey/survey.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView surveypage(@RequestParam(value = "survey_Level") String survey_Level,
 			@RequestParam(value = "survey_Answer") String survey_Answer) {
 		ModelAndView mav = null;
@@ -195,6 +215,39 @@ public class LoginController {
 			mav.addObject("survey_Answer", survey_Answer);
 		}
 		return mav;
-
+	}
+	
+	@RequestMapping(value = "/survey/resurvey.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView resurveypage(@RequestParam(value = "survey_Level") String survey_Level,
+			@RequestParam(value = "survey_Answer") String survey_Answer, HttpSession hs) {
+		ModelAndView mav = null;
+		if (survey_Level.equals("1")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "1";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("2")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "2";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("3")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "3";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else if (survey_Level.equals("4")) {
+			mav = new ModelAndView("survey/resurvey");
+			survey_Level = "4";
+			mav.addObject("survey_Level", survey_Level);
+			mav.addObject("survey_Answer", survey_Answer);
+		} else {
+			mav = new ModelAndView("login/mypage");
+			System.out.println(survey_Answer);
+			int no = (Integer) hs.getAttribute("no");
+			service.updateSurvey(survey_Answer, no);
+			mav.addObject("survey_Answer", survey_Answer);
+		}
+		return mav;
 	}
 }

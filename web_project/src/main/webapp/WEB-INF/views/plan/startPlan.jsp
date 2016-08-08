@@ -6,30 +6,75 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
-	function select_loc(latitude, longitude) {
-		alert("위도"+latitude +"경도"+longitude);
-		
-		
+	function search_loc(){
+		var loc_name = document.searchform.locSearch.value;
+		var params = "loc_name=" + loc_name;
+		sendRequest("${pageContext.request.contextPath}/viewCont/search.do", params, search_result, 'POST');
+	}
+	
+	function search_result(){
+		if (httpRequest.readyState == 4) {
+			if (httpRequest.status == 200) {
+				var str = httpRequest.responseText;
+				var o = eval("(" + str + ")");
+				var myDiv = document.getElementById("resultView");
+				var html = "<table border='0'><tr><th>   no   </th>"
+					+"<th>    name    </th></tr>";
+					for(i=0;i<o.length;i++){
+						html += "<tr>";
+						html += "<td>"+o[i].num+"</td>";
+						html += "<td>";
+						html += "<a href='${pageContext.request.contextPath }"
+						+"/placeCont/getRestaurants.do?city_latitude="
+						+o[i].lati+"&city_longitude="+o[i].long2+"&cityno="+o[i].num+"'>" + o[i].name + "</a></td>"
+						html += "</tr>";
+					}
+					html += "</table>";
+					myDiv.innerHTML = html;
+			}
+		}
+	}
+	
+	function keyevent() {
+		if (event.keyCode == 13) {
+			search_loc();
+		}
+	}
+
+	function select_loc(latitude, longitude, locno) {
 		location.href = "${pageContext.request.contextPath}/placeCont/getRestaurants.do?city_latitude="
-				+latitude+"&city_longitude="+longitude;
+				+latitude+"&city_longitude="+longitude+"&cityno="+locno;
 	}
 </script>
 </head>
 <body>
-	locations
+	<jsp:include page="../top.jsp"></jsp:include>
+	<h3>회원이 좋아하실만한 여행을 5가지 뽑아봤어요~</h3>
 	<br>
-
-
-	<table>
-
-		<c:forEach var="List" items="${city_List}">
-			<tr>
-				<td onclick="select_loc('${List.loc_lati}','${List.loc_long}')">${List.loc_name}</td>
-			</tr>
-		</c:forEach>
-
-
-	</table>
+	<c:forEach var="List" items="${city_List}">
+		<div style="border: 0px; float: left; width: 250px; padding: 20px;">
+			<table border="1">
+				<tr>
+					<td colspan="2" height="160px" width="250px">//이곳엔 사진이 있었으면
+						좋겠당</td>
+				</tr>
+				<tr>
+					<td colspan="2"
+						onclick="select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}')">${List.loc_name}</td>
+				</tr>
+				<tr>
+					<td>${List.loc_no}</td>
+					<td>2016년 9월</td>
+				</tr>
+			</table>
+		</div>
+	</c:forEach>
+	<form name="searchform">
+	<input type="text" name="locSearch" onkeyup="search_loc()" />
+	<br>
+	<div id="resultView"></div>
+	</form>
 </body>
 </html>

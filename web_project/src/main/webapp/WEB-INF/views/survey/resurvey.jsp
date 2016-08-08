@@ -6,6 +6,8 @@
 <html>
 <head>
 <script type="text/javascript">
+history.go(1); //========================> 이것을 해주면된다 
+
 	function start_() {
 		var form = document.survey_form;
 		form.survey_Level.value = 1;
@@ -66,7 +68,7 @@
 	<jsp:include page="../top.jsp"></jsp:include>
 
 	<form method="POST" name="survey_form"
-		action="${pageContext.request.contextPath }/survey/survey.do"
+		action="${pageContext.request.contextPath }/survey/resurvey.do"
 		style="border: 3px; border-color: #f1f1f1">
 
 		<c:set value="${survey_Level}" var="level"></c:set>
@@ -150,7 +152,7 @@
 					<input type="text" class="form-control" name="cost"> 만원
 					<div class="btn-group">
 						<button type="button" class="btn btn-primary"
-							onclick="Question_2()">설문 종료 후 다음 페이지 이동</button>
+							onclick="Question_2()">설문 수정하기</button>
 					</div>
 
 				</div>

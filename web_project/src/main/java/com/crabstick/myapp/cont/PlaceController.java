@@ -1,12 +1,19 @@
 package com.crabstick.myapp.cont;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.crabstick.api.expedia.Expedia;
+import com.crabstick.api.expedia.objects.Hotel;
+import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
 
@@ -18,18 +25,25 @@ public class PlaceController {
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
 
 	@RequestMapping(value="/placeCont/getRestaurants.do")
-	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude) {
+	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude, @RequestParam(value="cityno") String cityno) {
 		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
+		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
 		System.out.println(city_latitude+","+city_longitude);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);
+		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
 		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
 
-		ArrayList<Group> venueGroups = null;
+		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
+		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
+		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
+		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
 		
+		ArrayList<Group> venueGroups = null;
+		Response hotels = null;
 		
 		try {
 			venueGroups = foursquare.getVenues();
+			hotels = expedia.getHotels();			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,6 +74,10 @@ public class PlaceController {
 		mav.addObject("VENUES", venueGroups);
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
+		mav.addObject("loc_no",cityno);
+		mav.addObject("HOTELS", hotels.getHotelList());
 		return mav;
 	}
+	
+	
 }

@@ -6,16 +6,42 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" ></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
-	function startPlan(){
-		location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
+$(function($){
+	$("#logout").on("click", function(){
+		$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+		$.removeCookie('autoNo', { expires: -1, path: '/myapp/', secure: false })
+	}) 
+})
+	function startPlan(sessionNo){	
+		if(sessionNo == null){
+			// 로그인 안 되어있을시 로그인 페이지로 이동
+			action_do('login')	
+		} else {
+			// 로그인 되어있을시
+			location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
+		}
+	}
+	
+	function showMyPlans(sessionNo) {
+		if(sessionNo == null){
+			// 로그인 안 되어있을시 로그인 페이지로 이동
+			action_do('login')
+		} else {
+			// 로그인 되어있을시
+			// TODO: 내 플랜 보기 코드 수행
+		}
 	}
 </script>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
-	<input type="button" value="플래너 시작하기" onclick="startPlan()"><br>
+	<input type="button" value="플래너 시작하기" onclick="startPlan(${no})">
+	<input type="button" value="내가세운 계획 보기" onclick="showMyPlans(${no})">
+	<br>
 
 <div style="border: 0px; float: left; width: 250px; padding:20px;">
   <table border="1" >

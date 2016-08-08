@@ -13,5 +13,6 @@ public interface RecommendationService {
 	 *   
 	 * */
 	public ArrayList<City> recommendation_City(String answer);
-	
+	public ArrayList<City> recommendation_City_TOP5(String answer);
+	public ArrayList<City> searchByName(String loc_name);
 }

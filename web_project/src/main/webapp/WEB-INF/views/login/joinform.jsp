@@ -8,17 +8,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 	function id_chk(){		
-		var mem_id = document.joinform.mem_id.value;		
-		if(mem_id == ""){
-			alert('아이디를 입력하세요')
-		}else if(!mem_id.match('.com')){
-			alert('메일형식이 맞지 않습니다.')
-		}else if(!mem_id.match('@')){
-			alert('메일형식이 맞지 않습니다.')			
-		}else{
 			var params = "mem_id="+document.joinform.mem_id.value;
 			sendRequest("${pageContext.request.contextPath}/logincont/idchk.do", params, id_chkresult, 'POST')	
-		}	
+		
 	}
 	function id_chkresult() {
 		if (httpRequest.readyState == 4) {
@@ -53,6 +45,9 @@
 			alert("비밀번호는 6자리 이상으로 설정해주세요")			
 		}else{
 			var params = "mem_id="+document.joinform.mem_id.value;
+			var html = "<input type='text' name='certify'/> "+
+	           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>" 
+			document.getElementById("msgconfirm").innerHTML = '<h3>회원의 이메일주소로 인증번호를 전송하였습니다. <h3><br><h3>인증번호입력 : </h3>' + html
 			sendRequest("${pageContext.request.contextPath}/emailCont/sentMsg.do", params, chk_mail, 'POST')
 		}	
 	}
@@ -60,10 +55,7 @@
 	function chk_mail() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var html = "<input type='text' name='certify'/> "+
-		           "<input type='button' value='인증하기' onclick='sumbit_cert()'/>"
-		        alert("가입예정자의 이메일로 메일을 첨부하였습니다 확인바랍니다.")
-				document.getElementById("msgconfirm").innerHTML = '<h3>인증번호입력 : </h3>' + html 
+				/// 비동기식 전달을위해선언, 값없음
 			}
 		}
 	}
@@ -82,14 +74,15 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="../top.jsp"/>
 <form name="joinform" method="post">
 <input type="hidden" name="chk" value="0">
-아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요">
-<input type="button" value="중복확인" onclick="id_chk()"><div id="checkid"></div><br>
+아이디 : <input type="text" name="mem_id" placeholder="이메일주소를 입력하세요" onkeyup="id_chk()">
+<div id="checkid"></div><br>
 비밀번호 : <input type="password" name="mem_pwd" placeholder="비밀번호를 입력하세요"><br>
 이름 : <input type="text" name="mem_name" placeholder="이름을 입력하세요"><br>
 <input type="hidden" name="mem_survey" value="${survey_Answer}">
-<input type="button" value="완료" onclick="join_do()"><input type="button" value="취소" onclick="cancle_do()">
+<input type="button" value="완료" onclick="join_do()">
 </form>
 <div id="msgconfirm"></div><br>
 

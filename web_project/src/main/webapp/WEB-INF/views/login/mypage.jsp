@@ -30,6 +30,14 @@
 				document.mypage.action="${pageContext.request.contextPath}/logincont/dropoutpage.do"
 				document.mypage.submit()
 			}
+		}else if(type=='survey'){
+			var flag = confirm("설문조사를 다시 응하시겠습니까? \n 다시 응하시게되면 기존에 작성한 설문조사 내용은 폐기됩니다.")
+			if(!flag){
+				return
+			} else {
+				document.mypage.action="${pageContext.request.contextPath}/survey/remain.do"
+				document.mypage.submit()
+			}
 		}
 	}
 
@@ -38,7 +46,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<jsp:include page="../top.jsp"></jsp:include>
 <form name="mypage" method="POST">
 id : ${members.mem_id}<br>
 이름 : ${members.mem_name}<br>
@@ -48,6 +56,8 @@ id : ${members.mem_id}<br>
 <input type="hidden" name="mem_no" value="${members.mem_no}">
 <input type="button" value="비밀번호 수정" onclick="edit_do('edit')"/>
 <input type="button" value="탈퇴" onclick="edit_do('dropout')">
+<h3> 설문조사 변경 란</h3>
+<input type="button" value="설문조사 변경" onclick="edit_do('survey')"/>
 </form>
 </body>
 </html>

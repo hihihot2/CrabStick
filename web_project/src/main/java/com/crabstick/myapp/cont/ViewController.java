@@ -3,6 +3,8 @@ package com.crabstick.myapp.cont;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,27 @@ public class ViewController {
 		this.recommendationService = recommendationService;
 	}
 	
-	
+	@RequestMapping(value = "/")
+	public String main(HttpSession session, HttpServletRequest req) {
+		Cookie[] cookies = req.getCookies();
+		String autoPlug="";
+		String autoNo="";
+		if (cookies!=null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("autoPlug")) {
+					autoPlug = cookie.getValue();
+				} else if (cookie.getName().equals("autoNo")) {
+					autoNo = cookie.getValue();
+				}
+			}
+			if (autoPlug.equals("true")) {
+				session.setAttribute("no", Integer.parseInt(autoNo));
+			}
+		} else {
+			return "main";
+		}
+		return "main";
+	}
 	
 	/********** 동희 작업구역 **********/
 	@RequestMapping(value="/viewcont/goToCity.do")
@@ -55,8 +77,7 @@ public class ViewController {
 		    String[] survey = member.getMem_survey().split(":");
 		    
 		    //TODO 설문 결과 값을 매개변수로 하여, 추천 도시 값 얻어오기
-		    ArrayList<City> city_List = recommendationService.recommendation_City(survey[2]);
-		    
+		    ArrayList<City> city_List = recommendationService.recommendation_City_TOP5(survey[2]);
 		    mav.addObject("city_List", city_List);
 		    mav.addObject("travel_purpose", survey[0]);
 		    return mav;
@@ -64,10 +85,15 @@ public class ViewController {
 			System.out.println("비로그인");
 			return null;
 		}
-		
-
-		
-		
 	}
 	/*******************************/
+	@RequestMapping(value="/viewCont/search.do")
+	public ModelAndView searchLoc(@RequestParam(value="loc_name")String loc_name){
+		ModelAndView mav =  new ModelAndView("plan/searchByResult");
+		System.out.println("검색시작");
+		ArrayList<City> resultList = recommendationService.searchByName(loc_name);
+		System.out.println(resultList.toString());
+		mav.addObject("resultList", resultList);
+		return mav;
+	}
 }

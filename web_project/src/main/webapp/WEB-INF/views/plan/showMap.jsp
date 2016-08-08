@@ -6,11 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"
-	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<title>:: 계획 만들기 ::</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -21,19 +23,54 @@
 	var zoom; //zoom 상태 판별
 	var polyline; //라인 변수
 	var eventListener = [];
+	var pathObj = [];
+	var loc_no;
 	
-	var plan = document.getElementById("plan");
+	var HOME_PATH = window.HOME_PATH || '.',
+    urlPrefix = HOME_PATH +'/',
+    urlSuffix = '.json',
+    regionGeoJson = [],
+    loadCount = 0;
 	
-	function init() {
+	
+	//맛집 마커찍기
+	function checkcategory_rest(){ //레스토랑
+		category = document.getElementsByName("categorychk");		
+		if(category[1].checked){
+			<c:forEach var="group" items="${VENUES }">
+			<c:forEach var="venue" items="${group.items }">
+				setPlace('${venue.location.lat }', '${venue.location.lng }');
+				setListener("${venue.name}".toLowerCase());
+			</c:forEach>
+		</c:forEach>	
+		}else if(!category[1].checked){
+			alert('맛집 체크해제')
+		}
+	}
+	
+	
+	//호텔 마커찍기
+	function checkcategory_hotel(){ // 호텔
+		category = document.getElementsByName("categorychk");		
+		if(category[0].checked){
+		 	<c:forEach var="hotel" items="${HOTELS }">
+				setPlace('${hotel.latitude }', '${hotel.longitude }');
+				setListener("${hotel.name}".toLowerCase());
+			</c:forEach>
+		} else if(!category[0].checked){		
+			alert('호텔 체크해제')
+		} 
+	}
+	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
-		var loc_num = <%= request.getAttribute("loc_num")%>
+		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
 		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
 			center : new naver.maps.LatLng(lat, lng),
-			zoom : 6
+			zoom : 7
 		});
 		
 		//라인 생성
@@ -41,95 +78,200 @@
 			map:map, //라인을 표시할 지도 객체
 			path: [], //라인 좌표를 저장할 배열
 			strokeColor: '#FF9B00', //라인컬러
-			strokeWeight: 3 //라인 두깨
+			strokeWeight: 4 //라인 두깨
 		});
 		
-		//도시별, 유저별로 시작점 포인트 생성
-		<c:forEach var="group" items="${VENUES }">
-			<c:forEach var="venue" items="${group.items }">
-				setPlace('${venue.location.lat }', '${venue.location.lng }');
-
-				setListener("${venue.name}".toLowerCase());
-				//setListener("${venue.name}".toLowerCase());
-			</c:forEach>
-		</c:forEach>
-		
-		//Map Click이벤트 처리 ->marker 생성 window 생성
-		/* naver.maps.Event.addListener(map, 'click', function(e) {
-			var path = polyline.getPath();
-			path.push(e.coord);
-			myPath.push(e.coord.lat(), e.coord.lng());			
-			var marker = new naver.maps.Marker({
-					position: e.coord,
-					map: map
-			});		
+		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
+				+ '<input id="searchData" style="width:250px" type="text" onkeyup="requestSearch()" placeholder="장소를 검색하세요">'
+				+ '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
+				+ '</div>');
+		contentEl.appendTo(map.getElement());
+		$('#searchData').autocomplete({
+			source: searchList,
+			select: function(event, ui){
+				alert("1");
+			},
+			focus: null
+		});
+		$(document).ready(function(){
 			
-			//마커 클릭시 이벤트 처리
-			naver.maps.Event.addListener(marker, 'click', function(e) {
-				var infowindow = new naver.maps.InfoWindow({
-					content: "마커 클릭 -> 윈도우 생성"
+		})
+		
+		/* $('#searchData').on('keyup', function(){
+			if(event.keyCode == 13){
+				var data = $(this).val();
+				$.ajax({
+					url: '${pageContext.request.contextPath}/plancont/searchloc.do?query='+data,
+					type: 'GET',
+					success: function(e) {
+						alert(e);
+					}
 				});
-				infowindow.open(map, marker);
-			});
-		
-			var tmp = document.getElementById("plan");
-		}); */
-		
+			}
+		}) */
+
+		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_hotel()"> 호텔<br>'
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_rest()"> 맛집<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_attraction()"> 명소<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick="checkcategory_traffic()"> 교통<br>' 
+				+ '</div>');
+		contentEl2.appendTo(map.getElement());
+
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
 		});
-		
+
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(polyline.getPath());
+			alert(pathObj.toString());
 		})
-	}
-
-
-	function addpath(){				
 		
+		
+	});
 	
-	}
 
-	
+	function pathComplete(form) {
+		var arr = new Array();
+		var path = polyline.getPath();
+		var flag = confirm("일정을 저장하시겠습니까?")
+		if (!flag) {
+			return;
+		} else {
+			for (var i = 0; i < path.length; i++) {
+				var object = new Object();
+				object.ven_name = form.ven_name[i].value;
+				object.ven_lati = form.ven_lati[i].value;
+
+				object.ven_long = form.ven_long[i].value;
+				object.loc_no = form.loc_no[i].value;
+				arr.push(object);
+			}
+			console.log(arr);
+			alert(arr);
+			location.href = "${pageContext.request.contextPath }/planCont/addPath.do?json="
+					+ JSON.stringify(arr);
+		}
+	}	
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
-<body onload="init()">
-	<jsp:include page="../top.jsp"></jsp:include>
-	<div>
-		<!-- 전체 화면 영역 -->
-		<table style="width: 100%; height: 100%;">
-			<tr>
-				<td style="width: 20%;" valign="top">
-				
-					<table style="width: 100%; height: 10%;">
-						<tr>
-							<td><input type="hidden" id="showwifichk" value="0">
-								<input type="button"  value="무료 Wifi" onclick="markOnWifi()">
-							</td>
-						</tr>
-						<tr>
-							<td><input type="button" value="+일정추가" onclick="addpath()">
-							</td>
-						</tr>
-					</table>
-					<br>
-					
-				<form name="ven_form" style="position: static;" action="${pageContext.request.contextPath}/plancont/addplan.do">					
-					<div id="addvenue">					
-					</div>
-					<input type="button" value="완료" onclick="path_done()">					
-				</form>
 
-				</td>
-				<td style="width: 80%;">
-					<div id="map" style="height: 900px;"></div>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<script>
+<!----------- 동희 작업구역 ------------>
+<script type="text/javascript">
+	(function($) {
+		$(document).ready(function() {
+			// #planCost, #planPersons에 숫자만 입력받게 하기
+			$('#planCost, #planPersons').keydown(function(event) {
+				var keyId = event.keyCode;
+				if( (keyId >= 48 && keyId <= 57) || (keyId >= 96 && keyId <= 105) || keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 ) {
+					return;
+				} else {
+					return false;
+				}
+			}).keyup(function(event) {
+				var keyId = event.keyCode;
+				if( keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 ) {
+					return;
+				} else {
+					$(event.target).val($(event.target).val().replace(/[^0-9]/g, ""));
+				}
+			})
+			
+			$('#venueComment').change(function() {
+				// TODO: 코멘트 추가
+			})
+		})
+	})(jQuery)
+</script>
+
+<style type="text/css">
+	.SideBar, .Map {
+		float: left;
+	}
+	
+	.SideBar {
+		width: 20%;
+		padding: 10px; 
+	}
+	
+	.Map {
+		width: 80%;
+		padding: 10px;
+	}
+	
+	#planName, #planComment, #planCost, #planPersons, #planStyle {
+		width: 100%;
+		height: 30px;
+		margin-top: 5px;
+	}
+	
+	.planInfo{
+		margin-bottom: 10px;
+	}
+	
+	#addPath, #invalidatePath {
+		width: 49%;
+	}
+	
+	#inputDiv {
+		float: left;
+		width: 80%;
 		
-	</script>
+	}
+	
+	#cancelDiv {
+		float: left;
+		width: 20%;
+		height: 100%;
+	}
+	
+	#cancelImg {
+		margin: 30%;
+		width: 40%;
+	}
+	
+	#venueName, #venueComment {
+		width: 100%;
+	}
+</style>
+<!---------------------------------->
+
+<body>
+	<jsp:include page="../top.jsp"></jsp:include>
+	<div class='AppContainer'>
+	<!-- 전체 화면 영역 -->
+		<div class='SideBar'>
+		<!-- 좌측 사이드바 -->
+			<div class='planInfo'>
+			<!-- 계획 정보 입력 -->
+				<form action="">
+					<input type='text' id='planName' placeholder='계획1'>
+					<input type='text' id='planComment' placeholder='계획 설명'>
+					<input type="text" id='planCost' placeholder='여행 비용' >
+					<input type="text" id='planPersons' placeholder='여행 인원'>
+					<select id='planStyle'>
+						<option label='문화 탐방' value='1'>
+						<option label='식도락' value='2'>
+						<option label='쇼핑' value='3'>
+						<option label='휴식' value='4'>
+					</select>
+				</form>
+			</div>
+			
+			<div class='pathList'>
+			<!-- 경로 정보 입력 -->
+				<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+					<div id='venueList'></div>
+					<input type="button" id='addPath' value="일정 추가" onclick="pathComplete(this.form)">					
+					<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
+				</form>
+			</div>
+		</div>		
+		
+		<div class='Map'>
+		<!-- 네이버 지도 -->
+			<div id="map" style="height: 900px;"></div>
+		</div>
+	</div>
+	
 </body>
 </html>
