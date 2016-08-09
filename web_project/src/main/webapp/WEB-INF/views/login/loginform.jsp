@@ -135,7 +135,6 @@ $(function(){
 	width: 40%; 
 }
 
-
 </style>
 <body>
 

@@ -11,6 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+
 <script type="text/javascript">
 	function id_chk() {
 		var params = "mem_id=" + document.joinform.mem_id.value;
@@ -18,6 +19,7 @@
 				params, id_chkresult, 'POST')
 
 	}
+
 	function id_chkresult() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
@@ -32,6 +34,7 @@
 			}
 		}
 	}
+
 	function join_do() {
 		var chk = document.joinform.chk.value;
 		var pwd = document.joinform.mem_pwd.value;
@@ -51,9 +54,9 @@
 			alert("비밀번호는 6자리 이상으로 설정해주세요")
 		} else {
 			var params = "mem_id=" + document.joinform.mem_id.value;
-			var html = "<input type='text' name='certify'/> "
-					+ "<input type='button' value='인증하기' onclick='sumbit_cert()'/>"
-			document.getElementById("msgconfirm").innerHTML = '<h3>회원의 이메일주소로 인증번호를 전송하였습니다. <h3><br><h3>인증번호입력 : </h3>'
+			var html = "<input type='text'  name='certify'/> "
+					+ "<input type='button' class='btn btn-info' value='인증하기' onclick='sumbit_cert()'/> </h1>"
+			document.getElementById("msgconfirm").innerHTML = "<h1 class='msgcss'>회원의 이메일주소로 인증번호를 전송하였습니다.</h1><br><h1 class='msgcss'> 인증번호 :\n"
 					+ html
 			sendRequest(
 					"${pageContext.request.contextPath}/emailCont/sentMsg.do",
@@ -79,13 +82,22 @@
 		document.joinform.submit();
 	}
 </script>
+
 <title>Insert title here</title>
 <style>
 .lgcss {
-	margin-top: 10%;
+	margin-top: 5%;
 	margin-left: 30%;
 	margin-right: 30%;
 	width: 40%;
+}
+
+.joincss {
+	font-size: 29px !important;
+}
+
+.msgcss {
+	font-size: 21px !important;
 }
 </style>
 </head>
@@ -96,7 +108,7 @@
 
 		<div class="panel panel-default text-center">
 			<div class="panel-heading">
-				<h1>가입하시면 더 많은 정보를 얻을 수 있습니다.</h1>
+				<h1 class='joincss'>가입하시면 더 많은 정보를 얻을 수 있습니다.</h1>
 			</div>
 
 			<div class="panel-body">
@@ -118,12 +130,11 @@
 			<div class="panel-footer">
 				<input type="button" class="btn btn-info" value="완료"
 					onclick="join_do()">
+				<div id="msgconfirm"></div>
 			</div>
 		</div>
 
 	</form>
-	<div id="msgconfirm"></div>
-	<br>
 
 </body>
 </html>
