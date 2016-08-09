@@ -223,7 +223,6 @@
 </script>
 
 <style type="text/css">
-<<<<<<< HEAD
 	.SideBar, .Map {
 		float: left;
 	}
@@ -281,55 +280,6 @@
 	.hiddenDiv {
 		display: none;
 	}
-=======
-.SideBar, .Map {
-	float: left;
-}
-
-.SideBar {
-	width: 20%;
-	padding: 10px;
-}
-
-.Map {
-	width: 80%;
-	padding: 10px;
-}
-
-#planName, #planComment, #planCost, #planPersons, #planStyle {
-	width: 100%;
-	height: 30px;
-	margin-top: 5px;
-}
-
-.planInfo {
-	margin-bottom: 10px;
-}
-
-#addPath, #invalidatePath {
-	width: 49%;
-}
-
-#inputDiv {
-	float: left;
-	width: 80%;
-}
-
-#cancelDiv {
-	float: left;
-	width: 20%;
-	height: 100%;
-}
-
-#cancelImg {
-	margin: 30%;
-	width: 40%;
-}
-
-#venueName, #venueComment {
-	width: 100%;
-}
->>>>>>> 341318a9d8eef32a54aa057511fe1bcf6be0e48e
 </style>
 <!---------------------------------->
 <body>
@@ -354,8 +304,6 @@
 					</select>
 				</form>
 			</div>
-<<<<<<< HEAD
-			
 			<div class='pathInfo'>
 			<!-- 경로 정보 입력 -->
 				<div id='pathList'>
@@ -370,19 +318,6 @@
 						<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
 					</form>
 				</div>
-				
-=======
-
-			<div class='pathList'>
-				<!-- 경로 정보 입력 -->
-				<form name="venueForm"
-					action="${pageContext.request.contextPath}/plancont/addplan.do">
-					<div id='venueList'></div>
-					<input type="button" id='addPath' value="일정 추가""> <input
-						type="button" id='invalidatePath' value="일정 초기화"
-						onclick="resetPath()">
-				</form>
->>>>>>> 341318a9d8eef32a54aa057511fe1bcf6be0e48e
 			</div>
 		</div>
 
@@ -391,15 +326,10 @@
 			<div id="map" style="height: 900px;"></div>
 		</div>
 	</div>
-<<<<<<< HEAD
-	
 	<div id='pathDiv' class='hiddenDiv'>
 		<p id='pathName'>pathName</p>
 		<p id='pathRoot'>pathRoot</p>
 	</div>
 	
-=======
-
->>>>>>> 341318a9d8eef32a54aa057511fe1bcf6be0e48e
 </body>
 </html>

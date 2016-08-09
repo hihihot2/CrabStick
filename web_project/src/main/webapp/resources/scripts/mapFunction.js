@@ -83,6 +83,7 @@
 			markers.push(tmp);
 			if(infowindow.getMap()){
 				infowindow.close();
+			}
 		}
 	}
 	
