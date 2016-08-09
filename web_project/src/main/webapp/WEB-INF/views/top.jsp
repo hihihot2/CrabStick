@@ -200,8 +200,7 @@ h4 {
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
-						<li><a href="#Menu_1">MENU 1</a></li>
-						<li><a href="#Menu_2">MENU 2</a></li>
+						
 						<c:choose>
 							<c:when test="${no ne null}">
 
