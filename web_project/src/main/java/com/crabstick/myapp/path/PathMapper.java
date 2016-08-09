@@ -1,5 +1,10 @@
 package com.crabstick.myapp.path;
 
+import java.util.ArrayList;
+
+import com.crabstick.myapp.plan.Plan;
+
 public interface PathMapper {
 	void insert(Path pa);
+	ArrayList<Path> select(int plan_no);
 }

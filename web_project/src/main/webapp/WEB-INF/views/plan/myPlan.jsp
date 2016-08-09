@@ -13,7 +13,13 @@
 <c:forEach items="${plan}" var="plan">
 	${plan.mem_no}<br>
 	${plan.plan_name}<br>
+	${plan.plan_commt}<br>
 
+		<c:forEach items="${path}" var="path">
+		${path.path_name}
+		${path.path_date}
+		
+		</c:forEach>
 </c:forEach>
 
 </body>
