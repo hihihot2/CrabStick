@@ -1,5 +1,6 @@
 package com.crabstick.myapp.cont;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -111,9 +112,19 @@ public class ViewController {
 		System.out.println(mem_no);
 		
 		ArrayList<Plan> plan = planService.selectPlan(mem_no);
+		ArrayList<Path> path = new ArrayList<Path>();
+	
 		
-
-		mav.addObject("plan", plan);
+		for(int i=0; i<plan.size(); i++){
+			int plan_no = plan.get(i).getPlan_no();
+			System.out.println(plan_no);			
+			path = pathService.selectPath(plan_no);
+			System.out.println("path = " + path.toString());
+			
+			plan.get(i).setPathlist(path);				
+			mav.addObject("plan", plan)	; // plan찍어주고
+			
+		}
 		
 		return mav;
 

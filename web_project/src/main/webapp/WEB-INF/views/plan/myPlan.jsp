@@ -11,16 +11,13 @@
 </head>
 <body>
 <c:forEach items="${plan}" var="plan">
-	${plan.mem_no}<br>
-	${plan.plan_name}<br>
-	${plan.plan_commt}<br>
-
-		<c:forEach items="${path}" var="path">
-		${path.path_name}
-		${path.path_date}
-		
-		</c:forEach>
+	${plan.plan_no}<br>
+	계획이름 : ${plan.plan_name}<br>
+	계획내용 : ${plan.plan_commt}<br>
+	<c:forEach items="${plan. pathlist}" var="path">
+		일정 이름 : ${path.path_name}<br>
+		작성일자 : ${path.path_date}<br>	
+	</c:forEach>				
 </c:forEach>
-
 </body>
 </html>

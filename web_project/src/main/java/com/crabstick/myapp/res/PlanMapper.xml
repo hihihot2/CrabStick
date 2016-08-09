@@ -25,7 +25,7 @@
 	</insert>	
 	
 	<select id="select" parameterType="int" resultMap="PlanResultMap">
-		SELECT * FROM plans WHERE mem_no=#{mem_no}
+		SELECT * FROM plans WHERE mem_no=#{mem_no} ORDER BY plan_no desc
 	</select>
 	
 </mapper>

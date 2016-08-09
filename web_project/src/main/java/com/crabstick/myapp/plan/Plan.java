@@ -1,6 +1,9 @@
 package com.crabstick.myapp.plan;
 
 import java.sql.Date;
+import java.util.ArrayList;
+
+import com.crabstick.myapp.path.Path;
 
 public class Plan {
 
@@ -12,9 +15,17 @@ public class Plan {
 	private Date plan_writedate;
 	private char plan_style;
 	private int mem_no;
-		
+	private ArrayList<Path> pathlist;	
 	
 	
+	
+	
+	public ArrayList<Path> getPathlist() {
+		return pathlist;
+	}
+	public void setPathlist(ArrayList<Path> pathlist) {
+		this.pathlist = pathlist;
+	}
 	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
 			char plan_style, int mem_no) {
 		super();
