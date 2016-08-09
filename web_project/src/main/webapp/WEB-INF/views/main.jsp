@@ -1,5 +1,9 @@
-<jsp:include page="top.jsp"></jsp:include>
 
+<!-- TOP.jsp 삽입 부분 -->
+<jsp:include page="top.jsp"></jsp:include>
+<!-- TOP.jsp 삽입 부분 -->
+
+<!-- Main.jsp 부분 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -10,13 +14,9 @@
 
 
 <script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" ></script>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
-<script type="text/javascript">
 
-  
-  
+<script type="text/javascript">
  $(function($){
      $("#logout").on("click", function(){
          $.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
@@ -149,64 +149,6 @@
 
 
 
-
-
-	<div style="border: 0px; float: left; width: 250px; padding: 20px;">
-		<table border="1">
-			<tr>
-				<td colspan="2" height="160px" width="250px">지도</td>
-			</tr>
-			<tr>
-				<td colspan="2">봉기의 서울나들이</td>
-			</tr>
-			<tr>
-				<td>3일간</td>
-				<td>2016년 9월</td>
-			</tr>
-		</table>
-	</div>
-	<div style="border: 0px; float: left; width: 250px; padding: 20px;">
-		<table border="1">
-			<tr>
-				<td colspan="2" height="160px" width="250px">지도</td>
-			</tr>
-			<tr>
-				<td colspan="2">봉기의 서울나들이</td>
-			</tr>
-			<tr>
-				<td>3일간</td>
-				<td>2016년 9월</td>
-			</tr>
-		</table>
-	</div>
-	<div style="border: 0px; float: left; width: 250px; padding: 20px;">
-		<table border="1">
-			<tr>
-				<td colspan="2" height="160px" width="250px">지도</td>
-			</tr>
-			<tr>
-				<td colspan="2">봉기의 서울나들이</td>
-			</tr>
-			<tr>
-				<td>3일간</td>
-				<td>2016년 9월</td>
-			</tr>
-		</table>
-	</div>
-	<div style="border: 0px; float: left; width: 250px; padding: 20px;">
-		<table border="1">
-			<tr>
-				<td colspan="2" height="160px" width="250px">지도</td>
-			</tr>
-			<tr>
-				<td colspan="2">봉기의 서울나들이</td>
-			</tr>
-			<tr>
-				<td>3일간</td>
-				<td>2016년 9월</td>
-			</tr>
-		</table>
-	</div>
 
 
 </body>

@@ -50,28 +50,27 @@
 	rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Lato"
 	rel="stylesheet" type="text/css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
+	
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <style>
-  h2 {
-      font-size: 24px;
-      text-transform: uppercase;
-      color: #303030;
-      font-weight: 600;
-      margin-bottom: 30px;
-  }
+h2 {
+	font-size: 24px;
+	text-transform: uppercase;
+	color: #303030;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
 
-  h4 {
-      font-size: 19px;
-      line-height: 1.375em;
-      color: #303030;
-      font-weight: 400;
-      margin-bottom: 30px;
-  }  
-
+h4 {
+	font-size: 19px;
+	line-height: 1.375em;
+	color: #303030;
+	font-weight: 400;
+	margin-bottom: 30px;
+}
 
 .navbar {
 	margin-bottom: 0;
@@ -105,31 +104,30 @@
 	padding: 100px 25px;
 }
 
-  .thumbnail {
-      padding: 0 0 15px 0;
-      border: none;
-      border-radius: 0;
-  }
+.thumbnail {
+	padding: 0 0 15px 0;
+	border: none;
+	border-radius: 0;
+}
 
-  .thumbnail img {
-      width: 100%;
-      height: 100%;
-      margin-bottom: 10px;
-  }
+.thumbnail img {
+	width: 100%;
+	height: 100%;
+	margin-bottom: 10px;
+}
 
-  .carousel-control.right, .carousel-control.left {
-      background-image: none;
-      color: #f4511e;
-  }
+.carousel-control.right, .carousel-control.left {
+	background-image: none;
+	color: #f4511e;
+}
 
-  .carousel-indicators li {
-      border-color: #f4511e;
-  }
+.carousel-indicators li {
+	border-color: #f4511e;
+}
 
-  .carousel-indicators li.active {
-      background-color: #f4511e;
-  }
-
+.carousel-indicators li.active {
+	background-color: #f4511e;
+}
 </style>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="60">
