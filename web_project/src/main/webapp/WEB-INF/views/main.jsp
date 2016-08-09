@@ -12,10 +12,9 @@
 <head>
 <title>Planner</title>
 
-
-<script src="http://code.jquery.com/jquery-2.0.3.min.js" ></script>
-<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
-
+<script
+	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
  $(function($){
      $("#logout").on("click", function(){
@@ -46,9 +45,6 @@
 		}
 	}
 	
-
-
-
 </script>
 </head>
 <body>
@@ -150,8 +146,105 @@
 	<!-- Container (BEST 도시 or 플래너 Section) -->
 
 
-
-
-
+	<!-- Container (호텔 업데이트 정보 요런거?) -->
+	<div id="Menu_2" class="container-fluid bg-grey">
+		<div class="text-center">
+			<h2>최신 정보</h2>
+			<h4>원하는 것을 선택하세요</h4>
+		</div>
+		<div class="row">
+			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>정보 1</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>20</strong> 년
+						</p>
+						<p>
+							<strong>15</strong> 객실
+						</p>
+						<p>
+							<strong>5</strong> 층
+						</p>
+						<p>
+							<strong>2</strong> 인실
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$19</h3>
+						<h4>per day</h4>
+						<button class="btn btn-lg">예약</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>정보 1</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>20</strong> 년
+						</p>
+						<p>
+							<strong>15</strong> 객실
+						</p>
+						<p>
+							<strong>5</strong> 층
+						</p>
+						<p>
+							<strong>2</strong> 인실
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$19</h3>
+						<h4>per day</h4>
+						<button class="btn btn-lg">예약</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>정보 1</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>20</strong> 년
+						</p>
+						<p>
+							<strong>15</strong> 객실
+						</p>
+						<p>
+							<strong>5</strong> 층
+						</p>
+						<p>
+							<strong>2</strong> 인실
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$19</h3>
+						<h4>per day</h4>
+						<button class="btn btn-lg">예약</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Container (호텔 업데이트 정보 요런거?) -->
+	
+	
 </body>
 </html>

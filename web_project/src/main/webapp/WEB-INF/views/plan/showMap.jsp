@@ -28,7 +28,6 @@
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var zoom; //zoom 상태 판별
 	var polyline; //라인 변수
-	var eventListener = [];
 	var pathObj = [];
 	var loc_no;
 	
@@ -36,39 +35,7 @@
     urlPrefix = HOME_PATH +'/',
     urlSuffix = '.json',
     regionGeoJson = [],
-    loadCount = 0;
-	
-	
-	//맛집 마커찍기
-	function checkcategory_rest(){ //레스토랑
-		category = document.getElementsByName("categorychk");		
-		if(category[1].checked){
-			<c:forEach var="group" items="${VENUES }">
-			<c:forEach var="venue" items="${group.items }">
-				setPlace('${venue.location.lat }', '${venue.location.lng }');
-				setListener("${venue.name}".toLowerCase());
-			</c:forEach>
-		</c:forEach>	
-		}else if(!category[1].checked){
-			alert('맛집 체크해제')
-		}
-	}
-	
-	
-	//호텔 마커찍기
-	function checkcategory_hotel(){ // 호텔
-		category = document.getElementsByName("categorychk");		
-		if(category[0].checked){
-		 	<c:forEach var="hotel" items="${HOTELS }">
-				setPlace('${hotel.latitude }', '${hotel.longitude }');
-				setListener("${hotel.name}".toLowerCase());
-			</c:forEach>
-		} else if(!category[0].checked){		
-			alert('호텔 체크해제')
-		} 
-	}
-	
-	
+    loadCount = 0;	
 	
 	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
@@ -107,19 +74,6 @@
 		$(document).ready(function(){
 			
 		})
-		
-		/* $('#searchData').on('keyup', function(){
-			if(event.keyCode == 13){
-				var data = $(this).val();
-				$.ajax({
-					url: '${pageContext.request.contextPath}/plancont/searchloc.do?query='+data,
-					type: 'GET',
-					success: function(e) {
-						alert(e);
-					}
-				});
-			}
-		}) */
 
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
@@ -134,6 +88,16 @@
 			updateMarkers(map, markers);
 		});
 
+		//맵 클릭 이벤트
+		naver.maps.Event.addListener(map, 'click', function(e) {
+			for(var i = 0 ; i < infowindows.length ; i++){
+				if(infowindows[i][1].getMap()){
+					infowindows[i][1].close();
+				}
+			}
+		});
+		
+		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
 			alert(markers.length);
 		})
