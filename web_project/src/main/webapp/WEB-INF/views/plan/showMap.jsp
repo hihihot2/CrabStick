@@ -17,10 +17,10 @@
 	background-color: #808080;
 }
 </style>
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
 <script type="text/javascript"
@@ -38,6 +38,8 @@
 	var polyline; //라인 변수
 	var pathObj = [];
 	var loc_no;
+	var isAddCondition = false;
+	var isFirstAdd = true;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -46,6 +48,7 @@
     loadCount = 0;	
 	
 	$(document).ready(function() {
+		searchList = new Array();
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
@@ -76,12 +79,8 @@
 			source: searchList,
 			select: function(event, ui){
 				alert("1");
-			},
-			focus: null
+			}
 		});
-		$(document).ready(function(){
-			
-		})
 
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
@@ -143,110 +142,144 @@
 			})
 			
 			// 서버에 경로 저장후 왼쪽 리스트에 하나로 묶어서 저장하기.
-			$('input#addPath').click(function() {
-				var arr = new Array();
-				
-				for(var i = 0; i < pathObj.length; i++) {
-					var object = new Object();
-					object.venueName = decodeURIComponent(pathObj[i].name);
-					object.venueComment = pathObj[i].comment;
-					object.venueType = pathObj[i].type;
-					object.lat = polyline.getPath().getAt(i).lat().toString();
-					object.lng = polyline.getPath().getAt(i).lng().toString();
-					arr.push(object);
-				}
-				
-				var plan = new Object();
-				if($('input#planName').val() == '') {
-					plan.planName = defaultPlanName;	
-				} else {
-					plan.planName = $('input#planName').val();					
-				}
-				
-				if($('input#planComment').val() == '') {
-					plan.planComment = defaultPlanComment;
-				} else {
-					plan.planComment = $('input#planComment').val();					
-				}
-				
-				if($('input#planCost').val() == '') {
-					plan.planCost = 0;
-				} else {
-					plan.planCost = $('input#planCost').val() * 1;
-				}
-				
-				if($('input#planPersons').val() == '') {
-					plan.planPersons = 1;	
-				} else {
-					plan.planPersons = $('input#planPersons').val() * 1;					
-				}
-				plan.planStyle = $('select#planStyle option:selected').val() * 1;
-				plan.path = arr;
-				
-				console.log(JSON.stringify(plan));
-				
-				$.ajax({
-					url:"${pageContext.request.contextPath }/planCont/addPath.do",
-					dataType:'json',
-					type:'GET',
-					data: {plan: JSON.stringify(plan)},
-					success:function(result) {
-						alert('전송됨')						
+			$('input#savePath').click(function() {
+				if(pathObj.length > 1) {
+					var arr = new Array();
+					
+					for(var i = 0; i < pathObj.length; i++) {
+						var object = new Object();
+						object.venueName = decodeURIComponent(pathObj[i].name);
+						object.venueComment = pathObj[i].comment;
+						object.venueType = pathObj[i].type;
+						object.lat = polyline.getPath().getAt(i).lat().toString();
+						object.lng = polyline.getPath().getAt(i).lng().toString();
+						arr.push(object);
 					}
-				})
+					
+					var plan = new Object();
+					if($('input#planName').val() == '') {
+						plan.planName = defaultPlanName;	
+					} else {
+						plan.planName = $('input#planName').val();					
+					}
+					
+					if($('input#planComment').val() == '') {
+						plan.planComment = defaultPlanComment;
+					} else {
+						plan.planComment = $('input#planComment').val();					
+					}
+					
+					if($('input#planCost').val() == '') {
+						plan.planCost = 0;
+					} else {
+						plan.planCost = $('input#planCost').val() * 1;
+					}
+					
+					if($('input#planPersons').val() == '') {
+						plan.planPersons = 1;	
+					} else {
+						plan.planPersons = $('input#planPersons').val() * 1;					
+					}
+					plan.planStyle = $('select#planStyle option:selected').val() * 1;
+					plan.path = arr;
+					
+					console.log(JSON.stringify(plan));
+					
+					/* $.ajax({
+						url:"${pageContext.request.contextPath }/planCont/savePath.do",
+						dataType:'json',
+						type:'GET',
+						data: {
+								'plan': JSON.stringify(plan),
+								'isFirstAdd': isFirstAdd
+							},
+						success:function(result) {
+							alert('전송됨')						
+						}
+					}) */
+					
+					isAddCondition = false;
+					isFirstAdd = false;
+					$('div#defaultAddDiv').removeClass('hiddenDiv')
+					$('div#addPathDiv').addClass('hiddenDiv')
+					$('input[type="button"]#addPath').val('일정 추가하기');
+					
+					$('div#pathDiv').clone().appendTo('div#pathList').removeClass('hiddenDiv');
+				} else if (pathObj.length == 0){
+					alert('오른쪽 맵에서 가고 싶은 곳을 두 개 이상 선택해 주세요.');
+				} else if (pathObj.length == 1){
+					alert('하나 더 선택해 주세요.');
+				}
+			})
+			
+			// 일정 생성 버튼을 누르면 일정이 추가될 수 있도록 폼을 바꿔줌
+			$('input[type="button"]#addPath').click(function() {
+				isAddCondition = true;
+				$('div#defaultAddDiv').addClass('hiddenDiv');
+				$('div#addPathDiv').removeClass('hiddenDiv');
 			})
 		})
 	})(jQuery)
 </script>
 
 <style type="text/css">
-.SideBar, .Map {
-	float: left;
-}
-
-.SideBar {
-	width: 20%;
-	padding: 10px;
-}
-
-.Map {
-	width: 80%;
-	padding: 10px;
-}
-
-#planName, #planComment, #planCost, #planPersons, #planStyle {
-	width: 100%;
-	height: 30px;
-	margin-top: 5px;
-}
-
-.planInfo {
-	margin-bottom: 10px;
-}
-
-#addPath, #invalidatePath {
-	width: 49%;
-}
-
-#inputDiv {
-	float: left;
-	width: 80%;
-}
-
-#cancelDiv {
-	float: left;
-	width: 20%;
-	height: 100%;
-}
-
-#cancelImg {
-	margin: 30%;
-	width: 40%;
-}
-
-#venueName, #venueComment {
-	width: 100%;
-}
+	.SideBar, .Map {
+		float: left;
+	}
+	
+	.SideBar {
+		width: 20%;
+		padding: 10px;
+		clear: none; 
+	}
+	
+	.Map {		
+		width: 80%;
+		padding: 10px;
+	}
+	
+	#planName, #planComment, #planCost, #planPersons, #planStyle {
+		width: 100%;
+		height: 30px;
+		margin-top: 5px;
+	}
+	
+	.planInfo{
+		margin-bottom: 10px;
+	}
+	
+	#addPath {
+		width: 100%;
+	}
+	
+	#savePath, #invalidatePath {
+		width: 49%;
+	}
+	
+	#inputDiv {
+		float: left;
+		width: 80%;
+		
+	}
+	
+	#cancelDiv {
+		float: left;
+		width: 20%;
+		height: 100%;
+	}
+	
+	#cancelImg {
+		margin: 30%;
+		width: 40%;
+	}
+	
+	#venueName, #venueComment {
+		width: 100%;
+	}
+	
+	.hiddenDiv {
+		display: none;
+	}
 </style>
 <!---------------------------------->
 <body>
@@ -271,16 +304,20 @@
 					</select>
 				</form>
 			</div>
-
-			<div class='pathList'>
-				<!-- 경로 정보 입력 -->
-				<form name="venueForm"
-					action="${pageContext.request.contextPath}/plancont/addplan.do">
-					<div id='venueList'></div>
-					<input type="button" id='addPath' value="일정 추가""> <input
-						type="button" id='invalidatePath' value="일정 초기화"
-						onclick="resetPath()">
-				</form>
+			<div class='pathInfo'>
+			<!-- 경로 정보 입력 -->
+				<div id='pathList'>
+				</div>
+				<div id='defaultAddDiv'>
+					<input type='button' id='addPath' value='일정 만들기'>
+				</div>
+				<div id='addPathDiv' class='hiddenDiv'>
+					<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+						<div id='venueList'></div>
+						<input type="button" id='savePath' value="일정 저장">					
+						<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
+					</form>
+				</div>
 			</div>
 		</div>
 
@@ -289,6 +326,10 @@
 			<div id="map" style="height: 900px;"></div>
 		</div>
 	</div>
-
+	<div id='pathDiv' class='hiddenDiv'>
+		<p id='pathName'>pathName</p>
+		<p id='pathRoot'>pathRoot</p>
+	</div>
+	
 </body>
 </html>

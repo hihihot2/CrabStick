@@ -54,27 +54,35 @@
 			alert("비밀번호는 6자리 이상으로 설정해주세요")
 		} else {
 			var params = "mem_id=" + document.joinform.mem_id.value;
-			var html = "<input type='text'  name='certify'/> "
+			var html = "<input type='text' name='certify'/> "
 					+ "<input type='button' class='btn btn-info' value='인증하기' onclick='sumbit_cert()'/> </h1>"
+					+ "<input type='hidden' name='load_num'>"
 			document.getElementById("msgconfirm").innerHTML = "<h1 class='msgcss'>회원의 이메일주소로 인증번호를 전송하였습니다.</h1><br><h1 class='msgcss'> 인증번호 :\n"
 					+ html
 			sendRequest(
-					"${pageContext.request.contextPath}/emailCont/sentMsg.do",
-					params, chk_mail, 'POST')
+					"${pageContext.request.contextPath}/emailCont/sentMsg.do", params, chk_mail, 'POST')
 		}
 	}
-
+	var result
 	function chk_mail() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				/// 비동기식 전달을위해선언, 값없음
+				var str = httpRequest.responseText;
+				result = eval("(" + str + ")");
+				var html = "<input type='hidden' name='load_num' value= "+ result +" >"
+				document.getElementById("msgconfirm").innerHTML += html
 			}
 		}
 	}
 
 	function sumbit_cert() {
-		document.joinform.action = "${pageContext.request.contextPath}/logincont/join.do";
-		document.joinform.submit();
+		var cert = document.joinform.certify.value
+		if(cert == result){
+			document.joinform.action = "${pageContext.request.contextPath}/logincont/join.do";
+			document.joinform.submit();
+		} else {
+			alert('번호가 다릅니다.')
+		}
 	}
 
 	function cancle_do() {
@@ -130,7 +138,8 @@
 			<div class="panel-footer">
 				<input type="button" class="btn btn-info" value="완료"
 					onclick="join_do()">
-				<div id="msgconfirm"></div>
+				<div id="msgconfirm">
+				</div>
 			</div>
 		</div>
 

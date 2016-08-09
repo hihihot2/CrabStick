@@ -20,5 +20,9 @@
 		</selectKey>
 	</insert>	
 	
+	<select id="select" parameterType="int" resultMap="PathResultMap">
+		SELECT * FROM paths WHERE plan_no=#{plan_no}
+	</select>
+	
 	
 </mapper>

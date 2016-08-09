@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.crabstick.myapp.login.LoginService;
 import com.crabstick.myapp.login.Member;
+import com.crabstick.myapp.path.Path;
+import com.crabstick.myapp.path.PathService;
 import com.crabstick.myapp.plan.Plan;
 import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.City;
@@ -33,6 +35,12 @@ public class ViewController {
 	public void setService(PlanService planService) {
 		this.planService = planService;
 	}
+	@Resource(name = "pathService")
+	private PathService pathService;
+	public void setService(PathService pathService) {
+		this.pathService = pathService;
+	}
+	
 	
 	@Resource(name = "recommendationService")
 	private RecommendationService recommendationService;
@@ -102,7 +110,9 @@ public class ViewController {
 		int mem_no = (Integer) httpSession.getAttribute("no");
 		System.out.println(mem_no);
 		
-		ArrayList<Plan> plan = planService.selectPlan(mem_no);		
+		ArrayList<Plan> plan = planService.selectPlan(mem_no);
+		
+
 		mav.addObject("plan", plan);
 		
 		return mav;
