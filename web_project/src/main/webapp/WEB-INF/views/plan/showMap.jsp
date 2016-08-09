@@ -1,3 +1,7 @@
+<!-- TOP.jsp 삽입 부분 -->
+<jsp:include page="../top.jsp"></jsp:include>
+<!-- TOP.jsp 삽입 부분 -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -8,17 +12,21 @@
 <meta charset="UTF-8">
 <title>:: 계획 만들기 ::</title>
 <style type="text/css">
-	.test {
-		border:2px solid red;
-        background-color: #808080;
-	}
+.test {
+	border: 2px solid red;
+	background-color: #808080;
+}
 </style>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/scripts/mapFunction.js"></script>
 <script type="text/javascript">
 	//변수 등록
 	var count = 1;
@@ -192,71 +200,70 @@
 </script>
 
 <style type="text/css">
-	.SideBar, .Map {
-		float: left;
-	}
-	
-	.SideBar {
-		width: 20%;
-		padding: 10px; 
-	}
-	
-	.Map {
-		width: 80%;
-		padding: 10px;
-	}
-	
-	#planName, #planComment, #planCost, #planPersons, #planStyle {
-		width: 100%;
-		height: 30px;
-		margin-top: 5px;
-	}
-	
-	.planInfo{
-		margin-bottom: 10px;
-	}
-	
-	#addPath, #invalidatePath {
-		width: 49%;
-	}
-	
-	#inputDiv {
-		float: left;
-		width: 80%;
-		
-	}
-	
-	#cancelDiv {
-		float: left;
-		width: 20%;
-		height: 100%;
-	}
-	
-	#cancelImg {
-		margin: 30%;
-		width: 40%;
-	}
-	
-	#venueName, #venueComment {
-		width: 100%;
-	}
+.SideBar, .Map {
+	float: left;
+}
+
+.SideBar {
+	width: 20%;
+	padding: 10px;
+}
+
+.Map {
+	width: 80%;
+	padding: 10px;
+}
+
+#planName, #planComment, #planCost, #planPersons, #planStyle {
+	width: 100%;
+	height: 30px;
+	margin-top: 5px;
+}
+
+.planInfo {
+	margin-bottom: 10px;
+}
+
+#addPath, #invalidatePath {
+	width: 49%;
+}
+
+#inputDiv {
+	float: left;
+	width: 80%;
+}
+
+#cancelDiv {
+	float: left;
+	width: 20%;
+	height: 100%;
+}
+
+#cancelImg {
+	margin: 30%;
+	width: 40%;
+}
+
+#venueName, #venueComment {
+	width: 100%;
+}
 </style>
 <!---------------------------------->
-
 <body>
-	<jsp:include page="../top.jsp"></jsp:include>
+	<br>
+	<br>
+	<br>
 	<div class='AppContainer'>
-	<!-- 전체 화면 영역 -->
+		<!-- 전체 화면 영역 -->
 		<div class='SideBar'>
-		<!-- 좌측 사이드바 -->
+			<!-- 좌측 사이드바 -->
 			<div class='planInfo'>
-			<!-- 계획 정보 입력 -->
+				<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='text' id='planName'>
-					<input type='text' id='planComment'>
-					<input type="text" id='planCost' placeholder='여행 비용' >
-					<input type="text" id='planPersons' placeholder='여행 인원 (기본 값: 1)'>
-					<select id='planStyle'>
+					<input type='text' id='planName'> <input type='text'
+						id='planComment'> <input type="text" id='planCost'
+						placeholder='여행 비용'> <input type="text" id='planPersons'
+						placeholder='여행 인원 (기본 값: 1)'> <select id='planStyle'>
 						<option label='문화 탐방' value='1'>
 						<option label='식도락' value='2'>
 						<option label='쇼핑' value='3'>
@@ -264,22 +271,24 @@
 					</select>
 				</form>
 			</div>
-			
+
 			<div class='pathList'>
-			<!-- 경로 정보 입력 -->
-				<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+				<!-- 경로 정보 입력 -->
+				<form name="venueForm"
+					action="${pageContext.request.contextPath}/plancont/addplan.do">
 					<div id='venueList'></div>
-					<input type="button" id='addPath' value="일정 추가"">					
-					<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
+					<input type="button" id='addPath' value="일정 추가""> <input
+						type="button" id='invalidatePath' value="일정 초기화"
+						onclick="resetPath()">
 				</form>
 			</div>
-		</div>		
-		
+		</div>
+
 		<div class='Map'>
-		<!-- 네이버 지도 -->
+			<!-- 네이버 지도 -->
 			<div id="map" style="height: 900px;"></div>
 		</div>
 	</div>
-	
+
 </body>
 </html>
