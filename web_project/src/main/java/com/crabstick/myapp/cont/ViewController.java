@@ -99,6 +99,7 @@ public class ViewController {
 		mav.addObject("resultList", resultList);
 		return mav;
 	}
+	
 	@RequestMapping(value="/viewCont/detailDOC.do")
 	public ModelAndView windowShow(@RequestParam(value="loc_name")String loc_name){
 		ModelAndView mav = new ModelAndView("plan/showLocation");

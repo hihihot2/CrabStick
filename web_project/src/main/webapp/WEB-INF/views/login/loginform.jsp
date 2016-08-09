@@ -25,13 +25,17 @@ $(function(){
 			isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
 			if(!isRemember){    
 				$(_this).attr("checked", false);
-			} else {
-				$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
-			}
+			} 
+		} 
+	}
+	
+	$("#loginbtn").on("click", function(){
+		if($("#cb_saveId").is(":checked")){
+			$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
 		} else {
 			$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
 		}
-	}
+	})
 });
 
 
