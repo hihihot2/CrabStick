@@ -1,5 +1,7 @@
 package com.crabstick.myapp.plan;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,6 +21,13 @@ public class PlanServiceImpl implements PlanService {
 	public void insertPlan(Plan p) {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
 		planmapper.insert(p);
+	}
+
+	@Override
+	public ArrayList<Plan> selectPlan(int mem_no) {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
+
+		return planmapper.select(mem_no);
 	}
 
 }

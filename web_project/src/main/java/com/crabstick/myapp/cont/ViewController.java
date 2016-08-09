@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.crabstick.myapp.login.LoginService;
 import com.crabstick.myapp.login.Member;
+import com.crabstick.myapp.plan.Plan;
+import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.City;
 import com.crabstick.myapp.recommendation.RecommendationService;
 
@@ -24,6 +26,12 @@ public class ViewController {
 
 	public void setService(LoginService service) {
 		this.service = service;
+	}
+	
+	@Resource(name = "planService")
+	private PlanService planService;
+	public void setService(PlanService planService) {
+		this.planService = planService;
 	}
 	
 	@Resource(name = "recommendationService")
@@ -86,6 +94,24 @@ public class ViewController {
 			return null;
 		}
 	}
+	
+	//나의 계획 페이지로 가기
+	//세션값을 이용해 plan데이터를 갖고와서 넘긴다.
+	@RequestMapping(value="/viewcont/showMyPlan.do")
+	public ModelAndView myPlan(HttpSession httpSession){
+		System.out.println("나의 계획페이지");
+		ModelAndView mav =  new ModelAndView("plan/myPlan");		
+		int mem_no = (Integer) httpSession.getAttribute("no");
+		System.out.println(mem_no);
+		
+		ArrayList<Plan> plan = planService.selectPlan(mem_no);		
+		mav.addObject("plan", plan);
+		
+		return mav;
+
+	}
+
+	
 	
 	
 	
