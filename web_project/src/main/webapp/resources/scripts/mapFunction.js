@@ -67,8 +67,8 @@
 		if(!isAddCondition) {
 			alert('왼쪽에서 일정 만들기를 눌러주세요~');
 		} else {
-			var infowindow = infowindows[len][1];
-			var marker = markers[len][1];
+			var infowindow = infowindows[len][1];		// ??
+			var marker = markers[len][1];				// ??
 			var path = polyline[pathCount].getPath();
 			path.push(new naver.maps.LatLng(lat,lng));
 			var venue = new Object();

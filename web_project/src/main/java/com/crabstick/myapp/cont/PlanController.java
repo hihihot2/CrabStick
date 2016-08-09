@@ -77,7 +77,7 @@ public class PlanController {
 	
 	
 
-	@RequestMapping(value="plancont/searchloc.do")
+	@RequestMapping(value="plancont/searchloc.do") //검색 목록 ajax처리 함수
 	public ModelAndView searchLocation(@RequestParam(value="data")String data){
 		System.out.println("planCont >> "+data);
 		ModelAndView mav = new ModelAndView("plan/searchLocXML");
@@ -106,10 +106,7 @@ public class PlanController {
 			NodeList addr = (NodeList) xpath.evaluate("//channel/item/address", document, XPathConstants.NODESET);
 			
 			for(int i = 0 ; i < title.getLength() ; i++){
-				/*Location loc = getLatLng(addr.item(i).getTextContent());
-				loc.setTitle(title.item(i).getTextContent());
-				list.add(loc);*/
-				list.add(new Location(title.item(i).getTextContent(),0.0, 0.0));
+				list.add(new Location(title.item(i).getTextContent(), addr.item(i).getTextContent(),0.0, 0.0));
 			}
 			mav.addObject("SLIST", list);
 		} catch (ClientProtocolException e) {
@@ -130,9 +127,10 @@ public class PlanController {
 		}
 		return mav;
 	}
-	public Location getLatLng(String addr){
+	@RequestMapping(value="plancont/searchlatlng.do")
+	public ModelAndView getLatLng(String addr){
 		String convUrl = "https://openapi.naver.com/v1/map/geocode?output=xml&query=";
-		
+		System.out.println("addr : "+addr);
 		ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpGet request = null;
@@ -140,6 +138,7 @@ public class PlanController {
 		InputSource is = null;
 		HttpResponse response = null;
 		XPath xpath = null;
+		ModelAndView mav = new ModelAndView("plan/getLatLngJSON");
 		
 		try {
 			request = new HttpGet(convUrl+URLEncoder.encode(addr, "UTF-8"));
@@ -156,7 +155,9 @@ public class PlanController {
 			xpath = XPathFactory.newInstance().newXPath();
 			String lat = (String) xpath.evaluate("//result/items/item/point/y", document, XPathConstants.STRING);
 			String lng = (String) xpath.evaluate("//result/items/item/point/x", document, XPathConstants.STRING);
-			return new Location(null, Double.parseDouble(lat), Double.parseDouble(lng));
+			System.out.println("latlng : "+lat+", "+lng);
+			mav.addObject("lat", lat);
+			mav.addObject("lng", lng);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,7 +174,7 @@ public class PlanController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return mav;
 	}
 	
 	@RequestMapping(value="plancont/sel_loc.do") //location.jsp -> select User's wish destination

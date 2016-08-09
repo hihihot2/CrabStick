@@ -1,5 +1,6 @@
 package com.crabstick.myapp.cont;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.crabstick.myapp.login.LoginService;
 import com.crabstick.myapp.login.Member;
+import com.crabstick.myapp.path.Path;
+import com.crabstick.myapp.path.PathService;
 import com.crabstick.myapp.plan.Plan;
 import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.City;
@@ -33,6 +36,12 @@ public class ViewController {
 	public void setService(PlanService planService) {
 		this.planService = planService;
 	}
+	@Resource(name = "pathService")
+	private PathService pathService;
+	public void setService(PathService pathService) {
+		this.pathService = pathService;
+	}
+	
 	
 	@Resource(name = "recommendationService")
 	private RecommendationService recommendationService;
@@ -102,8 +111,20 @@ public class ViewController {
 		int mem_no = (Integer) httpSession.getAttribute("no");
 		System.out.println(mem_no);
 		
-		ArrayList<Plan> plan = planService.selectPlan(mem_no);		
-		mav.addObject("plan", plan);
+		ArrayList<Plan> plan = planService.selectPlan(mem_no);
+		ArrayList<Path> path = new ArrayList<Path>();
+	
+		
+		for(int i=0; i<plan.size(); i++){
+			int plan_no = plan.get(i).getPlan_no();
+			System.out.println(plan_no);			
+			path = pathService.selectPath(plan_no);
+			System.out.println("path = " + path.toString());
+			
+			plan.get(i).setPathlist(path);				
+			mav.addObject("plan", plan)	; // plan찍어주고
+			
+		}
 		
 		return mav;
 

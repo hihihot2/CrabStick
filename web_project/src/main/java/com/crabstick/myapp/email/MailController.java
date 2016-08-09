@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -76,9 +77,11 @@ public class MailController {
 		return mav;
 	}
 	@RequestMapping(value = "/emailCont/sentMsg.do")
-	public ModelAndView sendMsg(@RequestParam(value="mem_id") String id) {
-		ModelAndView mav = new ModelAndView("login/joinform");
+	public ModelAndView sendMsg(@RequestParam(value="mem_id") String id,
+			HttpSession hs) {
+		ModelAndView mav = new ModelAndView("login/joinformJSON");
 		subject = "회원가입 인증 안내입니다.";
+		System.out.println(subject);
 		int load_num = certifyID.generateNum();
 		cert_num = load_num;
 		try {
@@ -90,6 +93,7 @@ public class MailController {
 			messageHelper.setSubject(subject);
 			mailSender.send(message);
 			System.out.println("전송완료 " + load_num);
+			mav.addObject("load_num", load_num);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
