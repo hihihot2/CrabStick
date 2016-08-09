@@ -5,7 +5,7 @@
 	var i = -1;
 	var count = 0;
 	var pathNum = 0;
-	var searchList = [];
+	var searchList;
 	var city_code;
 	var siguncode;
 
@@ -229,22 +229,21 @@
 	}
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
-		if(event.keyCode == 13){
+		if(event.keyCode != 13){
 			requestSearch();
+		}else{
+			requestLatLng();
 		}
 	}
 	//지역 검색
 	function requestSearch(){
 		var data = document.getElementById("searchData").value;
-		/*if(searchList.length != 0){
-			searchList = [];
-		}*/
+		if(searchList.length != 0){
+			searchList = new Array();
+		}
 		
 		var params = "data="+data;
 		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
-
-		/*var params = "query="+data;
-		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
