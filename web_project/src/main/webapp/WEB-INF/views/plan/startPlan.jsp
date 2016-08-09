@@ -48,19 +48,13 @@
 					html += "<a href='${pageContext.request.contextPath }"
 							+ "/placeCont/getRestaurants.do?city_latitude="
 							+ o[i].lati + "&city_longitude=" + o[i].long2
-							+ "&cityno=" + o[i].num + "'>" + o[i].name
+							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code + "&city_siguncode=" + o[i].siguncode + "'>" + o[i].name
 							+ "</a></td>"
 					html += "</tr>";
 				}
 				html += "</table>";
 				myDiv.innerHTML = html;
 			}
-		}
-	}
-
-	function keyevent() {
-		if (event.keyCode == 13) {
-			search_loc();
 		}
 	}
 
@@ -72,6 +66,7 @@
 				+ "&cityno="
 				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
 	}
+	
 </script>
 <style type="text/css">
 .dropdown {
@@ -102,16 +97,18 @@
 	<div class="container-fluid text-center">
 		<br> <br> <br>
 		<h2>SEARCH you want to visit city</h2>
+		<form name="searchform">
 		<div class="form-group input-group">
-			<input type="text" class="form-control" name="locSearch"
-				onkeyup="search_loc()" placeholder="원하는 도시명을 검색하세요"> <span
-				class="input-group-btn">
-				<button class="btn btn-default" type="button">
+		
+			<input type="text" class="form-control" name="locSearch" 
+			placeholder="원하는 도시명을 검색하세요" onkeypress="if(event.keyCode==13) {search_loc()}"> 
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" name="searchBtn" onclick="search_loc()">
 					<span class="glyphicon glyphicon-search"></span>
 				</button>
 			</span>
 		</div>
-		<form name="searchform">
+		
 			<br>
 			<div id="resultView"></div>
 		</form>
