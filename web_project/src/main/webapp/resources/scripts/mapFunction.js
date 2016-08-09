@@ -5,7 +5,7 @@
 	var i = -1;
 	var count = 0;
 	var pathNum = 0;
-	var searchList;
+	var searchList = [];
 	var city_code;
 	var siguncode;
 
@@ -16,6 +16,7 @@
 		case 0: url = "../resources/png/hotel.png";break;
 		case 1: url = "../resources/png/food.png";break;
 		case 2: url = "../resources/png/attraction.png";break;
+		case 's': url = null;break;
 		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -229,31 +230,27 @@
 	}
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
-		if(event.keyCode != 13){
-			requestSearch();
-		}else{
-			requestLatLng();
+		if(event.keyCode == 13){
+			var data = document.getElementById("searchData").value;
+			for(var i = 0 ; i < searchList.length ; i++){
+				if(searchList[i][0] == data){
+					var params = "addr="+searchList[i][1];
+					sendRequest("../plancont/searchlatlng.do", params, setSearchPlace, 'POST');
+				}
+			}
+			//requestSearch();
 		}
-	}
-	//지역 검색
-	function requestSearch(){
-		var data = document.getElementById("searchData").value;
-		if(searchList.length != 0){
-			searchList = new Array();
-		}
-		
-		var params = "data="+data;
-		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
 	}
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var responseList = httpRequest.responseText;
-				var search = eval("("+ responseList +")");
-				for(var i = 0 ; i < search.length ; i++){
-					var before = search[i].title;
-					searchList.push(regTag(before));
-				}
+				var result = httpRequest.responseText;
+				var loc = eval("("+ result +")");
+				var data = document.getElementById("searchData").value;
+				
+				map.setCenter(new naver.maps.LatLng(loc.lat, loc.lng));
+				/*setPlace(loc.lat, loc.lng, 's');
+				setListener(data, 's');*/
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}

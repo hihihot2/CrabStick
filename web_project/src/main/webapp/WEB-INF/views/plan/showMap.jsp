@@ -48,7 +48,6 @@
     loadCount = 0;	
 	
 	$(document).ready(function() {
-		searchList = new Array();
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
@@ -69,16 +68,38 @@
 			strokeColor: '#FF9B00', //라인컬러
 			strokeWeight: 4 //라인 두깨
 		});
-		
-		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
-				+ '<input id="searchData" style="width:250px" type="text" onkeyup="requestSearch()" placeholder="장소를 검색하세요">'
-				+ '<input style="width:50px" type="button" value="검색" onclick=requestSearch()>'
+		//
+		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
+				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
 		$('#searchData').autocomplete({
-			source: searchList,
+			source: function(request, response){
+				var params = "data="+request.term;
+				//sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
+				$.ajax({
+					url: '../plancont/searchloc.do?'+params,
+					type: 'POST',
+					success: function(data){
+						var search = eval("("+ data +")");
+						var tmp = [];var tmp2 = new Array();
+						for(var i = 0 ; i < search.length ; i++){
+							var before = search[i].title;
+							tmp.push(regTag(before));
+							var sub_tmp2 = new Array();
+							sub_tmp2.push(regTag(before));
+							sub_tmp2.push(search[i].addr);
+							tmp2.push(sub_tmp2);
+						}
+						searchList = tmp2;
+						response(tmp);
+					}
+				});
+			},
 			select: function(event, ui){
-				alert("1");
+				if(event.keyCode == 13){
+					$('searchData').val(ui.item.value);
+				}
 			}
 		});
 
@@ -106,7 +127,7 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(markers.length);
+			alert(searchList.toString());
 		})
 		
 		
