@@ -12,17 +12,6 @@
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-/* $(function($){
-	$("#div2").on("click",function(){
-		$("div1").show
-		$("div2").hide
-	}) 
-	$("#div1").on("click",function(){
-		$("div2").show
-		$("div1").hide
-	}) 
-})
- */
 	function detailView(loc_name){
 		window.open("${pageContext.request.contextPath}/viewCont/detailDOC.do?loc_name=" + loc_name, "_blank", "width=800, height=800")
 	}
@@ -38,8 +27,7 @@
 				var str = httpRequest.responseText;
 				var o = eval("(" + str + ")");
 				var myDiv = document.getElementById("resultView");
-				var html = "<table border='0'><tr><th>   no   </th>"
-					+"<th>    name    </th></tr>";
+				var html = "<table border='1'><tr><th>no</th><th>name</th></tr>"
 					for(i=0;i<o.length;i++){
 						html += "<tr>";
 						html += "<td>"+o[i].num+"</td>";
@@ -78,7 +66,7 @@
 				<tr>
 					<td colspan="2" height="160px" width="250px">
 					<div id = "div1">
-						<img src="${pageContext.request.contextPath}/resources/png/city/seoul.png" height="160px" width="250px" onclick="detailView('${List.loc_name}')">
+						<img src="http://i.imgur.com/qzRNO6m.png" height="160px" width="250px" onclick="detailView('${List.loc_name}')">
 					</div>
 					</td>
 				</tr>
@@ -91,14 +79,13 @@
 					<td>2016년 9월</td>
 				</tr>
 			</table>
-		</div>
+		</div> 
 	</c:forEach>
-	<input type="text" name="locSearch" onkeyup="search_loc()" />
-	
+	<br>
 	
 	<form name="searchform">
-	<br>
-	<div id="resultView"></div>
+		<input type="text" name="locSearch" onkeyup="search_loc()" />
+		<div id="resultView"></div>
 	</form>
 </body>
 </html>

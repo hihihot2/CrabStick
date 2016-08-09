@@ -5,7 +5,7 @@
 	var i = -1;
 	var count = 0;
 	var pathNum = 0;
-	var searchList = [];
+	var searchList;
 	var city_code;
 	var siguncode;
 
@@ -62,23 +62,28 @@
 		var infowindow = infowindows[len][1];
 		infowindow.close();
 	}
+	
 	function addPath(len, lat, lng, name){
-		var infowindow = infowindows[len][1];
-		var marker = markers[len][1];
-		var path = polyline.getPath();
-		path.push(new naver.maps.LatLng(lat,lng));
-		var venue = new Object();
-		venue.name = name;
-		venue.comment = '';
-		venue.type = '1';		// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
-		pathObj.push(venue);
-		updateList(); //화면 업데이트
-		var tmp = new Array();
-		tmp.push('m');
-		tmp.push(marker);
-		markers.push(tmp);
-		if(infowindow.getMap()){
-			infowindow.close();
+		if(!isAddCondition) {
+			alert('왼쪽에서 일정 만들기를 눌러주세요~');
+		} else {
+			var infowindow = infowindows[len][1];
+			var marker = markers[len][1];
+			var path = polyline.getPath();
+			path.push(new naver.maps.LatLng(lat,lng));
+			var venue = new Object();
+			venue.name = name;
+			venue.comment = '';
+			venue.type = '1';		// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
+			pathObj.push(venue);
+			updateList(); //화면 업데이트
+			var tmp = new Array();
+			tmp.push('m');
+			tmp.push(marker);
+			markers.push(tmp);
+			if(infowindow.getMap()){
+				infowindow.close();
+			}
 		}
 	}
 	
@@ -224,22 +229,21 @@
 	}
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
-		if(event.keyCode == 13){
+		if(event.keyCode != 13){
 			requestSearch();
+		}else{
+			requestLatLng();
 		}
 	}
 	//지역 검색
 	function requestSearch(){
 		var data = document.getElementById("searchData").value;
-		/*if(searchList.length != 0){
-			searchList = [];
-		}*/
+		if(searchList.length != 0){
+			searchList = new Array();
+		}
 		
 		var params = "data="+data;
 		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
-
-		/*var params = "query="+data;
-		sendSearchRequest("https://openapi.naver.com/v1/search/local.xml", params, setSearchPlace, 'GET');*/
 	}
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {

@@ -35,20 +35,6 @@ public class LoginController {
 	public String logout(HttpSession hs, HttpServletResponse rsp,
 			HttpServletRequest req) {
 		hs.invalidate();
-		/*Cookie[] cookies = req.getCookies();
-		for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-			System.out.println(cookies[i].getValue());
-		}	
-		if(cookies!=null){
-			for (int i = 0; i < cookies.length; i++) { // 쿠키를 반복문으로 돌린다.
-				cookies[i].setValue("");
-				cookies[i].setMaxAge(-1); // 쿠키의 유효시간을 0 으로 셋팅한다.
-				cookies[i].setPath(null);
-				rsp.addCookie(cookies[i]); 
-				System.out.println(cookies[i].getValue());
-			}	
-			System.out.println("쿠키 해제됨");
-		}*/
 		return "redirect:/";
 	}
 
@@ -66,7 +52,7 @@ public class LoginController {
 			int no = service.getmem_no(m);
 			if (autoChk.equals("auto")) {
 				Cookie autoNo = new Cookie("autoNo", Integer.toString(no));
-				autoNo.setMaxAge(1000);
+				autoNo.setMaxAge(60*60*24*7);
 				autoNo.setPath("/myapp/");
 				rsp.addCookie(autoNo);
 			} 

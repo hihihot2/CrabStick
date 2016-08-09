@@ -60,13 +60,11 @@ public class ViewController {
 					autoPlug = cookie.getValue();
 				} else if (cookie.getName().equals("autoNo")) {
 					autoNo = cookie.getValue();
+					if (autoPlug.equals("true") ) {
+						session.setAttribute("no", Integer.parseInt(autoNo));
+					}
 				}
 			}
-			if (autoPlug.equals("true")) {
-				session.setAttribute("no", Integer.parseInt(autoNo));
-			}
-		} else {
-			return "main";
 		}
 		return "main";
 	}

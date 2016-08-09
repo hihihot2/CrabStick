@@ -15,36 +15,6 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-$(function(){
-	
-	$("#cb_saveId").on("click", function(){
-	var _this = this;
-	var isRemember;
-	if($("#userid").val()=="" || $("#userpw").val()=="" ){
-		alert("먼저 아이디와 패스워드를 입력하세요")
-		$(_this).attr("checked", false);
-	} else {
-		if($(_this).is(":checked")) {
-			isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
-			if(!isRemember){    
-				$(_this).attr("checked", false);
-			} 
-		} 
-	}
-	
-	$("#loginbtn").on("click", function(){
-		if($("#cb_saveId").is(":checked")){
-			$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
-		} else {
-			$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
-		}
-	})
-});
-
-
-</script>
 
 <script type="text/javascript">
 	$(function() {
@@ -71,6 +41,8 @@ $(function(){
 			}
 		})
 	});
+	
+	
 	function login_do() {
 		var id = document.loginform.mem_id.value
 		var pwd = document.loginform.mem_pwd.value
@@ -134,7 +106,6 @@ $(function(){
 	margin-right: 30%;
 	width: 40%; 
 }
-
 
 </style>
 <body>

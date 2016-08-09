@@ -44,15 +44,25 @@
 <title>Planner</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 <link href="http://fonts.googleapis.com/css?family=Montserrat"
 	rel="stylesheet" type="text/css">
+
 <link href="http://fonts.googleapis.com/css?family=Lato"
 	rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<!-- jQuery  -->
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<!-- jQuery  -->
+
 
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -105,7 +115,6 @@ h4 {
 	font-size: 12px !important;
 }
 /* 네비게이션 바 css */
-
 .jumbotron {
 	background-color: #07a3f3;
 	color: #ffffff;
@@ -200,8 +209,7 @@ h4 {
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
-						<li><a href="#Menu_1">MENU 1</a></li>
-						<li><a href="#Menu_2">MENU 2</a></li>
+
 						<c:choose>
 							<c:when test="${no ne null}">
 

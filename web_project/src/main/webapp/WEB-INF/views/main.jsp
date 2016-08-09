@@ -63,7 +63,7 @@
 
 
 	<!-- Container (BEST 도시 or 플래너 Section) -->
-	<div id="Menu_1" class="container-fluid text-center">
+	<div class="container-fluid text-center">
 		<h2>한국의 도시를 소개합니다</h2>
 		<br>
 		<h4>밑의 도시들을 만날 수 있습니다.</h4>
@@ -147,7 +147,7 @@
 
 
 	<!-- Container (호텔 업데이트 정보 요런거?) -->
-	<div id="Menu_2" class="container-fluid bg-grey">
+	<div class="container-fluid bg-grey">
 		<div class="text-center">
 			<h2>최신 정보</h2>
 			<h4>원하는 것을 선택하세요</h4>
