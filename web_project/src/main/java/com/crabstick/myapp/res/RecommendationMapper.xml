@@ -26,13 +26,13 @@
 		SELECT * FROM locations ORDER BY loc_hiweight DESC
 	</select>
 	<select id="large_City_Rank_TOP5" resultMap="CityResultMap" >
-		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_ctweight DESC) WHERE <![CDATA[ ROWNUM<=5]]>
+		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_ctweight DESC) WHERE <![CDATA[ ROWNUM<=6]]>
 	</select>
 	<select id="natural_City_Rank_TOP5" resultMap="CityResultMap" >
-		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_ntweight DESC) WHERE <![CDATA[ ROWNUM<=5]]> 
+		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_ntweight DESC) WHERE <![CDATA[ ROWNUM<=6]]> 
 	</select>
 	<select id="historical_City_Rank_TOP5" resultMap="CityResultMap" >
-		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_hiweight DESC) WHERE <![CDATA[ ROWNUM<=5]]>
+		SELECT * FROM (SELECT * FROM LOCATIONS ORDER BY loc_hiweight DESC) WHERE <![CDATA[ ROWNUM<=6]]>
 	</select>
 	<select id="searchByName" resultMap="CityResultMap" parameterType="String">
 		SELECT * FROM LOCATIONS WHERE LOC_NAME LIKE #{loc_name}
