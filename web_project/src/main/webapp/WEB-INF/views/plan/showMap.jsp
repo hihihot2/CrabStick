@@ -71,9 +71,6 @@
 			},
 			focus: null
 		});
-		$(document).ready(function(){
-			
-		})
 
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
