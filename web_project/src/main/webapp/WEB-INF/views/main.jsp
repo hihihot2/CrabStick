@@ -40,6 +40,8 @@
 		} else {
 			// 로그인 되어있을시
 			// TODO: 내 플랜 보기 코드 수행
+			location.href="${pageContext.request.contextPath}/viewcont/showMyPlan.do";
+
 		}
 	}
 	
