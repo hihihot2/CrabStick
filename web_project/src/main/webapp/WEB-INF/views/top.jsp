@@ -53,6 +53,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -73,6 +74,11 @@ h4 {
 	margin-bottom: 30px;
 }
 
+.bg-grey {
+	background-color: #f6f6f6;
+}
+
+/* 네비게이션 바 css */
 .navbar {
 	margin-bottom: 0;
 	background-color: #07a3f3; /*네비게이션 바 색상*/
@@ -98,6 +104,7 @@ h4 {
 .navbar-right {
 	font-size: 12px !important;
 }
+/* 네비게이션 바 css */
 
 .jumbotron {
 	background-color: #07a3f3;
@@ -117,6 +124,7 @@ h4 {
 	margin-bottom: 10px;
 }
 
+/* 슬라이드 부분 css */
 .carousel-control.right, .carousel-control.left {
 	background-image: none;
 	color: #f4511e;
@@ -129,6 +137,55 @@ h4 {
 .carousel-indicators li.active {
 	background-color: #f4511e;
 }
+/* 슬라이드 부분 css */
+
+/* 판넬 부분  css */
+.panel {
+	border: 1px solid #07a3f3;
+	border-radius: 0 !important;
+	transition: box-shadow 0.5s;
+}
+
+.panel:hover {
+	box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+}
+
+.panel-footer .btn:hover {
+	border: 1px solid #f4511e;
+	background-color: #fff !important;
+	color: #f4511e;
+}
+
+.panel-heading {
+	color: #fff !important;
+	background-color: #07a3f3 !important;
+	padding: 25px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.panel-footer {
+	background-color: white !important;
+}
+
+.panel-footer h3 {
+	font-size: 32px;
+}
+
+.panel-footer h4 {
+	color: #aaa;
+	font-size: 14px;
+}
+
+.panel-footer .btn {
+	margin: 15px 0;
+	background-color: #07a3f3;
+	color: #fff;
+}
+/* 판넬 부분  css */
 </style>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="60">
@@ -144,6 +201,7 @@ h4 {
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
 						<li><a href="#Menu_1">MENU 1</a></li>
+						<li><a href="#Menu_2">MENU 2</a></li>
 						<c:choose>
 							<c:when test="${no ne null}">
 
