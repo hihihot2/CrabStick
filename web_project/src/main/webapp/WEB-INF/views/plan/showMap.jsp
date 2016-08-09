@@ -35,11 +35,13 @@
 	var markers = [];//생성된 마커를 담을 배열
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var zoom; //zoom 상태 판별
-	var polyline; //라인 변수
+	var polyline = new Array(); //라인 변수
 	var pathObj = [];
 	var loc_no;
 	var isAddCondition = false;
 	var isFirstAdd = true;
+	var pathColors = ["#4A89DC", "#F6BB42", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
+	var pathCount = 0;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -60,14 +62,6 @@
 		map = new naver.maps.Map('map', {
 			center : new naver.maps.LatLng(lat, lng),
 			zoom : 7
-		});
-		
-		//라인 생성
-		polyline = new naver.maps.Polyline({
-			map:map, //라인을 표시할 지도 객체
-			path: new Array(), //라인 좌표를 저장할 배열
-			strokeColor: '#FF9B00', //라인컬러
-			strokeWeight: 4 //라인 두깨
 		});
 		
 		var contentEl = $('<div style="width:300px;position:absolute;background-color:#fff;margin:10px;">'
@@ -118,7 +112,7 @@
 	(function($) {
 		$(document).ready(function() {
 			var date = new Date();
-			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "의 나의 여행";
+			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "에 저장된 나의 여행";
 			var defaultPlanComment = "여행 넘나 재밌는 것~";
 			
 			$('input#planName').attr('placeholder', '여행 이름이에요. 예) ' + defaultPlanName);
@@ -151,8 +145,8 @@
 						object.venueName = decodeURIComponent(pathObj[i].name);
 						object.venueComment = pathObj[i].comment;
 						object.venueType = pathObj[i].type;
-						object.lat = polyline.getPath().getAt(i).lat().toString();
-						object.lng = polyline.getPath().getAt(i).lng().toString();
+						object.lat = polyline[pathCount].getPath().getAt(i).lat().toString();
+						object.lng = polyline[pathCount].getPath().getAt(i).lng().toString();
 						arr.push(object);
 					}
 					
@@ -185,26 +179,45 @@
 					
 					console.log(JSON.stringify(plan));
 					
-					/* $.ajax({
-						url:"${pageContext.request.contextPath }/planCont/savePath.do",
-						dataType:'json',
-						type:'GET',
+					$.ajax({
+						url: "${pageContext.request.contextPath }/planCont/savePath.do",
+						dataType: 'text',
+						type: 'POST',
 						data: {
 								'plan': JSON.stringify(plan),
 								'isFirstAdd': isFirstAdd
 							},
-						success:function(result) {
-							alert('전송됨')						
+						success: function(result) {
+							var planAndPath = eval('('+result+')');
+							var plan = planAndPath.plan;
+							var path = planAndPath.path;
+							
+							$('input#planNo').val(plan.plan_no);
+							$('input#planName').val(plan.plan_name);
+							$('input#planComment').val(plan.plan_commt);
+							$('input#planCost').val(plan.plan_cost);
+							$('input#planPersons').val(plan.plan_persons);
+							$('select#planStyle').val(plan.plan_style);
+							
+							var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
+							pathDiv.find('p#pathName').html(path.path_name);
+							pathDiv.find('p#pathSummary').html(path.path_summary);
+							pathDiv.find('input#pathNo').val(path.path_no);
+						},
+						error: function(request, error) {
+							alert('message: ' + request.responseText);
 						}
-					}) */
+					})
 					
 					isAddCondition = false;
 					isFirstAdd = false;
 					$('div#defaultAddDiv').removeClass('hiddenDiv')
 					$('div#addPathDiv').addClass('hiddenDiv')
 					$('input[type="button"]#addPath').val('일정 추가하기');
+					pathCount += 1;
+					pathObj = new Array();
 					
-					$('div#pathDiv').clone().appendTo('div#pathList').removeClass('hiddenDiv');
+					
 				} else if (pathObj.length == 0){
 					alert('오른쪽 맵에서 가고 싶은 곳을 두 개 이상 선택해 주세요.');
 				} else if (pathObj.length == 1){
@@ -217,7 +230,27 @@
 				isAddCondition = true;
 				$('div#defaultAddDiv').addClass('hiddenDiv');
 				$('div#addPathDiv').removeClass('hiddenDiv');
+				
+				//라인 생성
+				polyline.push(new naver.maps.Polyline({
+					map: map, //라인을 표시할 지도 객체
+					path: new Array(), //라인 좌표를 저장할 배열
+					strokeColor: pathColors[(pathCount % 10)], //라인컬러
+					strokeWeight: 5, //라인 두깨
+					strokeStyle: 'longdash'
+				}));
+				updateList();
 			})
+			
+			// 경로 초기화
+			$('input[type="button"]#cancelPath').click(function() {
+				pathObj = new Array();
+				polyline.pop().getPath().clear();
+				
+				isAddCondition = false;
+				$('div#defaultAddDiv').removeClass('hiddenDiv')
+				$('div#addPathDiv').addClass('hiddenDiv')
+			});
 		})
 	})(jQuery)
 </script>
@@ -252,7 +285,7 @@
 		width: 100%;
 	}
 	
-	#savePath, #invalidatePath {
+	#savePath, #cancelPath {
 		width: 49%;
 	}
 	
@@ -280,6 +313,20 @@
 	.hiddenDiv {
 		display: none;
 	}
+	
+	#pathDiv {
+		padding: 10px;
+		
+	}
+	
+	#pathDiv:hover {
+		background-color: rgb(235, 242, 255);
+	}
+	
+	#defaultAddDiv {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 </style>
 <!---------------------------------->
 <body>
@@ -293,10 +340,12 @@
 			<div class='planInfo'>
 				<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='text' id='planName'> <input type='text'
-						id='planComment'> <input type="text" id='planCost'
-						placeholder='여행 비용'> <input type="text" id='planPersons'
-						placeholder='여행 인원 (기본 값: 1)'> <select id='planStyle'>
+					<input type='hidden' id='planNo'>
+					<input type='text' id='planName'>
+					<input type='text' id='planComment'>
+					<input type="text" id='planCost' placeholder='여행 비용'>
+					<input type="text" id='planPersons'	placeholder='여행 인원 (기본 값: 1)'>
+					 <select id='planStyle'>
 						<option label='문화 탐방' value='1'>
 						<option label='식도락' value='2'>
 						<option label='쇼핑' value='3'>
@@ -315,7 +364,7 @@
 					<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
 						<div id='venueList'></div>
 						<input type="button" id='savePath' value="일정 저장">					
-						<input type="button" id='invalidatePath' value="일정 초기화" onclick="resetPath()">
+						<input type="button" id='cancelPath' value="일정 취소">
 					</form>
 				</div>
 			</div>
@@ -326,10 +375,23 @@
 			<div id="map" style="height: 900px;"></div>
 		</div>
 	</div>
-	<div id='pathDiv' class='hiddenDiv'>
-		<p id='pathName'>pathName</p>
-		<p id='pathRoot'>pathRoot</p>
+	<div id='pathDivForm' class='hiddenDiv'>
+		<p id='pathName'></p>
+		<p id='pathSummary'></p>
+		<input type='hidden' id='pathNo'>
 	</div>
 	
+	<div id='venueDivForm' class='hiddenDiv'>
+		<div id='inputDiv'>
+			<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.' onkeyup='modifyName("+i+",this.form)'></p>
+			<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.' onkeyup='modifyComment("+i+",this.form)'></p>
+		</div>
+		<div id='cancelDiv'>
+			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>
+		</div>
+		<input type='hidden' name='venueLatitude' id='venueLatitude'>
+		<input type='hidden' name='venueLongitude' id='venueLongitude'>
+		<input type='hidden' name='venueLocation' id='venueLocation'>
+	</div>
 </body>
 </html>

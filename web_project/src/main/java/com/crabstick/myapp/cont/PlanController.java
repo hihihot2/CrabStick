@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -247,9 +248,13 @@ public class PlanController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/planCont/addPath.do")
-	public String addPath(@RequestParam("plan")String plan, HttpSession session) {
+	@RequestMapping(value="/planCont/savePath.do")
+	public ModelAndView savePath(@RequestParam("plan")String plan, @RequestParam("isFirstAdd")boolean isFirstAdd, HttpSession session) {
 		System.out.println("일정추가 시작");
+		
+		Plan newPlan = null;
+		Path newPath = null;
+		String pathSummary = "";
 		if(plan != null) {
 			System.out.println("plan: " + plan);
 			JSONObject planObject = (JSONObject)JSONValue.parse(plan);
@@ -260,12 +265,12 @@ public class PlanController {
 			long planStyle = (Long) planObject.get("planStyle");
 			int memberNo = Integer.parseInt(session.getAttribute("no").toString());
 			
-			Plan newPlan = new Plan(0, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
+			newPlan = new Plan(0, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
 			planService.insertPlan(newPlan);
 			int planNo = newPlan.getPlan_no();
 			System.out.println("Plan No: " + planNo);
 			
-			Path newPath = new Path(0, "일정 1", null, planNo);
+			newPath = new Path(0, "일정 1", null, planNo);
 			pathService.insertPath(newPath);
 			int pathNo = newPath.getPath_no();
 			System.out.println("Path No: " + pathNo);
@@ -283,14 +288,21 @@ public class PlanController {
 				
 				venueService.insertVenue(new Venue(0, venueName, lat, lng, venueComment, venueType, order, pathNo, 1));
 				order++;
+				
+				pathSummary += venueName;
+				if(iterator.hasNext()) {
+					pathSummary += " - ";	
+				}
 			}
-			
-			
 		} else {
 			System.out.println("응 널이야~");
 		}
 		
-		return null;
+		ModelAndView mav = new ModelAndView("plan/getSummaryJSON");
+		mav.addObject("PLAN", newPlan);
+		mav.addObject("PATH", newPath);
+		mav.addObject("PATH_SUMMARY", pathSummary);
+		return mav;
 	}
 	
 	

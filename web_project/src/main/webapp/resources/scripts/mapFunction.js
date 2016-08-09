@@ -69,7 +69,7 @@
 		} else {
 			var infowindow = infowindows[len][1];
 			var marker = markers[len][1];
-			var path = polyline.getPath();
+			var path = polyline[pathCount].getPath();
 			path.push(new naver.maps.LatLng(lat,lng));
 			var venue = new Object();
 			venue.name = name;
@@ -87,17 +87,9 @@
 		}
 	}
 	
-	//경로 초기화
-	function resetPath(){
-		var path = polyline.getPath();
-		path.clear();
-		pathObj = new Array();
-		updateList();
-		
-	}
 	function updateList(){
 		var pathNum = 0;
-		var path = polyline.getPath();
+		var path = polyline[pathCount].getPath();
 		var venueList = document.getElementById("venueList");
 		//기존 리스트 삭제
 		deleteList(venueList);
@@ -153,7 +145,7 @@
 		var iDiv = document.getElementById("venue_"+num);
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
-		var path = polyline.getPath();
+		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
 		updateList();

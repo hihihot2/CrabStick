@@ -29,6 +29,7 @@ import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
 import com.crabstick.myapp.recommendation.Attraction;
+import com.crabstick.myapp.venue.VenueService;
 
 @Controller
 public class PlaceController {
