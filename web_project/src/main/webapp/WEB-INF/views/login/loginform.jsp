@@ -44,47 +44,32 @@ $(function(){
 });
 
 
-=======
-<script
-	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
-	type="text/javascript"></script>
->>>>>>> d815d5a3f5fd985a1782144ea1136abe5f64f1c6
+</script>
 
 <script type="text/javascript">
 	$(function() {
-
-		$("#cb_saveId")
-				.on(
-						"click",
-						function() {
-							var _this = this;
-							var isRemember;
-							if ($("#userid").val() == ""
-									|| $("#userpw").val() == "") {
-								alert("먼저 아이디와 패스워드를 입력하세요")
-								$(_this).attr("checked", false);
-							} else {
-								if ($(_this).is(":checked")) {
-									isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
-									if (!isRemember) {
-										$(_this).attr("checked", false);
-									} else {
-										$.cookie('autoPlug', 'true', {
-											expires : 7,
-											path : '/myapp/',
-											secure : false
-										})
-									}
-								} else {
-									$.cookie('autoPlug', 'true', {
-										expires : -1,
-										path : '/myapp/',
-										secure : false
-									})
-								}
-							}
-						});
-
+		$("#cb_saveId").on("click", function() {
+			var _this = this;
+			var isRemember;
+			if ($("#userid").val() == "" || $("#userpw").val() == "") {
+				alert("먼저 아이디와 패스워드를 입력하세요")
+				$(_this).attr("checked", false);
+			} else {
+				if ($(_this).is(":checked")) {
+					isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까? PC방등의 공공장소에서는 개인정보가 유출될 수 있으니 주의해주십시오.");
+					if (!isRemember) {
+						$(_this).attr("checked", false);
+					} 
+				}
+			}
+		});
+		$("#loginbtn").on("click", function(){
+			if($("#cb_saveId").is(":checked")){
+				$.cookie('autoPlug', 'true', { expires: 7, path: '/myapp/', secure: false })
+			} else {
+				$.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+			}
+		})
 	});
 	function login_do() {
 		var id = document.loginform.mem_id.value
