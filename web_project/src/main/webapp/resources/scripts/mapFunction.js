@@ -68,6 +68,7 @@
 			alert('왼쪽에서 일정 만들기를 눌러주세요~');
 		} else {
 			var infowindow = infowindows[len][1];
+			var marker = markers[len][1];
 			var path = polyline.getPath();
 			path.push(new naver.maps.LatLng(lat,lng));
 			var venue = new Object();
@@ -76,10 +77,12 @@
 			venue.type = '1';		// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 			pathObj.push(venue);
 			updateList(); //화면 업데이트
-			
+			var tmp = new Array();
+			tmp.push('m');
+			tmp.push(marker);
+			markers.push(tmp);
 			if(infowindow.getMap()){
 				infowindow.close();
-			}
 		}
 	}
 	
