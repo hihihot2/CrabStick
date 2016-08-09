@@ -17,10 +17,10 @@
 	background-color: #808080;
 }
 </style>
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=ej3ANIP8b0vPSY8tXHEG"></script>
 <script type="text/javascript"
@@ -46,6 +46,7 @@
     loadCount = 0;	
 	
 	$(document).ready(function() {
+		searchList = new Array();
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
@@ -76,8 +77,7 @@
 			source: searchList,
 			select: function(event, ui){
 				alert("1");
-			},
-			focus: null
+			}
 		});
 
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
