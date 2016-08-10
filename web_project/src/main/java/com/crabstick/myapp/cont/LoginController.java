@@ -149,17 +149,11 @@ public class LoginController {
 		System.out.println("회원 성향 서베이 시작 sw = " + sw);
 		ModelAndView mav = new ModelAndView("survey/survey");
 		if(sw==1){
-			int mem_no = (Integer) hs.getAttribute("no");
-			mav.addObject("no", mem_no);
+			mav.addObject("test_no", sw);
 		} else {
-			mav.addObject("no", "-1");
+			mav.addObject("test_no", sw);
 		}
 		return mav;
-	}
-	@RequestMapping(value = "/survey/remain.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String reSurvey() {
-		System.out.println("회원 수정>>survey");
-		return "survey/resurvey";
 	}
 	@RequestMapping(value = "/logincont/dropout.do")
 	public ModelAndView dropout(Member m, HttpSession hs) {
@@ -190,34 +184,34 @@ public class LoginController {
 			survey_Level = "1";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
-			mav.addObject("no", sw);
+			mav.addObject("test_no", sw);
 		} else if (survey_Level.equals("2")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "2";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
-			mav.addObject("no", sw);
+			mav.addObject("test_no", sw);
 		} else if (survey_Level.equals("3")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "3";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
-			mav.addObject("no", sw);
+			mav.addObject("test_no", sw);
 		} else if (survey_Level.equals("4")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "4";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
-			mav.addObject("no", sw);
+			mav.addObject("test_no", sw);
 		} else {
-			mav = new ModelAndView("login/joinform");
 			System.out.println(survey_Answer);
 			System.out.println(sw); 
-			if(sw==-1){
+			if(sw==0){
+				mav = new ModelAndView("login/joinform");
 				mav.addObject("survey_Answer", survey_Answer);
-			} else {
+			} else if(sw==1){
 				mav = new ModelAndView("login/mypage");
-				service.updateSurvey(survey_Answer, sw);
+				service.updateSurvey(survey_Answer, (Integer)hs.getAttribute("no"));
 			}
 			
 		}
