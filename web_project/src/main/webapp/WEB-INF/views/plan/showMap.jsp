@@ -121,7 +121,7 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(searchList.toString());
+			alert(markers.toString());
 		})
 		
 		
