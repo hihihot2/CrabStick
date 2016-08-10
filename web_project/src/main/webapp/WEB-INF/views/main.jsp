@@ -124,7 +124,7 @@
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
 					<h4>
-						"씨발!!! 서울 존나 좋앙!!"<br> <span style="font-style: normal;">최재훈
+						" 서울  좋앙!!"<br> <span style="font-style: normal;">최재훈
 							님의 평가</span>
 					</h4>
 				</div>
