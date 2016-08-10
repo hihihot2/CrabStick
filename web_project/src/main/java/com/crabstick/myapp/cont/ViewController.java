@@ -1,6 +1,5 @@
 package com.crabstick.myapp.cont;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -123,9 +122,7 @@ public class ViewController {
 			
 			plan.get(i).setPathlist(path);				
 			mav.addObject("plan", plan)	; // plan찍어주고
-			
 		}
-		
 		return mav;
 
 	}
