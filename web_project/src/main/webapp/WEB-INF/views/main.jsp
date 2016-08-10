@@ -46,6 +46,11 @@
 	}
 	
 </script>
+<style type="text/css">
+
+
+
+</style>
 </head>
 <body>
 	<!-- 네비게이션 밑 부분 -->
@@ -67,16 +72,17 @@
 		<h2>한국의 도시를 소개합니다</h2>
 		<br>
 		<h4>밑의 도시들을 만날 수 있습니다.</h4>
-		<div class="row text-center slideanim">
+		<div class="row text-center">
 			<div class="col-sm-4">
 				<div class="thumbnail">
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"
 						width="400" height="300">
+						<div class="center">SEOUL</div>
 					<p>
-						<strong>도시 1</strong>
+						<strong>SEOUL</strong>
 					</p>
-					<p>도시 1의 사진</p>
+					<p>대한민국 수도</p>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -84,10 +90,11 @@
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"
 						width="400" height="300">
+						<div class="center">BUSAN</div>
 					<p>
-						<strong>도시 2</strong>
+						<strong>BUSAN</strong>
 					</p>
-					<p>도시 2의 사진</p>
+					<p>등킨도나쓰 무밧나</p>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -95,10 +102,11 @@
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"
 						width="400" height="300">
+						<div class="center">JEJU</div>
 					<p>
-						<strong>도시 3</strong>
+						<strong>JEJU</strong>
 					</p>
-					<p>도시 3의 사진</p>
+					<p>혼자옵서예</p>
 				</div>
 			</div>
 		</div>
