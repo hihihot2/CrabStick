@@ -230,7 +230,7 @@
 						<br>
 						<div class="btn-group">
 							<c:choose>
-								<c:when test="${test_no ne '-1' }">
+								<c:when test="${test_no ne '0' }">
 									<button type="button" class="btn btn-primary" onclick="Question_3()">회원 설문수정</button>
 								</c:when>
 								<c:otherwise>
@@ -247,7 +247,7 @@
 
 
 		</c:choose>
-		<input type="text" name="switch" value="${test_no }">
+		<input type="hidden" name="switch" value="${test_no }">
 	</form>
 
 </body>
