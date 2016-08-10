@@ -57,7 +57,7 @@ public class ViewController {
 	}
 	
 	@RequestMapping(value = "/")
-	public String main(HttpSession session, HttpServletRequest req) {
+	public ModelAndView main(HttpSession session, HttpServletRequest req) {
 		Cookie[] cookies = req.getCookies();
 		String autoPlug="";
 		String autoNo="";
@@ -73,7 +73,12 @@ public class ViewController {
 				}
 			}
 		}
-		return "main";
+		ModelAndView mav = new ModelAndView("main");
+		// 아래로 최신계획정보 띄워주는거
+		ArrayList<Plan> recent_plan = new ArrayList<Plan>(); 
+		recent_plan = planService.recent_selectPlan();
+		mav.addObject("recentPlan", recent_plan);
+		return mav;
 	}
 	
 	/********** 동희 작업구역 **********/

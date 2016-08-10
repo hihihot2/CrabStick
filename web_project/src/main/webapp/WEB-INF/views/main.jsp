@@ -149,11 +149,36 @@
 	<!-- Container (호텔 업데이트 정보 요런거?) -->
 	<div class="container-fluid bg-grey">
 		<div class="text-center">
-			<h2>최신 정보</h2>
+			<h2>최신 등록된 여행계획 정보</h2>
 			<h4>원하는 것을 선택하세요</h4>
 		</div>
 		<div class="row">
+			<c:forEach var="list" items="${recentPlan }">
 			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>${list.plan_name }</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>${list.plan_no }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_commt }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_persons }</strong> 명 동행
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>${list.plan_cost }</h3> 원
+						<h4>${list.plan_writedate }</h4>
+						<button class="btn btn-lg">상세보기</button>
+					</div>
+				</div>
+			</div>
+			</c:forEach>
+			<!-- <div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
 						<h1>정보 1</h1>
@@ -182,7 +207,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -211,36 +235,7 @@
 						<button class="btn btn-lg">예약</button>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>정보 1</h1>
-					</div>
-					<div class="panel-body">
-						<p>
-							<strong>20</strong> 년
-						</p>
-						<p>
-							<strong>15</strong> 객실
-						</p>
-						<p>
-							<strong>5</strong> 층
-						</p>
-						<p>
-							<strong>2</strong> 인실
-						</p>
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- Container (호텔 업데이트 정보 요런거?) -->
