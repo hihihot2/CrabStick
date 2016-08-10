@@ -46,6 +46,11 @@
 	}
 	
 </script>
+<style type="text/css">
+
+
+
+</style>
 </head>
 <body>
 	<!-- 네비게이션 밑 부분 -->
@@ -67,16 +72,17 @@
 		<h2>한국의 도시를 소개합니다</h2>
 		<br>
 		<h4>밑의 도시들을 만날 수 있습니다.</h4>
-		<div class="row text-center slideanim">
+		<div class="row text-center">
 			<div class="col-sm-4">
 				<div class="thumbnail">
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"
 						width="400" height="300">
+						<div class="center">SEOUL</div>
 					<p>
-						<strong>도시 1</strong>
+						<strong>SEOUL</strong>
 					</p>
-					<p>도시 1의 사진</p>
+					<p>대한민국 수도</p>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -84,10 +90,11 @@
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"
 						width="400" height="300">
+						<div class="center">BUSAN</div>
 					<p>
-						<strong>도시 2</strong>
+						<strong>BUSAN</strong>
 					</p>
-					<p>도시 2의 사진</p>
+					<p>등킨도나쓰 무밧나</p>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -95,10 +102,11 @@
 					<img
 						src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"
 						width="400" height="300">
+						<div class="center">JEJU</div>
 					<p>
-						<strong>도시 3</strong>
+						<strong>JEJU</strong>
 					</p>
-					<p>도시 3의 사진</p>
+					<p>혼자옵서예</p>
 				</div>
 			</div>
 		</div>
@@ -149,11 +157,36 @@
 	<!-- Container (호텔 업데이트 정보 요런거?) -->
 	<div class="container-fluid bg-grey">
 		<div class="text-center">
-			<h2>최신 정보</h2>
+			<h2>최신 등록된 여행계획 정보</h2>
 			<h4>원하는 것을 선택하세요</h4>
 		</div>
 		<div class="row">
+			<c:forEach var="list" items="${recentPlan }">
 			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>${list.plan_name }</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>${list.plan_no }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_commt }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_persons }</strong> 명 동행
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>${list.plan_cost }</h3> 원
+						<h4>${list.plan_writedate }</h4>
+						<button class="btn btn-lg">상세보기</button>
+					</div>
+				</div>
+			</div>
+			</c:forEach>
+			<!-- <div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
 						<h1>정보 1</h1>
@@ -182,7 +215,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -211,36 +243,7 @@
 						<button class="btn btn-lg">예약</button>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>정보 1</h1>
-					</div>
-					<div class="panel-body">
-						<p>
-							<strong>20</strong> 년
-						</p>
-						<p>
-							<strong>15</strong> 객실
-						</p>
-						<p>
-							<strong>5</strong> 층
-						</p>
-						<p>
-							<strong>2</strong> 인실
-						</p>
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- Container (호텔 업데이트 정보 요런거?) -->

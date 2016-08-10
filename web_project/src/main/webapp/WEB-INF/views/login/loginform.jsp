@@ -146,13 +146,12 @@
 						<a href="javascript:find_pass()">비밀번호를 잊어버리셨나욤?</a>
 					</p>
 					<p>
-						계정이 없으세요? <a href='${pageContext.request.contextPath}/logincont/joinpage.do'>가입하기»</a>
+						계정이 없으세요? <a href='${pageContext.request.contextPath}/survey/main.do?sw=0'>가입하기»</a>
 					</p>
 				</div>
 			</div>
 		
 		<input type="hidden" value="${sw }" name="gotoPlan">
-
 	</form>
 
 </body>

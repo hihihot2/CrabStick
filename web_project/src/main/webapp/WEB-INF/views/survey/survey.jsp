@@ -21,28 +21,31 @@
 
 	function Question_(value) {
 		var form = document.survey_form;
-
 		if (form.survey_Level.value == "1") {
-
 			form.survey_Level.value = 2;
 			form.survey_Answer.value += value + ":";
-
 		} else if (form.survey_Level.value == "2") {
-
 			form.survey_Level.value = 3;
 			form.survey_Answer.value += value + ":";
-
 		} else if (form.survey_Level.value == "3") {
-
 			form.survey_Level.value = 4;
 			form.survey_Answer.value += value + ":";
-
 		}
-
 		form.submit();
 	}
 
 	function Question_2() {
+		var form = document.survey_form;
+		if (form.cost.value == "") {
+			alert("원하시는 여행 경비를 입력하세요!")
+			return false;
+		} else {
+			form.survey_Level.value = "finish";
+			form.survey_Answer.value += form.cost.value;
+			form.submit();
+		}
+	}
+	function Question_3() {
 		var form = document.survey_form;
 		if (form.cost.value == "") {
 			alert("원하시는 여행 경비를 입력하세요!")
@@ -91,10 +94,9 @@
 
 	<form method="POST" name="survey_form"
 		action="${pageContext.request.contextPath }/survey/survey.do">
-
+		
 		<c:set value="${survey_Level}" var="level"></c:set>
 		<c:set value="${survey_Answer}" var="answer"></c:set>
-
 		<c:choose>
 			<c:when test="${level eq null}">
 
@@ -119,6 +121,7 @@
 				</div>
 				<input type="hidden" name="survey_Level">
 				<input type="hidden" name="survey_Answer">
+
 			</c:when>
 
 			<c:when test="${level eq 1}">
@@ -148,6 +151,7 @@
 				</div>
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
+
 			</c:when>
 
 
@@ -177,6 +181,7 @@
 
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
+
 			</c:when>
 
 			<c:when test="${level eq 3}">
@@ -205,6 +210,7 @@
 
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
+
 			</c:when>
 
 			<c:when test="${level eq 4}">
@@ -223,8 +229,14 @@
 						<br>
 						<br>
 						<div class="btn-group">
-						<button type="button" class="btn btn-primary"
-							onclick="Question_2()">설문 종료 후 다음 페이지 이동</button>
+							<c:choose>
+								<c:when test="${test_no ne '0' }">
+									<button type="button" class="btn btn-primary" onclick="Question_3()">회원 설문수정</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="btn btn-primary"onclick="Question_2()">설문 종료 후 다음 페이지 이	동</button>
+								</c:otherwise>
+							</c:choose>
 					</div>
 					</div>
 				</div>
@@ -235,6 +247,7 @@
 
 
 		</c:choose>
+		<input type="hidden" name="switch" value="${test_no }">
 	</form>
 
 </body>

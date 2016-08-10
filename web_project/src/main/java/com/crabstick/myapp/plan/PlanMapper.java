@@ -11,4 +11,5 @@ public interface PlanMapper {
 	
 	//한개 plan만 가져오기
 	Plan selectplan(int plan_no);
+	ArrayList<Plan> recent_select();
 }
