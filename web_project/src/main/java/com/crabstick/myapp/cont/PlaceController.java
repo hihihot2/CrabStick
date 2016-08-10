@@ -40,9 +40,9 @@ public class PlaceController {
 
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
-									@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng,
-									@RequestParam(value="city_code") String code,
-									@RequestParam(value="siguncode") String siguncode){
+			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng,
+			@RequestParam(value="city_code") String code,
+			@RequestParam(value="siguncode") String siguncode){
 		System.out.println("placeCont >> setBranch");
 		ModelAndView mav = null;
 		if(branch == 0){ //호텔 파싱
@@ -53,22 +53,34 @@ public class PlaceController {
 			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
 			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
 			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
-			
+
 			Response hotels = null;
 			try {
 				hotels = expedia.getHotels();			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			mav.addObject("HOTELS", hotels.getHotelList());
+			for (int i = 0; i<hotels.getHotelList().size(); i++){
+				
+				System.out.println("호텔 이름" + hotels.getHotelList().get(i).getName());
+				System.out.println("호텔 평점" + hotels.getHotelList().get(i).getHotelGuestRating());
+				System.out.println("호텔 좋아요 수" + hotels.getHotelList().get(i).getTotalRecommendations());
+				System.out.println("호텔 리뷰 수" + hotels.getHotelList().get(i).getTotalReviews());			
+				System.out.println("호텔 추천 비율" + hotels.getHotelList().get(i).getPercentRecommended());
+				System.out.println("호텔 사진 주소" + Expedia.MEDIA_URL + hotels.getHotelList().get(i).getLargeThumbnailUrl());
+				System.out.println("호텔 주소" + hotels.getHotelList().get(i).getAddress());
 			
+				
+			}
+			mav.addObject("HOTELS", hotels.getHotelList());
+
 		}else if(branch == 1){ //맛집 파싱
 			mav = new ModelAndView("plan/getFoodJSON");
 			Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
 			foursquare.addField(Foursquare.EXPLORE_FIELD_LL, lat+","+lng);
 			foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
 			foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
-			
+
 			ArrayList<Group> venueGroups = null;
 			try {
 				venueGroups = foursquare.getVenues();
@@ -79,15 +91,22 @@ public class PlaceController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			for (int i = 0; i<venueGroups.get(0).getItems().size(); i++){
+				System.out.println("음식점 이름"+venueGroups.get(0).getItems().get(i).getName());
+				System.out.println("음식점 웹 주소"+venueGroups.get(0).getItems().get(i).getUrl());
+				System.out.println("음식점 시간"+venueGroups.get(0).getItems().get(i).getContact());
+				System.out.println("평점"+venueGroups.get(0).getItems().get(i).getRating());	
+			}
 			mav.addObject("VENUES", venueGroups);
 		}else if(branch == 2){ //명소 파싱
 			mav = new ModelAndView("plan/getAttrJSON");
-			
+
 			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
 				siguncode = "";
 			}
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
-			
+
 			//URL접근
 			Document document;
 			try {
@@ -96,41 +115,48 @@ public class PlaceController {
 				XPath  xpath = XPathFactory.newInstance().newXPath();
 				String expression = "//*/item"; //xml <item> </item> 노드 읽기
 				NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-				
+
 				for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
 
 					Attraction attraction = new Attraction();
-					
+
 					item_Node.item(idx).setTextContent("item_"+idx);
 
 					expression = "//*/title";
 					String title = xpath.compile(expression).evaluate(document);
 					attraction.setTitle(title);
 					// System.out.println(attraction.getTitle());
-					
+
 					expression = "//*/addr1";
 					String addr1 = xpath.compile(expression).evaluate(document);
 					attraction.setAddr1(addr1);
-					
+
 					expression = "//*/zipcode";
 					String zipcode = xpath.compile(expression).evaluate(document);
 					attraction.setZipcode(zipcode);
-					
+
 					expression = "//*/tel";
 					String tel = xpath.compile(expression).evaluate(document);
 					attraction.setTel(tel);
-					
+
 					expression = "//*/mapx";
 					String _longitude = xpath.compile(expression).evaluate(document);
 					attraction.setMapx(_longitude);
-					
+
 					expression = "//*/mapy";
 					String _latitude = xpath.compile(expression).evaluate(document);
 					attraction.setMapy(_latitude);
+					
+					expression = "//*/firstimage";
+					String image_Url = xpath.compile(expression).evaluate(document);
+					attraction.setImgURL(image_Url);
 
+					System.out.println("명소 이름" + attraction.getTitle());
+					System.out.println("명소 사진 URL" + attraction.getImgURL());
+					
 					attraction_list.add(attraction);
 				}
-				
+
 			} catch (SAXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -146,20 +172,20 @@ public class PlaceController {
 			}
 			mav.addObject("ATTR", attraction_list);
 		}else if(branch == 3){
-			
+
 		}
 		mav.addObject("type", branch);
 		return mav;
 	}
-	
+
 	@RequestMapping(value="/placeCont/showMap.do")
 	public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
-								@RequestParam(value="city_longitude") String city_longitude,
-								@RequestParam(value="cityno") String cityno, 
-								@RequestParam(value="city_code") String code,
-								@RequestParam(value="city_siguncode") String siguncode){
+			@RequestParam(value="city_longitude") String city_longitude,
+			@RequestParam(value="cityno") String cityno, 
+			@RequestParam(value="city_code") String code,
+			@RequestParam(value="city_siguncode") String siguncode){
 		ModelAndView mav = new ModelAndView("plan/showMap");
-		
+
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
@@ -167,7 +193,7 @@ public class PlaceController {
 		mav.addObject("siguncode", siguncode);
 		return mav;
 	}
-	
+
 	@RequestMapping(value="/placeCont/getRestaurants.do")
 	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude,
 			@RequestParam(value="cityno") String cityno, @RequestParam(value="city_code") String code,
@@ -190,7 +216,7 @@ public class PlaceController {
 
 		ArrayList<Group> venueGroups = null;
 		Response hotels = null;
-		
+
 		/* 관광 명소 받아오는 XML 파싱 부분 */
 
 
@@ -202,11 +228,11 @@ public class PlaceController {
 				siguncode = "";
 			}
 
-			
 
-			
-			
-			
+
+
+
+
 
 
 		} catch (Exception e) {

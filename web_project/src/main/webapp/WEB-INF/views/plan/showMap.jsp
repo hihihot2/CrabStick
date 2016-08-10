@@ -345,11 +345,11 @@
 				$('div#addPathDiv').addClass('hiddenDiv')
 			});
 			
-			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다
+			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다 (아직 안됨)
 			$(window).bind('beforeunload', function() {
 				console.log('새로고침!')
-				/* $(location).attr('href', '${pageContext.request.contextPath}/myapp'); */
-				location.href='${pageContext.request.contextPath}/myapp';
+				$(location).attr('href', '${pageContext.request.contextPath}/myapp');
+				/* location.href='${pageContext.request.contextPath}/myapp'; */
 			})
 		})
 	})(jQuery)
