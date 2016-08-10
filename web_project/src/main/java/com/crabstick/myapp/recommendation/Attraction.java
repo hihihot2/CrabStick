@@ -8,12 +8,15 @@ public class Attraction {
 	private String tel;
 	private String mapx;
 	private String mapy;
+	private String imgURL;
 	
 	public Attraction() {
 		super();
 	}
 
-	public Attraction(String title, String addr1, String zipcode, String tel, String mapx, String mapy) {
+
+
+	public Attraction(String title, String addr1, String zipcode, String tel, String mapx, String mapy, String imgURL) {
 		super();
 		this.title = title;
 		this.addr1 = addr1;
@@ -21,13 +24,18 @@ public class Attraction {
 		this.tel = tel;
 		this.mapx = mapx;
 		this.mapy = mapy;
+		this.imgURL = imgURL;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return "Attraction [title=" + title + ", addr1=" + addr1 + ", zipcode=" + zipcode + ", tel=" + tel + ", mapx="
-				+ mapx + ", mapy=" + mapy + "]";
+				+ mapx + ", mapy=" + mapy + ", imgURL=" + imgURL + "]";
 	}
+
+
 
 	public String getTitle() {
 		return title;
@@ -75,6 +83,15 @@ public class Attraction {
 
 	public void setMapy(String mapy) {
 		this.mapy = mapy;
+	}
+
+
+	public String getImgURL() {
+		return imgURL;
+	}
+
+	public void setImgURL(String imgURL) {
+		this.imgURL = imgURL;
 	}
 	
 	
