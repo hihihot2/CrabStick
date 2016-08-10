@@ -28,8 +28,15 @@
 <!-- jQuery  -->
 
 
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+	function viewplan(){
+		document.myplan.action="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"
+		document.myplan.submit();
+	}
+
+</script>
 
 <style>
 
@@ -95,13 +102,16 @@
 					<div class="panel-body">						
 							<div class="panel-footer">
 							</div>
-						 		<button class="btn btn-lg">일정 추가하기</button>								
+								<a href="${pageContext.request.contextPath}/viewcont/startPlan.do"><button class="btn btn-lg" >계획만들러가기</button></a>								
 						</div>
 				</div>				
 			</div>		
 </c:when>
 <c:otherwise>
+	<form name="myplan">	
 	<c:forEach items="${plan}" var="plan">
+	<input type="hidden" name="plan_no" value="${plan.plan_no}" >
+	
 			<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -129,12 +139,13 @@
 										<h4>${venue.ven_order}번째 장소</h4><h5> ${venue.ven_name}</h5>
 									</div>
 								</c:forEach>
-									<a href="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"><button class="btn btn-lg" >일정 보러가기</button></a>								
+									<button class="btn btn-lg" onclick="viewplan()" >일정 보러가기</button>								
 							</c:forEach>
 						</div>
 					</div>				
 			</div>		
 	</c:forEach>
+	</form>
 </c:otherwise>	
 </c:choose>
 </body>

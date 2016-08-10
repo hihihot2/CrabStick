@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import com.crabstick.api.expedia.objects.Response;
 
 public class Expedia {
+	public static final String MEDIA_URL = "http://media.expedia.com";
 	public static final String API_HOTEL_SEARCH = "mhotels/search";
 	public static final String HOTEL_SEARCH_PARAMETER_CITY = "city";
 	public static final String HOTEL_SEARCH_PARAMETER_REGION_ID = "regionId";
