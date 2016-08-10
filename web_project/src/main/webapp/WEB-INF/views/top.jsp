@@ -238,16 +238,17 @@ h4 {
 
 						<c:choose>
 							<c:when test="${no ne null}">
-
+								
 								<li><a href="javascript:action_do('logout')" id="logout"><span
 										class="glyphicon glyphicon-log-out" style="padding-right: 5px"></span>Log
 										Out</a></li>
 								<li><a href="javascript:mypage_do()"><span
 										class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My
 										page</a></li>
+										${no} 값
 							</c:when>
+							
 							<c:otherwise>
-
 								<li><a href="javascript:action_do('login')"><span
 										class="glyphicon glyphicon-log-in" style="padding-right: 5px"></span>Log
 										In</a></li>

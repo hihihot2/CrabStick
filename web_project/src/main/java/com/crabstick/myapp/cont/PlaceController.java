@@ -60,6 +60,11 @@ public class PlaceController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			System.out.println("호텔 평점" + hotels.getHotelList().get(1).getHotelGuestRating());
+			System.out.println("호텔 좋아요 수" + hotels.getHotelList().get(1).getTotalRecommendations());
+			System.out.println("호텔 리뷰 수" + hotels.getHotelList().get(1).getTotalReviews());			
+			System.out.println("호텔 사진 주소?" + hotels.getHotelList().get(1).getLargeThumbnailUrl());
+			System.out.println("호텔 사진 주소?" + hotels.getHotelList().get(1).getThumbnailUrl());
 			mav.addObject("HOTELS", hotels.getHotelList());
 			
 		}else if(branch == 1){ //맛집 파싱
