@@ -19,13 +19,6 @@
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
-
-	function detailView(loc_name) {
-		window.open(
-				"${pageContext.request.contextPath}/viewCont/detailDOC.do?loc_name="
-						+ loc_name, "_blank", "width=800, height=800")
-	}
-	
 	function search_loc() {
 		var loc_name = document.searchform.locSearch.value;
 		var params = "loc_name=" + loc_name;
@@ -48,9 +41,9 @@
 					html += "<a href='${pageContext.request.contextPath }"
 							+ "/placeCont/getRestaurants.do?city_latitude="
 							+ o[i].lati + "&city_longitude=" + o[i].long2
-							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code 
-							+ "&city_siguncode=" + o[i].siguncode + "'>" + o[i].name
-							+ "</a></td>"
+							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code
+							+ "&city_siguncode=" + o[i].siguncode + "'>"
+							+ o[i].name + "</a></td>"
 					html += "</tr>";
 				}
 				html += "</table>";
@@ -67,9 +60,96 @@
 				+ "&cityno="
 				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
 	}
-	
+
+	function modal_open(loc_no) {
+
+		var form = document.searchform;
+		form.style.visibility = "hidden";
+		
+		var modal = document.getElementById('myModal');
+		// Get the image and insert it inside the modal - use its "alt" text as a caption
+		var img = document.getElementById(loc_no);
+
+		var modalImg = document.getElementById("img01");
+		var captionText = document.getElementById("caption");
+		modal.style.display = "block";
+		modalImg.src = img.src;
+		modalImg.alt = img.alt;
+		captionText.innerHTML = img.alt;
+		var span = document.getElementsByClassName("close")[0];
+
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function() {
+			modal.style.display = "none";
+			form.style.visibility= "visible";
+		}
+	}
 </script>
+
 <style type="text/css">
+.myimg {
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.myimg:hover {
+	opacity: 0.7;
+}
+
+/* The Modal (background) */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+/* The Modal (background) */
+
+/* Modal Content (image) */
+.modal-content {
+	margin: auto;
+	display: block;
+	width: 80%;
+	max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+	margin: auto;
+	display: block;
+	width: 80%;
+	max-width: 700px;
+	text-align: center;
+	color: #ccc;
+	padding: 10px 0;
+	height: 150px;
+}
+
+/* The Close Button */
+.close {
+	position: absolute;
+	top: 10%;
+	right: 10%;
+	color: white;
+	font-size: 50px;
+	font-weight: bold;
+	transition: 0.3s;
+}
+
+.close:hover, .close:focus {
+	color: gray;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* The Close Button */
 .dropdown {
 	position: inherit;
 	display: inline-block;
@@ -99,17 +179,18 @@
 		<br> <br> <br>
 		<h2>SEARCH you want to visit city</h2>
 		<form name="searchform">
-		<div class="form-group input-group">
-		
-			<input type="text" class="form-control" name="locSearch" 
-			placeholder="원하는 도시명을 검색하세요" onkeyup="search_loc()"> 
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" name="searchBtn" onclick="search_loc()">
-					<span class="glyphicon glyphicon-search"></span>
-				</button>
-			</span>
-		</div>
-		
+			<div class="form-group input-group">
+
+				<input type="text" class="form-control" name="locSearch"
+					placeholder="원하는 도시명을 검색하세요" onkeyup="search_loc()"> <span
+					class="input-group-btn">
+					<button class="btn btn-default" type="button" name="searchBtn"
+						onclick="search_loc()">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</div>
+
 			<br>
 			<div id="resultView"></div>
 		</form>
@@ -123,9 +204,11 @@
 			<div class="row">
 				<c:forEach var="List" items="${city_List}">
 					<div class="col-sm-4">
-						<img id="${List.loc_no}"
-							src="${pageContext.request.contextPath}/resources/png/city/seoul.png"
-							height="300px" width="100%" onclick="detailView('${List.loc_name}')">
+						<img id="${List.loc_no}" class="myimg"
+							src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"
+							height="300px" width="100%" alt="${List.loc_name}"
+							onclick="modal_open('${List.loc_no}')">
+						<div class="center2">${List.loc_name}</div>
 						<h4>
 							<a
 								href="javascript:select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}','${List.loc_code}','${List.loc_siguncode}')">${List.loc_name}</a>
@@ -135,11 +218,15 @@
 						<p>에 대해 더 알 수 있어요!</p>
 
 					</div>
-
 				</c:forEach>
-
-
 			</div>
+			<!-- The Modal -->
+			<div id="myModal" class="modal">
+				<span class="close">X</span> <img class="modal-content" id="img01">
+				<div id="caption"></div>
+			</div>
+			<!-- The Modal -->
+
 		</form>
 	</div>
 
