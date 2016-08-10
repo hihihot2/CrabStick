@@ -42,7 +42,7 @@
 			if(!flag){
 				return
 			} else {
-				document.mypage.action="${pageContext.request.contextPath}/survey/remain.do"
+				document.mypage.action="${pageContext.request.contextPath}/survey/main.do?sw=1"
 				document.mypage.submit()
 			}
 		}

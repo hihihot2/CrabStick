@@ -53,6 +53,17 @@
 			form.submit();
 		}
 	}
+	function Question_3() {
+		var form = document.survey_form;
+		if (form.cost.value == "") {
+			alert("원하시는 여행 경비를 입력하세요!")
+			return false;
+		} else {
+			form.survey_Level.value = "finish";
+			form.survey_Answer.value += form.cost.value;
+			form.submit();
+		}
+	}
 	
 	$(document).ready(function() {
 		$('input#cost').keydown(function(event) {
@@ -223,8 +234,14 @@
 						<br>
 						<br>
 						<div class="btn-group">
-						<button type="button" class="btn btn-primary"
+						<c:if test="${no ne '-1'}">
+							<button type="button" class="btn btn-primary"
+							onclick="Question_3()">회원 설문수정</button>
+						</c:if>
+						<c:if test="${no eq '-1'}">
+							<button type="button" class="btn btn-primary"
 							onclick="Question_2()">설문 종료 후 다음 페이지 이동</button>
+						</c:if>
 					</div>
 					</div>
 				</div>
@@ -235,6 +252,7 @@
 
 
 		</c:choose>
+		<input type="hidden" name="switch" value="${no }">
 	</form>
 
 </body>
