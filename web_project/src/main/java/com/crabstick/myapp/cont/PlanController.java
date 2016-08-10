@@ -252,7 +252,7 @@ public class PlanController {
 	@RequestMapping(value="/planCont/savePath.do")
 	public ModelAndView savePath(@RequestParam("plan")String plan, @RequestParam("isFirstAdd")boolean isFirstAdd, HttpSession session) {
 		System.out.println("일정추가 시작");
-//		System.out.println(isFirstAdd);
+		System.out.println(isFirstAdd);
 		
 		Plan newPlan = null;
 		Path newPath = null;
@@ -284,7 +284,7 @@ public class PlanController {
 			
 			JSONArray path = (JSONArray) planObject.get("path");
 			Iterator iterator = path.iterator();
-			int order = 1;
+			int order = 0;
 			while(iterator.hasNext()) {
 				JSONObject venue = (JSONObject) iterator.next();
 				String venueName = (String) venue.get("venueName");

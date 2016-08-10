@@ -181,7 +181,7 @@
 						if($('input#planName').val() == '') {
 							plan.planName = defaultPlanName;	
 						} else {
-							plan.planName = $('input#plan Name').val();					
+							plan.planName = $('input#planName').val();					
 						}
 						
 						if($('input#planComment').val() == '') {
@@ -230,6 +230,7 @@
 								pathDiv.find('p#pathName').html(path.path_name);
 								pathDiv.find('p#pathSummary').html(path.path_summary);
 								pathDiv.find('input#pathNo').val(path.path_no);
+								pathDiv.find('input#pathCount').val(pathCount);
 								pathDiv.click(function() {
 									// 경로를 클릭 -> 수정 폼이 등장
 									var thisElement = $(this);
@@ -247,6 +248,8 @@
 											var pathEditDiv = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').attr('id', 'pathEditDiv');
 											pathEditDiv.find('input#pathName').val(path.path_name);
 											pathEditDiv.find('input#pathNo').val(path.path_no);
+
+											var mapPinList = new Array();
 											
 											for(var i = 0; i < path.venues.length; i++) {
 												var venue = path.venues[i];
@@ -257,11 +260,27 @@
 												venueDiv.find('input#venueLatitude').val(venue.ven_lati);
 												venueDiv.find('input#venueLongitude').val(venue.ven_long);
 												venueDiv.find('input#venueLocation').val(venue.loc_no);
+												venueDiv.find('input#venueOrder').val(venue.ven_order);
+												
+												var pin = new Object();
+												pin.name = venue.ven_name;
+												pin.comment = venue.ven_commt;
+												pin.lat = venue.ven_lati;
+												pin.lng = venue.ven_long;
+												mapPinList.push(pin);
+																								
+												venueDiv.find('img#cancelImg').click(function() {
+													// x 버튼 누를때 하는 일
+													var pathLineOnMap = polyline[pathDiv.find('input#pathCount').val()].getPath();
+													pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
+													$(this).parent().parent().remove();
+												})
 											}
 											thisElement.addClass('hiddenDiv').after(pathEditDiv);
 											
 											pathEditDiv.find('input#modifyPathBtn').click(function() {
 												// TODO: 수정 버튼 누를 때 할 일 정의
+												
 												
 											});
 											
@@ -269,6 +288,12 @@
 												// 취소 버튼 누를 때 할 일
 												thisElement.removeClass('hiddenDiv');
 												pathEditDiv.remove();
+												
+												var tempPathLine = polyline[pathDiv.find('input#pathCount').val()].getPath();
+												tempPathLine.splice(0, tempPathLine.length);
+												for(var i = 0; i < mapPinList.length; i++) {
+													tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
+												}
 											});
 											
 											pathEditDiv.find('input#removePathBtn').click(function() {
@@ -507,6 +532,7 @@
 		<p id='pathName'></p>
 		<p id='pathSummary'></p>
 		<input type='hidden' id='pathNo'>
+		<input type='hidden' id='pathCount'>
 	</div>
 	
 	<div id='venueDivForm' class='hiddenDiv'>
@@ -515,12 +541,13 @@
 			<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>
 		</div>
 		<div id='cancelDiv'>
-			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>
+			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png'/>
 		</div>
 		<input type='hidden' name='venueNo' id='venueNo'>
 		<input type='hidden' name='venueLatitude' id='venueLatitude'>
 		<input type='hidden' name='venueLongitude' id='venueLongitude'>
 		<input type='hidden' name='venueLocation' id='venueLocation'>
+		<input type='hidden' name='venueOrder' id='venueOrder'>
 	</div>
 	
 	<div id='pathEditDivForm' class='hiddenDiv'>
