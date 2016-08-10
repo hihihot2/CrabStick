@@ -104,9 +104,7 @@
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 휴식<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
-		
-		$(contentEl2).checkboxradio();
-		
+
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
@@ -232,6 +230,9 @@
 								pathDiv.find('p#pathSummary').html(path.path_summary);
 								pathDiv.find('input#pathNo').val(path.path_no);
 								pathDiv.click(function() {
+									// 경로를 클릭 -> 수정 폼이 등장
+									var thisElement = $(this);
+									
 									$.ajax({
 										url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
 										dataType: 'text',
@@ -240,6 +241,56 @@
 												'pathNo': $(this).find('input#pathNo').val()
 											},
 										success: function(result) {
+											var path = eval('('+result+')');
+											console.log(path)
+											var pathEditDiv = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').attr('id', 'pathEditDiv');
+											pathEditDiv.find('input#pathName').val(path.path_name);
+											pathEditDiv.find('input#pathNo').val(path.path_no);
+											
+											for(var i = 0; i < path.venues.length; i++) {
+												var venue = path.venues[i];
+												var venueDiv = $('div#venueDivForm').clone().appendTo(pathEditDiv.find('div#venueListInSavedPath')).removeClass('hiddenDiv').attr('id', 'venueDiv');
+												venueDiv.find('input#venueName').val(venue.ven_name);
+												venueDiv.find('input#venueComment').val(venue.ven_commt);
+												venueDiv.find('input#venueNo').val(venue.ven_no);
+												venueDiv.find('input#venueLatitude').val(venue.ven_lati);
+												venueDiv.find('input#venueLongitude').val(venue.ven_long);
+												venueDiv.find('input#venueLocation').val(venue.loc_no);
+											}
+											thisElement.addClass('hiddenDiv').after(pathEditDiv);
+											
+											pathEditDiv.find('input#modifyPathBtn').click(function() {
+												// TODO: 수정 버튼 누를 때 할 일 정의
+												
+											});
+											
+											pathEditDiv.find('input#cancelPathBtn').click(function() {
+												// 취소 버튼 누를 때 할 일
+												thisElement.removeClass('hiddenDiv');
+												pathEditDiv.remove();
+											});
+											
+											pathEditDiv.find('input#removePathBtn').click(function() {
+												// 삭제 버튼 누를 때 할 일
+												alert(pathEditDiv.find('input#pathNo').val());
+												$.ajax({
+													url: "${pageContext.request.contextPath }/planCont/removePath.do",
+													dataType: 'text',
+													type: 'POST',
+													data: {
+														'pathNo': pathEditDiv.find('input#pathNo').val()
+													},
+													success: function(result) {
+														thisElement.remove();
+														pathEditDiv.remove();
+													}
+												})
+												pathCount -= 1;
+												
+												if(pathCount == 0) {
+													$('input[type="button"]#addPath').val('일정 만들기');
+												}
+											});
 											
 										}
 									})
@@ -315,24 +366,29 @@
 		clear: none; 
 	}
 	
+	.SideBar input, select {
+		height: 30px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		width: 100%;
+	}
+	
 	.Map {		
 		width: 80%;
 		padding: 10px;
 	}
 	
-	#planName, #planComment, #planCost, #planPersons, #planStyle {
+/* 	#planName, #planComment, #planCost, #planPersons, #planStyle {
 		width: 100%;
-		height: 30px;
-		margin-top: 5px;
-	}
+	} */
 	
 	.planInfo{
 		margin-bottom: 10px;
 	}
 	
-	#addPath {
+	/* #addPath {
 		width: 100%;
-	}
+	} */
 	
 	#savePath, #cancelPath {
 		width: 49%;
@@ -341,13 +397,12 @@
 	#inputDiv {
 		float: left;
 		width: 80%;
-		
 	}
 	
 	#cancelDiv {
 		float: left;
 		width: 20%;
-		height: 100%;
+		/* height: 100%; */
 	}
 	
 	#cancelImg {
@@ -355,9 +410,9 @@
 		width: 40%;
 	}
 	
-	#venueName, #venueComment {
+	/* #venueName, #venueComment {
 		width: 100%;
-	}
+	} */
 	
 	.hiddenDiv {
 		display: none;
@@ -365,7 +420,6 @@
 	
 	#pathDiv {
 		padding: 10px;
-		
 	}
 	
 	#pathDiv:hover {
@@ -375,6 +429,30 @@
 	#defaultAddDiv {
 		margin-top: 5px;
 		margin-bottom: 5px;
+	}
+	
+	#pathEditDiv {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		background-color: rgb(243, 216, 218);
+	}
+	
+	/* input#pathName {
+		margin-top: 5px;
+		width: 100%;
+	} */
+	
+	#modifyPathBtn, #cancelPathBtn {
+		/* margin-top: 5px; */
+		width: 49%;
+	}
+	
+	#removePathBtn {
+		margin-top: 5px;
+		background-color: rgb(255, 0, 78);
+		width: 100%;
+		color: white;
 	}
 </style>
 <!---------------------------------->
@@ -432,20 +510,28 @@
 	
 	<div id='venueDivForm' class='hiddenDiv'>
 		<div id='inputDiv'>
-			<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.' onkeyup='modifyName("+i+",this.form)'></p>
-			<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.' onkeyup='modifyComment("+i+",this.form)'></p>
+			<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.'></p>
+			<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>
 		</div>
 		<div id='cancelDiv'>
 			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>
 		</div>
+		<input type='hidden' name='venueNo' id='venueNo'>
 		<input type='hidden' name='venueLatitude' id='venueLatitude'>
 		<input type='hidden' name='venueLongitude' id='venueLongitude'>
 		<input type='hidden' name='venueLocation' id='venueLocation'>
 	</div>
 	
-	<div id='pathEditForm'>
-		<p><input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'></p>
+	<div id='pathEditDivForm' class='hiddenDiv'>
+		<input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'>
+		<input type='hidden' name='pathNo' id='pathNo'>
 		<div id='venueListInSavedPath'></div>
+		
+		<div id='btnsDiv'>
+			<input type='button' id='modifyPathBtn' value='수정할게요'>
+			<input type='button' id='cancelPathBtn' value='취소할게요'>
+			<input type='button' id='removePathBtn' value='없애주세요'>
+		</div>
 	</div>
 </body>
 </html>

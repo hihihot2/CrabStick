@@ -314,11 +314,32 @@ public class PlanController {
 	
 	@RequestMapping(value="/planCont/getPathDetails.do")
 	public ModelAndView getPathDetails(@RequestParam("pathNo")int pathNo) {
+		System.out.println("Run 'getPathDetails'");
+		System.out.println("Path No: " + pathNo);
 		ArrayList<Venue> venues = venueService.selectVenue(pathNo);
+		Path path = pathService.getPathByPathNo(pathNo);
+		
+		for(Venue v : venues) {
+			System.out.println("Path No in Venue: " + v.getPath_no());
+		}
 		
 		ModelAndView mav = new ModelAndView("plan/getMyVenuesJSON");
+		mav.addObject("PATH", path);
 		mav.addObject("VENUES", venues);
 		return mav;
 	}
 	
+	@RequestMapping(value="/planCont/removePath.do")
+	public void removePath(@RequestParam("pathNo")int pathNo, HttpServletResponse response) {
+		System.out.println("Run 'removePath'");
+		System.out.println("Path No: " + pathNo);
+		
+		pathService.removePath(pathNo);
+		try {
+			response.getWriter().print("ok");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
