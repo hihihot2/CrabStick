@@ -106,7 +106,7 @@ public class PlaceController {
 					expression = "//*/title";
 					String title = xpath.compile(expression).evaluate(document);
 					attraction.setTitle(title);
-					System.out.println(attraction.getTitle());
+					// System.out.println(attraction.getTitle());
 					
 					expression = "//*/addr1";
 					String addr1 = xpath.compile(expression).evaluate(document);
