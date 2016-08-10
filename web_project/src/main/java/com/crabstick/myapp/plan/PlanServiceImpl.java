@@ -36,4 +36,11 @@ public class PlanServiceImpl implements PlanService {
 		planmapper.update(p);	
 	}
 
+	@Override
+	public Plan getPlan(int plan_no) {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
+
+		return planmapper.selectplan(plan_no);
+	}
+
 }

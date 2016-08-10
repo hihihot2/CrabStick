@@ -7,6 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -140,20 +142,23 @@ public class ViewController {
 				System.out.println("venue = " + venue.toString());
 			}			
 			mav.addObject("plan", plan)	; // plan찍어주고
-			mav.addObject("path", path);
-			
+			mav.addObject("path", path);			
 		}		
-
 		return mav;
 	}	
 
 
 	
 	@RequestMapping(value="/viewcont/viewMyPlanMap.do")
-	public ModelAndView viewMyPlanMap(@RequestParam("plan")String plan){
-		ModelAndView mav =  new ModelAndView("plan/myPlan");	
-		System.out.println("내계획페이지에가기");
+	public ModelAndView viewMyPlanMap(@RequestParam(value="plan_no")int plan_no){		
+		ModelAndView mav =  new ModelAndView("plan/showMap");		
+		System.out.println("작성된 plan보러가기" + plan_no);
 		
+		Plan plan = new Plan();
+		plan = planService.getPlan(plan_no);
+		
+		//객체이름 myPlan
+		mav.addObject("myPlan", plan);		
 		return mav;
 	}	
 	
