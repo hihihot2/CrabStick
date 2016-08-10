@@ -73,7 +73,14 @@
 				if (rep == 0) {
 					alert("아이디나 패스워드가 일치하지 않습니다.")
 				} else {
-					document.loginform.action = "${pageContext.request.contextPath}/";
+					var isPlanpage = document.loginform.gotoPlan.value
+					if(isPlanpage=="1"){
+						document.loginform.action = "${pageContext.request.contextPath}/viewcont/startPlan.do";						
+					} else if(isPlanpage=="2"){
+						document.loginform.action = "${pageContext.request.contextPath}/viewcont/showMyPlan.do";
+					} else {
+						document.loginform.action = "${pageContext.request.contextPath}/";
+					}
 					document.loginform.submit();
 				}
 			}
@@ -144,7 +151,7 @@
 				</div>
 			</div>
 		
-
+		<input type="hidden" value="${sw }" name="gotoPlan">
 
 	</form>
 
