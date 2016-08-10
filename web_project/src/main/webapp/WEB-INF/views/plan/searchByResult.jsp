@@ -4,6 +4,8 @@
 [
 <c:forEach var="resultList" items="${resultList }" varStatus="status">
 <c:if test="${not status.first }">,</c:if>
-{num:${resultList.loc_no }, name:'${resultList.loc_name }', lati:'${resultList.loc_lati }', long2:'${resultList.loc_long }'}
+{num:${resultList.loc_no }, name:'${resultList.loc_name }', 
+lati:'${resultList.loc_lati }', long2:'${resultList.loc_long }',
+siguncode:'${resultList.loc_siguncode }', code:'${resultList.loc_code }'}
 </c:forEach>
 ]

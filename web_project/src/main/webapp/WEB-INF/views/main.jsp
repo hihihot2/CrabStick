@@ -26,7 +26,7 @@
 	function startPlan(sessionNo){	
 		if(sessionNo == null){
 			// 로그인 안 되어있을시 로그인 페이지로 이동
-			action_do('login')	
+			location.href="${pageContext.request.contextPath}/logincont/loginpage.do?sw=1"	
 		} else {
 			// 로그인 되어있을시
 			location.href="${pageContext.request.contextPath}/viewcont/startPlan.do";
@@ -36,7 +36,7 @@
 	function showMyPlans(sessionNo) {
 		if(sessionNo == null){
 			// 로그인 안 되어있을시 로그인 페이지로 이동
-			action_do('login')
+			location.href="${pageContext.request.contextPath}/logincont/loginpage.do?sw=2"
 		} else {
 			// 로그인 되어있을시
 			// TODO: 내 플랜 보기 코드 수행

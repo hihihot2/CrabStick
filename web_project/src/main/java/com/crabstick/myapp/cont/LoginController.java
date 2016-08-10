@@ -25,9 +25,11 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/logincont/loginpage.do", method = RequestMethod.GET)
-	public String loginpage() {
+	public ModelAndView loginpage(@RequestParam(value="sw")String sw) {
 		System.out.println("로그인페이지로이동");
-		return "login/loginform";
+		ModelAndView mav = new ModelAndView("login/loginform");
+		mav.addObject("sw",sw);
+		return mav;
 	}
 
 	// 로그아웃
