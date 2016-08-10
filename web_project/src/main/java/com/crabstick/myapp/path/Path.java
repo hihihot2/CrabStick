@@ -13,7 +13,14 @@ public class Path {
 	private int plan_no;
 	private ArrayList<Venue> venuelist;	
 	
-	
+	public Path(int path_no, String path_name, Date path_date, int plan_no) {
+		super();
+		this.path_no = path_no;
+		this.path_name = path_name;
+		this.path_date = path_date;
+		this.plan_no = plan_no;
+		
+	}
 	
 	
 	

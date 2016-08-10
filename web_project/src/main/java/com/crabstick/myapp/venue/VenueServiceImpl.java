@@ -19,9 +19,11 @@ public class VenueServiceImpl implements VenueService {
 	
 	@Override
 	public void insertVenue(Venue v) {
-		VenueMapper Venuemapper = sqlSession.getMapper(VenueMapper.class);
-		Venuemapper.insert(v);
+		VenueMapper venueMapper = sqlSession.getMapper(VenueMapper.class);
+		venueMapper.insert(v);
 	}
+	
+
 
 	@Override
 	public ArrayList<Venue> selectVenue(int path_no) {

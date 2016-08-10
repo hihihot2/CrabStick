@@ -312,8 +312,13 @@ public class PlanController {
 		return mav;
 	}
 	
-	
-	
-	
+	@RequestMapping(value="/planCont/getPathDetails.do")
+	public ModelAndView getPathDetails(@RequestParam("pathNo")int pathNo) {
+		ArrayList<Venue> venues = venueService.selectVenue(pathNo);
+		
+		ModelAndView mav = new ModelAndView("plan/getMyVenuesJSON");
+		mav.addObject("VENUES", venues);
+		return mav;
+	}
 	
 }
