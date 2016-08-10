@@ -13,8 +13,10 @@
 
 	function action_do(type) {
 		if (type == 'login') {
-			document.loginpage.action = "${pageContext.request.contextPath}/logincont/loginpage.do";
-			document.loginpage.submit();
+			location.href = "${pageContext.request.contextPath}/logincont/loginpage.do?sw=0";
+		/* 	var sw = 0;
+			document.loginpage.action = "${pageContext.request.contextPath}/logincont/loginpage.do?sw=" + sw
+			document.loginpage.submit(); */
 		} else if (type == 'logout') {
 			/* 알림 안띄우고 로그아웃
 			var flag = confirm("로그아웃하시겠습니까?");

@@ -252,6 +252,7 @@ public class PlanController {
 	@RequestMapping(value="/planCont/savePath.do")
 	public ModelAndView savePath(@RequestParam("plan")String plan, @RequestParam("isFirstAdd")boolean isFirstAdd, HttpSession session) {
 		System.out.println("일정추가 시작");
+//		System.out.println(isFirstAdd);
 		
 		Plan newPlan = null;
 		Path newPath = null;
@@ -259,6 +260,7 @@ public class PlanController {
 		if(plan != null) {
 			System.out.println("plan: " + plan);
 			JSONObject planObject = (JSONObject)JSONValue.parse(plan);
+			long planNo = (Long) planObject.get("planNo");
 			String planName = (String) planObject.get("planName");
 			String planComment = (String) planObject.get("planComment");
 			long planCost = (Long) planObject.get("planCost");
@@ -266,12 +268,16 @@ public class PlanController {
 			long planStyle = (Long) planObject.get("planStyle");
 			int memberNo = Integer.parseInt(session.getAttribute("no").toString());
 			
-			newPlan = new Plan(0, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
-			planService.insertPlan(newPlan);
-			int planNo = newPlan.getPlan_no();
-			System.out.println("Plan No: " + planNo);
+			newPlan = new Plan((int) planNo, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
+			if(isFirstAdd) {
+				planService.insertPlan(newPlan);
+			} else {
+				planService.updatePlan(newPlan);
+			}
+			int newPlanNo = newPlan.getPlan_no();
+			System.out.println("Plan No: " + newPlanNo);
 			
-			newPath = new Path(0, "일정 1", null, planNo);
+			newPath = new Path(0, "새로운 경로", null, newPlanNo);
 			pathService.insertPath(newPath);
 			int pathNo = newPath.getPath_no();
 			System.out.println("Path No: " + pathNo);

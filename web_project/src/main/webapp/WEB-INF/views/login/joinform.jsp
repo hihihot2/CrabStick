@@ -40,6 +40,7 @@
 		var pwd = document.joinform.mem_pwd.value;
 		var name = document.joinform.mem_name.value;
 		var pwdlength = pwd.length
+		alert(chk)
 		//아이디 중복체크 여부확인 chk값이  1이여야함
 		if (chk == 0) {
 			alert('아이디 중복체크 하세요')
@@ -112,7 +113,6 @@
 <body>
 
 	<form name="joinform" method="post" class="lgcss">
-		<input type="hidden" name="chk" value="0">
 
 		<div class="panel panel-default text-center">
 			<div class="panel-heading">

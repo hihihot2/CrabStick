@@ -158,91 +158,97 @@
 			
 			// 서버에 경로 저장후 왼쪽 리스트에 하나로 묶어서 저장하기.
 			$('input#savePath').click(function() {
-				if(pathObj.length > 1) {
-					var arr = new Array();
-					
-					for(var i = 0; i < pathObj.length; i++) {
-						var object = new Object();
-						object.venueName = decodeURIComponent(pathObj[i].name);
-						object.venueComment = pathObj[i].comment;
-						object.venueType = pathObj[i].type;
-						object.lat = polyline[pathCount].getPath().getAt(i).lat().toString();
-						object.lng = polyline[pathCount].getPath().getAt(i).lng().toString();
-						arr.push(object);
-					}
-					
-					var plan = new Object();
-					if($('input#planName').val() == '') {
-						plan.planName = defaultPlanName;	
-					} else {
-						plan.planName = $('input#planName').val();					
-					}
-					
-					if($('input#planComment').val() == '') {
-						plan.planComment = defaultPlanComment;
-					} else {
-						plan.planComment = $('input#planComment').val();					
-					}
-					
-					if($('input#planCost').val() == '') {
-						plan.planCost = 0;
-					} else {
-						plan.planCost = $('input#planCost').val() * 1;
-					}
-					
-					if($('input#planPersons').val() == '') {
-						plan.planPersons = 1;	
-					} else {
-						plan.planPersons = $('input#planPersons').val() * 1;					
-					}
-					plan.planStyle = $('select#planStyle option:selected').val() * 1;
-					plan.path = arr;
-					
-					console.log(JSON.stringify(plan));
-					
-					$.ajax({
-						url: "${pageContext.request.contextPath }/planCont/savePath.do",
-						dataType: 'text',
-						type: 'POST',
-						data: {
-								'plan': JSON.stringify(plan),
-								'isFirstAdd': isFirstAdd
-							},
-						success: function(result) {
-							var planAndPath = eval('('+result+')');
-							var plan = planAndPath.plan;
-							var path = planAndPath.path;
-							
-							$('input#planNo').val(plan.plan_no);
-							$('input#planName').val(plan.plan_name);
-							$('input#planComment').val(plan.plan_commt);
-							$('input#planCost').val(plan.plan_cost);
-							$('input#planPersons').val(plan.plan_persons);
-							$('select#planStyle').val(plan.plan_style);
-							
-							var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
-							pathDiv.find('p#pathName').html(path.path_name);
-							pathDiv.find('p#pathSummary').html(path.path_summary);
-							pathDiv.find('input#pathNo').val(path.path_no);
-						},
-						error: function(request, error) {
-							alert('message: ' + request.responseText);
+				if('${sessionScope.no}' == '') {
+					alert('로그인 하세요')
+					action_do('login');
+				} else {
+					if(pathObj.length > 1) {
+						var arr = new Array();
+						
+						for(var i = 0; i < pathObj.length; i++) {
+							var object = new Object();
+							object.venueName = decodeURIComponent(pathObj[i].name);
+							object.venueComment = pathObj[i].comment;
+							object.venueType = pathObj[i].type;
+							object.lat = polyline[pathCount].getPath().getAt(i).lat().toString();
+							object.lng = polyline[pathCount].getPath().getAt(i).lng().toString();
+							arr.push(object);
 						}
-					})
-					
-					isAddCondition = false;
-					isFirstAdd = false;
-					$('div#defaultAddDiv').removeClass('hiddenDiv')
-					$('div#addPathDiv').addClass('hiddenDiv')
-					$('input[type="button"]#addPath').val('일정 추가하기');
-					pathCount += 1;
-					pathObj = new Array();
-					
-					
-				} else if (pathObj.length == 0){
-					alert('오른쪽 맵에서 가고 싶은 곳을 두 개 이상 선택해 주세요.');
-				} else if (pathObj.length == 1){
-					alert('하나 더 선택해 주세요.');
+						
+						var plan = new Object();
+						plan.planNo = $('input#planNo').val() * 1;
+						if($('input#planName').val() == '') {
+							plan.planName = defaultPlanName;	
+						} else {
+							plan.planName = $('input#planName').val();					
+						}
+						
+						if($('input#planComment').val() == '') {
+							plan.planComment = defaultPlanComment;
+						} else {
+							plan.planComment = $('input#planComment').val();					
+						}
+						
+						if($('input#planCost').val() == '') {
+							plan.planCost = 0;
+						} else {
+							plan.planCost = $('input#planCost').val() * 1;
+						}
+						
+						if($('input#planPersons').val() == '') {
+							plan.planPersons = 1;	
+						} else {
+							plan.planPersons = $('input#planPersons').val() * 1;					
+						}
+						plan.planStyle = $('select#planStyle option:selected').val() * 1;
+						plan.path = arr;
+						
+						console.log(JSON.stringify(plan));
+						
+						$.ajax({
+							url: "${pageContext.request.contextPath }/planCont/savePath.do",
+							dataType: 'text',
+							type: 'POST',
+							data: {
+									'plan': JSON.stringify(plan),
+									'isFirstAdd': isFirstAdd
+								},
+							success: function(result) {
+								var planAndPath = eval('('+result+')');
+								var plan = planAndPath.plan;
+								var path = planAndPath.path;
+								
+								$('input#planNo').val(plan.plan_no);
+								$('input#planName').val(plan.plan_name);
+								$('input#planComment').val(plan.plan_commt);
+								$('input#planCost').val(plan.plan_cost);
+								$('input#planPersons').val(plan.plan_persons);
+								$('select#planStyle').val(plan.plan_style);
+								
+								var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
+								pathDiv.find('p#pathName').html(path.path_name);
+								pathDiv.find('p#pathSummary').html(path.path_summary);
+								pathDiv.find('input#pathNo').val(path.path_no);
+							},
+							error: function(request, error) {
+								alert('message: ' + request.responseText);
+							}
+						})
+						
+						isAddCondition = false;
+						isFirstAdd = false;
+						$('div#defaultAddDiv').removeClass('hiddenDiv')
+						$('div#addPathDiv').addClass('hiddenDiv')
+						$('input[type="button"]#addPath').val('일정 추가하기');
+						pathCount += 1;
+						pathObj = new Array();
+						
+						
+					} else if (pathObj.length == 0){
+						alert('오른쪽 맵에서 가고 싶은 곳을 두 개 이상 선택해 주세요.');
+					} else if (pathObj.length == 1){
+						alert('하나 더 선택해 주세요.');
+					}
 				}
 			})
 			
@@ -361,7 +367,7 @@
 			<div class='planInfo'>
 				<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='hidden' id='planNo'>
+					<input type='hidden' id='planNo' value='0'>
 					<input type='text' id='planName'>
 					<input type='text' id='planComment'>
 					<input type="text" id='planCost' placeholder='여행 비용'>
