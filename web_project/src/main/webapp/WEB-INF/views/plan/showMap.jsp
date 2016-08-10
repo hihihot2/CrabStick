@@ -238,6 +238,9 @@
 												'pathNo': $(this).find('input#pathNo').val()
 											},
 										success: function(result) {
+											var venues = eval('('+result+')');
+											var pathEditForm = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').attr('id', 'pathEditDiv');
+											$(this).addClass('hiddenDiv').after(pathEditForm);
 											
 										}
 									})
@@ -313,6 +316,10 @@
 		clear: none; 
 	}
 	
+	.SideBar input, select {
+		height: 30px;
+	}
+	
 	.Map {		
 		width: 80%;
 		padding: 10px;
@@ -320,7 +327,6 @@
 	
 	#planName, #planComment, #planCost, #planPersons, #planStyle {
 		width: 100%;
-		height: 30px;
 		margin-top: 5px;
 	}
 	
@@ -373,6 +379,30 @@
 	#defaultAddDiv {
 		margin-top: 5px;
 		margin-bottom: 5px;
+	}
+	
+	#pathEditDiv {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		background-color: rgb(243, 216, 218);
+	}
+	
+	input#pathName {
+		margin-top: 5px;
+		width: 100%;
+	}
+	
+	#modifyPathBtn, #cancelPathBtn {
+		margin-top: 5px;
+		width: 49%;
+	}
+	
+	#removePathBtn {
+		margin-top: 5px;
+		background-color: rgb(255, 0, 78);
+		width: 100%;
+		color: white;
 	}
 </style>
 <!---------------------------------->
@@ -436,14 +466,18 @@
 		<div id='cancelDiv'>
 			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>
 		</div>
+		<input type='hidden' name='venueNo' id='venueNo'>
 		<input type='hidden' name='venueLatitude' id='venueLatitude'>
 		<input type='hidden' name='venueLongitude' id='venueLongitude'>
 		<input type='hidden' name='venueLocation' id='venueLocation'>
 	</div>
 	
-	<div id='pathEditForm'>
-		<p><input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'></p>
+	<div id='pathEditDivForm' class='hiddenDiv'>
+		<input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'>
 		<div id='venueListInSavedPath'></div>
+		<input type='button' id='modifyPathBtn' value='수정할게요'>
+		<input type='button' id='cancelPathBtn' value='취소할게요'>
+		<input type='button' id='removePathBtn' value='없애주세요'>
 	</div>
 </body>
 </html>
