@@ -204,14 +204,10 @@
 			<div class="row">
 				<c:forEach var="List" items="${city_List}">
 					<div class="col-sm-4">
-						<img id="${List.loc_no}" class="myimg"
-							src="${List.loc_imgpath }"
-							height="300px" width="100%" alt="${List.loc_name}"
-							onclick="modal_open('${List.loc_no}', '${List.loc_commt}')">
+						<a href="javascript:select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}','${List.loc_code}','${List.loc_siguncode}')"><img id="${List.loc_no}" class="myimg"	src="${List.loc_imgpath }"	height="300px" width="100%" alt="${List.loc_name}"></a>
 						<div class="center2">${List.loc_name}</div>
 						<h4>
-							<a
-								href="javascript:select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}','${List.loc_code}','${List.loc_siguncode}')">${List.loc_name}</a>
+							<a href ="javascript:modal_open('${List.loc_no}', '${List.loc_commt}')"">${List.loc_name}</a>
 						</h4>
 						<p>사진을 클릭하면</p>
 						<p style="color: #ff0000">${List.loc_name}</p>
