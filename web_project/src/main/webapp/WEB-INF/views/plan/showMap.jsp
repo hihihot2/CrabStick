@@ -180,7 +180,7 @@
 						if($('input#planName').val() == '') {
 							plan.planName = defaultPlanName;	
 						} else {
-							plan.planName = $('input#planName').val();					
+							plan.planName = $('input#plan Name').val();					
 						}
 						
 						if($('input#planComment').val() == '') {
