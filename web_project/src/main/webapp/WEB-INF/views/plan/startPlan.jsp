@@ -48,7 +48,8 @@
 					html += "<a href='${pageContext.request.contextPath }"
 							+ "/placeCont/getRestaurants.do?city_latitude="
 							+ o[i].lati + "&city_longitude=" + o[i].long2
-							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code + "&city_siguncode=" + o[i].siguncode + "'>" + o[i].name
+							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code 
+							+ "&city_siguncode=" + o[i].siguncode + "'>" + o[i].name
 							+ "</a></td>"
 					html += "</tr>";
 				}
@@ -101,7 +102,7 @@
 		<div class="form-group input-group">
 		
 			<input type="text" class="form-control" name="locSearch" 
-			placeholder="원하는 도시명을 검색하세요" onkeypress="if(event.keyCode==13) {search_loc()}"> 
+			placeholder="원하는 도시명을 검색하세요" onkeyup="search_loc()"> 
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" name="searchBtn" onclick="search_loc()">
 					<span class="glyphicon glyphicon-search"></span>
