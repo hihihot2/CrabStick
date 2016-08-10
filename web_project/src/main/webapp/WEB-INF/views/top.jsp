@@ -61,8 +61,8 @@
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <!-- jQuery  -->
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="../resources/scripts/jquery-3.1.0.js"></script>
+<script src="../resources/scripts/jquery-ui.js"></script>
 <!-- jQuery  -->
 
 

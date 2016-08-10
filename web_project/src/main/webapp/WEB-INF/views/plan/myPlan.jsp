@@ -1,3 +1,5 @@
+<jsp:include page="../top.jsp"></jsp:include>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -51,6 +53,7 @@
 	color: #fff !important;
 	background-color: #07a3f3 !important;
 	padding: 25px;
+	margin-top: 80px;
 	border-bottom: 1px solid transparent;
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
@@ -82,44 +85,57 @@
 
 </head>
 <body>
-<c:forEach items="${plan}" var="plan">
-<div class="col-sm-4 col-xs-12">
-
-<div class="panel panel-default text-center">
+<c:choose>
+<c:when test="${plan eq null}">
+	<div class="col-sm-3 col-xs-10">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>일정을 추가해주세요</h1>
+					</div>
+					<div class="panel-body">						
+							<div class="panel-footer">
+							</div>
+						 		<button class="btn btn-lg">일정 추가하기</button>								
+						</div>
+				</div>				
+			</div>		
+</c:when>
+<c:otherwise>
+	<c:forEach items="${plan}" var="plan">
+			<div class="col-sm-3 col-xs-10">
+				<div class="panel panel-default text-center">
 					<div class="panel-heading">
 						<h1>${plan.plan_name}</h1>
 					</div>
 					<div class="panel-body">
 						<p>
-							<strong>${plan.plan_commt}</strong> 년
+							<strong>${plan.plan_commt}</strong>
 						</p>
 						<p>
-							<strong>${plan.plan_cost}</strong> 인실
+							<strong>${plan.plan_cost}</strong>원
 						</p>
-							<c:forEach items="${plan. pathlist}" var="path">
-
+						<p>
+							<strong>${plan.plan_persons}</strong>명
+						</p>
+							<c:forEach items="${plan.pathlist}" var="path">
 						<p>
 							<strong>${path.path_name}</strong> 
 						</p>
 						<p>
-							<strong>${path.path_date}</strong> 층
-						</p>
-
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-						</c:forEach>
-					</div>
-					
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-</div>
-
-		
-</c:forEach>
+							<strong>${path.path_date}</strong>
+						</p><br>
+								<c:forEach items="${path.venuelist}" var="venue">
+									<div class="panel-footer">
+										<h4>${venue.ven_order}번째 장소</h4><h5> ${venue.ven_name}</h5>
+									</div>
+								</c:forEach>
+									<a href="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"><button class="btn btn-lg" >일정 보러가기</button></a>								
+							</c:forEach>
+						</div>
+					</div>				
+			</div>		
+	</c:forEach>
+</c:otherwise>	
+</c:choose>
 </body>
 </html>

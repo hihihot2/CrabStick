@@ -17,15 +17,6 @@ public class Plan {
 	private int mem_no;
 	private ArrayList<Path> pathlist;	
 	
-	
-	
-	
-	public ArrayList<Path> getPathlist() {
-		return pathlist;
-	}
-	public void setPathlist(ArrayList<Path> pathlist) {
-		this.pathlist = pathlist;
-	}
 	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
 			char plan_style, int mem_no) {
 		super();
@@ -38,6 +29,28 @@ public class Plan {
 		this.plan_style = plan_style;
 		this.mem_no = mem_no;
 	}
+	
+	
+	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
+			char plan_style, int mem_no, ArrayList<Path> pathlist) {
+		super();
+		this.plan_no = plan_no;
+		this.plan_name = plan_name;
+		this.plan_commt = plan_commt;
+		this.plan_cost = plan_cost;
+		this.plan_persons = plan_persons;
+		this.plan_writedate = plan_writedate;
+		this.plan_style = plan_style;
+		this.mem_no = mem_no;
+		this.pathlist = pathlist;
+	}
+	public ArrayList<Path> getPathlist() {
+		return pathlist;
+	}
+	public void setPathlist(ArrayList<Path> pathlist) {
+		this.pathlist = pathlist;
+	}
+
 	public Plan() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -19,7 +19,14 @@
 
 	<insert id="insert" parameterType="com.crabstick.myapp.venue.VenueMapper">
 		INSERT INTO venues VALUES(SEQ_VEN.NEXTVAL, #{ven_name}, #{ven_lati}, #{ven_long}, #{ven_commt}, #{ven_type}, #{ven_order}, #{path_no}, #{loc_no})
-	</insert>	
+	</insert>
 	
+	<select id="selectByPathNo" resultType="com.crabstick.myapp.venue.VenueMapper" parameterType="int">
+		SELECT * FROM venues WHERE path_no = #{path_no} ORDER BY ven_order
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="VenueResultMap">
+		SELECT * FROM venues WHERE path_no=#{path_no} ORDER BY ven_order
+	</select>
 	
 </mapper>

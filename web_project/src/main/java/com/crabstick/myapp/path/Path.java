@@ -1,6 +1,9 @@
 package com.crabstick.myapp.path;
 
 import java.sql.Date;
+import java.util.ArrayList;
+
+import com.crabstick.myapp.venue.Venue;
 
 public class Path {
 
@@ -8,13 +11,34 @@ public class Path {
 	private String path_name;
 	private Date path_date;
 	private int plan_no;
+	private ArrayList<Venue> venuelist;	
+	
 	public Path(int path_no, String path_name, Date path_date, int plan_no) {
 		super();
 		this.path_no = path_no;
 		this.path_name = path_name;
 		this.path_date = path_date;
 		this.plan_no = plan_no;
+		
 	}
+	
+	
+	
+	public Path(int path_no, String path_name, Date path_date, int plan_no, ArrayList<Venue> venuelist) {
+		super();
+		this.path_no = path_no;
+		this.path_name = path_name;
+		this.path_date = path_date;
+		this.plan_no = plan_no;
+		this.venuelist = venuelist;
+	}
+	public ArrayList<Venue> getVenuelist() {
+		return venuelist;
+	}
+	public void setVenuelist(ArrayList<Venue> venuelist) {
+		this.venuelist = venuelist;
+	}	
+
 	public Path() {
 	}
 	public int getPath_no() {

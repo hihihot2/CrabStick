@@ -16,6 +16,7 @@
 		case 0: url = "../resources/png/hotel.png";break;
 		case 1: url = "../resources/png/food.png";break;
 		case 2: url = "../resources/png/attraction.png";break;
+		default: url= "../resources/png/search.png";break;
 		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -44,19 +45,24 @@
 	function setListener(name, type){
 		var enc = encodeURIComponent(name);
 		var len = markers.length-1;
+		var marker = markers[len][1], infowindow = infowindows[len][1];
+		
+		infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
+				+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
+				+'</div>'
+				);
+
 		naver.maps.Event.addListener(markers[len][1], 'click', function(e) {
-			var marker = markers[len][1], infowindow = infowindows[len][1];
-			infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-					+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
-					+'<input type="button" value="+" onclick=addPath('+len+','+marker.getPosition().lat()+','+marker.getPosition().lng()+',"'+enc+'")>'
-					+'</div>'
-					);
-			if(infowindow.getMap()){
-				infowindow.close();
-			}else {
-				infowindow.open(map, marker);
+			if(confirm("일정에 추가하시겠습니까?")){
+				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
 			}
-		})
+		});
+		naver.maps.Event.addListener(markers[len][1], 'mouseover', function(e) {	
+			infowindow.open(map, marker);
+		});
+		naver.maps.Event.addListener(markers[len][1], 'mouseout', function(e) {
+			infowindow.close();
+		});
 	}
 	function closeWindow(len){
 		var infowindow = infowindows[len][1];
@@ -221,31 +227,32 @@
 	}
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
-		if(event.keyCode != 13){
-			requestSearch();
-		}else{
-			requestLatLng();
+		if(event.keyCode == 13){
+			unmarkBranch('s');
+			var data = document.getElementById("searchData").value;
+			for(var i = 0 ; i < searchList.length ; i++){
+				if(searchList[i][0] == data){
+					var params = "addr="+searchList[i][1];
+				}
+			}
+			sendRequest("../plancont/searchlatlng.do", params, setSearchPlace, 'POST');
 		}
-	}
-	//지역 검색
-	function requestSearch(){
-		var data = document.getElementById("searchData").value;
-		if(searchList.length != 0){
-			searchList = new Array();
-		}
-		
-		var params = "data="+data;
-		sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
 	}
 	function setSearchPlace(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
-				var responseList = httpRequest.responseText;
-				var search = eval("("+ responseList +")");
-				for(var i = 0 ; i < search.length ; i++){
-					var before = search[i].title;
-					searchList.push(regTag(before));
+				var result = httpRequest.responseText;
+				var loc = eval("("+ result +")");
+				var data = document.getElementById("searchData").value;
+				map.setCenter(new naver.maps.LatLng(loc.lat, loc.lng));
+				setPlace(loc.lat, loc.lng, 's');
+				setListener(data, 's');
+				for(var i = 0 ; i < infowindows.length ; i++){
+					if(infowindows[i][0] == 's'){
+						infowindows[i][1].open(map, markers[i][1]);
+					}
 				}
+				$('searchData').val('');
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
