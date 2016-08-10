@@ -142,7 +142,7 @@
 			// #planCost, #planPersons에 숫자만 입력받게 하기
 			$('#planCost, #planPersons').keydown(function(event) {
 				var keyId = event.keyCode;
-				if( (keyId >= 48 && keyId <= 57) || (keyId >= 96 && keyId <= 105) || keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 ) {
+				if( (keyId >= 48 && keyId <= 57) || (keyId >= 96 && keyId <= 105) || keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 || keyId == 9 ) {
 					return;
 				} else {
 					return false;
@@ -229,21 +229,34 @@
 								pathDiv.find('p#pathName').html(path.path_name);
 								pathDiv.find('p#pathSummary').html(path.path_summary);
 								pathDiv.find('input#pathNo').val(path.path_no);
+								pathDiv.click(function() {
+									$.ajax({
+										url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
+										dataType: 'text',
+										type: 'POST',
+										data: {
+												'pathNo': $(this).find('input#pathNo').val()
+											},
+										success: function(result) {
+											
+										}
+									})
+									
+								})
+								
+								isAddCondition = false;
+								isFirstAdd = false;
+								$('div#defaultAddDiv').removeClass('hiddenDiv')
+								$('div#addPathDiv').addClass('hiddenDiv')
+								$('input[type="button"]#addPath').val('일정 추가하기');
+								
+								pathCount += 1;
+								pathObj = new Array();
 							},
 							error: function(request, error) {
 								alert('message: ' + request.responseText);
 							}
 						})
-						
-						isAddCondition = false;
-						isFirstAdd = false;
-						$('div#defaultAddDiv').removeClass('hiddenDiv')
-						$('div#addPathDiv').addClass('hiddenDiv')
-						$('input[type="button"]#addPath').val('일정 추가하기');
-						pathCount += 1;
-						pathObj = new Array();
-						
-						
 					} else if (pathObj.length == 0){
 						alert('오른쪽 맵에서 가고 싶은 곳을 두 개 이상 선택해 주세요.');
 					} else if (pathObj.length == 1){
@@ -278,6 +291,13 @@
 				$('div#defaultAddDiv').removeClass('hiddenDiv')
 				$('div#addPathDiv').addClass('hiddenDiv')
 			});
+			
+			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다
+			$(window).bind('beforeunload', function() {
+				console.log('새로고침!')
+				/* $(location).attr('href', '${pageContext.request.contextPath}/myapp'); */
+				location.href='${pageContext.request.contextPath}/myapp';
+			})
 		})
 	})(jQuery)
 </script>
@@ -419,6 +439,11 @@
 		<input type='hidden' name='venueLatitude' id='venueLatitude'>
 		<input type='hidden' name='venueLongitude' id='venueLongitude'>
 		<input type='hidden' name='venueLocation' id='venueLocation'>
+	</div>
+	
+	<div id='pathEditForm'>
+		<p><input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'></p>
+		<div id='venueListInSavedPath'></div>
 	</div>
 </body>
 </html>
