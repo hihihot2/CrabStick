@@ -70,7 +70,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/logincont/joinpage.do")
 	public String joinpage() {
-		return "redirect:/survey/main.do";
+		return "redirect:/survey/main.do?sw=0";
 	}
 
 	@RequestMapping(value = "/logincont/joinpagego.do")
@@ -144,10 +144,17 @@ public class LoginController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/survey/main.do", method = RequestMethod.GET)
-	public String startSurvey() {
-		System.out.println("회원 성향 서베이 시작");
-		return "survey/survey";
+	@RequestMapping(value = "/survey/main.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView startSurvey(@RequestParam (value="sw") int sw, HttpSession hs) {
+		System.out.println("회원 성향 서베이 시작 sw = " + sw);
+		ModelAndView mav = new ModelAndView("survey/survey");
+		if(sw==1){
+			int mem_no = (Integer) hs.getAttribute("no");
+			mav.addObject("no", mem_no);
+		} else {
+			mav.addObject("no", "-1");
+		}
+		return mav;
 	}
 	@RequestMapping(value = "/survey/remain.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String reSurvey() {
@@ -175,67 +182,46 @@ public class LoginController {
 
 	@RequestMapping(value = "/survey/survey.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView surveypage(@RequestParam(value = "survey_Level") String survey_Level,
-			@RequestParam(value = "survey_Answer") String survey_Answer) {
+			@RequestParam(value = "survey_Answer") String survey_Answer,
+			@RequestParam(value = "switch")int sw, HttpSession hs) {
 		ModelAndView mav = null;
 		if (survey_Level.equals("1")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "1";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
+			mav.addObject("no", sw);
 		} else if (survey_Level.equals("2")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "2";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
+			mav.addObject("no", sw);
 		} else if (survey_Level.equals("3")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "3";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
+			mav.addObject("no", sw);
 		} else if (survey_Level.equals("4")) {
 			mav = new ModelAndView("survey/survey");
 			survey_Level = "4";
 			mav.addObject("survey_Level", survey_Level);
 			mav.addObject("survey_Answer", survey_Answer);
+			mav.addObject("no", sw);
 		} else {
 			mav = new ModelAndView("login/joinform");
 			System.out.println(survey_Answer);
-			mav.addObject("survey_Answer", survey_Answer);
+			System.out.println(sw); 
+			if(sw==-1){
+				mav.addObject("survey_Answer", survey_Answer);
+			} else {
+				mav = new ModelAndView("login/mypage");
+				service.updateSurvey(survey_Answer, sw);
+			}
+			
 		}
 		return mav;
 	}
 	
-	@RequestMapping(value = "/survey/resurvey.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView resurveypage(@RequestParam(value = "survey_Level") String survey_Level,
-			@RequestParam(value = "survey_Answer") String survey_Answer, HttpSession hs) {
-		ModelAndView mav = null;
-		if (survey_Level.equals("1")) {
-			mav = new ModelAndView("survey/resurvey");
-			survey_Level = "1";
-			mav.addObject("survey_Level", survey_Level);
-			mav.addObject("survey_Answer", survey_Answer);
-		} else if (survey_Level.equals("2")) {
-			mav = new ModelAndView("survey/resurvey");
-			survey_Level = "2";
-			mav.addObject("survey_Level", survey_Level);
-			mav.addObject("survey_Answer", survey_Answer);
-		} else if (survey_Level.equals("3")) {
-			mav = new ModelAndView("survey/resurvey");
-			survey_Level = "3";
-			mav.addObject("survey_Level", survey_Level);
-			mav.addObject("survey_Answer", survey_Answer);
-		} else if (survey_Level.equals("4")) {
-			mav = new ModelAndView("survey/resurvey");
-			survey_Level = "4";
-			mav.addObject("survey_Level", survey_Level);
-			mav.addObject("survey_Answer", survey_Answer);
-		} else {
-			mav = new ModelAndView("login/mypage");
-			System.out.println(survey_Answer);
-			int no = (Integer) hs.getAttribute("no");
-			service.updateSurvey(survey_Answer, no);
-			mav.addObject("survey_Answer", survey_Answer);
-		}
-		return mav;
-	}
 }
