@@ -104,7 +104,9 @@
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 휴식<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
-
+		
+		$(contentEl2).checkboxradio();
+		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, markers);
