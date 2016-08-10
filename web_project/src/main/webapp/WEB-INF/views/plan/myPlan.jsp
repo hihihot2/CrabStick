@@ -8,27 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/styles.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link href="http://fonts.googleapis.com/css?family=Montserrat"
-	rel="stylesheet" type="text/css">
-
-<link href="http://fonts.googleapis.com/css?family=Lato"
-	rel="stylesheet" type="text/css">
-
-
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
-<!-- jQuery  -->
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<!-- jQuery  -->
-
-
-<script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
 	function viewplan(){
