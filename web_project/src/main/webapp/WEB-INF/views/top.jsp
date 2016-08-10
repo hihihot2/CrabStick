@@ -144,7 +144,8 @@ h4 {
     transform: translate(-50%, -50%);
     font-size: 70px;
     color: white;
-    opacity: 0.6;
+    opacity: 0.8;
+   	font-weight: bold;
 }
 
 .center2 {
@@ -154,7 +155,11 @@ h4 {
     transform: translate(-50%, -50%);
     font-size: 40px;
     color: white;
-    opacity: 0.6;
+    opacity: 0.8;
+    font-weight: bold;
+
+    
+    
 }
 
 

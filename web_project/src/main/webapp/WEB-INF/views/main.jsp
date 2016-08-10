@@ -45,6 +45,15 @@
 		}
 	}
 	
+	function select_loc(latitude, longitude, locno, code, siguncode) {
+		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
+				+ latitude
+				+ "&city_longitude="
+				+ longitude
+				+ "&cityno="
+				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+	}
+	
 </script>
 <style type="text/css">
 
@@ -75,38 +84,32 @@
 		<div class="row text-center">
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"
-						width="400" height="300">
-						<div class="center">SEOUL</div>
+					<a	href="javascript:select_loc('37.566343','126.977934','1','1','0')"><img src="http://i.imgur.com/cwePpLM.jpg" width="400px" height="300px"></a>
+						<div class="center">SEOUL</div></a>
 					<p>
-						<strong>SEOUL</strong>
+						<strong><a	href="javascript:select_loc('37.566343','126.977934','1','1','0')">SEOUL</a></strong>
 					</p>
-					<p>대한민국 수도</p>
+					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"
-						width="400" height="300">
+					<a	href="javascript:select_loc('35.179770','129.074959','2','6','0')"><img src="http://i.imgur.com/eIYw6CJ.jpg" width="400px" height="300px"></a>
 						<div class="center">BUSAN</div>
 					<p>
-						<strong>BUSAN</strong>
+						<strong><a	href="javascript:select_loc('35.179770','129.074959','2','6','0')">BUSAN</a></strong>
 					</p>
-					<p>등킨도나쓰 무밧나</p>
+					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"
-						width="400" height="300">
+					<a	href="javascript:select_loc('33.489026','126.498351','16','39','4')"><img src="http://i.imgur.com/rJe3t02.jpg" width="400px" height="300px"></a>
 						<div class="center">JEJU</div>
 					<p>
-						<strong>JEJU</strong>
+						<strong><a	href="javascript:select_loc('33.489026','126.498351','16','39','4')">JEJU</a></strong>
 					</p>
-					<p>혼자옵서예</p>
+					<p></p>
 				</div>
 			</div>
 		</div>
