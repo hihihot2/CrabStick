@@ -101,7 +101,8 @@
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 휴식<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 쇼핑<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(4,'+lat+','+lng+')> 휴식<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 

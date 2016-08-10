@@ -61,7 +61,7 @@ public class PlaceController {
 				e.printStackTrace();
 			}
 			for (int i = 0; i<hotels.getHotelList().size(); i++){
-				
+
 				System.out.println("호텔 이름" + hotels.getHotelList().get(i).getName());
 				System.out.println("호텔 평점" + hotels.getHotelList().get(i).getHotelGuestRating());
 				System.out.println("호텔 좋아요 수" + hotels.getHotelList().get(i).getTotalRecommendations());
@@ -69,8 +69,8 @@ public class PlaceController {
 				System.out.println("호텔 추천 비율" + hotels.getHotelList().get(i).getPercentRecommended());
 				System.out.println("호텔 사진 주소" + Expedia.MEDIA_URL + hotels.getHotelList().get(i).getLargeThumbnailUrl());
 				System.out.println("호텔 주소" + hotels.getHotelList().get(i).getAddress());
-			
-				
+
+
 			}
 			mav.addObject("HOTELS", hotels.getHotelList());
 
@@ -100,6 +100,7 @@ public class PlaceController {
 			}
 			mav.addObject("VENUES", venueGroups);
 		}else if(branch == 2){ //명소 파싱
+
 			mav = new ModelAndView("plan/getAttrJSON");
 
 			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
@@ -146,14 +147,14 @@ public class PlaceController {
 					expression = "//*/mapy";
 					String _latitude = xpath.compile(expression).evaluate(document);
 					attraction.setMapy(_latitude);
-					
+
 					expression = "//*/firstimage";
 					String image_Url = xpath.compile(expression).evaluate(document);
 					attraction.setImgURL(image_Url);
 
 					System.out.println("명소 이름" + attraction.getTitle());
 					System.out.println("명소 사진 URL" + attraction.getImgURL());
-					
+
 					attraction_list.add(attraction);
 				}
 
@@ -170,76 +171,139 @@ public class PlaceController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			mav.addObject("ATTR", attraction_list);
-		}else if(branch == 3){
+			
+		}else if(branch == 3){ //백화점 or 면세점
 
-		}
-		mav.addObject("type", branch);
-		return mav;
-	}
-
-	@RequestMapping(value="/placeCont/showMap.do")
-	public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
-			@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno, 
-			@RequestParam(value="city_code") String code,
-			@RequestParam(value="city_siguncode") String siguncode){
-		ModelAndView mav = new ModelAndView("plan/showMap");
-
-		mav.addObject("lat",city_latitude);
-		mav.addObject("lang",city_longitude);
-		mav.addObject("loc_no",cityno);
-		mav.addObject("city_code",code);
-		mav.addObject("siguncode", siguncode);
-		return mav;
-	}
-
-	@RequestMapping(value="/placeCont/getRestaurants.do")
-	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno, @RequestParam(value="city_code") String code,
-			@RequestParam(value="city_siguncode") String siguncode) {
-
-
-		//Foursquare
-		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
-		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
-		System.out.println(city_latitude+","+city_longitude);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
-		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
-
-		//expedia
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
-
-		ArrayList<Group> venueGroups = null;
-		Response hotels = null;
-
-		/* 관광 명소 받아오는 XML 파싱 부분 */
-
-
-		try {
-			venueGroups = foursquare.getVenues();
-			hotels = expedia.getHotels();			
-
+			mav = new ModelAndView("plan/getShoppingPlaceJSON");
 			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
 				siguncode = "";
 			}
 
+			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
+			//URL접근
+			Document document;
+			try{
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D&contentTypeId=12&areaCode="+code+"&sigunguCode="+siguncode+"&cat1=A04&cat2=A0401&cat3=A04010300&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=200&pageNo=1");
+				// xpath 생성
+				XPath  xpath = XPathFactory.newInstance().newXPath();
+				String expression = "//*/item"; //xml <item> </item> 노드 읽기
+				NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
 
+				for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
 
+					Attraction attraction = new Attraction();
 
+					item_Node.item(idx).setTextContent("item_"+idx);
 
+					expression = "//*/title";
+					String title = xpath.compile(expression).evaluate(document);
+					attraction.setTitle(title);
+					// System.out.println(attraction.getTitle());
 
+					expression = "//*/addr1";
+					String addr1 = xpath.compile(expression).evaluate(document);
+					attraction.setAddr1(addr1);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+					expression = "//*/zipcode";
+					String zipcode = xpath.compile(expression).evaluate(document);
+					attraction.setZipcode(zipcode);
+
+					expression = "//*/tel";
+					String tel = xpath.compile(expression).evaluate(document);
+					attraction.setTel(tel);
+
+					expression = "//*/mapx";
+					String _longitude = xpath.compile(expression).evaluate(document);
+					attraction.setMapx(_longitude);
+
+					expression = "//*/mapy";
+					String _latitude = xpath.compile(expression).evaluate(document);
+					attraction.setMapy(_latitude);
+
+					expression = "//*/firstimage";
+					String image_Url = xpath.compile(expression).evaluate(document);
+					attraction.setImgURL(image_Url);
+
+					System.out.println("명소 이름" + attraction.getTitle());
+					System.out.println("명소 사진 URL" + attraction.getImgURL());
+
+					attraction_list.add(attraction);
+				}
+
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+			mav.addObject("type", branch);
+			return mav;
 		}
 
-		/* Expedia 사용시, 반드시 아래의 4개의 필드는 설정되어야 함(Foursquare는 장소만 검색, Expedia는 실제 예약가능한 장소를 물색하기 때문인듯)
+		@RequestMapping(value="/placeCont/showMap.do")
+		public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
+				@RequestParam(value="city_longitude") String city_longitude,
+				@RequestParam(value="cityno") String cityno, 
+				@RequestParam(value="city_code") String code,
+				@RequestParam(value="city_siguncode") String siguncode){
+			ModelAndView mav = new ModelAndView("plan/showMap");
+
+			mav.addObject("lat",city_latitude);
+			mav.addObject("lang",city_longitude);
+			mav.addObject("loc_no",cityno);
+			mav.addObject("city_code",code);
+			mav.addObject("siguncode", siguncode);
+			return mav;
+		}
+
+		@RequestMapping(value="/placeCont/getRestaurants.do")
+		public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude,
+				@RequestParam(value="cityno") String cityno, @RequestParam(value="city_code") String code,
+				@RequestParam(value="city_siguncode") String siguncode) {
+
+
+			//Foursquare
+			Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
+			Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
+			System.out.println(city_latitude+","+city_longitude);
+			foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
+			foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
+			foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
+
+			//expedia
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
+			expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
+
+			ArrayList<Group> venueGroups = null;
+			Response hotels = null;
+
+			/* 관광 명소 받아오는 XML 파싱 부분 */
+
+
+			try {
+				venueGroups = foursquare.getVenues();
+				hotels = expedia.getHotels();			
+
+				if (siguncode.equals("0")){ // siguncode -> 시군 정보 
+					siguncode = "";
+				}
+
+
+
+
+
+
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			/* Expedia 사용시, 반드시 아래의 4개의 필드는 설정되어야 함(Foursquare는 장소만 검색, Expedia는 실제 예약가능한 장소를 물색하기 때문인듯)
 		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
 
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
@@ -259,18 +323,18 @@ public class PlaceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 */
+			 */
 
-		ModelAndView mav = new ModelAndView("plan/showMap");
-		mav.addObject("VENUES", venueGroups);
-		mav.addObject("lat",city_latitude);
-		mav.addObject("lang",city_longitude);
-		mav.addObject("loc_no",cityno);
-		mav.addObject("HOTELS", hotels.getHotelList());
-		mav.addObject("isNewPlan", "true");
+			ModelAndView mav = new ModelAndView("plan/showMap");
+			mav.addObject("VENUES", venueGroups);
+			mav.addObject("lat",city_latitude);
+			mav.addObject("lang",city_longitude);
+			mav.addObject("loc_no",cityno);
+			mav.addObject("HOTELS", hotels.getHotelList());
+			mav.addObject("isNewPlan", "true");
 
-		return mav;
+			return mav;
+		}
+
+
 	}
-
-
-}
