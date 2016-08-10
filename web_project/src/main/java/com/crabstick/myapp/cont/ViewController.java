@@ -21,6 +21,8 @@ import com.crabstick.myapp.plan.Plan;
 import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.City;
 import com.crabstick.myapp.recommendation.RecommendationService;
+import com.crabstick.myapp.venue.Venue;
+import com.crabstick.myapp.venue.VenueService;
 
 @Controller
 public class ViewController {
@@ -42,6 +44,11 @@ public class ViewController {
 		this.pathService = pathService;
 	}
 	
+	@Resource(name = "venueService")
+	private VenueService venueService;
+	public void setService(VenueService venueService) {
+		this.venueService = venueService;
+	}
 	
 	@Resource(name = "recommendationService")
 	private RecommendationService recommendationService;
@@ -109,30 +116,46 @@ public class ViewController {
 		System.out.println("나의 계획페이지");
 		ModelAndView mav =  new ModelAndView("plan/myPlan");		
 		int mem_no = (Integer) httpSession.getAttribute("no");
-		System.out.println(mem_no);
 		
 		ArrayList<Plan> plan = planService.selectPlan(mem_no);
 		ArrayList<Path> path = new ArrayList<Path>();
+		ArrayList<Venue> venue = new ArrayList<Venue>();
 	
-		
+		//plan_no로 DB로 접근해서 path를 갖고온다.
 		for(int i=0; i<plan.size(); i++){
 			int plan_no = plan.get(i).getPlan_no();
 			System.out.println(plan_no);			
 			path = pathService.selectPath(plan_no);
-			System.out.println("path = " + path.toString());
+			System.out.println("path = " + path.toString());			
+			plan.get(i).setPathlist(path);			
+
 			
-			plan.get(i).setPathlist(path);				
+			//venue값을 갖고 오기위해 path_no를 사용해서 DB에 접근한다.
+			for(int j=0; j<path.size(); j++){
+				int path_no = path.get(j).getPath_no();		
+				
+				System.out.println("path_no = " + path_no);
+
+				venue = venueService.selectVenue(path_no);				
+				path.get(j).setVenuelist(venue);
+				System.out.println("venue = " + venue.toString());
+			}			
 			mav.addObject("plan", plan)	; // plan찍어주고
+			mav.addObject("paht", path);
 			
-		}
+		}		
+		return mav;
+	}	
+
+
+	
+	@RequestMapping(value="/viewcont/viewMyPlanMap.do")
+	public ModelAndView viewMyPlanMap(@RequestParam("plan")String plan){
+		ModelAndView mav =  new ModelAndView("plan/myPlan");	
+		System.out.println("내계획페이지에가기");
 		
 		return mav;
-
-	}
-
-	
-	
-	
+	}	
 	
 	/*******************************/
 	@RequestMapping(value="/viewCont/search.do")
@@ -154,4 +177,10 @@ public class ViewController {
 		mav.addObject("detailList", detailList);
 		return mav;
 	}
+	
+	
+
 }
+
+
+

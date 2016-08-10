@@ -1,5 +1,7 @@
 package com.crabstick.myapp.venue;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,6 +21,12 @@ public class VenueServiceImpl implements VenueService {
 	public void insertVenue(Venue v) {
 		VenueMapper Venuemapper = sqlSession.getMapper(VenueMapper.class);
 		Venuemapper.insert(v);
+	}
+
+	@Override
+	public ArrayList<Venue> selectVenue(int path_no) {
+		VenueMapper Venuemapper = sqlSession.getMapper(VenueMapper.class);
+		return Venuemapper.select(path_no);
 	}
 
 }

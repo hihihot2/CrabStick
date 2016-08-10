@@ -20,14 +20,8 @@ public class Plan {
 	
 	
 	
-	public ArrayList<Path> getPathlist() {
-		return pathlist;
-	}
-	public void setPathlist(ArrayList<Path> pathlist) {
-		this.pathlist = pathlist;
-	}
 	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
-			char plan_style, int mem_no) {
+			char plan_style, int mem_no, ArrayList<Path> pathlist) {
 		super();
 		this.plan_no = plan_no;
 		this.plan_name = plan_name;
@@ -37,7 +31,15 @@ public class Plan {
 		this.plan_writedate = plan_writedate;
 		this.plan_style = plan_style;
 		this.mem_no = mem_no;
+		this.pathlist = pathlist;
 	}
+	public ArrayList<Path> getPathlist() {
+		return pathlist;
+	}
+	public void setPathlist(ArrayList<Path> pathlist) {
+		this.pathlist = pathlist;
+	}
+
 	public Plan() {
 		super();
 		// TODO Auto-generated constructor stub
