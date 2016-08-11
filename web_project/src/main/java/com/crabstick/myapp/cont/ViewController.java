@@ -171,15 +171,6 @@ public class ViewController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/viewCont/detailDOC.do")
-	public ModelAndView windowShow(@RequestParam(value="loc_name")String loc_name){
-		ModelAndView mav = new ModelAndView("plan/showLocation");
-		System.out.println(loc_name);
-		ArrayList<City> detailList = recommendationService.searchByName(loc_name);
-		System.out.println(detailList.toString());
-		mav.addObject("detailList", detailList);
-		return mav;
-	}
 	
 	@RequestMapping(value="/viewCont/findCity.do")
 	public String findLoc(@RequestParam(value="searchText")String loc_name){
@@ -189,12 +180,10 @@ public class ViewController {
 		String lati = resultCity.getLoc_lati();
 		String long2 = resultCity.getLoc_long();
 		int locno = resultCity.getLoc_no();
-		int code = resultCity.getLoc_code();
-		int siguncode = resultCity.getLoc_siguncode();
-		String url = "/placeCont/getRestaurants.do?city_latitude="
+		
+		String url = "/placeCont/showMap.do?city_latitude="
 							+ lati + "&city_longitude=" + long2
-							+ "&cityno=" + locno + "&city_code=" + code
-							+ "&city_siguncode=" + siguncode;
+							+ "&cityno=" + locno;
 		return "redirect:/" + url;
 	}
 
