@@ -54,6 +54,11 @@
 				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
 	}
 	
+	function viewplan(){
+		document.myplan.action="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"
+		document.myplan.submit();
+	}
+	
 </script>
 <style type="text/css">
 
@@ -164,93 +169,35 @@
 			<h4>원하는 것을 선택하세요</h4>
 		</div>
 		<div class="row">
-			<c:forEach var="list" items="${recentPlan }">
+			<form name="myplan">			
+			<c:forEach var="plan" items="${recentPlan }">
+			<input type="hidden" name="plan_no" value="${plan.plan_no}" >			
 			<div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
-						<h1>${list.plan_name }</h1>
+						<h1>${plan.plan_name }</h1>
 					</div>
 					<div class="panel-body">
 						<p>
-							<strong>${list.plan_no }</strong>
+							<strong>${plan.plan_no }</strong>
 						</p>
 						<p>
-							<strong>${list.plan_commt }</strong>
+							<strong>${plan.plan_commt }</strong>
 						</p>
 						<p>
-							<strong>${list.plan_persons }</strong> 명 동행
+							<strong>${plan.plan_persons }</strong> 명 동행
 						</p>
 					</div>
 					<div class="panel-footer">
-						<h3>${list.plan_cost }</h3> 원
-						<h4>${list.plan_writedate }</h4>
-						<button class="btn btn-lg">상세보기</button>
+						<h3>${plan.plan_cost }</h3> 원
+						<h4>${plan.plan_writedate }</h4>
+						<button class="btn btn-lg" onclick="viewplan()">상세보기</button>
 					</div>
 				</div>
 			</div>
 			</c:forEach>
-			<!-- <div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>정보 1</h1>
-					</div>
-					<div class="panel-body">
-						<p>
-							<strong>20</strong> 년
-						</p>
-						<p>
-							<strong>15</strong> 객실
-						</p>
-						<p>
-							<strong>5</strong> 층
-						</p>
-						<p>
-							<strong>2</strong> 인실
-						</p>
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>정보 1</h1>
-					</div>
-					<div class="panel-body">
-						<p>
-							<strong>20</strong> 년
-						</p>
-						<p>
-							<strong>15</strong> 객실
-						</p>
-						<p>
-							<strong>5</strong> 층
-						</p>
-						<p>
-							<strong>2</strong> 인실
-						</p>
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-			</div> -->
+			</form>			
 		</div>
-	</div>
-	<!-- Container (호텔 업데이트 정보 요런거?) -->
-	
-	
+	</div>	
 </body>
 </html>
