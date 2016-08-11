@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
-import com.crabstick.myapp.plan.Plan;
-
 @Component("pathService")
 public class PathServiceImpl implements PathService {
 
@@ -42,4 +40,12 @@ public class PathServiceImpl implements PathService {
 		PathMapper pathMapper = sqlSession.getMapper(PathMapper.class);
 		pathMapper.delete(pathNo);
 	}
+
+	@Override
+	public void updatePath(Path p) {
+		PathMapper pathMapper = sqlSession.getMapper(PathMapper.class);
+		pathMapper.update(p);
+	}
+	
+	
 }

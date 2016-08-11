@@ -25,4 +25,8 @@
 		SELECT * FROM venues WHERE path_no=#{path_no} ORDER BY ven_order
 	</select>
 	
+	<delete id="deleteAllByPathNo" parameterType="int">
+		DELETE FROM venues WHERE path_no=#{path_no}
+	</delete>
+	
 </mapper>
