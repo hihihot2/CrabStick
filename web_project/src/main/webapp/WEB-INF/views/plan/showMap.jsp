@@ -70,7 +70,7 @@
 		contentEl.appendTo(map.getElement());
 		$('#searchData').autocomplete({
 			source: function(request, response){
-				var params = "data="+request.term;
+				var params = "data="+encodeURIComponent(request.term);
 				//sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
 				$.ajax({
 					url: '../plancont/searchloc.do?'+params,
