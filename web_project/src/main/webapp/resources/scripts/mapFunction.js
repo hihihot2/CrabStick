@@ -15,7 +15,8 @@
 		switch(type){
 		case 0: url = "../resources/png/hotel.png";break;
 		case 1: url = "../resources/png/food.png";break;
-		case 2: url = "../resources/png/attraction.png";break;
+		case 2: url = "../resources/png/castle.png";break;
+		case 4: url = "../resources/png/attraction.png";break;
 		default: url= "../resources/png/search.png";break;
 		}
 		var marker = new naver.maps.Marker({

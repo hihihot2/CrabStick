@@ -118,6 +118,9 @@
 						setPlace(list[i].lat, list[i].lng, list[i].type);
 						setListener(list[i].name, list[i].type);
 					}
+				},
+				error: function(status){
+					alert("1")
 				}
 			});
 		}

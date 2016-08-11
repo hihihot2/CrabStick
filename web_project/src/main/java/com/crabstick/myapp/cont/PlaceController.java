@@ -43,7 +43,7 @@ public class PlaceController {
 			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng,
 			@RequestParam(value="city_code") String code,
 			@RequestParam(value="siguncode") String siguncode){
-		System.out.println("placeCont >> setBranch");
+		System.out.println("placeCont >> setBranch : "+branch);
 		ModelAndView mav = null;
 		if(branch == 0){ //호텔 파싱
 			mav = new ModelAndView("plan/getHotelJSON");
@@ -60,7 +60,7 @@ public class PlaceController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			for (int i = 0; i<hotels.getHotelList().size(); i++){
+			/*for (int i = 0; i<hotels.getHotelList().size(); i++){
 
 				System.out.println("호텔 이름" + hotels.getHotelList().get(i).getName());
 				System.out.println("호텔 평점" + hotels.getHotelList().get(i).getHotelGuestRating());
@@ -71,7 +71,7 @@ public class PlaceController {
 				System.out.println("호텔 주소" + hotels.getHotelList().get(i).getAddress());
 
 
-			}
+			}*/
 			mav.addObject("HOTELS", hotels.getHotelList());
 
 		}else if(branch == 1){ //맛집 파싱
@@ -92,12 +92,12 @@ public class PlaceController {
 				e.printStackTrace();
 			}
 
-			for (int i = 0; i<venueGroups.get(0).getItems().size(); i++){
+			/*for (int i = 0; i<venueGroups.get(0).getItems().size(); i++){
 				System.out.println("음식점 이름"+venueGroups.get(0).getItems().get(i).getName());
 				System.out.println("음식점 웹 주소"+venueGroups.get(0).getItems().get(i).getUrl());
 				System.out.println("음식점 시간"+venueGroups.get(0).getItems().get(i).getContact());
 				System.out.println("평점"+venueGroups.get(0).getItems().get(i).getRating());	
-			}
+			}*/
 			mav.addObject("VENUES", venueGroups);
 		}else if(branch == 2){ //명소 파싱
 
@@ -166,8 +166,8 @@ public class PlaceController {
 						String image_Url = xpath.compile(expression).evaluate(document);
 						attraction.setImgURL(image_Url);
 
-						System.out.println("명소 이름" + attraction.getTitle());
-						System.out.println("명소 사진 URL" + attraction.getImgURL());
+						/*System.out.println("명소 이름" + attraction.getTitle());
+						System.out.println("명소 사진 URL" + attraction.getImgURL());*/
 
 						attraction_list.add(attraction);
 					}
@@ -205,9 +205,10 @@ public class PlaceController {
 
 				for (int index = 0; index<category.length; index++) {
 					System.out.println(category_name[index]);
+					System.out.println("index : "+index);
 					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-
+					//System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
 					/* 쇼핑 */				
 					//  면세점 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=38&areaCode=1&sigunguCode=&cat1=A04&cat2=A0401&cat3=A04010400&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
 					//  백화점 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=38&areaCode=1&sigunguCode=&cat1=A04&cat2=A0401&cat3=A04010300&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
@@ -217,17 +218,17 @@ public class PlaceController {
 					XPath  xpath = XPathFactory.newInstance().newXPath();
 					String expression = "//*/item"; //xml <item> </item> 노드 읽기
 					NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-
-					for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
+					
+					for( int idx=0; idx<item_Node.getLength(); idx++ ){
 
 						Attraction attraction = new Attraction();
 
 						item_Node.item(idx).setTextContent("item_"+idx);
-
+					
 						expression = "//*/title";
 						String title = xpath.compile(expression).evaluate(document);
 						attraction.setTitle(title);
-						// System.out.println(attraction.getTitle());
+						System.out.println("면세점 이름"+attraction.getTitle());
 
 						expression = "//*/addr1";
 						String addr1 = xpath.compile(expression).evaluate(document);
@@ -253,8 +254,8 @@ public class PlaceController {
 						String image_Url = xpath.compile(expression).evaluate(document);
 						attraction.setImgURL(image_Url);
 
-						System.out.println("명소 이름" + attraction.getTitle());
-						System.out.println("명소 사진 URL" + attraction.getImgURL());
+						/*System.out.println("명소 이름" + attraction.getTitle());
+						System.out.println("명소 사진 URL" + attraction.getImgURL());*/
 
 						attraction_list.add(attraction);
 					}
@@ -345,8 +346,8 @@ public class PlaceController {
 						String image_Url = xpath.compile(expression).evaluate(document);
 						attraction.setImgURL(image_Url);
 
-						System.out.println("명소 이름" + attraction.getTitle());
-						System.out.println("명소 사진 URL" + attraction.getImgURL());
+						/*System.out.println("명소 이름" + attraction.getTitle());
+						System.out.println("명소 사진 URL" + attraction.getImgURL());*/
 
 						attraction_list.add(attraction);
 					}
