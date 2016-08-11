@@ -34,6 +34,7 @@
 	var myPath = []; //선택한 경로 저장 배열
 	var markers = [];//생성된 마커를 담을 배열
 	var infowindows = [];//생성된 윈도우를 담을 배열
+	var userSearch;
 	var zoom; //zoom 상태 판별
 	var polyline = new Array(); //라인 변수
 	var pathObj = [];
@@ -98,7 +99,7 @@
 			}
 		});
 		//체크박스 생성 및 기능 설정
-		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+		var contentEl2 = $('<div style="border:2px;width:65px;height:110px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
@@ -108,7 +109,9 @@
 		contentEl2.appendTo(map.getElement());
 
 		//플래너창 넘어올때 ajax로 마커값 요청
-		for(var i = 0 ; i < 4 ; i++){
+		
+		var categories = document.getElementsByName("categorychk");
+		for(var i = 0 ; i < categories.length ; i++){
 			$.ajax({
 				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode,
 				type: 'POST',
@@ -118,6 +121,9 @@
 						setPlace(list[i].lat, list[i].lng, list[i].type);
 						setListener(list[i].name, list[i].type);
 					}
+				},
+				error: function(status){
+					alert("1")
 				}
 			});
 		}

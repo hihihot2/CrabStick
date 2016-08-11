@@ -15,7 +15,9 @@
 		switch(type){
 		case 0: url = "../resources/png/hotel.png";break;
 		case 1: url = "../resources/png/food.png";break;
-		case 2: url = "../resources/png/attraction.png";break;
+		case 2: url = "../resources/png/castle.png";break;
+		case 3: url = "../resources/png/shopping.png";break;
+		case 4: url = "../resources/png/attraction.png";break;
 		default: url= "../resources/png/search.png";break;
 		}
 		var marker = new naver.maps.Marker({
@@ -23,13 +25,10 @@
 			icon : {
 				url: url
 			}
-		//position: 마커의 위치를 나타내는 지도 좌표
-		//map: 마커를 표시할 map 객체
-		//icon: 모양 설정, 문자열로 입력시 사용할 이미지 경로
-		//animaion: 지도에 마커 추가시에 시작할 에니메이션 설정
-		//title: 마우스 오버시 나타나는 문자열
-		//clickable: 기본 true, 마커 클릭 허용 여부
 		});
+		if(type == 's'){
+			marker.setMap(map);
+		}
 		var subMarker = new Array();
 		subMarker.push(type);//flag
 		subMarker.push(type);//type
@@ -85,7 +84,8 @@
 			venue.markerNum = len;// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 			pathObj.push(venue);
 			updateList(); //화면 업데이트
-			markers[len][0] = 'm';
+			//markers[len][0] = 'm';
+			myPath.push(markers[len][2]);
 			if(infowindow.getMap()){
 				infowindow.close();
 			}
@@ -154,8 +154,10 @@
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-		markers[len][0] = markers[len][1];
-		marker.setMap(null);
+		myPath[num].setMap(null);
+		myPath.splice(num, 1);
+		/*markers[len][0] = markers[len][1];
+		marker.setMap(null);*/
 		updateList();
 	}
 	
@@ -175,7 +177,8 @@
 
 	    for (var i = 0; i < markers.length; i++) {
 
-	        marker = markers[i][2];
+	        //marker = markers[i][2];
+	    	marker = markers[i];
 	        position = marker.getPosition();
 
 	        if (mapBounds.hasLatLng(position)) {
@@ -253,7 +256,7 @@
 				setListener(data, 's');
 				for(var i = 0 ; i < infowindows.length ; i++){
 					if(infowindows[i][0] == 's'){
-						infowindows[i][1].open(map, markers[i][1]);
+						infowindows[i][2].open(map, markers[i][2]);
 					}
 				}
 				$('searchData').val('');
@@ -262,16 +265,7 @@
 			}
 		}
 	}
-	//카테고리 Ajax 검색
-	/*function checkcategory(i,lat,lng){
-		var categories = document.getElementsByName("categorychk");
-		if(categories[i].checked){
-			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode;
-			sendRequest("../placeCont/branch.do", params, markBranch, 'POST');
-		}else{
-			unmarkBranch(i);
-		}
-	}*/
+	//카테고리
 	function checkcategory(i,lat,lng){
 		var categories = document.getElementsByName("categorychk");
 		if(categories[i].checked){
@@ -309,7 +303,7 @@
 				var subTmp = new Array();
 				tmp.push(markers[i]);
 			}else{
-				var marker = markers[i][1];
+				var marker = markers[i][2];
 				marker.setMap(null);
 			}
 		}
