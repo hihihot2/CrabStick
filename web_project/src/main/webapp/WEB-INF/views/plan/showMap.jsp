@@ -114,7 +114,6 @@
 				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode,
 				type: 'POST',
 				success: function(data){
-					alert(data);
 					var list = eval("("+ data +")");
 					for(var i = 0 ; i < list.length ; i++){
 						setPlace(list[i].lat, list[i].lng, list[i].type);
