@@ -106,9 +106,7 @@ public class PlaceController {
 			String[] category_name = {"고궁","성문","성","민속마을"};
 			mav = new ModelAndView("plan/getAttrJSON");
 
-			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
-				siguncode = "";
-			}
+
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
 			//URL접근
@@ -119,7 +117,7 @@ public class PlaceController {
 				for (int index = 0; index<category.length; index++) {
 					System.out.println(category_name[index]);
 					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode="+siguncode+"&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=100&pageNo=1");
+							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
 
 					/* 유적지 	*/
 					//	고궁	URL 주소	http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010100&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
@@ -127,7 +125,7 @@ public class PlaceController {
 					//  성 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010200&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
 					//  민속 마을 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010600&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
 
-					
+
 					// xpath 생성
 					XPath  xpath = XPathFactory.newInstance().newXPath();
 					String expression = "//*/item"; //xml <item> </item> 노드 읽기
@@ -197,9 +195,7 @@ public class PlaceController {
 			String[] category_name = {"면세점","백화점"};
 			mav = new ModelAndView("plan/getAttrJSON");
 
-			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
-				siguncode = "";
-			}
+
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
 			//URL접근
@@ -210,7 +206,7 @@ public class PlaceController {
 				for (int index = 0; index<category.length; index++) {
 					System.out.println(category_name[index]);
 					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode="+siguncode+"&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=100&pageNo=1");
+							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
 
 					/* 쇼핑 */				
 					//  면세점 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=38&areaCode=1&sigunguCode=&cat1=A04&cat2=A0401&cat3=A04010400&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
@@ -281,15 +277,13 @@ public class PlaceController {
 			mav.addObject("ATTR", attraction_list);
 
 		} else if (branch == 4) { // 휴식 카테고리
-			
+
 			String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			String[] category = {"cat1=A01&cat2=A0101&cat3=A01010100","cat1=A01&cat2=A0101&cat3=A01010200","cat1=A01&cat2=A0101&cat3=A01010300","cat1=A02&cat2=A0101&cat3=A01010500","cat1=A02&cat2=A0202&cat3=A02020800","cat1=A02&cat2=A0202&cat3=A02020700"};
 			String[] category_name = {"국립공원","생태 관광지","섬","테마 공원","유람선","공원"};
 			mav = new ModelAndView("plan/getAttrJSON");
 
-			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
-				siguncode = "";
-			}
+
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
 			//URL접근
@@ -300,9 +294,9 @@ public class PlaceController {
 				for (int index = 0; index<category.length; index++) {
 					System.out.println(category_name[index]);
 					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode="+siguncode+"&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=100&pageNo=1");
+							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
 
-				
+
 					/* 휴식 */
 					//  국립 공원 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A01&cat2=A0101&cat3=A01010100&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
 					//  생태 관광지 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A01&cat2=A0101&cat3=A01010500&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
@@ -373,7 +367,7 @@ public class PlaceController {
 			}
 
 			mav.addObject("ATTR", attraction_list);
-			
+
 		}
 		mav.addObject("type", branch);
 		return mav;
