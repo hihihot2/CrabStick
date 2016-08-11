@@ -40,7 +40,7 @@
 	var loc_no;
 	var isAddCondition = false;
 	var isFirstAdd = true;
-	var pathColors = ["#4A89DC", "#F6BB42", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
+	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
 	var pathCount = 0;
 	
 	var HOME_PATH = window.HOME_PATH || '.',

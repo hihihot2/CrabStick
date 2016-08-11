@@ -119,8 +119,9 @@
 										<h4>${venue.ven_order}번째 장소</h4><h5> ${venue.ven_name}</h5>
 									</div>
 								</c:forEach>
-									<button class="btn btn-lg" onclick="viewplan()" >일정 보러가기</button>								
 							</c:forEach>
+							<button class="btn btn-lg" onclick="viewplan()" >일정 보러가기</button>								
+							
 						</div>
 					</div>				
 			</div>		
