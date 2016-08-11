@@ -9,4 +9,6 @@ public interface PathService {
 	Path getPathByPathNo(int pathNo);
 	void removePath(int pathNo);
 	void updatePath(Path p);
+	Path getPathSummary(int plan_no);
+	
 }

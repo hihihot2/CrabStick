@@ -10,4 +10,6 @@ public interface PathMapper {
 	Path selectByPathNo(int pathNo);
 	void delete(int pathNo);
 	void update(Path p);
+	Path selectPathSummary(int plan_no);
+	
 }
