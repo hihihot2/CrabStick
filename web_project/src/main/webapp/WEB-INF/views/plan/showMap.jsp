@@ -62,7 +62,7 @@
 			center : new naver.maps.LatLng(lat, lng),
 			zoom : 7
 		});
-		
+		//검색창 생성 및 기능 설정
 		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
 				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
 				+ '</div>');
@@ -96,7 +96,7 @@
 				}
 			}
 		});
-
+		//체크박스 생성 및 기능 설정
 		var contentEl2 = $('<div style="border:2px;width:65px;height:100px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
@@ -106,9 +106,23 @@
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 
+		//플래너창 넘어올때 ajax로 마커값 요청
+		for(var i = 0 ; i < 4 ; i++){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode,
+				type: 'POST',
+				success: function(data){
+					var list = eval("("+ data +")");
+					for(var i = 0 ; i < list.length ; i++){
+						setPlace(list[i].lat, list[i].lng, list[i].type);
+						setListener(list[i].name, list[i].type);
+					}
+				}
+			});
+		}
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
-			updateMarkers(map, markers);
+			updateMarkers(map, myPath);
 		});
 
 		//맵 클릭 이벤트
@@ -122,10 +136,8 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(markers.toString());
+			alert(markers.join());
 		})
-		
-		
 	});
 </script>
 
@@ -234,6 +246,7 @@
 								pathDiv.click(function() {
 									// 경로를 클릭 -> 수정 폼이 등장
 									var thisElement = $(this);
+									var pathCountOfThisElement = pathDiv.parent().find('div#pathDiv').index(this);
 									
 									$.ajax({
 										url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
@@ -271,7 +284,7 @@
 																								
 												venueDiv.find('img#cancelImg').click(function() {
 													// x 버튼 누를때 하는 일
-													var pathLineOnMap = polyline[pathDiv.find('input#pathCount').val()].getPath();
+													var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
 													pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
 													$(this).parent().parent().remove();
 												})
@@ -289,7 +302,7 @@
 												thisElement.removeClass('hiddenDiv');
 												pathEditDiv.remove();
 												
-												var tempPathLine = polyline[pathDiv.find('input#pathCount').val()].getPath();
+												var tempPathLine = polyline[pathCountOfThisElement].getPath();
 												tempPathLine.splice(0, tempPathLine.length);
 												for(var i = 0; i < mapPinList.length; i++) {
 													tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
@@ -298,7 +311,11 @@
 											
 											pathEditDiv.find('input#removePathBtn').click(function() {
 												// 삭제 버튼 누를 때 할 일
-												alert(pathEditDiv.find('input#pathNo').val());
+												for(var i = 0; i < polyline.length; i++) {
+													console.log(polyline[i]);
+												}
+												console.log(pathCountOfThisElement);
+												polyline.splice(pathCountOfThisElement, 1);
 												$.ajax({
 													url: "${pageContext.request.contextPath }/planCont/removePath.do",
 													dataType: 'text',
@@ -369,6 +386,7 @@
 				isAddCondition = false;
 				$('div#defaultAddDiv').removeClass('hiddenDiv')
 				$('div#addPathDiv').addClass('hiddenDiv')
+				deleteMarker();
 			});
 			
 			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다 (아직 안됨)
