@@ -12,7 +12,7 @@
 <script type="text/javascript">
 
 	function viewplan(){
-		document.myplan.action="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"
+		document.myplan.action="${pageContext.request.contextPath}/placeCont/showMyMap.do"
 		document.myplan.submit();
 	}
 

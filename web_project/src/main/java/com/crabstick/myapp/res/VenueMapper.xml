@@ -14,11 +14,10 @@
 		<result property="ven_type" column="ven_type" />
 		<result property="ven_order" column="ven_order" />
 		<result property="path_no" column="path_no" />
-		<result property="loc_no" column="loc_no" />
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.venue.VenueMapper">
-		INSERT INTO venues VALUES(SEQ_VEN.NEXTVAL, #{ven_name}, #{ven_lati}, #{ven_long}, #{ven_commt}, #{ven_type}, #{ven_order}, #{path_no}, #{loc_no})
+		INSERT INTO venues VALUES(SEQ_VEN.NEXTVAL, #{ven_name}, #{ven_lati}, #{ven_long}, #{ven_commt}, #{ven_type}, #{ven_order}, #{path_no})
 	</insert>
 	
 	<select id="select" parameterType="int" resultMap="VenueResultMap">

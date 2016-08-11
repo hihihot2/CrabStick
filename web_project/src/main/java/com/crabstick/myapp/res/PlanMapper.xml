@@ -14,10 +14,24 @@
 		<result property="plan_writedate" column="plan_writedate" />
 		<result property="plan_style" column="plan_style" />
 		<result property="mem_no" column="mem_no" />
+		<result property="loc_no" column="loc_no" />
+	</resultMap>	
+	<resultMap type="com.crabstick.myapp.location.Location" id="LocationResultMap">
+		<result property="loc_no" column="loc_no"/>
+		<result property="loc_name" column="loc_name"/>
+		<result property="loc_lati" column="loc_lati"/>
+		<result property="loc_long" column="loc_long"/>
+		<result property="loc_ctweight" column="loc_ctweight"/>
+		<result property="loc_hiweight" column="loc_hiweight"/>
+		<result property="loc_ntwegith" column="loc_ntweight"/>
+		<result property="loc_code" column="loc_code"/>
+		<result property="loc_siguncode" column="loc_siguncode"/>
+		<result property="loc_imgpath" column="loc_imgpath"/>
+		<result property="loc_commt" column="loc_commt"/>
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.plan.PlanMapper">
-		INSERT INTO plans VALUES(SEQ_PLAN.NEXTVAL, #{plan_name}, #{plan_commt}, #{plan_cost}, #{plan_persons}, SYSDATE, #{plan_style}, #{mem_no})
+		INSERT INTO plans VALUES(SEQ_PLAN.NEXTVAL, #{plan_name}, #{plan_commt}, #{plan_cost}, #{plan_persons}, SYSDATE, #{plan_style}, #{mem_no}, #{loc_no})
 		
 		<selectKey keyProperty="plan_no" resultType="Integer" order="AFTER">
 			SELECT SEQ_PLAN.CURRVAL FROM DUAL
@@ -38,5 +52,10 @@
 	
 	<select id='update' parameterType="com.crabstick.myapp.plan.PlanMapper">
 		UPDATE plans SET plan_name = #{plan_name}, plan_commt = #{plan_commt}, plan_cost = #{plan_cost}, plan_persons = #{plan_persons}, plan_writedate = SYSDATE, plan_style = #{plan_style} WHERE plan_no = #{plan_no}
+	</select>
+	
+	<select id="selectLocationByPlanNo" parameterType="int" resultMap="LocationResultMap">
+		SELECT l.loc_no AS loc_no, loc_name, loc_lati, loc_long, loc_ctweight, loc_hiweight, loc_ntweight, loc_code, loc_siguncode, loc_imgpath, loc_commt
+		FROM locations l, plans p WHERE p.loc_no = l.loc_no AND p.plan_no = ${plan_no}
 	</select>
 </mapper>

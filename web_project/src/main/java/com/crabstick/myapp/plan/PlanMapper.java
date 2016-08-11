@@ -2,6 +2,8 @@ package com.crabstick.myapp.plan;
 
 import java.util.ArrayList;
 
+import com.crabstick.myapp.location.Location;
+
 public interface PlanMapper {
 	void insert(Plan p);
 	
@@ -12,4 +14,6 @@ public interface PlanMapper {
 	//한개 plan만 가져오기
 	Plan selectplan(int plan_no);
 	ArrayList<Plan> recent_select();
+
+	Location selectLocationByPlanNo(int planNo);
 }

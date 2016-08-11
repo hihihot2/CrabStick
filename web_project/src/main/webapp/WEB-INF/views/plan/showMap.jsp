@@ -152,6 +152,11 @@
 <script type="text/javascript">
 	(function($) {
 		$(document).ready(function() {
+			if('${PLAN}' == '') {
+				alert('플랜 없음')
+			}
+			
+			
 			var date = new Date();
 			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "에 저장된 나의 여행";
 			var defaultPlanComment = "여행 넘나 재밌는 것~";
@@ -221,6 +226,7 @@
 							plan.planPersons = $('input#planPersons').val() * 1;					
 						}
 						plan.planStyle = $('select#planStyle option:selected').val() * 1;
+						plan.locationNo = loc_no;
 						plan.path = arr;
 						
 						console.log(JSON.stringify(plan));
@@ -289,7 +295,6 @@
 												venueDiv.find('input#venueNo').val(venue.ven_no);
 												venueDiv.find('input#venueLatitude').val(venue.ven_lati);
 												venueDiv.find('input#venueLongitude').val(venue.ven_long);
-												venueDiv.find('input#venueLocation').val(venue.loc_no);
 												venueDiv.find('input#venueOrder').val(venue.ven_order);
 												
 												var pin = new Object();
@@ -323,7 +328,6 @@
 													venue.comment = venueDiv.find('input#venueComment').val();
 													venue.lat = venueDiv.find('input#venueLatitude').val();
 													venue.lng = venueDiv.find('input#venueLongitude').val();
-													venue.loc = venueDiv.find('input#venueLocation').val() * 1;
 													path.venues.push(venue);
 												} while((venueDiv = venueDiv.next()).length > 0);
 												
@@ -556,11 +560,12 @@
 			<div class='planInfo'>
 				<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='hidden' id='planNo' value='0'> <input
-						type='text' id='planName'> <input type='text'
-						id='planComment'> <input type="text" id='planCost'
-						placeholder='여행 비용'> <input type="text" id='planPersons'
-						placeholder='여행 인원 (기본 값: 1)'> <select id='planStyle'>
+					<input type='hidden' id='planNo' value='0'>
+					<input type='text' id='planName'>
+					<input type='text' id='planComment'>
+					<input type="text" id='planCost' placeholder='여행 비용'> 
+					<input type="text" id='planPersons'	placeholder='여행 인원 (기본 값: 1)'> 
+					<select id='planStyle'>
 						<option label='문화 탐방' value='1'>
 						<option label='식도락' value='2'>
 						<option label='쇼핑' value='3'>
@@ -612,23 +617,21 @@
 			<img id='cancelImg'
 				src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' />
 		</div>
-		<input type='hidden' name='venueNo' id='venueNo'> <input
-			type='hidden' name='venueLatitude' id='venueLatitude'> <input
-			type='hidden' name='venueLongitude' id='venueLongitude'> <input
-			type='hidden' name='venueLocation' id='venueLocation'> <input
-			type='hidden' name='venueOrder' id='venueOrder'>
+		<input type='hidden' name='venueNo' id='venueNo'> 
+		<input type='hidden' name='venueLatitude' id='venueLatitude'> 
+		<input type='hidden' name='venueLongitude' id='venueLongitude'> 
+		<input type='hidden' name='venueOrder' id='venueOrder'>
 	</div>
 
 	<div id='pathEditDivForm' class='hiddenDiv'>
-		<input type='text' name='pathName' id='pathName'
-			placeholder='경로 이름을 입력해주세요.'> <input type='hidden'
-			name='pathNo' id='pathNo'>
+		<input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'>
+		<input type='hidden' name='pathNo' id='pathNo'>
 		<div id='venueListInSavedPath'></div>
 
 		<div id='btnsDiv'>
-			<input type='button' id='modifyPathBtn' value='수정할게요'> <input
-				type='button' id='cancelPathBtn' value='취소할게요'> <input
-				type='button' id='removePathBtn' value='없애주세요'>
+			<input type='button' id='modifyPathBtn' value='수정할게요'>
+			<input type='button' id='cancelPathBtn' value='취소할게요'> 
+			<input type='button' id='removePathBtn' value='없애주세요'>
 		</div>
 	</div>
 </body>

@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
+import com.crabstick.myapp.location.Location;
+
 @Component("planService")
 public class PlanServiceImpl implements PlanService {
 	
@@ -45,5 +47,13 @@ public class PlanServiceImpl implements PlanService {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
 		return planmapper.recent_select();
 	}
+	
+	@Override
+	public Location getLocationByPlanNo(int planNo) {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
+		return planmapper.selectLocationByPlanNo(planNo);
+	}
+
+	
 
 }

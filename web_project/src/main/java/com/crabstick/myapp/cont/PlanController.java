@@ -267,8 +267,9 @@ public class PlanController {
 			long planPersons = (Long) planObject.get("planPersons");
 			long planStyle = (Long) planObject.get("planStyle");
 			int memberNo = Integer.parseInt(session.getAttribute("no").toString());
+			long locNo = (Long) planObject.get("locationNo");
 			
-			newPlan = new Plan((int) planNo, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo);
+			newPlan = new Plan((int) planNo, planName, planComment, (int) planCost, (int) planPersons, null, (char) (planStyle+48), memberNo, (int) locNo);
 			if(isFirstAdd) {
 				planService.insertPlan(newPlan);
 			} else {
@@ -289,7 +290,7 @@ public class PlanController {
 				String lat = (String) venue.get("lat");
 				String lng = (String) venue.get("lng");
 				
-				venueList.add((new Venue(0, venueName, lat, lng, venueComment, venueType, order, 0, 1)));
+				venueList.add((new Venue(0, venueName, lat, lng, venueComment, venueType, order, 0)));
 				order++;
 				
 				pathSummary += venueName;
@@ -355,12 +356,10 @@ public class PlanController {
 		
 		JSONObject pathObject = (JSONObject) JSONValue.parse(path);
 		
-		
-		
-		
 		String pathSummary = "";
 		int order = 0;
 		JSONArray venues = (JSONArray) pathObject.get("venues");
+		
 		ArrayList<Venue> venueList = new ArrayList<Venue>();
 		Iterator iterator = venues.iterator();
 		while(iterator.hasNext()) {
@@ -369,8 +368,7 @@ public class PlanController {
 			String venueComment = (String) venue.get("comment");
 			String lat = (String) venue.get("lat");
 			String lng = (String) venue.get("lng");
-			long loc = (Long) venue.get("loc");
-			venueList.add(new Venue(0, venueName, lat, lng, venueComment, "1", order, 0, (int) loc));
+			venueList.add(new Venue(0, venueName, lat, lng, venueComment, "1", order, 0));
 			pathSummary += venueName;
 			if(iterator.hasNext()) {
 				pathSummary += " - ";
