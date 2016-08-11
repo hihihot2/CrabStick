@@ -45,7 +45,21 @@
 		}
 	}
 	
+	function select_loc(latitude, longitude, locno, code, siguncode) {
+		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
+				+ latitude
+				+ "&city_longitude="
+				+ longitude
+				+ "&cityno="
+				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+	}
+	
 </script>
+<style type="text/css">
+
+
+
+</style>
 </head>
 <body>
 	<!-- 네비게이션 밑 부분 -->
@@ -67,38 +81,35 @@
 		<h2>한국의 도시를 소개합니다</h2>
 		<br>
 		<h4>밑의 도시들을 만날 수 있습니다.</h4>
-		<div class="row text-center slideanim">
+		<div class="row text-center">
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-1.jpg"
-						width="400" height="300">
+					<a	href="javascript:select_loc('37.566343','126.977934','1','1','0')"><img src="http://i.imgur.com/cwePpLM.jpg" width="400px" height="300px"></a>
+						<div class="center">SEOUL</div></a>
 					<p>
-						<strong>도시 1</strong>
+						<strong><a	href="javascript:select_loc('37.566343','126.977934','1','1','0')">SEOUL</a></strong>
 					</p>
-					<p>도시 1의 사진</p>
+					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-2.jpg"
-						width="400" height="300">
+					<a	href="javascript:select_loc('35.179770','129.074959','2','6','0')"><img src="http://i.imgur.com/eIYw6CJ.jpg" width="400px" height="300px"></a>
+						<div class="center">BUSAN</div>
 					<p>
-						<strong>도시 2</strong>
+						<strong><a	href="javascript:select_loc('35.179770','129.074959','2','6','0')">BUSAN</a></strong>
 					</p>
-					<p>도시 2의 사진</p>
+					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<img
-						src="http://slidesjs.com/examples/standard/img/example-slide-3.jpg"
-						width="400" height="300">
+					<a	href="javascript:select_loc('33.489026','126.498351','16','39','4')"><img src="http://i.imgur.com/rJe3t02.jpg" width="400px" height="300px"></a>
+						<div class="center">JEJU</div>
 					<p>
-						<strong>도시 3</strong>
+						<strong><a	href="javascript:select_loc('33.489026','126.498351','16','39','4')">JEJU</a></strong>
 					</p>
-					<p>도시 3의 사진</p>
+					<p></p>
 				</div>
 			</div>
 		</div>
@@ -113,7 +124,7 @@
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
 					<h4>
-						"씨발!!! 서울 존나 좋앙!!"<br> <span style="font-style: normal;">최재훈
+						" 서울  좋앙!!"<br> <span style="font-style: normal;">최재훈
 							님의 평가</span>
 					</h4>
 				</div>
@@ -149,11 +160,36 @@
 	<!-- Container (호텔 업데이트 정보 요런거?) -->
 	<div class="container-fluid bg-grey">
 		<div class="text-center">
-			<h2>최신 정보</h2>
+			<h2>최신 등록된 여행계획 정보</h2>
 			<h4>원하는 것을 선택하세요</h4>
 		</div>
 		<div class="row">
+			<c:forEach var="list" items="${recentPlan }">
 			<div class="col-sm-4 col-xs-12">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>${list.plan_name }</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>${list.plan_no }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_commt }</strong>
+						</p>
+						<p>
+							<strong>${list.plan_persons }</strong> 명 동행
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>${list.plan_cost }</h3> 원
+						<h4>${list.plan_writedate }</h4>
+						<button class="btn btn-lg">상세보기</button>
+					</div>
+				</div>
+			</div>
+			</c:forEach>
+			<!-- <div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
 						<h1>정보 1</h1>
@@ -182,7 +218,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="col-sm-4 col-xs-12">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -211,36 +246,7 @@
 						<button class="btn btn-lg">예약</button>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>정보 1</h1>
-					</div>
-					<div class="panel-body">
-						<p>
-							<strong>20</strong> 년
-						</p>
-						<p>
-							<strong>15</strong> 객실
-						</p>
-						<p>
-							<strong>5</strong> 층
-						</p>
-						<p>
-							<strong>2</strong> 인실
-						</p>
-						<p>
-							<strong>Endless</strong> Amet
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>$19</h3>
-						<h4>per day</h4>
-						<button class="btn btn-lg">예약</button>
-					</div>
-				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<!-- Container (호텔 업데이트 정보 요런거?) -->

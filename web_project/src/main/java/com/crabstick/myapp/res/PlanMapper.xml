@@ -28,6 +28,14 @@
 		SELECT * FROM plans WHERE mem_no=#{mem_no} ORDER BY plan_no desc
 	</select>
 	
+	<select id="selectplan" parameterType="int" resultMap="PlanResultMap">
+		SELECT * FROM plans WHERE plan_no=#{plan_no}	
+	</select>
+		
+	<select id="recent_select" resultMap="PlanResultMap">
+		SELECT * FROM (SELECT * FROM PLANS ORDER BY PLAN_WRITEDATE DESC) WHERE <![CDATA[ ROWNUM<=3]]>
+	</select>
+	
 	<select id='update' parameterType="com.crabstick.myapp.plan.PlanMapper">
 		UPDATE plans SET plan_name = #{plan_name}, plan_commt = #{plan_commt}, plan_cost = #{plan_cost}, plan_persons = #{plan_persons}, plan_writedate = SYSDATE, plan_style = #{plan_style} WHERE plan_no = #{plan_no}
 	</select>

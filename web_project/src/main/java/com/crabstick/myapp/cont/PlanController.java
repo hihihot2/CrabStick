@@ -252,7 +252,7 @@ public class PlanController {
 	@RequestMapping(value="/planCont/savePath.do")
 	public ModelAndView savePath(@RequestParam("plan")String plan, @RequestParam("isFirstAdd")boolean isFirstAdd, HttpSession session) {
 		System.out.println("일정추가 시작");
-//		System.out.println(isFirstAdd);
+		System.out.println(isFirstAdd);
 		
 		Plan newPlan = null;
 		Path newPath = null;
@@ -284,7 +284,7 @@ public class PlanController {
 			
 			JSONArray path = (JSONArray) planObject.get("path");
 			Iterator iterator = path.iterator();
-			int order = 1;
+			int order = 0;
 			while(iterator.hasNext()) {
 				JSONObject venue = (JSONObject) iterator.next();
 				String venueName = (String) venue.get("venueName");
@@ -314,11 +314,32 @@ public class PlanController {
 	
 	@RequestMapping(value="/planCont/getPathDetails.do")
 	public ModelAndView getPathDetails(@RequestParam("pathNo")int pathNo) {
+		System.out.println("Run 'getPathDetails'");
+		System.out.println("Path No: " + pathNo);
 		ArrayList<Venue> venues = venueService.selectVenue(pathNo);
+		Path path = pathService.getPathByPathNo(pathNo);
+		
+		for(Venue v : venues) {
+			System.out.println("Path No in Venue: " + v.getPath_no());
+		}
 		
 		ModelAndView mav = new ModelAndView("plan/getMyVenuesJSON");
+		mav.addObject("PATH", path);
 		mav.addObject("VENUES", venues);
 		return mav;
 	}
 	
+	@RequestMapping(value="/planCont/removePath.do")
+	public void removePath(@RequestParam("pathNo")int pathNo, HttpServletResponse response) {
+		System.out.println("Run 'removePath'");
+		System.out.println("Path No: " + pathNo);
+		
+		pathService.removePath(pathNo);
+		try {
+			response.getWriter().print("ok");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

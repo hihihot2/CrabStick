@@ -109,19 +109,21 @@ h4 {
 }
 
 .navbar-nav li a:hover, .navbar-nav li.active a {
-	color: #f4511e !important;
+	color: #07a3f3 !important;
 	background-color: #fff !important;
 }
 
 .navbar-right {
 	font-size: 12px !important;
 }
+
 /* 네비게이션 바 css */
 .jumbotron {
 	background-color: #07a3f3;
 	color: #ffffff;
 	padding: 100px 25px;
 }
+
 
 .thumbnail {
 	padding: 0 0 15px 0;
@@ -133,7 +135,34 @@ h4 {
 	width: 100%;
 	height: 100%;
 	margin-bottom: 10px;
+	opacity: 0.8;
 }
+.center {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 70px;
+    color: white;
+    opacity: 0.8;
+   	font-weight: bold;
+}
+
+.center2 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0.8;
+    font-weight: bold;
+
+    
+    
+}
+
+
 
 /* 슬라이드 부분 css */
 .carousel-control.right, .carousel-control.left {
@@ -210,20 +239,21 @@ h4 {
 
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
-					<ul class="nav navbar-nav navbar-right" style="padding-right: 30px">
+					<ul class="nav navbar-nav navbar-right" style="padding-right: 5%;">
 
 						<c:choose>
 							<c:when test="${no ne null}">
-
+								
 								<li><a href="javascript:action_do('logout')" id="logout"><span
 										class="glyphicon glyphicon-log-out" style="padding-right: 5px"></span>Log
 										Out</a></li>
 								<li><a href="javascript:mypage_do()"><span
 										class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My
-										page<span class="badge" style="padding-left: 5px">5</span></a></li>
+										page</a></li>
+										${no} 값
 							</c:when>
+							
 							<c:otherwise>
-
 								<li><a href="javascript:action_do('login')"><span
 										class="glyphicon glyphicon-log-in" style="padding-right: 5px"></span>Log
 										In</a></li>

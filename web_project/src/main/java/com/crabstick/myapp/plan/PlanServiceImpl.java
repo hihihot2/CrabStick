@@ -26,7 +26,6 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public ArrayList<Plan> selectPlan(int mem_no) {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
-
 		return planmapper.select(mem_no);
 	}
 	
@@ -34,6 +33,17 @@ public class PlanServiceImpl implements PlanService {
 	public void updatePlan(Plan p) {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
 		planmapper.update(p);	
+	}
+
+	@Override
+	public Plan getPlan(int plan_no) {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
+		return planmapper.selectplan(plan_no);
+	}
+		
+	public ArrayList<Plan> recent_selectPlan() {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
+		return planmapper.recent_select();
 	}
 
 }

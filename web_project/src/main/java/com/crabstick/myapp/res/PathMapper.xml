@@ -24,5 +24,13 @@
 		SELECT * FROM paths WHERE plan_no=#{plan_no}
 	</select>
 	
+	<select id="selectByPathNo" parameterType="int" resultMap="PathResultMap">
+		SELECT * FROM paths WHERE path_no = #{path_no}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM paths WHERE path_no = #{path_no}
+	</delete>
+	
 	
 </mapper>

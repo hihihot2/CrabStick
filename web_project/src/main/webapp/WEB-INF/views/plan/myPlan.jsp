@@ -8,28 +8,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/css/styles.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link href="http://fonts.googleapis.com/css?family=Montserrat"
-	rel="stylesheet" type="text/css">
+<script type="text/javascript">
 
-<link href="http://fonts.googleapis.com/css?family=Lato"
-	rel="stylesheet" type="text/css">
+	function viewplan(){
+		document.myplan.action="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"
+		document.myplan.submit();
+	}
 
-
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
-<!-- jQuery  -->
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<!-- jQuery  -->
-
-
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</script>
 
 <style>
 
@@ -95,13 +82,16 @@
 					<div class="panel-body">						
 							<div class="panel-footer">
 							</div>
-						 		<button class="btn btn-lg">일정 추가하기</button>								
+								<a href="${pageContext.request.contextPath}/viewcont/startPlan.do"><button class="btn btn-lg" >계획만들러가기</button></a>								
 						</div>
 				</div>				
 			</div>		
 </c:when>
 <c:otherwise>
+	<form name="myplan">	
 	<c:forEach items="${plan}" var="plan">
+	<input type="hidden" name="plan_no" value="${plan.plan_no}" >
+	
 			<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -129,12 +119,13 @@
 										<h4>${venue.ven_order}번째 장소</h4><h5> ${venue.ven_name}</h5>
 									</div>
 								</c:forEach>
-									<a href="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"><button class="btn btn-lg" >일정 보러가기</button></a>								
+									<button class="btn btn-lg" onclick="viewplan()" >일정 보러가기</button>								
 							</c:forEach>
 						</div>
 					</div>				
 			</div>		
 	</c:forEach>
+	</form>
 </c:otherwise>	
 </c:choose>
 </body>

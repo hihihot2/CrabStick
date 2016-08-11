@@ -7,4 +7,6 @@ import com.crabstick.myapp.plan.Plan;
 public interface PathMapper {
 	void insert(Path pa);
 	ArrayList<Path> select(int plan_no);
+	Path selectByPathNo(int pathNo);
+	void delete(int pathNo);
 }
