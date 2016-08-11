@@ -125,15 +125,19 @@ public class ViewController {
 		
 		ArrayList<Plan> plan = planService.selectPlan(mem_no);
 		ArrayList<Path> path = new ArrayList<Path>();
-		ArrayList<Venue> venue = new ArrayList<Venue>();
-	
+
+		
 		//plan_no로 DB로 접근해서 path를 갖고온다.
 		for(int i=0; i<plan.size(); i++){
 			int plan_no = plan.get(i).getPlan_no();
 			System.out.println(plan_no);						
 			path = pathService.selectPath(plan_no);		
-
 			
+			
+			for(int j=0; j<path.size(); j++){
+				System.out.println(path.get(j).getPath_summary());
+
+			}
 			
 			mav.addObject("plan", plan)	; // plan찍어주고
 			mav.addObject("path", path);			
