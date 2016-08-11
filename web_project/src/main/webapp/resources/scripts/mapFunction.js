@@ -85,7 +85,8 @@
 			venue.markerNum = len;// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 			pathObj.push(venue);
 			updateList(); //화면 업데이트
-			markers[len][0] = 'm';
+			//markers[len][0] = 'm';
+			myPath.push(markers[len][2]);
 			if(infowindow.getMap()){
 				infowindow.close();
 			}
@@ -154,8 +155,9 @@
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-		markers[len][0] = markers[len][1];
-		marker.setMap(null);
+		myPath.splice(num, 1);
+		/*markers[len][0] = markers[len][1];
+		marker.setMap(null);*/
 		updateList();
 	}
 	
@@ -175,7 +177,8 @@
 
 	    for (var i = 0; i < markers.length; i++) {
 
-	        marker = markers[i][2];
+	        //marker = markers[i][2];
+	    	marker = markers[i];
 	        position = marker.getPosition();
 
 	        if (mapBounds.hasLatLng(position)) {
@@ -262,16 +265,7 @@
 			}
 		}
 	}
-	//카테고리 Ajax 검색
-	/*function checkcategory(i,lat,lng){
-		var categories = document.getElementsByName("categorychk");
-		if(categories[i].checked){
-			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode;
-			sendRequest("../placeCont/branch.do", params, markBranch, 'POST');
-		}else{
-			unmarkBranch(i);
-		}
-	}*/
+	//카테고리
 	function checkcategory(i,lat,lng){
 		var categories = document.getElementsByName("categorychk");
 		if(categories[i].checked){
