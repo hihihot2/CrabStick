@@ -250,7 +250,7 @@ h4 {
 								<li><a href="javascript:mypage_do()"><span
 										class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My
 										page</a></li>
-										${no} 값
+							
 							</c:when>
 							
 							<c:otherwise>

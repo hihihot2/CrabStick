@@ -41,8 +41,7 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
 			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng,
-			@RequestParam(value="city_code") String code,
-			@RequestParam(value="siguncode") String siguncode){
+			@RequestParam(value="city_code") String code, @RequestParam(value="siguncode") String siguncode){
 		System.out.println("placeCont >> setBranch : "+branch);
 		ModelAndView mav = null;
 
@@ -88,44 +87,47 @@ public class PlaceController {
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			//발급 받은 서비스키
-			String key= "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			//명소에 들어가는 카테고리 value
-			String[] category = {"cat1=A02&cat2=A0201&cat3=A02010100","cat1=A02&cat2=A0201&cat3=A02010200","cat1=A02&cat2=A0201&cat3=A02010300","cat1=A02&cat2=A0201&cat3=A02010600"};
-			String[] category_name = {"고궁","성문","성","민속마을"};
+			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
 			/* XML 파싱 부분 */
 			Document document;
 			try {
-
-				for (int index = 0; index<category.length; index++) {
-					//URL접근
-					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-
-					/* 유적지 	*/
-					//	고궁	URL 주소	http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010100&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  성문 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010300&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  성 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010200&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  민속 마을 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0201&cat3=A02010600&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
+				//URL접근
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
 
 
-					// xpath 생성
-					XPath  xpath = XPathFactory.newInstance().newXPath();
-					String expression = "//*/item"; //xml <item> </item> 노드 읽기
-					NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				// xpath 생성
+				XPath  xpath = XPathFactory.newInstance().newXPath();
+				String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
+				int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
+				System.out.println(totalCount);
 
-					if (item_Node.getLength()>0){
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				expression = "//*/item";
+				NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				System.out.println("item_Node 길이"+item_Node.getLength());
 
-						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
+				if (item_Node.getLength()>0){
 
-							Attraction attraction = new Attraction();
+					for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
 
-							if (idx>=0){
-								item_Node.item(idx).setTextContent("item_"+idx);
-							}
+						Attraction attraction = new Attraction();
 
+						if (idx>=0){
+							item_Node.item(idx).setTextContent("item_"+idx);
+						}
+
+						expression = "//*/cat3";
+						String cat3 = xpath.compile(expression).evaluate(document);
+
+						if (cat3.equals("A02010100") || cat3.equals("A02010200") || cat3.equals("A02010300") || cat3.equals("A02010400") || cat3.equals("A02010900") || cat3.equals("A02010600") || cat3.equals("A02010700")){
 							expression = "//*/title";
 							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
@@ -159,6 +161,7 @@ public class PlaceController {
 					}
 				}
 
+
 			} catch (SAXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -173,55 +176,54 @@ public class PlaceController {
 				e.printStackTrace();
 			}
 
-
-			System.out.println(branch+"의 size = "+attraction_list.size());
 			mav.addObject("ATTR", attraction_list);
 
 
 		}else if(branch == 3){ //백화점 or 면세점
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
-			String key= "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-
-			String[] category = {"cat1=A04&cat2=A0401&cat3=A04010400","cat1=A04&cat2=A0401&cat3=A04010300"};
-			String[] category_name = {"면세점","백화점"};
+			//발급 받은 서비스키
+			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
-
-
+			/* XML 파싱 부분 */
 			Document document;
 			try {
-
-				for (int index = 0; index<category.length; index++) {
-					//URL접근
-
-					System.out.println(category_name[index]);
-
-					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-					//System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=38&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-					/* 쇼핑 */				
-					//  면세점 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=38&areaCode=1&sigunguCode=&cat1=A04&cat2=A0401&cat3=A04010400&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  백화점 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=38&areaCode=1&sigunguCode=&cat1=A04&cat2=A0401&cat3=A04010300&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
+				//URL접근
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
 
 
-					// xpath 생성
-					XPath  xpath = XPathFactory.newInstance().newXPath();
-					String expression = "//*/item"; //xml <item> </item> 노드 읽기
-					NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				// xpath 생성
+				XPath  xpath = XPathFactory.newInstance().newXPath();
+				String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
+				int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
+				System.out.println(totalCount);
 
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				expression = "//*/item";
+				NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				System.out.println("item_Node 길이"+item_Node.getLength());
 
-					if (item_Node.getLength()>0){
+				if (item_Node.getLength()>0){
 
-						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){
+					for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
 
-							Attraction attraction = new Attraction();
+						Attraction attraction = new Attraction();
 
-							if (idx>=0){
-								item_Node.item(idx).setTextContent("item_"+idx);
-							}
+						if (idx>=0){
+							item_Node.item(idx).setTextContent("item_"+idx);
+						}
 
+						expression = "//*/cat3";
+						String cat3 = xpath.compile(expression).evaluate(document);
+
+						if (cat3.equals("A04010300") || cat3.equals("A04010400") || cat3.equals("A04010800") ){
 							expression = "//*/title";
 							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
@@ -269,58 +271,54 @@ public class PlaceController {
 				e.printStackTrace();
 			}
 
-			System.out.println(branch+"의 size = "+attraction_list.size());
 			mav.addObject("ATTR", attraction_list);
 
 
 		} else if (branch == 4) { // 휴식 카테고리
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
-			String key= "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			String[] category = {"cat1=A01&cat2=A0101&cat3=A01010100","cat1=A01&cat2=A0101&cat3=A01010200","cat1=A01&cat2=A0101&cat3=A01010300","cat1=A02&cat2=A0101&cat3=A01010500","cat1=A02&cat2=A0202&cat3=A02020800","cat1=A02&cat2=A0202&cat3=A02020700"};
-			String[] category_name = {"국립공원","생태 관광지","섬","테마 공원","유람선","공원"};
+			//발급 받은 서비스키
+			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
-
-
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
-			//URL접근
-
+			/* XML 파싱 부분 */
 			Document document;
 			try {
-
-				for (int index = 0; index<category.length; index++) {
-
-					System.out.println(category_name[index]);
-					System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-
-					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
+				//URL접근
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
 
 
-					/* 휴식 */
-					//  국립 공원 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A01&cat2=A0101&cat3=A01010100&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  생태 관광지 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A01&cat2=A0101&cat3=A01010500&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  섬 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=39&sigunguCode=&cat1=A01&cat2=A0101&cat3=A01011300&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1
-					//  테마 공원 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0202&cat3=A02020600&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  유람선 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0202&cat3=A02020800&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
-					//  공원 URL 주소 http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=인증키&contentTypeId=12&areaCode=1&sigunguCode=&cat1=A02&cat2=A0202&cat3=A02020700&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=12&pageNo=1 
+				// xpath 생성
+				XPath  xpath = XPathFactory.newInstance().newXPath();
+				String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
+				int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
+				System.out.println(totalCount);
 
-					// xpath 생성
-					XPath  xpath = XPathFactory.newInstance().newXPath();
-					String expression = "//*/item"; //xml <item> </item> 노드 읽기
-					NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
+				expression = "//*/item";
+				NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
+				System.out.println("item_Node 길이"+item_Node.getLength());
 
-					if (item_Node.getLength()>0){
+				if (item_Node.getLength()>0){
 
-						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){ 
+					for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
 
-							Attraction attraction = new Attraction();
+						Attraction attraction = new Attraction();
 
-							if (idx>=0){
-								item_Node.item(idx).setTextContent("item_"+idx);
-							}
+						if (idx>=0){
+							item_Node.item(idx).setTextContent("item_"+idx);
+						}
 
+						expression = "//*/cat3";
+						String cat3 = xpath.compile(expression).evaluate(document);
+
+						if (cat3.equals("A02020100") || cat3.equals("A02020200") || cat3.equals("A02020300") || cat3.equals("A02020600") || cat3.equals("A02020700")){
 							expression = "//*/title";
 							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
@@ -367,12 +365,7 @@ public class PlaceController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
-			System.out.println(branch+"의 size = "+attraction_list.size());
 			mav.addObject("ATTR", attraction_list);
-
-
 		}
 		mav.addObject("type", branch);
 		return mav;
@@ -391,84 +384,6 @@ public class PlaceController {
 		mav.addObject("loc_no",cityno);
 		mav.addObject("city_code",code);
 		mav.addObject("siguncode", siguncode);
-		return mav;
-	}
-
-	@RequestMapping(value="/placeCont/getRestaurants.do")
-	public ModelAndView getRestaurants(@RequestParam(value="city_latitude") String city_latitude,@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno, @RequestParam(value="city_code") String code,
-			@RequestParam(value="city_siguncode") String siguncode) {
-
-
-		//Foursquare
-		Foursquare foursquare = new Foursquare(foursquareClientId, foursquareClientSecret, Foursquare.API_EXPLORE);
-		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
-		System.out.println(city_latitude+","+city_longitude);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, city_latitude+","+city_longitude);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
-		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, "10000");
-
-		//expedia
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-20");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
-
-		ArrayList<Group> venueGroups = null;
-		Response hotels = null;
-
-		/* 관광 명소 받아오는 XML 파싱 부분 */
-
-
-		try {
-			venueGroups = foursquare.getVenues();
-			hotels = expedia.getHotels();			
-
-			if (siguncode.equals("0")){ // siguncode -> 시군 정보 
-				siguncode = "";
-			}
-
-
-
-
-
-
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		/* Expedia 사용시, 반드시 아래의 4개의 필드는 설정되어야 함(Foursquare는 장소만 검색, Expedia는 실제 예약가능한 장소를 물색하기 때문인듯)
-		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
-
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CITY, "SEOUL");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, "2016-08-03");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, "2016-08-04");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
-
-		try {
-			Response response = expedia.getHotels();
-			for(Hotel hotel : response.getHotelList()) {
-				System.out.println("Hotel Name: " + hotel.getName() +", Address: " + hotel.getAddress());
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 */
-
-		ModelAndView mav = new ModelAndView("plan/showMap");
-		mav.addObject("VENUES", venueGroups);
-		mav.addObject("lat",city_latitude);
-		mav.addObject("lang",city_longitude);
-		mav.addObject("loc_no",cityno);
-		mav.addObject("HOTELS", hotels.getHotelList());
-		mav.addObject("isNewPlan", "true");
-
 		return mav;
 	}
 
