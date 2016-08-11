@@ -130,17 +130,21 @@ public class ViewController {
 		//plan_no로 DB로 접근해서 path를 갖고온다.
 		for(int i=0; i<plan.size(); i++){
 			int plan_no = plan.get(i).getPlan_no();
-			System.out.println(plan_no);						
+			System.out.println(plan_no);	
 			path = pathService.selectPath(plan_no);		
+            plan.get(i).setPathlist(path);            
+
 			
 			
 			for(int j=0; j<path.size(); j++){
-				System.out.println(path.get(j).getPath_summary());
+				String path_summary = path.get(j).getPath_summary();
+				System.out.println(path_summary);
 
 			}
 			
 			mav.addObject("plan", plan)	; // plan찍어주고
-			mav.addObject("path", path);			
+			mav.addObject("path", path);
+
 		}		
 		return mav;
 	}	
