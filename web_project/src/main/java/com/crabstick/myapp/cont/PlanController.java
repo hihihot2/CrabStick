@@ -277,14 +277,10 @@ public class PlanController {
 			int newPlanNo = newPlan.getPlan_no();
 			System.out.println("Plan No: " + newPlanNo);
 			
-			newPath = new Path(0, "새로운 경로", null, newPlanNo);
-			pathService.insertPath(newPath);
-			int pathNo = newPath.getPath_no();
-			System.out.println("Path No: " + pathNo);
-			
 			JSONArray path = (JSONArray) planObject.get("path");
 			Iterator iterator = path.iterator();
 			int order = 0;
+			ArrayList<Venue> venueList = new ArrayList<Venue>();
 			while(iterator.hasNext()) {
 				JSONObject venue = (JSONObject) iterator.next();
 				String venueName = (String) venue.get("venueName");
@@ -293,7 +289,7 @@ public class PlanController {
 				String lat = (String) venue.get("lat");
 				String lng = (String) venue.get("lng");
 				
-				venueService.insertVenue(new Venue(0, venueName, lat, lng, venueComment, venueType, order, pathNo, 1));
+				venueList.add((new Venue(0, venueName, lat, lng, venueComment, venueType, order, 0, 1)));
 				order++;
 				
 				pathSummary += venueName;
@@ -301,6 +297,16 @@ public class PlanController {
 					pathSummary += " - ";	
 				}
 			}
+			
+			newPath = new Path(0, "새로운 경로", null, pathSummary, newPlanNo);
+			pathService.insertPath(newPath);
+			int pathNo = newPath.getPath_no();
+			
+			for(Venue venue : venueList) {
+				venue.setPath_no(pathNo);
+				venueService.insertVenue(venue);
+			}
+			
 		} else {
 			System.out.println("응 널이야~");
 		}
@@ -348,16 +354,15 @@ public class PlanController {
 		System.out.println("Run 'editPath'");
 		
 		JSONObject pathObject = (JSONObject) JSONValue.parse(path);
-		long pathNo = (Long) pathObject.get("no");
-		String pathName = (String) pathObject.get("name");
-		pathService.updatePath(new Path((int) pathNo, pathName, null, 0));
-		JSONArray venues = (JSONArray) pathObject.get("venues");
-		Iterator iterator = venues.iterator();
 		
-		venueService.removeAllVenuesByPathNo((int) pathNo);
+		
+		
 		
 		String pathSummary = "";
 		int order = 0;
+		JSONArray venues = (JSONArray) pathObject.get("venues");
+		ArrayList<Venue> venueList = new ArrayList<Venue>();
+		Iterator iterator = venues.iterator();
 		while(iterator.hasNext()) {
 			JSONObject venue = (JSONObject) iterator.next();
 			String venueName = (String) venue.get("name");
@@ -365,11 +370,22 @@ public class PlanController {
 			String lat = (String) venue.get("lat");
 			String lng = (String) venue.get("lng");
 			long loc = (Long) venue.get("loc");
-			venueService.insertVenue(new Venue(0, venueName, lat, lng, venueComment, "1", order, (int) pathNo, (int) loc));
+			venueList.add(new Venue(0, venueName, lat, lng, venueComment, "1", order, 0, (int) loc));
 			pathSummary += venueName;
 			if(iterator.hasNext()) {
 				pathSummary += " - ";
 			}
+		}
+		
+		long pathNo = (Long) pathObject.get("no");
+		String pathName = (String) pathObject.get("name");
+		pathService.updatePath(new Path((int) pathNo, pathName, null, pathSummary, 0));
+		
+		venueService.removeAllVenuesByPathNo((int) pathNo);
+		
+		for(Venue venue : venueList) {
+			venue.setPath_no((int) pathNo);
+			venueService.insertVenue(venue);
 		}
 		
 		ModelAndView mav = new ModelAndView("plan/getPathSummaryJSON");

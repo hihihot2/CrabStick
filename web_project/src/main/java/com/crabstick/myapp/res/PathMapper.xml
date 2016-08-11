@@ -9,11 +9,12 @@
 		<result property="path_no" column="path_no"/>
 		<result property="path_name" column="path_name"/>
 		<result property="path_date" column="path_date" />
+		<result property="path_summary" column="path_summary" />
 		<result property="plan_no" column="plan_no" />		
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.path.PathMapper">
-		INSERT INTO paths values(SEQ_PATH.NEXTVAL, #{path_name}, SYSDATE, #{plan_no})
+		INSERT INTO paths values(SEQ_PATH.NEXTVAL, #{path_name}, SYSDATE, #{plan_no}, #{path_summary})
 		
 		<selectKey keyProperty="path_no" resultType="int" order="AFTER">
 			SELECT SEQ_PATH.CURRVAL FROM DUAL
@@ -33,7 +34,7 @@
 	</delete>
 	
 	<update id="update" parameterType="com.crabstick.myapp.path.PathMapper">
-		UPDATE paths SET path_name = #{path_name}, path_date = SYSDATE WHERE path_no = #{path_no}
+		UPDATE paths SET path_name = #{path_name}, path_date = SYSDATE, path_summary = #{path_summary} WHERE path_no = #{path_no}
 	</update>
 	
 	
