@@ -1,6 +1,7 @@
 package com.crabstick.myapp.location;
 
 public class Location {
+	private int plan_no;
 	private int loc_no;
 	private String loc_name;
 	private String loc_lati;
@@ -128,6 +129,14 @@ public class Location {
 
 	public void setLoc_commt(String loc_commt) {
 		this.loc_commt = loc_commt;
+	}
+
+	public int getPlan_no() {
+		return plan_no;
+	}
+
+	public void setPlan_no(int plan_no) {
+		this.plan_no = plan_no;
 	}
 	
 	

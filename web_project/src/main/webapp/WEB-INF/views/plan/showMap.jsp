@@ -154,10 +154,6 @@
 <script type="text/javascript">
 	(function($) {
 		$(document).ready(function() {
-			if('${PLAN}' == '') {
-				alert('플랜 없음')
-			}
-			
 			
 			var date = new Date();
 			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "에 저장된 나의 여행";

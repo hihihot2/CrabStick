@@ -25,6 +25,7 @@ import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
 import com.crabstick.myapp.location.Location;
+import com.crabstick.myapp.location.LocationService;
 import com.crabstick.myapp.path.Path;
 import com.crabstick.myapp.path.PathService;
 import com.crabstick.myapp.plan.Plan;
@@ -38,6 +39,12 @@ public class PlaceController {
 	private String foursquareClientSecret = "OWVMGV1NWBD1ZWLT0TIWDKT4BOXHZD3YZTAJAX5UYLYK1BJO";
 	private String expediaConsumerKey = "D9o6vpXU1ANf0zteRzFIAS83NkccKkoJ";
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
+	
+	@Resource(name = "locationService")
+	private LocationService locationService;
+	public void setService(LocationService locationService) {
+		this.locationService = locationService;
+	}
 	
 	@Resource(name = "venueService")
 	private VenueService venueService;
@@ -406,7 +413,7 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/showMyMap.do")
 	public ModelAndView showMyMap(@RequestParam(value="planNo")int planNo) {
 		System.out.println("Run 'showMyMap'");
-		Location location = planService.getLocationByPlanNo(planNo);
+		Location location = locationService.getLocationByPlanNo(planNo);
 		Plan plan = planService.getPlan(planNo);
 		plan.setPathlist(pathService.selectPath(planNo));
 		for(Path path : plan.getPathlist()) {

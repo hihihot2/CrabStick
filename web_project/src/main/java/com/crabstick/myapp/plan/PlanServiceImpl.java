@@ -47,13 +47,4 @@ public class PlanServiceImpl implements PlanService {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
 		return planmapper.recent_select();
 	}
-	
-	@Override
-	public Location getLocationByPlanNo(int planNo) {
-		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
-		return planmapper.selectLocationByPlanNo(planNo);
-	}
-
-	
-
 }
