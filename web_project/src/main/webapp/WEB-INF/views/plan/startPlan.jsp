@@ -50,13 +50,22 @@
 		})
 	})
 
-				
+	
+	function select_loc(latitude, longitude, locno, code, siguncode) {
+		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
+				+ latitude
+				+ "&city_longitude="
+				+ longitude
+				+ "&cityno="
+				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+	}
+	/* 
 	function search_loc() {
 		var loc_name = document.searchform.locSearch.value;
 		var params = "loc_name=" + loc_name;
 		sendRequest("${pageContext.request.contextPath}/viewCont/search.do",
 				params, search_result, 'POST');
-		
+
 	}
 
 	function search_result() {
@@ -83,15 +92,16 @@
 				myDiv.innerHTML = html;
 			}
 		}
-	}
-	
-	function select_loc() {
+	} */
+
+	function find_loc() {
 		var loc_name = document.searchform.searchText.value
-		if(loc_name==""){
+		if (loc_name == "") {
 			alert('검색을 먼저하세요')
 		} else {
 			alert('검색한 장소로 이동합니다.')
-			document.searchform.action = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name=" + loc_name;
+			document.searchform.action = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name="
+					+ loc_name;
 			document.searchform.submit();
 		}
 	}
@@ -100,7 +110,7 @@
 
 		var form = document.searchform;
 		form.style.visibility = "hidden";
-		
+
 		var modal = document.getElementById('myModal');
 		// Get the image and insert it inside the modal - use its "alt" text as a caption
 		var img = document.getElementById(loc_no);
@@ -116,7 +126,7 @@
 		// When the user clicks on <span> (x), close the modal
 		span.onclick = function() {
 			modal.style.display = "none";
-			form.style.visibility= "visible";
+			form.style.visibility = "visible";
 		}
 	}
 </script>
@@ -220,7 +230,7 @@
 					placeholder="원하는 도시명을 검색하세요"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
-						onclick="select_loc()">
+						onclick="find_loc()">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</span>
