@@ -31,4 +31,9 @@ public class VenueServiceImpl implements VenueService {
 		return Venuemapper.select(path_no);
 	}
 
+	@Override
+	public void removeAllVenuesByPathNo(int pathNo) {
+		VenueMapper Venuemapper = sqlSession.getMapper(VenueMapper.class);
+		Venuemapper.deleteAllByPathNo(pathNo);		
+	}
 }
