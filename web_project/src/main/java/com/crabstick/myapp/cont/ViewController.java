@@ -177,7 +177,22 @@ public class ViewController {
 		return mav;
 	}
 	
-	
+	@RequestMapping(value="/viewCont/findCity.do")
+	public String findLoc(@RequestParam(value="searchText")String loc_name){
+		System.out.println("검색시작");
+		ArrayList<City> resultList = recommendationService.searchByName(loc_name);
+		City resultCity = resultList.get(0);
+		String lati = resultCity.getLoc_lati();
+		String long2 = resultCity.getLoc_long();
+		int locno = resultCity.getLoc_no();
+		int code = resultCity.getLoc_code();
+		int siguncode = resultCity.getLoc_siguncode();
+		String url = "/placeCont/getRestaurants.do?city_latitude="
+							+ lati + "&city_longitude=" + long2
+							+ "&cityno=" + locno + "&city_code=" + code
+							+ "&city_siguncode=" + siguncode;
+		return "redirect:/" + url;
+	}
 
 }
 
