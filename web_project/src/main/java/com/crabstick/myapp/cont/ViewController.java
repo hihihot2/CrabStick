@@ -132,6 +132,8 @@ public class ViewController {
 			int plan_no = plan.get(i).getPlan_no();
 			System.out.println(plan_no);			
 			path = pathService.selectPath(plan_no);
+			
+			
 			System.out.println("path = " + path.toString());			
 			plan.get(i).setPathlist(path);			
 
