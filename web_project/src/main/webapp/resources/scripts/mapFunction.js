@@ -155,6 +155,7 @@
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
+		myPath[num].setMap(null);
 		myPath.splice(num, 1);
 		/*markers[len][0] = markers[len][1];
 		marker.setMap(null);*/
