@@ -153,7 +153,7 @@ public class PlaceController {
 
 						attraction_list.add(attraction);
 
-						for( int idx=0; idx<item_Node.getLength(); idx++ ){
+						for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
 
 							attraction = new Attraction();
 
@@ -282,7 +282,7 @@ public class PlaceController {
 
 						attraction_list.add(attraction);
 
-						for( int idx=0; idx<item_Node.getLength(); idx++ ){
+						for( int idx=0; idx<item_Node.getLength() -1; idx++ ){
 
 							attraction = new Attraction();
 
@@ -413,7 +413,7 @@ public class PlaceController {
 
 						attraction_list.add(attraction);
 
-						for( int idx=0; idx<item_Node.getLength(); idx++ ){
+						for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
 
 							attraction = new Attraction();
 
