@@ -11,6 +11,7 @@
 		<result property="path_date" column="path_date" />
 		<result property="path_summary" column="path_summary" />
 		<result property="plan_no" column="plan_no" />		
+		<result property="path_summary" column="path_summary"/>
 	</resultMap>	
 
 	<insert id="insert" parameterType="com.crabstick.myapp.path.PathMapper">
@@ -23,6 +24,10 @@
 	
 	<select id="select" parameterType="int" resultMap="PathResultMap">
 		SELECT * FROM paths WHERE plan_no=#{plan_no}
+	</select>
+	
+	<select id="selectPathSummary" parameterType="int" resultMap="PathResultMap">
+		SELECT path_summary FROM paths WHERE plan_no=#{plan_no}
 	</select>
 	
 	<select id="selectByPathNo" parameterType="int" resultMap="PathResultMap">
