@@ -107,20 +107,12 @@
 						<p>
 							<strong>${plan.plan_persons}</strong>명
 						</p>
-							<c:forEach items="${plan.pathlist}" var="path">
+							<c:forEach items="${path}" var="path">
 						<p>
-							<strong>${path.path_name}</strong> 
-						</p>
-						<p>
-							<strong>${path.path_date}</strong>
-						</p><br>
-								<c:forEach items="${path.venuelist}" var="venue">
-									<div class="panel-footer">
-										<h4>${venue.ven_order}번째 장소</h4><h5> ${venue.ven_name}</h5>
-									</div>
-								</c:forEach>
+							<strong>${path.path_summary}</strong>
+						</p><br>								
 							</c:forEach>
-							<button class="btn btn-lg" onclick="viewplan()" >일정 보러가기</button>								
+							<button class="btn btn-lg" onclick="viewplan()" >여행계획 보러가기</button>								
 							
 						</div>
 					</div>				
