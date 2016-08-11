@@ -130,22 +130,11 @@ public class ViewController {
 		//plan_no로 DB로 접근해서 path를 갖고온다.
 		for(int i=0; i<plan.size(); i++){
 			int plan_no = plan.get(i).getPlan_no();
-			System.out.println(plan_no);			
-			path = pathService.selectPath(plan_no);
-			System.out.println("path = " + path.toString());			
-			plan.get(i).setPathlist(path);			
+			System.out.println(plan_no);						
+			path = pathService.selectPath(plan_no);		
 
 			
-			//venue값을 갖고 오기위해 path_no를 사용해서 DB에 접근한다.
-			for(int j=0; j<path.size(); j++){
-				int path_no = path.get(j).getPath_no();		
-				
-				System.out.println("path_no = " + path_no);
-
-				venue = venueService.selectVenue(path_no);				
-				path.get(j).setVenuelist(venue);
-				System.out.println("venue = " + venue.toString());
-			}			
+			
 			mav.addObject("plan", plan)	; // plan찍어주고
 			mav.addObject("path", path);			
 		}		
@@ -188,7 +177,22 @@ public class ViewController {
 		return mav;
 	}
 	
-	
+	@RequestMapping(value="/viewCont/findCity.do")
+	public String findLoc(@RequestParam(value="searchText")String loc_name){
+		System.out.println("검색시작");
+		ArrayList<City> resultList = recommendationService.searchByName(loc_name);
+		City resultCity = resultList.get(0);
+		String lati = resultCity.getLoc_lati();
+		String long2 = resultCity.getLoc_long();
+		int locno = resultCity.getLoc_no();
+		int code = resultCity.getLoc_code();
+		int siguncode = resultCity.getLoc_siguncode();
+		String url = "/placeCont/getRestaurants.do?city_latitude="
+							+ lati + "&city_longitude=" + long2
+							+ "&cityno=" + locno + "&city_code=" + code
+							+ "&city_siguncode=" + siguncode;
+		return "redirect:/" + url;
+	}
 
 }
 

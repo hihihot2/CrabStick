@@ -46,6 +46,12 @@ public class PathServiceImpl implements PathService {
 		PathMapper pathMapper = sqlSession.getMapper(PathMapper.class);
 		pathMapper.update(p);
 	}
+
+	@Override
+	public Path getPathSummary(int plan_no) {
+		PathMapper pathMapper = sqlSession.getMapper(PathMapper.class);
+		return pathMapper.selectPathSummary(plan_no);
+	}
 	
 	
 }

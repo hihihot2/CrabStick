@@ -15,15 +15,57 @@
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		$('#locSearch').autocomplete({
+			source : function(request, response){
+				var params = "loc_name=" + encodeURIComponent(request.term);
+				$.ajax({
+					url : '../viewCont/search.do?' + params,
+					type : 'POST',
+					success : function(loc_name){
+						var search = eval("("+ loc_name +")");
+						var input = new Array();
+						input = [];
+						for(var i = 0 ; i < search.length ; i++){
+							var before = search[i].name;
+							input.push(before);
+						}
+						searchList = input;
+						response(input); 
+					}
+				});
+			},
+			select : function(event, ui){
+				if(event.keyCode == 13){
+					$('locSearch').val(ui.item.value);
+				}
+			}
+		})
+	})
+
+	
+	function select_loc(latitude, longitude, locno, code, siguncode) {
+		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
+				+ latitude
+				+ "&city_longitude="
+				+ longitude
+				+ "&cityno="
+				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+	}
+	/* 
 	function search_loc() {
 		var loc_name = document.searchform.locSearch.value;
 		var params = "loc_name=" + loc_name;
 		sendRequest("${pageContext.request.contextPath}/viewCont/search.do",
 				params, search_result, 'POST');
+
 	}
 
 	function search_result() {
@@ -50,22 +92,25 @@
 				myDiv.innerHTML = html;
 			}
 		}
-	}
+	} */
 
-	function select_loc(latitude, longitude, locno, code, siguncode) {
-		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
-				+ latitude
-				+ "&city_longitude="
-				+ longitude
-				+ "&cityno="
-				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+	function find_loc() {
+		var loc_name = document.searchform.searchText.value
+		if (loc_name == "") {
+			alert('검색을 먼저하세요')
+		} else {
+			alert('검색한 장소로 이동합니다.')
+			document.searchform.action = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name="
+					+ loc_name;
+			document.searchform.submit();
+		}
 	}
 
 	function modal_open(loc_no, loc_commt) {
 
 		var form = document.searchform;
 		form.style.visibility = "hidden";
-		
+
 		var modal = document.getElementById('myModal');
 		// Get the image and insert it inside the modal - use its "alt" text as a caption
 		var img = document.getElementById(loc_no);
@@ -81,7 +126,7 @@
 		// When the user clicks on <span> (x), close the modal
 		span.onclick = function() {
 			modal.style.display = "none";
-			form.style.visibility= "visible";
+			form.style.visibility = "visible";
 		}
 	}
 </script>
@@ -181,11 +226,11 @@
 		<form name="searchform">
 			<div class="form-group input-group">
 
-				<input type="text" class="form-control" name="locSearch"
-					placeholder="원하는 도시명을 검색하세요" onkeyup="search_loc()"> <span
+				<input type="text" class="form-control" id="locSearch" name="searchText"
+					placeholder="원하는 도시명을 검색하세요"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
-						onclick="search_loc()">
+						onclick="find_loc()">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</span>
