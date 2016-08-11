@@ -12,6 +12,8 @@
 <head>
 <title>Planner</title>
 
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
@@ -45,13 +47,11 @@
 		}
 	}
 	
-	function select_loc(latitude, longitude, locno, code, siguncode) {
+	function select_loc(latitude, longitude, locno) {
 		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
 				+ latitude
 				+ "&city_longitude="
-				+ longitude
-				+ "&cityno="
-				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+				+ longitude +"&cityno=" + locno;
 	}
 	
 	function viewplan(){
@@ -61,9 +61,6 @@
 	
 </script>
 <style type="text/css">
-
-
-
 </style>
 </head>
 <body>
@@ -89,30 +86,37 @@
 		<div class="row text-center">
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<a	href="javascript:select_loc('37.566343','126.977934','1','1','0')"><img src="http://i.imgur.com/cwePpLM.jpg" width="400px" height="300px"></a>
-						<div class="center">SEOUL</div></a>
+					<a href="javascript:select_loc('37.566343','126.977934','1')"><img
+						src="http://i.imgur.com/cwePpLM.jpg" width="400px" height="300px"></a>
+					<div class="center">SEOUL</div>
+					</a>
 					<p>
-						<strong><a	href="javascript:select_loc('37.566343','126.977934','1','1','0')">SEOUL</a></strong>
+						<strong><a
+							href="javascript:select_loc('37.566343','126.977934','1')">SEOUL</a></strong>
 					</p>
 					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<a	href="javascript:select_loc('35.179770','129.074959','2','6','0')"><img src="http://i.imgur.com/eIYw6CJ.jpg" width="400px" height="300px"></a>
-						<div class="center">BUSAN</div>
+					<a href="javascript:select_loc('35.179770','129.074959','2')"><img
+						src="http://i.imgur.com/eIYw6CJ.jpg" width="400px" height="300px"></a>
+					<div class="center">BUSAN</div>
 					<p>
-						<strong><a	href="javascript:select_loc('35.179770','129.074959','2','6','0')">BUSAN</a></strong>
+						<strong><a
+							href="javascript:select_loc('35.179770','129.074959','2')">BUSAN</a></strong>
 					</p>
 					<p></p>
 				</div>
 			</div>
 			<div class="col-sm-4">
 				<div class="thumbnail">
-					<a	href="javascript:select_loc('33.489026','126.498351','16','39','4')"><img src="http://i.imgur.com/rJe3t02.jpg" width="400px" height="300px"></a>
-						<div class="center">JEJU</div>
+					<a href="javascript:select_loc('33.489026','126.498351','16')"><img
+						src="http://i.imgur.com/rJe3t02.jpg" width="400px" height="300px"></a>
+					<div class="center">JEJU</div>
 					<p>
-						<strong><a	href="javascript:select_loc('33.489026','126.498351','16','39','4')">JEJU</a></strong>
+						<strong><a
+							href="javascript:select_loc('33.489026','126.498351','16')">JEJU</a></strong>
 					</p>
 					<p></p>
 				</div>
@@ -129,7 +133,7 @@
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
 					<h4>
-						" 서울  좋앙!!"<br> <span style="font-style: normal;">최재훈
+						" 서울 좋앙!!"<br> <span style="font-style: normal;">최재훈
 							님의 평가</span>
 					</h4>
 				</div>
@@ -169,35 +173,36 @@
 			<h4>원하는 것을 선택하세요</h4>
 		</div>
 		<div class="row">
-			<form name="myplan">			
-			<c:forEach var="plan" items="${recentPlan }">
-			<input type="hidden" name="plan_no" value="${plan.plan_no}" >			
-			<div class="col-sm-4 col-xs-12">
-				<div class="panel panel-default text-center">
-					<div class="panel-heading">
-						<h1>${plan.plan_name }</h1>
+			<form name="myplan">
+				<c:forEach var="plan" items="${recentPlan }">
+					<input type="hidden" name="plan_no" value="${plan.plan_no}">
+					<div class="col-sm-4 col-xs-12">
+						<div class="panel panel-default text-center">
+							<div class="panel-heading">
+								<h1>${plan.plan_name }</h1>
+							</div>
+							<div class="panel-body">
+								<p>
+									<strong>${plan.plan_no }</strong>
+								</p>
+								<p>
+									<strong>${plan.plan_commt }</strong>
+								</p>
+								<p>
+									<strong>${plan.plan_persons }</strong> 명 동행
+								</p>
+							</div>
+							<div class="panel-footer">
+								<h3>${plan.plan_cost }</h3>
+								원
+								<h4>${plan.plan_writedate }</h4>
+								<button class="btn btn-lg" onclick="viewplan()">상세보기</button>
+							</div>
+						</div>
 					</div>
-					<div class="panel-body">
-						<p>
-							<strong>${plan.plan_no }</strong>
-						</p>
-						<p>
-							<strong>${plan.plan_commt }</strong>
-						</p>
-						<p>
-							<strong>${plan.plan_persons }</strong> 명 동행
-						</p>
-					</div>
-					<div class="panel-footer">
-						<h3>${plan.plan_cost }</h3> 원
-						<h4>${plan.plan_writedate }</h4>
-						<button class="btn btn-lg" onclick="viewplan()">상세보기</button>
-					</div>
-				</div>
-			</div>
-			</c:forEach>
-			</form>			
+				</c:forEach>
+			</form>
 		</div>
-	</div>	
+	</div>
 </body>
 </html>

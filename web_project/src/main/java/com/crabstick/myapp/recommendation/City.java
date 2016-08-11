@@ -6,7 +6,7 @@ package com.crabstick.myapp.recommendation;
  */
 public class City {
 	// CITY INFORMATION DTO 
-	
+
 	//Locations DB Columns
 	private int loc_no;
 	private String loc_name;
@@ -15,13 +15,11 @@ public class City {
 	private int loc_ctweight;
 	private int loc_hiweight;
 	private int loc_ntweight;
-	private int loc_code;
-	private int loc_siguncode;
 	private String loc_imgpath;
 	private String loc_commt;
-	
+
 	public City(int loc_no, String loc_name, String loc_lati, String loc_long, int loc_ctweight, int loc_hiweight,
-			int loc_ntweight, int loc_code, int loc_siguncode, String loc_imgpath, String loc_commt) {
+			int loc_ntweight, String loc_imgpath, String loc_commt) {
 		this.loc_no = loc_no;
 		this.loc_name = loc_name;
 		this.loc_lati = loc_lati;
@@ -29,15 +27,13 @@ public class City {
 		this.loc_ctweight = loc_ctweight;
 		this.loc_hiweight = loc_hiweight;
 		this.loc_ntweight = loc_ntweight;
-		this.loc_code = loc_code;
-		this.loc_siguncode = loc_siguncode;
 		this.loc_imgpath = loc_imgpath;
 		this.loc_commt = loc_commt;
 	}
-	
+
 	public City() {
 	}
-	
+
 	public int getLoc_no() {
 		return loc_no;
 	}
@@ -80,18 +76,7 @@ public class City {
 	public void setLoc_ntweight(int loc_ntweight) {
 		this.loc_ntweight = loc_ntweight;
 	}
-	public int getLoc_code() {
-		return loc_code;
-	}
-	public void setLoc_code(int loc_code) {
-		this.loc_code = loc_code;
-	}
-	public int getLoc_siguncode() {
-		return loc_siguncode;
-	}
-	public void setLoc_siguncode(int loc_siguncode) {
-		this.loc_siguncode = loc_siguncode;
-	}
+
 	public String getLoc_imgpath() {
 		return loc_imgpath;
 	}
@@ -104,14 +89,14 @@ public class City {
 	public void setLoc_commt(String loc_commt) {
 		this.loc_commt = loc_commt;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "City [loc_no=" + loc_no + ", loc_name=" + loc_name + ", loc_lati=" + loc_lati + ", loc_long=" + loc_long
 				+ ", loc_ctweight=" + loc_ctweight + ", loc_hiweight=" + loc_hiweight + ", loc_ntweight=" + loc_ntweight
-				+ ", loc_code=" + loc_code + ", loc_siguncode=" + loc_siguncode + ", loc_imgpath=" + loc_imgpath
+				+ ", loc_imgpath=" + loc_imgpath
 				+ ", loc_commt=" + loc_commt + "]";
 	}
 
-	
+
 }

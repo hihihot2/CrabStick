@@ -107,10 +107,14 @@
 						<p>
 							<strong>${plan.plan_persons}</strong>명
 						</p>
+						<br>
 							<c:forEach items="${path}" var="path">
-						<p>
-							<strong>${path.path_summary}</strong>
-						</p><br>								
+							<p>
+								<strong>${path.path_name}</strong>
+							</p>
+							<p>
+								<strong>${path.path_summary}</strong>
+							</p><br>								
 							</c:forEach>
 							<button class="btn btn-lg" onclick="viewplan()" >여행계획 보러가기</button>								
 							

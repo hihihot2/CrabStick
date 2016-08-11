@@ -14,6 +14,20 @@ public class Path {
 	private int plan_no;
 	private ArrayList<Venue> venuelist;	
 	
+	
+	
+	
+	public Path(int path_no, String path_name, Date path_date, String path_summary, int plan_no,
+			ArrayList<Venue> venuelist) {
+		super();
+		this.path_no = path_no;
+		this.path_name = path_name;
+		this.path_date = path_date;
+		this.path_summary = path_summary;
+		this.plan_no = plan_no;
+		this.venuelist = venuelist;
+	}
+
 	public Path(int path_no, String path_name, Date path_date, String path_summary, int plan_no) {
 		super();
 		this.path_no = path_no;
@@ -23,14 +37,7 @@ public class Path {
 		this.plan_no = plan_no;
 	}
 	
-	public Path(int path_no, String path_name, Date path_date, String path_summary, int plan_no, ArrayList<Venue> venuelist) {
-		super();
-		this.path_no = path_no;
-		this.path_name = path_name;
-		this.path_date = path_date;
-		this.plan_no = plan_no;
-		this.venuelist = venuelist;
-	}
+
 	
 	public ArrayList<Venue> getVenuelist() {
 		return venuelist;

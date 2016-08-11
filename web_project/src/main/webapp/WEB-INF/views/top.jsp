@@ -6,6 +6,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!-- jQuery  -->
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery-3.1.0.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
+<!-- jQuery  -->
+
 <script type="text/javascript">
 	function home() {
 		location.href = "${pageContext.request.contextPath}/";
@@ -60,10 +65,6 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-<!-- jQuery  -->
-<script src="../resources/scripts/jquery-3.1.0.js"></script>
-<script src="../resources/scripts/jquery-ui.js"></script>
-<!-- jQuery  -->
 
 
 <script
