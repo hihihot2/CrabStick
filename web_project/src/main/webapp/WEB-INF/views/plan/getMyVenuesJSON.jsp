@@ -14,8 +14,7 @@
 			ven_commt: '${venue.ven_commt }',
 			ven_type: ${venue.ven_type },
 			ven_order: ${venue.ven_order },
-			path_no: ${venue.path_no },
-			loc_no: ${venue.loc_no }
+			path_no: ${venue.path_no }
 		}<c:if test="${!status.last}">,</c:if>
 		</c:forEach>
 	]

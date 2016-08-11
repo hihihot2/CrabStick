@@ -413,8 +413,10 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/showMyMap.do")
 	public ModelAndView showMyMap(@RequestParam(value="planNo")int planNo) {
 		System.out.println("Run 'showMyMap'");
+		System.out.println("Plan No: " + planNo);
 		Location location = locationService.getLocationByPlanNo(planNo);
 		Plan plan = planService.getPlan(planNo);
+		System.out.println("Plan Name: " + plan.getPlan_name());
 		plan.setPathlist(pathService.selectPath(planNo));
 		for(Path path : plan.getPathlist()) {
 			path.setVenuelist(venueService.selectVenue(path.getPath_no()));
