@@ -84,8 +84,11 @@
 			venue.markerNum = len;// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 			pathObj.push(venue);
 			updateList(); //화면 업데이트
-			//markers[len][0] = 'm';
-			myPath.push(markers[len][2]);
+			
+			var sub = new Array();
+			sub.push(marker);
+			sub.push(infowindow);
+			myPath.push(sub);
 			if(infowindow.getMap()){
 				infowindow.close();
 			}
@@ -154,7 +157,7 @@
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-		myPath[num].setMap(null);
+		myPath[num][0].setMap(null);
 		myPath.splice(num, 1);
 		/*markers[len][0] = markers[len][1];
 		marker.setMap(null);*/
@@ -178,7 +181,7 @@
 	    for (var i = 0; i < markers.length; i++) {
 
 	        //marker = markers[i][2];
-	    	marker = markers[i];
+	    	marker = markers[i][0];
 	        position = marker.getPosition();
 
 	        if (mapBounds.hasLatLng(position)) {
