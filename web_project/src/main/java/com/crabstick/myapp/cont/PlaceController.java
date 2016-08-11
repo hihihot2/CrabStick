@@ -87,22 +87,20 @@ public class PlaceController {
 		}else if(branch == 2){ //명소 파싱
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
+			//발급 받은 서비스키
 			String key= "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			//명소에 들어가는 카테고리 value
 			String[] category = {"cat1=A02&cat2=A0201&cat3=A02010100","cat1=A02&cat2=A0201&cat3=A02010200","cat1=A02&cat2=A0201&cat3=A02010300","cat1=A02&cat2=A0201&cat3=A02010600"};
 			String[] category_name = {"고궁","성문","성","민속마을"};
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
-
+			/* XML 파싱 부분 */
 			Document document;
 			try {
 
 				for (int index = 0; index<category.length; index++) {
 					//URL접근
-
-					System.out.println(category_name[index]);
-					System.out.println("http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
-
 					document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 							"http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey="+key+"&contentTypeId=12&areaCode="+code+"&sigunguCode=&"+category[index]+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=A&numOfRows=100&pageNo=1");
 
@@ -120,72 +118,40 @@ public class PlaceController {
 
 					if (item_Node.getLength()>0){
 
-						Attraction attraction = new Attraction();
+						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
 
-						expression = "//*/title";
-						String title = xpath.compile(expression).evaluate(document);
-						attraction.setTitle(title);
-						// System.out.println(attraction.getTitle());
+							Attraction attraction = new Attraction();
 
-						expression = "//*/addr1";
-						String addr1 = xpath.compile(expression).evaluate(document);
-						attraction.setAddr1(addr1);
-
-						expression = "//*/zipcode";
-						String zipcode = xpath.compile(expression).evaluate(document);
-						attraction.setZipcode(zipcode);
-
-						expression = "//*/tel";
-						String tel = xpath.compile(expression).evaluate(document);
-						attraction.setTel(tel);
-
-						expression = "//*/mapx";
-						String _longitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapx(_longitude);
-
-						expression = "//*/mapy";
-						String _latitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapy(_latitude);
-
-						expression = "//*/firstimage";
-						String image_Url = xpath.compile(expression).evaluate(document);
-						attraction.setImgURL(image_Url);
-
-						attraction_list.add(attraction);
-
-						for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
-
-							attraction = new Attraction();
-
-							item_Node.item(idx).setTextContent("item_"+idx);
+							if (idx>=0){
+								item_Node.item(idx).setTextContent("item_"+idx);
+							}
 
 							expression = "//*/title";
-							title = xpath.compile(expression).evaluate(document);
+							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
-							// System.out.println(attraction.getTitle());
 
 							expression = "//*/addr1";
-							addr1 = xpath.compile(expression).evaluate(document);
+							String addr1 = xpath.compile(expression).evaluate(document);
 							attraction.setAddr1(addr1);
 
 							expression = "//*/zipcode";
-							zipcode = xpath.compile(expression).evaluate(document);
+							String zipcode = xpath.compile(expression).evaluate(document);
 							attraction.setZipcode(zipcode);
 
 							expression = "//*/tel";
-							tel = xpath.compile(expression).evaluate(document);
+							String tel = xpath.compile(expression).evaluate(document);
 							attraction.setTel(tel);
 
 							expression = "//*/mapx";
-							_longitude = xpath.compile(expression).evaluate(document);
+							String _longitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapx(_longitude);
 
 							expression = "//*/mapy";
-							_latitude = xpath.compile(expression).evaluate(document);
+							String _latitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapy(_latitude);
 
 							expression = "//*/firstimage";
-							image_Url = xpath.compile(expression).evaluate(document);
+							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
 							attraction_list.add(attraction);
@@ -244,77 +210,44 @@ public class PlaceController {
 					XPath  xpath = XPathFactory.newInstance().newXPath();
 					String expression = "//*/item"; //xml <item> </item> 노드 읽기
 					NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-	
+
 
 					if (item_Node.getLength()>0){
 
-						Attraction attraction = new Attraction();
+						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){
 
-						expression = "//*/title";
-						String title = xpath.compile(expression).evaluate(document);
-						attraction.setTitle(title);
-						System.out.println(attraction.getTitle());
+							Attraction attraction = new Attraction();
 
-
-						expression = "//*/addr1";
-						String addr1 = xpath.compile(expression).evaluate(document);
-						attraction.setAddr1(addr1);
-
-						expression = "//*/zipcode";
-						String zipcode = xpath.compile(expression).evaluate(document);
-						attraction.setZipcode(zipcode);
-
-						expression = "//*/tel";
-						String tel = xpath.compile(expression).evaluate(document);
-						attraction.setTel(tel);
-
-						expression = "//*/mapx";
-						String _longitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapx(_longitude);
-
-						expression = "//*/mapy";
-						String _latitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapy(_latitude);
-
-						expression = "//*/firstimage";
-						String image_Url = xpath.compile(expression).evaluate(document);
-						attraction.setImgURL(image_Url);
-
-						attraction_list.add(attraction);
-
-						for( int idx=0; idx<item_Node.getLength() -1; idx++ ){
-
-							attraction = new Attraction();
-
-							item_Node.item(idx).setTextContent("item_"+idx);
+							if (idx>=0){
+								item_Node.item(idx).setTextContent("item_"+idx);
+							}
 
 							expression = "//*/title";
-							title = xpath.compile(expression).evaluate(document);
+							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
-							System.out.println(attraction.getTitle());
 
 							expression = "//*/addr1";
-							addr1 = xpath.compile(expression).evaluate(document);
+							String addr1 = xpath.compile(expression).evaluate(document);
 							attraction.setAddr1(addr1);
 
 							expression = "//*/zipcode";
-							zipcode = xpath.compile(expression).evaluate(document);
+							String zipcode = xpath.compile(expression).evaluate(document);
 							attraction.setZipcode(zipcode);
 
 							expression = "//*/tel";
-							tel = xpath.compile(expression).evaluate(document);
+							String tel = xpath.compile(expression).evaluate(document);
 							attraction.setTel(tel);
 
 							expression = "//*/mapx";
-							_longitude = xpath.compile(expression).evaluate(document);
+							String _longitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapx(_longitude);
 
 							expression = "//*/mapy";
-							_latitude = xpath.compile(expression).evaluate(document);
+							String _latitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapy(_latitude);
 
 							expression = "//*/firstimage";
-							image_Url = xpath.compile(expression).evaluate(document);
+							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
 							attraction_list.add(attraction);
@@ -380,72 +313,40 @@ public class PlaceController {
 
 					if (item_Node.getLength()>0){
 
-						Attraction attraction = new Attraction();
+						for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){ 
 
-						expression = "//*/title";
-						String title = xpath.compile(expression).evaluate(document);
-						attraction.setTitle(title);
-						// System.out.println(attraction.getTitle());
+							Attraction attraction = new Attraction();
 
-						expression = "//*/addr1";
-						String addr1 = xpath.compile(expression).evaluate(document);
-						attraction.setAddr1(addr1);
-
-						expression = "//*/zipcode";
-						String zipcode = xpath.compile(expression).evaluate(document);
-						attraction.setZipcode(zipcode);
-
-						expression = "//*/tel";
-						String tel = xpath.compile(expression).evaluate(document);
-						attraction.setTel(tel);
-
-						expression = "//*/mapx";
-						String _longitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapx(_longitude);
-
-						expression = "//*/mapy";
-						String _latitude = xpath.compile(expression).evaluate(document);
-						attraction.setMapy(_latitude);
-
-						expression = "//*/firstimage";
-						String image_Url = xpath.compile(expression).evaluate(document);
-						attraction.setImgURL(image_Url);
-
-						attraction_list.add(attraction);
-
-						for( int idx=0; idx<item_Node.getLength()-1; idx++ ){
-
-							attraction = new Attraction();
-
-							item_Node.item(idx).setTextContent("item_"+idx);
+							if (idx>=0){
+								item_Node.item(idx).setTextContent("item_"+idx);
+							}
 
 							expression = "//*/title";
-							title = xpath.compile(expression).evaluate(document);
+							String title = xpath.compile(expression).evaluate(document);
 							attraction.setTitle(title);
-							// System.out.println(attraction.getTitle());
 
 							expression = "//*/addr1";
-							addr1 = xpath.compile(expression).evaluate(document);
+							String addr1 = xpath.compile(expression).evaluate(document);
 							attraction.setAddr1(addr1);
 
 							expression = "//*/zipcode";
-							zipcode = xpath.compile(expression).evaluate(document);
+							String zipcode = xpath.compile(expression).evaluate(document);
 							attraction.setZipcode(zipcode);
 
 							expression = "//*/tel";
-							tel = xpath.compile(expression).evaluate(document);
+							String tel = xpath.compile(expression).evaluate(document);
 							attraction.setTel(tel);
 
 							expression = "//*/mapx";
-							_longitude = xpath.compile(expression).evaluate(document);
+							String _longitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapx(_longitude);
 
 							expression = "//*/mapy";
-							_latitude = xpath.compile(expression).evaluate(document);
+							String _latitude = xpath.compile(expression).evaluate(document);
 							attraction.setMapy(_latitude);
 
 							expression = "//*/firstimage";
-							image_Url = xpath.compile(expression).evaluate(document);
+							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
 							attraction_list.add(attraction);
