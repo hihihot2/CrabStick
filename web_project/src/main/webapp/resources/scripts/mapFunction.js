@@ -57,7 +57,7 @@
 				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
 			}
 		});
-		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {	
+		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {
 			infowindow.open(map, marker);
 		});
 		naver.maps.Event.addListener(markers[len][2], 'mouseout', function(e) {
@@ -89,9 +89,6 @@
 			sub.push(marker);
 			sub.push(infowindow);
 			myPath.push(sub);
-			if(infowindow.getMap()){
-				infowindow.close();
-			}
 		}
 	}
 	
@@ -238,7 +235,7 @@
 	//키 이벤트 처리 함수 -> 엔터 확인
 	function keyEventChk(){
 		if(event.keyCode == 13){
-			unmarkBranch('s');
+			//unmarkBranch('s');
 			var data = document.getElementById("searchData").value;
 			for(var i = 0 ; i < searchList.length ; i++){
 				if(searchList[i][0] == data){
@@ -257,12 +254,6 @@
 				map.setCenter(new naver.maps.LatLng(loc.lat, loc.lng));
 				setPlace(loc.lat, loc.lng, 's');
 				setListener(data, 's');
-				for(var i = 0 ; i < infowindows.length ; i++){
-					if(infowindows[i][0] == 's'){
-						infowindows[i][2].open(map, markers[i][2]);
-					}
-				}
-				$('searchData').val('');
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}

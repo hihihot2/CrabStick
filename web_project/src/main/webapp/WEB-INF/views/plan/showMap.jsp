@@ -143,7 +143,11 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(markers.join());
+			var tmp = '';
+			for(var i = 0 ; i < myPath.length ; i++){
+				tmp += myPath[i][0].getPosition().lat()+",";
+			}
+			alert(tmp);
 		})
 	});
 </script>
