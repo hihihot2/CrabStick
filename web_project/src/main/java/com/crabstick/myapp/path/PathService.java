@@ -8,4 +8,5 @@ public interface PathService {
 	ArrayList<Path> selectPath(int plan_no);
 	Path getPathByPathNo(int pathNo);
 	void removePath(int pathNo);
+	void updatePath(Path p);
 }

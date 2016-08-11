@@ -9,4 +9,5 @@ public interface PathMapper {
 	ArrayList<Path> select(int plan_no);
 	Path selectByPathNo(int pathNo);
 	void delete(int pathNo);
+	void update(Path p);
 }

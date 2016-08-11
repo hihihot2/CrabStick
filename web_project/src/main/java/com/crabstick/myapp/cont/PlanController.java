@@ -342,4 +342,40 @@ public class PlanController {
 			e.printStackTrace();
 		}
 	}
+	
+	@RequestMapping(value="/planCont/editPath.do")
+	public ModelAndView editPath(@RequestParam("path")String path) {
+		System.out.println("Run 'editPath'");
+		
+		JSONObject pathObject = (JSONObject) JSONValue.parse(path);
+		long pathNo = (Long) pathObject.get("no");
+		String pathName = (String) pathObject.get("name");
+		pathService.updatePath(new Path((int) pathNo, pathName, null, 0));
+		JSONArray venues = (JSONArray) pathObject.get("venues");
+		Iterator iterator = venues.iterator();
+		
+		venueService.removeAllVenuesByPathNo((int) pathNo);
+		
+		String pathSummary = "";
+		int order = 0;
+		while(iterator.hasNext()) {
+			JSONObject venue = (JSONObject) iterator.next();
+			String venueName = (String) venue.get("name");
+			String venueComment = (String) venue.get("comment");
+			String lat = (String) venue.get("lat");
+			String lng = (String) venue.get("lng");
+			long loc = (Long) venue.get("loc");
+			venueService.insertVenue(new Venue(0, venueName, lat, lng, venueComment, "1", order, (int) pathNo, (int) loc));
+			pathSummary += venueName;
+			if(iterator.hasNext()) {
+				pathSummary += " - ";
+			}
+		}
+		
+		ModelAndView mav = new ModelAndView("plan/getPathSummaryJSON");
+		mav.addObject("PATH_NO", pathNo);
+		mav.addObject("PATH_NAME", pathName);
+		mav.addObject("PATH_SUMMARY", pathSummary);
+		return mav;
+	}
 }
