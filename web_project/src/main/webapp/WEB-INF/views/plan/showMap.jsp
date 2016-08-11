@@ -234,6 +234,7 @@
 								pathDiv.click(function() {
 									// 경로를 클릭 -> 수정 폼이 등장
 									var thisElement = $(this);
+									var pathCountOfThisElement = pathDiv.parent().find('div#pathDiv').index(this);
 									
 									$.ajax({
 										url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
@@ -271,7 +272,7 @@
 																								
 												venueDiv.find('img#cancelImg').click(function() {
 													// x 버튼 누를때 하는 일
-													var pathLineOnMap = polyline[pathDiv.find('input#pathCount').val()].getPath();
+													var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
 													pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
 													$(this).parent().parent().remove();
 												})
@@ -289,7 +290,7 @@
 												thisElement.removeClass('hiddenDiv');
 												pathEditDiv.remove();
 												
-												var tempPathLine = polyline[pathDiv.find('input#pathCount').val()].getPath();
+												var tempPathLine = polyline[pathCountOfThisElement].getPath();
 												tempPathLine.splice(0, tempPathLine.length);
 												for(var i = 0; i < mapPinList.length; i++) {
 													tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
@@ -298,7 +299,11 @@
 											
 											pathEditDiv.find('input#removePathBtn').click(function() {
 												// 삭제 버튼 누를 때 할 일
-												alert(pathEditDiv.find('input#pathNo').val());
+												for(var i = 0; i < polyline.length; i++) {
+													console.log(polyline[i]);
+												}
+												console.log(pathCountOfThisElement);
+												polyline.splice(pathCountOfThisElement, 1);
 												$.ajax({
 													url: "${pageContext.request.contextPath }/planCont/removePath.do",
 													dataType: 'text',
