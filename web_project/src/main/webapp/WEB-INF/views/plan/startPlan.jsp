@@ -20,44 +20,42 @@
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
+	$(document).ready(function() {
 
-	$(document).ready(function(){
-		
 		$('#locSearch').autocomplete({
-			source : function(request, response){
+			source : function(request, response) {
 				var params = "loc_name=" + encodeURIComponent(request.term);
 				$.ajax({
 					url : '../viewCont/search.do?' + params,
 					type : 'POST',
-					success : function(loc_name){
-						var search = eval("("+ loc_name +")");
+					success : function(loc_name) {
+						var search = eval("(" + loc_name + ")");
 						var input = new Array();
 						input = [];
-						for(var i = 0 ; i < search.length ; i++){
+						for (var i = 0; i < search.length; i++) {
 							var before = search[i].name;
 							input.push(before);
 						}
 						searchList = input;
-						response(input); 
+						response(input);
 					}
 				});
 			},
-			select : function(event, ui){
-				if(event.keyCode == 13){
+			select : function(event, ui) {
+				if (event.keyCode == 13) {
 					$('locSearch').val(ui.item.value);
 				}
 			}
 		})
 	})
 
-	
-	function select_loc(latitude, longitude, locno, code, siguncode) {
+	function select_loc(latitude, longitude, locno) {
 		location.href = "${pageContext.request.contextPath}/placeCont/showMap.do?city_latitude="
 				+ latitude
 				+ "&city_longitude="
 				+ longitude
 				+ "&cityno="
-				+ locno + "&city_code=" + code + "&city_siguncode=" + siguncode;
+				+ locno;
 	}
 	/* 
 	function search_loc() {
@@ -226,8 +224,8 @@
 		<form name="searchform">
 			<div class="form-group input-group">
 
-				<input type="text" class="form-control" id="locSearch" name="searchText"
-					placeholder="원하는 도시명을 검색하세요"> <span
+				<input type="text" class="form-control" id="locSearch"
+					name="searchText" placeholder="원하는 도시명을 검색하세요"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
 						onclick="find_loc()">
@@ -249,10 +247,14 @@
 			<div class="row">
 				<c:forEach var="List" items="${city_List}">
 					<div class="col-sm-4">
-						<a href="javascript:select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}','${List.loc_code}','${List.loc_siguncode}')"><img id="${List.loc_no}" class="myimg"	src="${List.loc_imgpath }"	height="300px" width="100%" alt="${List.loc_name}"></a>
+						<a
+							href="javascript:select_loc('${List.loc_lati}','${List.loc_long}','${List.loc_no}')"><img
+							id="${List.loc_no}" class="myimg" src="${List.loc_imgpath }"
+							height="300px" width="100%" alt="${List.loc_name}"></a>
 						<div class="center2">${List.loc_name}</div>
 						<h4>
-							<a href ="javascript:modal_open('${List.loc_no}', '${List.loc_commt}')"">${List.loc_name}</a>
+							<a
+								href="javascript:modal_open('${List.loc_no}', '${List.loc_commt}')">${List.loc_name}</a>
 						</h4>
 						<p>사진을 클릭하면</p>
 						<p style="color: #ff0000">${List.loc_name}</p>

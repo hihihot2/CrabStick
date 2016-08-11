@@ -56,8 +56,6 @@
 		loc_no =  <%= request.getAttribute("loc_no")%>
 		var lat = <%= request.getAttribute("lat") %>
 		var lng = <%= request.getAttribute("lang")%>
-		city_code = <%= request.getAttribute("city_code")%>;
-		siguncode = <%= request.getAttribute("siguncode")%>;
 		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
@@ -113,7 +111,7 @@
 		var categories = document.getElementsByName("categorychk");
 		for(var i = 0 ; i < categories.length ; i++){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode,
+				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng,
 				type: 'POST',
 				success: function(data){
 					var list = eval("("+ data +")");
@@ -143,7 +141,11 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			alert(markers.join());
+			var tmp = '';
+			for(var i = 0 ; i < myPath.length ; i++){
+				tmp += myPath[i][0].getPosition().lat()+",";
+			}
+			alert(tmp);
 		})
 	});
 </script>

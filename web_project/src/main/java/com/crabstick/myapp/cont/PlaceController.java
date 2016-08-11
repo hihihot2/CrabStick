@@ -59,8 +59,7 @@ public class PlaceController {
 
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
-			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng,
-			@RequestParam(value="city_code") String code, @RequestParam(value="siguncode") String siguncode){
+			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng){
 		System.out.println("placeCont >> setBranch : "+branch);
 		ModelAndView mav = null;
 
@@ -393,16 +392,14 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/showMap.do")
 	public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
 			@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno, 
-			@RequestParam(value="city_code") String code,
-			@RequestParam(value="city_siguncode") String siguncode) {
+			@RequestParam(value="cityno") String cityno){
+		
 		ModelAndView mav = new ModelAndView("plan/showMap");
 
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
-		mav.addObject("city_code",code);
-		mav.addObject("siguncode", siguncode);
+
 		return mav;
 	}
 	
@@ -420,8 +417,6 @@ public class PlaceController {
 		mav.addObject("lat", location.getLoc_lati());
 		mav.addObject("lang", location.getLoc_long());
 		mav.addObject("loc_no", location.getLoc_no());
-		mav.addObject("city_code", location.getLoc_code());
-		mav.addObject("siguncode", location.getLoc_siguncode());
 		mav.addObject("PLAN", plan);
 		return mav;
 	}

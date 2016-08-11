@@ -125,18 +125,26 @@ public class ViewController {
 		
 		ArrayList<Plan> plan = planService.selectPlan(mem_no);
 		ArrayList<Path> path = new ArrayList<Path>();
-		ArrayList<Venue> venue = new ArrayList<Venue>();
-	
+
+		
 		//plan_no로 DB로 접근해서 path를 갖고온다.
 		for(int i=0; i<plan.size(); i++){
 			int plan_no = plan.get(i).getPlan_no();
-			System.out.println(plan_no);						
+			System.out.println(plan_no);	
 			path = pathService.selectPath(plan_no);		
+            plan.get(i).setPathlist(path);            
 
 			
 			
+			for(int j=0; j<path.size(); j++){
+				String path_summary = path.get(j).getPath_summary();
+				System.out.println(path_summary);
+
+			}
+			
 			mav.addObject("plan", plan)	; // plan찍어주고
-			mav.addObject("path", path);			
+			mav.addObject("path", path);
+
 		}		
 		return mav;
 	}	
@@ -167,15 +175,6 @@ public class ViewController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/viewCont/detailDOC.do")
-	public ModelAndView windowShow(@RequestParam(value="loc_name")String loc_name){
-		ModelAndView mav = new ModelAndView("plan/showLocation");
-		System.out.println(loc_name);
-		ArrayList<City> detailList = recommendationService.searchByName(loc_name);
-		System.out.println(detailList.toString());
-		mav.addObject("detailList", detailList);
-		return mav;
-	}
 	
 	@RequestMapping(value="/viewCont/findCity.do")
 	public String findLoc(@RequestParam(value="searchText")String loc_name){
@@ -185,12 +184,10 @@ public class ViewController {
 		String lati = resultCity.getLoc_lati();
 		String long2 = resultCity.getLoc_long();
 		int locno = resultCity.getLoc_no();
-		int code = resultCity.getLoc_code();
-		int siguncode = resultCity.getLoc_siguncode();
-		String url = "/placeCont/getRestaurants.do?city_latitude="
+		
+		String url = "/placeCont/showMap.do?city_latitude="
 							+ lati + "&city_longitude=" + long2
-							+ "&cityno=" + locno + "&city_code=" + code
-							+ "&city_siguncode=" + siguncode;
+							+ "&cityno=" + locno;
 		return "redirect:/" + url;
 	}
 
