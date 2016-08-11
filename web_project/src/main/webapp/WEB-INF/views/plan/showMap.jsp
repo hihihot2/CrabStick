@@ -446,104 +446,100 @@
 </script>
 
 <style type="text/css">
-	.SideBar, .Map {
-		float: left;
-	}
-	
-	.SideBar {
-		width: 20%;
-		padding: 10px;
-		clear: none; 
-	}
-	
-	.SideBar input, select {
-		height: 30px;
-		margin-top: 2px;
-		margin-bottom: 2px;
-		width: 100%;
-	}
-	
-	.Map {		
-		width: 80%;
-		padding: 10px;
-	}
-	
+.SideBar, .Map {
+	float: left;
+}
+
+.SideBar {
+	width: 20%;
+	padding: 10px;
+	clear: none;
+}
+
+.SideBar input, select {
+	height: 30px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	width: 100%;
+}
+
+.Map {
+	width: 80%;
+	padding: 10px;
+}
+
 /* 	#planName, #planComment, #planCost, #planPersons, #planStyle {
 		width: 100%;
 	} */
-	
-	.planInfo{
-		margin-bottom: 10px;
-	}
-	
-	/* #addPath {
+.planInfo {
+	margin-bottom: 10px;
+}
+
+/* #addPath {
 		width: 100%;
 	} */
-	
-	#savePath, #cancelPath {
-		width: 49%;
-	}
-	
-	#inputDiv {
-		float: left;
-		width: 80%;
-	}
-	
-	#cancelDiv {
-		float: left;
-		width: 20%;
-		/* height: 100%; */
-	}
-	
-	#cancelImg {
-		margin: 30%;
-		width: 40%;
-	}
-	
-	/* #venueName, #venueComment {
+#savePath, #cancelPath {
+	width: 49%;
+}
+
+#inputDiv {
+	float: left;
+	width: 80%;
+}
+
+#cancelDiv {
+	float: left;
+	width: 20%;
+	/* height: 100%; */
+}
+
+#cancelImg {
+	margin: 30%;
+	width: 40%;
+}
+
+/* #venueName, #venueComment {
 		width: 100%;
 	} */
-	
-	.hiddenDiv {
-		display: none;
-	}
-	
-	#pathDiv {
-		padding: 10px;
-	}
-	
-	#pathDiv:hover {
-		background-color: rgb(235, 242, 255);
-	}
-	
-	#defaultAddDiv {
-		margin-top: 5px;
-		margin-bottom: 5px;
-	}
-	
-	#pathEditDiv {
-		margin-top: 10px;
-		margin-bottom: 10px;
-		padding: 10px;
-		background-color: rgb(243, 216, 218);
-	}
-	
-	/* input#pathName {
+.hiddenDiv {
+	display: none;
+}
+
+#pathDiv {
+	padding: 10px;
+}
+
+#pathDiv:hover {
+	background-color: rgb(235, 242, 255);
+}
+
+#defaultAddDiv {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#pathEditDiv {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px;
+	background-color: rgb(243, 216, 218);
+}
+
+/* input#pathName {
 		margin-top: 5px;
 		width: 100%;
 	} */
-	
-	#modifyPathBtn, #cancelPathBtn {
-		/* margin-top: 5px; */
-		width: 49%;
-	}
-	
-	#removePathBtn {
-		margin-top: 5px;
-		background-color: rgb(255, 0, 78);
-		width: 100%;
-		color: white;
-	}
+#modifyPathBtn, #cancelPathBtn {
+	/* margin-top: 5px; */
+	width: 49%;
+}
+
+#removePathBtn {
+	margin-top: 5px;
+	background-color: rgb(255, 0, 78);
+	width: 100%;
+	color: white;
+}
 </style>
 <!---------------------------------->
 <body>
@@ -557,12 +553,11 @@
 			<div class='planInfo'>
 				<!-- 계획 정보 입력 -->
 				<form action="">
-					<input type='hidden' id='planNo' value='0'>
-					<input type='text' id='planName'>
-					<input type='text' id='planComment'>
-					<input type="text" id='planCost' placeholder='여행 비용'>
-					<input type="text" id='planPersons'	placeholder='여행 인원 (기본 값: 1)'>
-					 <select id='planStyle'>
+					<input type='hidden' id='planNo' value='0'> <input
+						type='text' id='planName'> <input type='text'
+						id='planComment'> <input type="text" id='planCost'
+						placeholder='여행 비용'> <input type="text" id='planPersons'
+						placeholder='여행 인원 (기본 값: 1)'> <select id='planStyle'>
 						<option label='문화 탐방' value='1'>
 						<option label='식도락' value='2'>
 						<option label='쇼핑' value='3'>
@@ -571,17 +566,17 @@
 				</form>
 			</div>
 			<div class='pathInfo'>
-			<!-- 경로 정보 입력 -->
-				<div id='pathList'>
-				</div>
+				<!-- 경로 정보 입력 -->
+				<div id='pathList'></div>
 				<div id='defaultAddDiv'>
 					<input type='button' id='addPath' value='일정 만들기'>
 				</div>
 				<div id='addPathDiv' class='hiddenDiv'>
-					<form name="venueForm" action="${pageContext.request.contextPath}/plancont/addplan.do">					
+					<form name="venueForm"
+						action="${pageContext.request.contextPath}/plancont/addplan.do">
 						<div id='venueList'></div>
-						<input type="button" id='savePath' value="일정 저장">					
-						<input type="button" id='cancelPath' value="일정 취소">
+						<input type="button" id='savePath' value="일정 저장"> <input
+							type="button" id='cancelPath' value="일정 취소">
 					</form>
 				</div>
 			</div>
@@ -595,34 +590,42 @@
 	<div id='pathDivForm' class='hiddenDiv'>
 		<p id='pathName'></p>
 		<p id='pathSummary'></p>
-		<input type='hidden' id='pathNo'>
-		<input type='hidden' id='pathCount'>
+		<input type='hidden' id='pathNo'> <input type='hidden'
+			id='pathCount'>
 	</div>
-	
+
 	<div id='venueDivForm' class='hiddenDiv'>
 		<div id='inputDiv'>
-			<p><input type='text' name='venueName' id='venueName' placeholder='장소 이름을 입력해주세요.'></p>
-			<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.'></p>
+			<p>
+				<input type='text' name='venueName' id='venueName'
+					placeholder='장소 이름을 입력해주세요.'>
+			</p>
+			<p>
+				<input type='text' name='venueComment' id='venueComment'
+					placeholder='장소에 관해 메모해주세요.'>
+			</p>
 		</div>
 		<div id='cancelDiv'>
-			<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png'/>
+			<img id='cancelImg'
+				src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' />
 		</div>
-		<input type='hidden' name='venueNo' id='venueNo'>
-		<input type='hidden' name='venueLatitude' id='venueLatitude'>
-		<input type='hidden' name='venueLongitude' id='venueLongitude'>
-		<input type='hidden' name='venueLocation' id='venueLocation'>
-		<input type='hidden' name='venueOrder' id='venueOrder'>
+		<input type='hidden' name='venueNo' id='venueNo'> <input
+			type='hidden' name='venueLatitude' id='venueLatitude'> <input
+			type='hidden' name='venueLongitude' id='venueLongitude'> <input
+			type='hidden' name='venueLocation' id='venueLocation'> <input
+			type='hidden' name='venueOrder' id='venueOrder'>
 	</div>
-	
+
 	<div id='pathEditDivForm' class='hiddenDiv'>
-		<input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'>
-		<input type='hidden' name='pathNo' id='pathNo'>
+		<input type='text' name='pathName' id='pathName'
+			placeholder='경로 이름을 입력해주세요.'> <input type='hidden'
+			name='pathNo' id='pathNo'>
 		<div id='venueListInSavedPath'></div>
-		
+
 		<div id='btnsDiv'>
-			<input type='button' id='modifyPathBtn' value='수정할게요'>
-			<input type='button' id='cancelPathBtn' value='취소할게요'>
-			<input type='button' id='removePathBtn' value='없애주세요'>
+			<input type='button' id='modifyPathBtn' value='수정할게요'> <input
+				type='button' id='cancelPathBtn' value='취소할게요'> <input
+				type='button' id='removePathBtn' value='없애주세요'>
 		</div>
 	</div>
 </body>
