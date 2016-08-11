@@ -8,7 +8,8 @@
 		plan_commt: '${PLAN.plan_commt}',
 		plan_cost: ${PLAN.plan_cost},
 		plan_persons: ${PLAN.plan_persons},
-		plan_style: ${PLAN.plan_style}
+		plan_style: ${PLAN.plan_style},
+		loc_no: ${PLAN.loc_no}
 	},
 	path: {
 		path_no: ${PATH.path_no},

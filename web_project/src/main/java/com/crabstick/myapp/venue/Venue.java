@@ -10,14 +10,13 @@ public class Venue {
 	private String ven_type;
 	private int ven_order;
 	private int path_no;
-	private int loc_no;
-	
 	
 	public Venue() {
 		super();
 	}
+	
 	public Venue(int ven_no, String ven_name, String ven_lati, String ven_long, String ven_commt, String ven_type,
-			int ven_order, int path_no, int loc_no) {
+			int ven_order, int path_no) {
 		super();
 		this.ven_no = ven_no;
 		this.ven_name = ven_name;
@@ -27,7 +26,6 @@ public class Venue {
 		this.ven_type = ven_type;
 		this.ven_order = ven_order;
 		this.path_no = path_no;
-		this.loc_no = loc_no;
 	}
 	public int getVen_no() {
 		return ven_no;
@@ -77,17 +75,11 @@ public class Venue {
 	public void setPath_no(int path_no) {
 		this.path_no = path_no;
 	}
-	public int getLoc_no() {
-		return loc_no;
-	}
-	public void setLoc_no(int loc_no) {
-		this.loc_no = loc_no;
-	}
 	@Override
 	public String toString() {
 		return "Venue [ven_no=" + ven_no + ", ven_name=" + ven_name + ", ven_lati=" + ven_lati + ", ven_long="
 				+ ven_long + ", ven_commt=" + ven_commt + ", ven_type=" + ven_type + ", ven_order=" + ven_order
-				+ ", path_no=" + path_no + ", loc_no=" + loc_no + "]";
+				+ ", path_no=" + path_no + "]";
 	}
 	
 	

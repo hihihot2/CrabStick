@@ -11,9 +11,8 @@
 
 <script type="text/javascript">
 
-	function viewplan(){
-		document.myplan.action="${pageContext.request.contextPath}/viewcont/viewMyPlanMap.do"
-		document.myplan.submit();
+	function viewplan(planNo){
+		location.href="${pageContext.request.contextPath}/placeCont/showMyMap.do?planNo="+planNo;
 	}
 
 </script>
@@ -73,7 +72,7 @@
 </head>
 <body>
 <c:choose>
-<c:when test="${plan eq null}">
+<c:when test="${PLANLIST eq null}">
 	<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -87,10 +86,9 @@
 				</div>				
 			</div>		
 </c:when>
-<c:otherwise>
-	<form name="myplan">	
-	<c:forEach items="${plan}" var="plan">
-	<input type="hidden" name="plan_no" value="${plan.plan_no}" >
+<c:otherwise>	
+	<c:forEach items="${PLANLIST}" var="plan">
+		<input type="hidden" name="plan_no" value="${plan.plan_no}" >
 	
 			<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
@@ -108,21 +106,22 @@
 							<strong>${plan.plan_persons}</strong>명
 						</p>
 						<br>
-							<c:forEach items="${path}" var="path">
-							<p>
-								<strong>${path.path_name}</strong>
-							</p>
-							<p>
-								<strong>${path.path_summary}</strong>
-							</p><br>								
+							<c:set var="cnt" value="1"/>						
+							<c:forEach items="${plan.pathlist}" var="path">
+								<p>
+									<strong>${cnt}번째 일정</strong>
+								</p>
+	
+								<p>
+									<strong> ${path.path_summary}</strong>
+								</p><br>		
+								 <c:set var="cnt" value="${cnt+1}"/>						
 							</c:forEach>
-							<button class="btn btn-lg" onclick="viewplan()" >여행계획 보러가기</button>								
-							
+							<button class="btn btn-lg" onclick="viewplan(${plan.plan_no})" >여행계획 보러가기</button>							
 						</div>
 					</div>				
 			</div>		
 	</c:forEach>
-	</form>
 </c:otherwise>	
 </c:choose>
 </body>

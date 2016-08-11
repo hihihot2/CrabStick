@@ -2,6 +2,8 @@ package com.crabstick.myapp.plan;
 
 import java.util.ArrayList;
 
+import com.crabstick.myapp.location.Location;
+
 public interface PlanService {
 	void insertPlan(Plan p);
 	//내가 작성한 plan전부 가져오기

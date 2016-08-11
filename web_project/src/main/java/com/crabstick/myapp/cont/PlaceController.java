@@ -2,8 +2,8 @@ package com.crabstick.myapp.cont;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
+import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -11,9 +11,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +21,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.crabstick.api.expedia.Expedia;
-import com.crabstick.api.expedia.objects.Hotel;
 import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
+import com.crabstick.myapp.location.Location;
+import com.crabstick.myapp.location.LocationService;
+import com.crabstick.myapp.path.Path;
+import com.crabstick.myapp.path.PathService;
+import com.crabstick.myapp.plan.Plan;
+import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.Attraction;
 import com.crabstick.myapp.venue.VenueService;
 
@@ -37,6 +39,30 @@ public class PlaceController {
 	private String foursquareClientSecret = "OWVMGV1NWBD1ZWLT0TIWDKT4BOXHZD3YZTAJAX5UYLYK1BJO";
 	private String expediaConsumerKey = "D9o6vpXU1ANf0zteRzFIAS83NkccKkoJ";
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
+	
+	@Resource(name = "locationService")
+	private LocationService locationService;
+	public void setService(LocationService locationService) {
+		this.locationService = locationService;
+	}
+	
+	@Resource(name = "venueService")
+	private VenueService venueService;
+	public void setService(VenueService venueService) {
+		this.venueService = venueService;
+	}
+	
+	@Resource(name = "pathService")
+	private PathService pathService;
+	public void setService(PathService pathService) {
+		this.pathService = pathService;
+	}
+	
+	@Resource(name = "planService")
+	private PlanService planService;
+	public void setService(PlanService planService) {
+		this.planService = planService;
+	}
 
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
@@ -381,6 +407,26 @@ public class PlaceController {
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
 
+		return mav;
+	}
+	
+	@RequestMapping(value="/placeCont/showMyMap.do")
+	public ModelAndView showMyMap(@RequestParam(value="planNo")int planNo) {
+		System.out.println("Run 'showMyMap'");
+		System.out.println("Plan No: " + planNo);
+		Location location = locationService.getLocationByPlanNo(planNo);
+		Plan plan = planService.getPlan(planNo);
+		System.out.println("Plan Name: " + plan.getPlan_name());
+		plan.setPathlist(pathService.selectPath(planNo));
+		for(Path path : plan.getPathlist()) {
+			path.setVenuelist(venueService.selectVenue(path.getPath_no()));
+		}
+		
+		ModelAndView mav = new ModelAndView("plan/showMap");
+		mav.addObject("lat", location.getLoc_lati());
+		mav.addObject("lang", location.getLoc_long());
+		mav.addObject("loc_no", location.getLoc_no());
+		mav.addObject("PLAN", plan);
 		return mav;
 	}
 

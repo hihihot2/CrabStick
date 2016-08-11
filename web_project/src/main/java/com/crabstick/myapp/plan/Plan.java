@@ -15,10 +15,11 @@ public class Plan {
 	private Date plan_writedate;
 	private char plan_style;
 	private int mem_no;
+	private int loc_no;
 	private ArrayList<Path> pathlist;	
 	
 	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
-			char plan_style, int mem_no) {
+			char plan_style, int mem_no, int loc_no) {
 		super();
 		this.plan_no = plan_no;
 		this.plan_name = plan_name;
@@ -28,11 +29,12 @@ public class Plan {
 		this.plan_writedate = plan_writedate;
 		this.plan_style = plan_style;
 		this.mem_no = mem_no;
+		this.loc_no = loc_no;
 	}
 	
 	
 	public Plan(int plan_no, String plan_name, String plan_commt, int plan_cost, int plan_persons, Date plan_writedate,
-			char plan_style, int mem_no, ArrayList<Path> pathlist) {
+			char plan_style, int mem_no, int loc_no, ArrayList<Path> pathlist) {
 		super();
 		this.plan_no = plan_no;
 		this.plan_name = plan_name;
@@ -42,6 +44,7 @@ public class Plan {
 		this.plan_writedate = plan_writedate;
 		this.plan_style = plan_style;
 		this.mem_no = mem_no;
+		this.loc_no = loc_no;
 		this.pathlist = pathlist;
 	}
 	public ArrayList<Path> getPathlist() {
@@ -102,6 +105,16 @@ public class Plan {
 	}
 	public void setMem_no(int mem_no) {
 		this.mem_no = mem_no;
+	}
+
+
+	public int getLoc_no() {
+		return loc_no;
+	}
+
+
+	public void setLoc_no(int loc_no) {
+		this.loc_no = loc_no;
 	}
 	
 	

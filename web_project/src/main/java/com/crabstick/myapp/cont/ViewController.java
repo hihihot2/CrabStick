@@ -123,40 +123,17 @@ public class ViewController {
 		ModelAndView mav =  new ModelAndView("plan/myPlan");		
 		int mem_no = (Integer) httpSession.getAttribute("no");
 		
-		ArrayList<Plan> plan = planService.selectPlan(mem_no);
-		ArrayList<Path> path = new ArrayList<Path>();
+		ArrayList<Plan> planList = planService.selectPlan(mem_no);
 
+		for(Plan plan : planList) {
+			plan.setPathlist(pathService.selectPath(plan.getPlan_no()));
+			System.out.println(plan.getPlan_name());
+//			for(Path path : plan.getPathlist()) {
+//				System.out.println(path.getPath_summary());
+//			}
+		}
 		
-		//plan_no로 DB로 접근해서 path를 갖고온다.
-		for(int i=0; i<plan.size(); i++){
-			int plan_no = plan.get(i).getPlan_no();
-			System.out.println(plan_no);						
-			path = pathService.selectPath(plan_no);		
-			
-			
-			for(int j=0; j<path.size(); j++){
-				System.out.println(path.get(j).getPath_summary());
-
-			}
-			
-			mav.addObject("plan", plan)	; // plan찍어주고
-			mav.addObject("path", path);			
-		}		
-		return mav;
-	}	
-
-
-	
-	@RequestMapping(value="/viewcont/viewMyPlanMap.do")
-	public ModelAndView viewMyPlanMap(@RequestParam(value="plan_no")int plan_no){		
-		ModelAndView mav =  new ModelAndView("plan/showMap");		
-		System.out.println("작성된 plan보러가기" + plan_no);
-		
-		Plan plan = new Plan();
-		plan = planService.getPlan(plan_no);
-		
-		//객체이름 myPlan
-		mav.addObject("myPlan", plan);		
+		mav.addObject("PLANLIST" , planList);
 		return mav;
 	}	
 	

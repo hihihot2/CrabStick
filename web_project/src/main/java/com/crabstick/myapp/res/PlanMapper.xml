@@ -14,10 +14,11 @@
 		<result property="plan_writedate" column="plan_writedate" />
 		<result property="plan_style" column="plan_style" />
 		<result property="mem_no" column="mem_no" />
-	</resultMap>	
+		<result property="loc_no" column="loc_no" />
+	</resultMap>
 
 	<insert id="insert" parameterType="com.crabstick.myapp.plan.PlanMapper">
-		INSERT INTO plans VALUES(SEQ_PLAN.NEXTVAL, #{plan_name}, #{plan_commt}, #{plan_cost}, #{plan_persons}, SYSDATE, #{plan_style}, #{mem_no})
+		INSERT INTO plans VALUES(SEQ_PLAN.NEXTVAL, #{plan_name}, #{plan_commt}, #{plan_cost}, #{plan_persons}, SYSDATE, #{plan_style}, #{mem_no}, #{loc_no})
 		
 		<selectKey keyProperty="plan_no" resultType="Integer" order="AFTER">
 			SELECT SEQ_PLAN.CURRVAL FROM DUAL

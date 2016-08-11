@@ -2,6 +2,8 @@ package com.crabstick.myapp.plan;
 
 import java.util.ArrayList;
 
+import com.crabstick.myapp.location.Location;
+
 public interface PlanMapper {
 	void insert(Plan p);
 	
