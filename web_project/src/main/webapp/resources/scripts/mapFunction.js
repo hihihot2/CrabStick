@@ -47,9 +47,12 @@
 		var len = markers.length-1;
 		var marker = markers[len][2], infowindow = infowindows[len][2];
 		
-		infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
-				+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
+		infowindow.setContent('<div style="width:300px;height:200px;text-align:top;">'
+				+'<h3>'+name+'</h3>'
+				+'<span>Address : </span><br>'
+				+'<span>Link : </span><br>'
 				+'</div>'
+				+'<footer style="text-align:center;">아이콘을 클릭하면 내 일정에 추가됩니다</footer>'
 				);
 
 		naver.maps.Event.addListener(markers[len][2], 'click', function(e) {
