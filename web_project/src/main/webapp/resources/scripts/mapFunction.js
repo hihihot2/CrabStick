@@ -20,7 +20,6 @@
 		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
-			map : map,
 			icon : {
 				url: url
 			}
@@ -32,11 +31,13 @@
 		//clickable: 기본 true, 마커 클릭 허용 여부
 		});
 		var subMarker = new Array();
-		subMarker.push(type);
-		subMarker.push(marker);
+		subMarker.push(type);//flag
+		subMarker.push(type);//type
+		subMarker.push(marker);//marker
 		markers.push(subMarker);
 		var infowindow = new naver.maps.InfoWindow();
 		var subWindow = new Array();
+		subWindow.push(type);
 		subWindow.push(type);
 		subWindow.push(infowindow);
 		infowindows.push(subWindow);
@@ -45,27 +46,27 @@
 	function setListener(name, type){
 		var enc = encodeURIComponent(name);
 		var len = markers.length-1;
-		var marker = markers[len][1], infowindow = infowindows[len][1];
+		var marker = markers[len][2], infowindow = infowindows[len][2];
 		
 		infowindow.setContent('<div style="width:400px;height:200px;text-align:top;">'
 				+'<span><h3>'+name+'</h3><img style="width:30px;height:30px;" src="../resources/png/cancel.png" onclick="closeWindow('+len+')"/>'
 				+'</div>'
 				);
 
-		naver.maps.Event.addListener(markers[len][1], 'click', function(e) {
+		naver.maps.Event.addListener(markers[len][2], 'click', function(e) {
 			if(confirm("일정에 추가하시겠습니까?")){
 				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
 			}
 		});
-		naver.maps.Event.addListener(markers[len][1], 'mouseover', function(e) {	
+		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {	
 			infowindow.open(map, marker);
 		});
-		naver.maps.Event.addListener(markers[len][1], 'mouseout', function(e) {
+		naver.maps.Event.addListener(markers[len][2], 'mouseout', function(e) {
 			infowindow.close();
 		});
 	}
 	function closeWindow(len){
-		var infowindow = infowindows[len][1];
+		var infowindow = infowindows[len][2];
 		infowindow.close();
 	}
 	
@@ -73,20 +74,18 @@
 		if(!isAddCondition) {
 			alert('왼쪽에서 일정 만들기를 눌러주세요~');
 		} else {
-			var infowindow = infowindows[len][1];		// ??
-			var marker = markers[len][1];				// ??
+			var infowindow = infowindows[len][2];		// ??
+			var marker = markers[len][2];				// ??
 			var path = polyline[pathCount].getPath();
 			path.push(new naver.maps.LatLng(lat,lng));
 			var venue = new Object();
 			venue.name = name;
 			venue.comment = '';
-			venue.type = '1';		// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
+			venue.type = '1';	
+			venue.markerNum = len;// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
 			pathObj.push(venue);
 			updateList(); //화면 업데이트
-			var tmp = new Array();
-			tmp.push('m');
-			tmp.push(marker);
-			markers.push(tmp);
+			markers[len][0] = 'm';
 			if(infowindow.getMap()){
 				infowindow.close();
 			}
@@ -108,7 +107,7 @@
 						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.' onkeyup='modifyComment("+i+",this.form)'></p>"
 						+"</div>"
 						+"<div id='cancelDiv'>"
-						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>"
+						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+","+pathObj[i].markerNum+")'/>"
 						+"</div>"
 						+"<input type='hidden' name='venueLatitude' id='venueLatitude'>"
 						+"<input type='hidden' name='venueLongitude' id='venueLongitude'>"
@@ -147,13 +146,16 @@
 	}
 	
 	//추가 경로 삭제
-	function delPath(num){
+	function delPath(num, len){
+		var marker = markers[len][2];
 		var iDiv = document.getElementById("venue_"+num);
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
+		markers[len][0] = markers[len][1];
+		marker.setMap(null);
 		updateList();
 	}
 	
@@ -173,7 +175,7 @@
 
 	    for (var i = 0; i < markers.length; i++) {
 
-	        marker = markers[i][1];
+	        marker = markers[i][2];
 	        position = marker.getPosition();
 
 	        if (mapBounds.hasLatLng(position)) {
@@ -198,8 +200,10 @@
 	//마커 삭제
 	function deleteMarker(){
 		for(var i = 0 ; i < markers.length ; i++){
-			markers[i].setMap(null);
-			infowindows[i].setMap(null);
+			if(markers[i][0] == 'm'){
+				markers[i][0] = markers[i][1];
+				markers[i][2].setMap(null);
+			}
 		}
 	}
 	//정규식 변환 함수
@@ -259,7 +263,7 @@
 		}
 	}
 	//카테고리 Ajax 검색
-	function checkcategory(i,lat,lng){
+	/*function checkcategory(i,lat,lng){
 		var categories = document.getElementsByName("categorychk");
 		if(categories[i].checked){
 			var params = "branch="+i+"&city_latitude="+lat+"&city_longitude="+lng+"&city_code="+city_code+"&siguncode="+siguncode;
@@ -267,13 +271,29 @@
 		}else{
 			unmarkBranch(i);
 		}
+	}*/
+	function checkcategory(i,lat,lng){
+		var categories = document.getElementsByName("categorychk");
+		if(categories[i].checked){
+			for(var j = 0 ; j < markers.length ; j++){
+				if(markers[j][0] == i){
+					markers[j][2].setMap(map);
+				}
+			}
+		}else{
+			for(var j = 0 ; j < markers.length ; j++){
+				if(markers[j][0] == i){
+					markers[j][2].setMap(null);
+				}
+			}
+		}
 	}
 	function markBranch(){
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
 				var result = httpRequest.responseText;
 				var list = eval("("+ result +")");
-				for(var i = 0 ; i < result.length ; i++){
+				for(var i = 0 ; i < list.length ; i++){
 					setPlace(list[i].lat, list[i].lng, list[i].type);
 					setListener(list[i].name, list[i].type);
 				}
