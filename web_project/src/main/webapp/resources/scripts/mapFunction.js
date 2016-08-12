@@ -42,17 +42,20 @@
 		infowindows.push(subWindow);
 	}	
 	//리스너 생성
-	function setListener(name, type){
+	function setListener(obj, type){
 		var enc = encodeURIComponent(name);
 		var len = markers.length-1;
 		var marker = markers[len][2], infowindow = infowindows[len][2];
 		
-		infowindow.setContent('<div style="width:300px;height:200px;text-align:top;">'
-				+'<h3>'+name+'</h3>'
-				+'<span>Address : </span><br>'
-				+'<span>Link : </span><br>'
+		infowindow.setContent('<div style="width:300px;height:150px;text-align:top;">'
+				+'<table style="width:100%;height:auto;"><tr>'
+				+'<td style="width:70%;text-align:center;"><h3>'+obj[0]+'</h3></td>'
+				+'<td style="width:30%;"><img src="'+obj[2]+'" style="width:110px;height:70px;"></td>'
+				+'</tr></table>'
+				+'Address : '+obj[1]+'<br>'
+				+'Link : <br>'
 				+'</div>'
-				+'<footer style="text-align:center;">아이콘을 클릭하면 내 일정에 추가됩니다</footer>'
+				+'<footer style="text-align:center;color:blue;">아이콘을 클릭하면 내 일정에 추가됩니다</footer>'
 				);
 
 		naver.maps.Event.addListener(markers[len][2], 'click', function(e) {
