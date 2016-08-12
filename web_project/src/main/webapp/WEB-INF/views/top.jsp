@@ -9,9 +9,17 @@
 <!-- jQuery  -->
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery-3.1.0.js"></script>
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
+	type="text/javascript"></script>
 <!-- jQuery  -->
-
 <script type="text/javascript">
+ $(function($){
+     $("#logout").on("click", function(){
+         $.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
+         $.removeCookie('autoNo', { expires: -1, path: '/myapp/', secure: false })
+     }) 
+ })
 	function home() {
 		location.href = "${pageContext.request.contextPath}/";
 	}
