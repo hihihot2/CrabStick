@@ -59,8 +59,8 @@
 	}
 	
 	//검색 메서드
-	function find_loc(accompany) {
-		alert(accompany);
+	function find_loc(accompany, purpose, favor_city) {
+		alert(accompany+","+purpose+","+favor_city);
 		var loc_name = document.searchform.searchText.value
 		if (loc_name == "") {
 			alert('검색을 먼저하세요')
@@ -68,7 +68,9 @@
 			alert('검색한 장소로 이동합니다.')
 			location.href = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name="
 					+ loc_name 
-					+ "&accompany=" + accompany;
+					+ "&accompany=" + accompany 
+					+ "&purpose=" + purpose 
+					+ "&favor_city=" + favor_city;
 		}
 	}
 
@@ -184,9 +186,9 @@
 </style>
 </head>
 <body>
-	<%-- <c:set value="${travel_purpose}" var="purpose"></c:set> --%>
+	<c:set value="${travel_purpose}" var="purpose"></c:set>
 	<c:set value="${travel_accompany}" var="accompany"></c:set>
-	<%-- <c:set value="${favor_city}" var="favor_city"></c:set> --%>
+	<c:set value="${favor_city}" var="favor_city"></c:set>
 
 	<div class="container-fluid text-center">
 		<br> <br> <br>
@@ -198,7 +200,7 @@
 					name="searchText" placeholder="원하는 도시명을 검색하세요"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
-						onclick="find_loc('${accompany}')">
+						onclick="find_loc('${accompany}','${purpose}','${favor_city}')">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</span>
@@ -211,7 +213,7 @@
 
 		<br> <br> <br>
 
-		<h4>${accompany}과 함께하기좋은 추천 검색 목록입니다.</h4>
+		<h4>${accompany}과 함께 ${purpose} 하기 좋은 ${favor_city} 지역 목록입니다.</h4>
 		<br>
 
 		<form name="imageform">

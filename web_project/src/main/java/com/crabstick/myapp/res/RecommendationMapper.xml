@@ -9,29 +9,51 @@
 		<result property="loc_no" column="loc_no" />
 		<result property="loc_name" column="loc_name" />
 		<result property="loc_lati" column="loc_lati" />
-		<result property="loc_long" column="loc_long" />
-		<result property="loc_ctweight" column="loc_ctweight" />
-		<result property="loc_hiweight" column="loc_hiweight" />
-		<result property="loc_ntweight" column="loc_ntweight" />
-		<result property="loc_code" column="loc_code"/>
+		<result property="loc_imgpath" column="loc_imgpath" />
+		<result property="loc_commt" column="loc_commt" />
+		<result property="loc_p_cult" column="loc_p_cult" />
+		<result property="loc_p_food" column="loc_p_food" />
+		<result property="loc_p_shop" column="loc_p_shop" />
+		<result property="loc_p_rest" column="loc_p_rest" />
+		<result property="loc_a_solo" column="loc_a_solo" />
+		<result property="loc_a_coup" column="loc_a_coup" />
+		<result property="loc_a_frnd" column="loc_a_frnd" />
+		<result property="loc_a_fam" column="loc_a_fam" />
+		<result property="loc_c_capt" column="loc_c_capt" />
+		<result property="loc_c_his" column="loc_c_his" />
+		<result property="loc_c_natu" column="loc_c_natu" />
 	</resultMap>
 
-	<!-- 동행 도시 추천 -->
-	<select id="recommend_City_WithAccompany" resultMap="CityResultMap">
-		SELECT * FROM locations WHERE loc_code = #{loc_code}
+	<!-- 도시 전부 -->
+	<select id="select_All" resultMap="CityResultMap">
+		SELECT * FROM locations
 	</select>
-	<!-- 동행 도시 추천 -->
+	<!-- 도시 전부 -->
 
 
 	<!-- 검색 업뎃 -->
-	<update id="update_Loc_Code" parameterType="com.crabstick.myapp.recommendation.RecommendationMapper" >
-		UPDATE locations SET loc_ctweight=#{loc_ctweight}, loc_hiweight=#{loc_hiweight}, loc_ntweight=#{loc_ntweight},loc_code=#{loc_code} WHERE loc_no=#{loc_no}
+	<update id="update_Loc_Code"
+		parameterType="com.crabstick.myapp.recommendation.RecommendationMapper">
+		UPDATE locations SET loc_p_cult=#{loc_p_cult},
+		loc_p_food=#{loc_p_food},
+		loc_p_shop=#{loc_p_shop},
+		loc_p_rest=#{loc_p_rest},
+		loc_a_solo=#{loc_a_solo},
+		loc_a_coup=#{loc_a_coup},
+		loc_a_frnd=#{loc_a_frnd},
+		loc_a_fam=#{loc_a_fam},
+		loc_c_capt=#{loc_c_capt},
+		loc_c_his=#{loc_c_his},
+		loc_c_natu=#{loc_c_natu} WHERE
+		loc_no=#{loc_no}
 	</update>
 	<!-- 검색 업뎃 -->
 
+	<!-- 순수 검색 -->
 	<select id="searchByName" resultMap="CityResultMap"
 		parameterType="String">
 		SELECT * FROM LOCATIONS WHERE LOC_NAME LIKE #{loc_name}
 	</select>
+	<!-- 순수 검색 -->
 
 </mapper>

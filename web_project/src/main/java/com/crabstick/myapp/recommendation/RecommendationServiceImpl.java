@@ -18,26 +18,6 @@ public class RecommendationServiceImpl implements RecommendationService {
 		this.sqlSession = sqlSession;
 	}	
 
-
-	@Override
-	public ArrayList<City> recommendation_City(String loc_code, int index) {
-		// TODO 인터페이스에서 정의된 메서드 구체화
-
-		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
-		if (index == 0){ // 설문 항목 1 (목적)
-			return null;
-		} else if (index == 1){ // 설문 항목 2 (동행)
-			return recommendationMapper.recommend_City_WithAccompany(loc_code);
-		} else if (index == 2){ // 설문 항목 3 (여행지 선호도)
-			return null;
-		} else {
-			return null;
-		}
-
-	}
-
-
-
 	@Override
 	public ArrayList<City> searchByName(String loc_name) {
 		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
@@ -47,10 +27,18 @@ public class RecommendationServiceImpl implements RecommendationService {
 
 
 	@Override
-	public void update_Weight(City resultCity) {
+	public void update_Weight(City update_City) {
 		// TODO Auto-generated method stub
 		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
-		recommendationMapper.update_Loc_Code(resultCity);
+		recommendationMapper.update_Loc_Code(update_City);
+	}
+
+
+	@Override
+	public ArrayList<City> All_City() {
+		// TODO Auto-generated method stub
+		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
+		return recommendationMapper.select_All();
 	}
 
 
