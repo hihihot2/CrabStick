@@ -148,16 +148,18 @@ public class PlanController {
 			request.addHeader("X-Naver-Client-Secret", clientSecret);
 			response = client.execute(request);
 			HttpEntity entity = response.getEntity();
-			
+			//System.out.println(EntityUtils.toString(entity));
 			is = new InputSource(new StringReader(EntityUtils.toString(entity)));
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
 			
 			xpath = XPathFactory.newInstance().newXPath();
 			String lat = (String) xpath.evaluate("//result/items/item/point/y", document, XPathConstants.STRING);
 			String lng = (String) xpath.evaluate("//result/items/item/point/x", document, XPathConstants.STRING);
-			System.out.println("latlng : "+lat+", "+lng);
+			String address = (String) xpath.evaluate("//result/items/item/address", document, XPathConstants.STRING);
+			System.out.println("latlng : "+lat+", "+lng+","+address);
 			mav.addObject("lat", lat);
 			mav.addObject("lng", lng);
+			mav.addObject("addr", address);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

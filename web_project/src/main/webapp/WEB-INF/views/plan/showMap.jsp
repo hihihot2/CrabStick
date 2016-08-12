@@ -118,7 +118,15 @@
 					var list = eval("("+ data +")");
 					for(var i = 0 ; i < list.length ; i++){
 						setPlace(list[i].lat, list[i].lng, list[i].type);
-						setListener(list[i].name, list[i].type);
+						var tmp = new Array();
+						tmp.push(list[i].name);
+						tmp.push(list[i].address);
+						if(list[i].img != ''){
+							tmp.push(list[i].img);
+						}else{
+							tmp.push("${pageContext.request.contextPath}/resources/png/noImage.jpg");
+						}
+						setListener(tmp, list[i].type);
 					}
 				}
 			});
