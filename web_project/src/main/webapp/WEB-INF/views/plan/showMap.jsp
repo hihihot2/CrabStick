@@ -63,8 +63,8 @@
 			zoom : 7
 		});
 		//검색창 생성 및 기능 설정
-		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
-				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
+		var contentEl = $('<div style="border:2px solid;width:250px;position:absolute;background-color:#fff;margin:10px;">'
+				+ '<input id="searchData" style="width:246px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
 		$('#searchData').autocomplete({
@@ -97,7 +97,7 @@
 			}
 		});
 		//체크박스 생성 및 기능 설정
-		var contentEl2 = $('<div style="border:2px;width:65px;height:133px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+		var contentEl2 = $('<div style="border:2px solid;width:65px;height:133px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
