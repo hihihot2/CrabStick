@@ -14,16 +14,9 @@
 
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
-	type="text/javascript"></script>
+
 <script type="text/javascript">
- $(function($){
-     $("#logout").on("click", function(){
-         $.cookie('autoPlug', 'true', { expires: -1, path: '/myapp/', secure: false })
-         $.removeCookie('autoNo', { expires: -1, path: '/myapp/', secure: false })
-     }) 
- })
+
 
 	function startPlan(sessionNo){	
 		if(sessionNo == null){
