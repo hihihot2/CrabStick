@@ -102,12 +102,58 @@ public class ViewController {
 			String[] survey = member.getMem_survey().split(":");
 
 			//TODO 설문 결과 값을 매개변수로 하여, 추천 도시 값 얻어오기
-
-
+			String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
+			
+			String[] accompany_Name = {"연인","가족","친구","혼자"};
+			String[] city_Name = {"대도시","유적지","자연경관","상관없음"};
 
 			ArrayList<City> All_City = recommendationService.All_City();
+
+			int parentValue;
+			double childValue;
+			for (int i=0; i<purpose_Name.length; i++){
+				
+				if (survey[0].equals(purpose_Name[i])){
+					for (int j=0; j<All_City.size(); j++){
+						parentValue = All_City.get(j).getLoc_p_cult()+All_City.get(j).getLoc_p_food()+All_City.get(j).getLoc_p_shop()+All_City.get(j).getLoc_p_rest();
+						if (parentValue!=0){
+							if (i==0){
+								childValue = (double)All_City.get(j).getLoc_p_cult();
+							} else if (i==1){
+								childValue = (double)All_City.get(j).getLoc_p_food();
+							} else if (i==2){
+								childValue = (double)All_City.get(j).getLoc_p_shop();
+							} else {
+								childValue = (double)All_City.get(j).getLoc_p_rest();
+							}
+						}
+					}
+				}
 			
-			
+			}
+
+			for (int j=0; j<accompany_Name.length; j++){
+				if (survey[1].equals(accompany_Name[j])){
+
+				}
+			}
+
+			for (int j=0; j<city_Name.length; j++){
+				if (survey[2].equals(city_Name[j])){
+
+				}
+			}
+
+
+
+
+
+			for (int i=0; i<All_City.size(); i++){
+				//가중치 
+				All_City.get(i).getLoc_a_coup();
+
+			}
+
 			ArrayList<City> recommend_City = new ArrayList<City>();
 
 
