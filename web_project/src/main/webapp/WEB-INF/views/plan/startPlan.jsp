@@ -59,15 +59,16 @@
 	}
 	
 	//검색 메서드
-	function find_loc() {
+	function find_loc(accompany) {
+		alert(accompany);
 		var loc_name = document.searchform.searchText.value
 		if (loc_name == "") {
 			alert('검색을 먼저하세요')
 		} else {
 			alert('검색한 장소로 이동합니다.')
-			document.searchform.action = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name="
-					+ loc_name;
-			document.searchform.submit();
+			location.href = "${pageContext.request.contextPath}/viewCont/findCity.do?loc_name="
+					+ loc_name 
+					+ "&accompany=" + accompany;
 		}
 	}
 
@@ -183,7 +184,9 @@
 </style>
 </head>
 <body>
-
+	<%-- <c:set value="${travel_purpose}" var="purpose"></c:set> --%>
+	<c:set value="${travel_accompany}" var="accompany"></c:set>
+	<%-- <c:set value="${favor_city}" var="favor_city"></c:set> --%>
 
 	<div class="container-fluid text-center">
 		<br> <br> <br>
@@ -195,7 +198,7 @@
 					name="searchText" placeholder="원하는 도시명을 검색하세요"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
-						onclick="find_loc()">
+						onclick="find_loc('${accompany}')">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</span>
@@ -207,10 +210,8 @@
 
 
 		<br> <br> <br>
-		<%-- <c:set value="${travel_purpose}" var="purpose"></c:set> --%>
-		<c:set value="${travel_accompany}" var="accompany"></c:set>
-		<%-- <c:set value="${favor_city}" var="favor_city"></c:set> --%>
-		<h4> ${accompany} 함께 하기 좋은 추천 도시입니다. </h4>
+
+		<h4>${accompany}과 함께하기좋은 추천 검색 목록입니다.</h4>
 		<br>
 
 		<form name="imageform">
@@ -232,8 +233,8 @@
 					</div>
 				</c:forEach>
 			</div>
-			
-			
+
+
 			<!-- The Modal -->
 			<div id="myModal" class="modal">
 				<span class="close">X</span> <img class="modal-content" id="img01">

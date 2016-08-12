@@ -25,28 +25,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 
 		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
 		if (index == 0){ // 설문 항목 1 (목적)
-			if (loc_code.equals("지역 음식 체험")){
-				return null;
-			} else if (loc_code.equals("휴식")){
-				return null;
-			} else if (loc_code.equals("지역 문화 탐방")){
-				return null;
-			} else { // 쇼핑 
-				return null;
-			}
-
+			return null;
 		} else if (index == 1){ // 설문 항목 2 (동행)
 			return recommendationMapper.recommend_City_WithAccompany(loc_code);
 		} else if (index == 2){ // 설문 항목 3 (여행지 선호도)
-			if (loc_code.equals("대도시")){
-				return null;
-			} else if (loc_code.equals("유적지")){
-				return null;
-			} else if (loc_code.equals("자연경관")){
-				return null;
-			} else { //상관 없음
-				return null;
-			}
+			return null;
 		} else {
 			return null;
 		}
@@ -61,4 +44,15 @@ public class RecommendationServiceImpl implements RecommendationService {
 		loc_name = "%" + loc_name + "%";
 		return recommendationMapper.searchByName(loc_name);
 	}
+
+
+	@Override
+	public void update_Weight(City resultCity) {
+		// TODO Auto-generated method stub
+		RecommendationMapper recommendationMapper = sqlSession.getMapper(RecommendationMapper.class);
+		recommendationMapper.update_Loc_Code(resultCity);
+	}
+
+
+	
 }

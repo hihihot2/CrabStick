@@ -14,4 +14,6 @@ public interface RecommendationService {
 	 * */
 	public ArrayList<City> recommendation_City(String loc_code, int index);
 	public ArrayList<City> searchByName(String loc_name);
+	public void update_Weight(City resultCity);
+	
 }
