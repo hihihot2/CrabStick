@@ -259,7 +259,15 @@
 				var data = document.getElementById("searchData").value;
 				map.setCenter(new naver.maps.LatLng(loc.lat, loc.lng));
 				setPlace(loc.lat, loc.lng, 's');
-				setListener(data, 's');
+				var tmp = new Array();
+				tmp.push(data);
+				tmp.push(regTag(loc.address));
+				if(loc.img != ''){
+					tmp.push(loc.img);
+				}else{
+					tmp.push("../resources/png/noImage.jpg");
+				}
+				setListener(tmp, 's');
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
