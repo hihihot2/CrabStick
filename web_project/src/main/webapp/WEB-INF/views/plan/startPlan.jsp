@@ -57,41 +57,8 @@
 				+ "&cityno="
 				+ locno;
 	}
-	/* 
-	function search_loc() {
-		var loc_name = document.searchform.locSearch.value;
-		var params = "loc_name=" + loc_name;
-		sendRequest("${pageContext.request.contextPath}/viewCont/search.do",
-				params, search_result, 'POST');
-
-	}
-
-	function search_result() {
-		if (httpRequest.readyState == 4) {
-			if (httpRequest.status == 200) {
-				var str = httpRequest.responseText;
-				var o = eval("(" + str + ")");
-				var myDiv = document.getElementById("resultView");
-				var html = "<table border='0'><tr><th>   no   </th>"
-						+ "<th>    name    </th></tr>";
-				for (i = 0; i < o.length; i++) {
-					html += "<tr>";
-					html += "<td>" + o[i].num + "</td>";
-					html += "<td>";
-					html += "<a href='${pageContext.request.contextPath }"
-							+ "/placeCont/getRestaurants.do?city_latitude="
-							+ o[i].lati + "&city_longitude=" + o[i].long2
-							+ "&cityno=" + o[i].num + "&city_code=" + o[i].code
-							+ "&city_siguncode=" + o[i].siguncode + "'>"
-							+ o[i].name + "</a></td>"
-					html += "</tr>";
-				}
-				html += "</table>";
-				myDiv.innerHTML = html;
-			}
-		}
-	} */
-
+	
+	//검색 메서드
 	function find_loc() {
 		var loc_name = document.searchform.searchText.value
 		if (loc_name == "") {
@@ -240,7 +207,10 @@
 
 
 		<br> <br> <br>
-		<h4>here is what we recommend</h4>
+		<%-- <c:set value="${travel_purpose}" var="purpose"></c:set> --%>
+		<c:set value="${travel_accompany}" var="accompany"></c:set>
+		<%-- <c:set value="${favor_city}" var="favor_city"></c:set> --%>
+		<h4> ${accompany} 함께 하기 좋은 추천 도시입니다. </h4>
 		<br>
 
 		<form name="imageform">
@@ -259,10 +229,11 @@
 						<p>사진을 클릭하면</p>
 						<p style="color: #ff0000">${List.loc_name}</p>
 						<p>에 대해 더 알 수 있어요!</p>
-
 					</div>
 				</c:forEach>
 			</div>
+			
+			
 			<!-- The Modal -->
 			<div id="myModal" class="modal">
 				<span class="close">X</span> <img class="modal-content" id="img01">

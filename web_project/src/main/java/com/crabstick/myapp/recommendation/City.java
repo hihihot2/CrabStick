@@ -15,11 +15,14 @@ public class City {
 	private int loc_ctweight;
 	private int loc_hiweight;
 	private int loc_ntweight;
+	private String loc_code;
 	private String loc_imgpath;
 	private String loc_commt;
 
+
 	public City(int loc_no, String loc_name, String loc_lati, String loc_long, int loc_ctweight, int loc_hiweight,
-			int loc_ntweight, String loc_imgpath, String loc_commt) {
+			int loc_ntweight, String loc_code, String loc_imgpath, String loc_commt) {
+		super();
 		this.loc_no = loc_no;
 		this.loc_name = loc_name;
 		this.loc_lati = loc_lati;
@@ -27,6 +30,7 @@ public class City {
 		this.loc_ctweight = loc_ctweight;
 		this.loc_hiweight = loc_hiweight;
 		this.loc_ntweight = loc_ntweight;
+		this.loc_code = loc_code;
 		this.loc_imgpath = loc_imgpath;
 		this.loc_commt = loc_commt;
 	}
@@ -90,13 +94,22 @@ public class City {
 		this.loc_commt = loc_commt;
 	}
 
+
+	public String getLoc_code() {
+		return loc_code;
+	}
+
+	public void setLoc_code(String loc_code) {
+		this.loc_code = loc_code;
+	}
+
 	@Override
 	public String toString() {
 		return "City [loc_no=" + loc_no + ", loc_name=" + loc_name + ", loc_lati=" + loc_lati + ", loc_long=" + loc_long
 				+ ", loc_ctweight=" + loc_ctweight + ", loc_hiweight=" + loc_hiweight + ", loc_ntweight=" + loc_ntweight
-				+ ", loc_imgpath=" + loc_imgpath
-				+ ", loc_commt=" + loc_commt + "]";
+				+ ", loc_code=" + loc_code + ", loc_imgpath=" + loc_imgpath + ", loc_commt=" + loc_commt + "]";
 	}
 
+	
 
 }

@@ -97,7 +97,7 @@ public class ViewController {
 		ModelAndView mav =  new ModelAndView("plan/startPlan");
 		
 		if (httpSession.getAttribute("no")!=null) { // (1) 로그인
-			System.out.println("로그인");
+			
 			int mem_id =  (Integer) httpSession.getAttribute("no") ;
 			
 			//TODO 회원 설문 결과 얻어오기
@@ -105,9 +105,16 @@ public class ViewController {
 		    String[] survey = member.getMem_survey().split(":");
 		    
 		    //TODO 설문 결과 값을 매개변수로 하여, 추천 도시 값 얻어오기
-		    ArrayList<City> city_List = recommendationService.recommendation_City_TOP5(survey[2]);
-		    mav.addObject("city_List", city_List);
-		    mav.addObject("travel_purpose", survey[0]);
+		    
+		
+		    	
+		    ArrayList<City> recommend_City = recommendationService.recommendation_City(survey[1], 1);
+		    mav.addObject("city_List",recommend_City);
+		   // mav.addObject("travel_purpose", survey[0]); //설문지 1번 (목적)
+		    mav.addObject("travel_accompany", survey[1]); //설문지 2번 (동행)
+		   // mav.addObject("favor_city", survey[2]);//설문지 3번(여행지 선호도)
+		    
+		    
 		    return mav;
 		} else { // (2) 비 로그인
 			System.out.println("비로그인");

@@ -12,7 +12,6 @@ public interface RecommendationService {
 	 * 로그인을 하지 않은 사용자일 경우 일반적으로 유명한 도시? or 플래너에 가장 많이 등록된 도시를 추천(추후 논의)
 	 *   
 	 * */
-	public ArrayList<City> recommendation_City(String answer);
-	public ArrayList<City> recommendation_City_TOP5(String answer);
+	public ArrayList<City> recommendation_City(String loc_code, int index);
 	public ArrayList<City> searchByName(String loc_name);
 }

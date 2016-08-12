@@ -16,8 +16,8 @@
 	</resultMap>	
 
 	
-	<select id="large_City_Rank" resultMap="CityResultMap" >
-		SELECT * FROM locations ORDER BY loc_ctweight DESC
+	<select id="recommend_City_WithAccompany" resultMap="CityResultMap" >
+		SELECT * FROM locations WHERE LOC_CODE = #{loc_code}
 	</select>
 	<select id="natural_City_Rank" resultMap="CityResultMap" >
 		SELECT * FROM locations ORDER BY loc_ntweight DESC
