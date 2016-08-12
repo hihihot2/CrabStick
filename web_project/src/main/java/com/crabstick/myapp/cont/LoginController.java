@@ -155,6 +155,7 @@ public class LoginController {
 		}
 		return mav;
 	}
+	
 	@RequestMapping(value = "/logincont/dropout.do")
 	public ModelAndView dropout(Member m, HttpSession hs) {
 		System.out.println("삭제시작");

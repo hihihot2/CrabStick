@@ -14,7 +14,9 @@
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js" type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
+	type="text/javascript"></script>
 
 <script type="text/javascript">
 	$(function() {
@@ -111,46 +113,47 @@
 	margin-top: 10%;
 	margin-left: 30%;
 	margin-right: 30%;
-	width: 40%; 
+	width: 40%;
+	min-width: 300px;
+	min-height: 500px;
 }
-
 </style>
 <body>
 
 
 	<form name="loginform" method="post" class="lgcss">
 
-			<div class="panel panel-default text-center">
-				<div class="panel-heading">
-					<h1>WELCOME</h1>
-				</div>
-				
-				<div class="panel-body">
-				
-					
-					<input type="text" class="form-control" placeholder="Enter Your E-mail address"
-						name="mem_id" id="userid" required onkeydown="keyevent()">
-					<br>
-					<input type="password" class="form-control" placeholder="Enter Your Password"
-						name="mem_pwd" id="userpw" required onkeydown="keyevent()">
-					<br>
-					<input type="button" class="btn btn-info" value="로그인" onclick="login_do()"
-						name="loginBtn" id="loginbtn" onkeypress="">
-					<input
-						type="checkbox" name="always_login" id="cb_saveId" style="margin-left: 2%">
-					Remember me<br>
-				</div>
-				
-				<div class="panel-footer">
-					<p>
-						<a href="javascript:find_pass()">비밀번호를 잊어버리셨나욤?</a>
-					</p>
-					<p>
-						계정이 없으세요? <a href='${pageContext.request.contextPath}/survey/main.do?sw=0'>가입하기»</a>
-					</p>
-				</div>
+		<div class="panel panel-default text-center">
+			<div class="panel-heading">
+				<h1>WELCOME</h1>
 			</div>
-		
+
+			<div class="panel-body">
+
+
+				<input type="text" class="form-control"
+					placeholder="Enter Your E-mail address" name="mem_id" id="userid"
+					required onkeydown="keyevent()"> <br> <input
+					type="password" class="form-control"
+					placeholder="Enter Your Password" name="mem_pwd" id="userpw"
+					required onkeydown="keyevent()"> <br> <input
+					type="button" class="btn btn-info" value="로그인" onclick="login_do()"
+					name="loginBtn" id="loginbtn" onkeypress=""> <input
+					type="checkbox" name="always_login" id="cb_saveId"
+					style="margin-left: 2%"> Remember me<br>
+			</div>
+
+			<div class="panel-footer">
+				<p>
+					<a href="javascript:find_pass()">비밀번호를 잊어버리셨나욤?</a>
+				</p>
+				<p>
+					계정이 없으세요? <a
+						href='${pageContext.request.contextPath}/survey/main.do?sw=0'>가입하기»</a>
+				</p>
+			</div>
+		</div>
+
 		<input type="hidden" value="${sw }" name="gotoPlan">
 	</form>
 
