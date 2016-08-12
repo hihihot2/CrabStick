@@ -13,9 +13,9 @@
 <title>Insert title here</title>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery-1.10.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery-migrate-1.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
