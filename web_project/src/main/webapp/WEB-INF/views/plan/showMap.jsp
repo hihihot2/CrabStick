@@ -97,12 +97,13 @@
 			}
 		});
 		//체크박스 생성 및 기능 설정
-		var contentEl2 = $('<div style="border:2px;width:65px;height:110px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+		var contentEl2 = $('<div style="border:2px;width:65px;height:133px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 쇼핑<br>' 
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(4,'+lat+','+lng+')> 휴식<br>' 
+				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(5,'+lat+','+lng+')> 자연<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 
@@ -119,9 +120,6 @@
 						setPlace(list[i].lat, list[i].lng, list[i].type);
 						setListener(list[i].name, list[i].type);
 					}
-				},
-				error: function(status){
-					alert("1")
 				}
 			});
 		}
