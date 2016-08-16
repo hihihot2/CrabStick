@@ -4,7 +4,7 @@ package com.crabstick.myapp.recommendation;
 public class Weight_Loc {
 
 	public static City updateCity(City resultCity, String accompany, String purpose, String favor_city){
-
+		
 		String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
 		int purpose_Weight[] = {resultCity.getLoc_p_cult(),
 				resultCity.getLoc_p_food(),
@@ -19,9 +19,9 @@ public class Weight_Loc {
 				} else if (i == 1) {
 					resultCity.setLoc_p_food(purpose_Weight[i]);
 				} else if (i == 2) {
-					resultCity.setLoc_p_rest(purpose_Weight[i]);
-				} else {
 					resultCity.setLoc_p_shop(purpose_Weight[i]);
+				} else {
+					resultCity.setLoc_p_rest(purpose_Weight[i]);
 				}
 			}
 		}
@@ -40,9 +40,9 @@ public class Weight_Loc {
 				} else if (i == 1) {
 					resultCity.setLoc_a_fam(accompany_Weight[i]);
 				} else if (i == 2) {
-					resultCity.setLoc_a_frnd(purpose_Weight[i]);
+					resultCity.setLoc_a_frnd(accompany_Weight[i]);
 				} else {
-					resultCity.setLoc_a_solo(purpose_Weight[i]);
+					resultCity.setLoc_a_solo(accompany_Weight[i]);
 				}
 			}
 		}

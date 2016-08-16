@@ -103,19 +103,26 @@ public class ViewController {
 
 			//TODO 설문 결과 값을 매개변수로 하여, 추천 도시 값 얻어오기
 			String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
-			
 			String[] accompany_Name = {"연인","가족","친구","혼자"};
 			String[] city_Name = {"대도시","유적지","자연경관","상관없음"};
 
 			ArrayList<City> All_City = recommendationService.All_City();
+			
+			
+			int parentValue; //분모
+			double childValue; //분자
+			ArrayList<Double> Weight_Purpose = new ArrayList<Double>();
+			ArrayList<Double> Weight_Accompany = new ArrayList<Double>();
+			ArrayList<Double> Weight_City = new ArrayList<Double>();
 
-			int parentValue;
-			double childValue;
+			
+			/* 가중치 계산 부분 */
 			for (int i=0; i<purpose_Name.length; i++){
-				
+
 				if (survey[0].equals(purpose_Name[i])){
 					for (int j=0; j<All_City.size(); j++){
 						parentValue = All_City.get(j).getLoc_p_cult()+All_City.get(j).getLoc_p_food()+All_City.get(j).getLoc_p_shop()+All_City.get(j).getLoc_p_rest();
+
 						if (parentValue!=0){
 							if (i==0){
 								childValue = (double)All_City.get(j).getLoc_p_cult();
@@ -126,41 +133,108 @@ public class ViewController {
 							} else {
 								childValue = (double)All_City.get(j).getLoc_p_rest();
 							}
+
+							Weight_Purpose.add(childValue/parentValue);
+
+						} else {
+							Weight_Purpose.add(0.0);
 						}
+
 					}
 				}
+
+			}
+
+			for (int i=0; i<accompany_Name.length; i++){
+				if (survey[1].equals(accompany_Name[i])){
+					for (int j=0; j<All_City.size(); j++){
+						parentValue = All_City.get(j).getLoc_a_coup()+All_City.get(j).getLoc_a_fam()+All_City.get(j).getLoc_a_frnd()+All_City.get(j).getLoc_a_solo();
+
+						if (parentValue!=0){
+							if (i==0){
+								childValue = (double)All_City.get(j).getLoc_a_coup();
+							} else if (i==1){
+								childValue = (double)All_City.get(j).getLoc_a_fam();
+							} else if (i==2){
+								childValue = (double)All_City.get(j).getLoc_a_frnd();
+							} else {
+								childValue = (double)All_City.get(j).getLoc_a_solo();
+							}
+
+							Weight_Accompany.add(childValue/parentValue);
+
+						} else {
+							Weight_Accompany.add(0.0);
+						}
+
+					}
+				}
+			}
+
+
+			for (int i=0; i<city_Name.length; i++){
+				if (survey[2].equals(city_Name[i])){
+					for (int j=0; j<All_City.size(); j++){
+						parentValue = All_City.get(j).getLoc_c_capt()+All_City.get(j).getLoc_c_his()+All_City.get(j).getLoc_c_natu();
+
+						if (parentValue!=0){
+							if (i==0){
+								childValue = (double)All_City.get(j).getLoc_c_capt();
+							} else if (i==1){
+								childValue = (double)All_City.get(j).getLoc_c_his();
+							} else if (i==2){
+								childValue = (double)All_City.get(j).getLoc_c_natu();
+							} else {
+								childValue = parentValue;
+							}
+
+							Weight_City.add(childValue/parentValue);
+
+						} else {
+							Weight_City.add(0.0);
+						}
+
+					}
+				}
+			}
+			/* 가중치 계산 부분 */
 			
-			}
-
-			for (int j=0; j<accompany_Name.length; j++){
-				if (survey[1].equals(accompany_Name[j])){
-
+			
+			/* 가중치에 따른 정렬 알고리즘*/
+			for (int index=0; index<All_City.size(); index++){
+				for (int index_2=index+1; index_2<All_City.size(); index_2++){
+					
+					double first = Weight_Purpose.get(index) * Weight_Accompany.get(index) * Weight_City.get(index);	
+				    double second = Weight_Purpose.get(index_2) * Weight_Accompany.get(index_2) * Weight_City.get(index_2);
+				    
+				    if (first < second){
+				    	double temp_P = Weight_Purpose.get(index); 
+				    	double temp_A = Weight_Accompany.get(index);
+				    	double temp_C = Weight_City.get(index);
+				    	
+				    	Weight_Purpose.set(index, Weight_Purpose.get(index_2));
+				    	Weight_Accompany.set(index, Weight_Accompany.get(index_2));
+				    	Weight_City.set(index, Weight_City.get(index_2));
+				    	
+				    	Weight_Purpose.set(index_2, temp_P);
+				    	Weight_Accompany.set(index_2, temp_A);
+				    	Weight_City.set(index_2, temp_C);
+				    	
+				    	City city_Temp = All_City.get(index);
+				    	All_City.set(index, All_City.get(index_2));
+				    	All_City.set(index_2, city_Temp);
+				    
+				    }
 				}
 			}
-
-			for (int j=0; j<city_Name.length; j++){
-				if (survey[2].equals(city_Name[j])){
-
-				}
-			}
-
-
-
-
-
-			for (int i=0; i<All_City.size(); i++){
-				//가중치 
-				All_City.get(i).getLoc_a_coup();
-
-			}
+			/* 가중치에 따른 정렬 알고리즘*/
 
 			ArrayList<City> recommend_City = new ArrayList<City>();
 
-
-
-			mav.addObject("city_List",All_City);
-
-
+			for (int i=0; i<6; i++){
+				recommend_City.add(All_City.get(i));
+			}
+			mav.addObject("city_List",recommend_City);
 			mav.addObject("travel_purpose", survey[0]); //설문지 1번 (목적)
 			mav.addObject("travel_accompany", survey[1]); //설문지 2번 (동행)
 			mav.addObject("favor_city", survey[2]);//설문지 3번(여행지 선호도)
@@ -214,7 +288,7 @@ public class ViewController {
 		ArrayList<City> resultList = recommendationService.searchByName(loc_name);
 
 		City resultCity = resultList.get(0);
-		City update_City = Weight_Loc.updateCity(resultCity,accompany,purpose,favor_city);
+		City update_City = Weight_Loc.updateCity(resultCity , accompany , purpose , favor_city);
 		recommendationService.update_Weight(update_City);
 
 		String lati = resultCity.getLoc_lati();
