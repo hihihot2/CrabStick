@@ -43,7 +43,7 @@
 	}	
 	//리스너 생성
 	function setListener(obj, type){
-		var enc = encodeURIComponent(name);
+		var enc = encodeURIComponent(obj[0]);
 		var len = markers.length-1;
 		var marker = markers[len][2], infowindow = infowindows[len][2];
 		

@@ -63,8 +63,8 @@
 			zoom : 7
 		});
 		//검색창 생성 및 기능 설정
-		var contentEl = $('<div style="border:2px solid;width:250px;position:absolute;background-color:#fff;margin:10px;">'
-				+ '<input id="searchData" style="width:246px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
+		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
+				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
 		$('#searchData').autocomplete({
