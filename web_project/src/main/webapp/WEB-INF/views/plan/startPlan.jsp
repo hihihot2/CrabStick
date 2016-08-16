@@ -60,7 +60,6 @@
 	
 	//검색 메서드
 	function find_loc(accompany, purpose, favor_city) {
-		alert(accompany+","+purpose+","+favor_city);
 		var loc_name = document.searchform.searchText.value
 		if (loc_name == "") {
 			alert('검색을 먼저하세요')
@@ -213,7 +212,7 @@
 
 		<br> <br> <br>
 
-		<h4>${accompany}과 함께 ${purpose} 하기 좋은 ${favor_city} 지역 목록입니다.</h4>
+		<h4>${accompany}과 함께 ${purpose}하기 좋은 추천 ${favor_city}(지역)입니다.</h4>
 		<br>
 
 		<form name="imageform">
@@ -229,9 +228,7 @@
 							<a
 								href="javascript:modal_open('${List.loc_no}', '${List.loc_commt}')">${List.loc_name}</a>
 						</h4>
-						<p>사진을 클릭하면</p>
-						<p style="color: #ff0000">${List.loc_name}</p>
-						<p>에 대해 더 알 수 있어요!</p>
+						<p>사진을 클릭하시면</p><p style="color: #ff0000">${List.loc_name}</p><p>에 대해 더 알 수 있습니다.</p>
 					</div>
 				</c:forEach>
 			</div>
