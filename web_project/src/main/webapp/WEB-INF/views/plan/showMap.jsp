@@ -107,30 +107,94 @@
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 
-		//플래너창 넘어올때 ajax로 마커값 요청
+		$.ajax({
+			url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
+			type: 'POST',
+			dataType: 'text',
+			data: {
+				lat: lat,
+				lng: lng,
+				radius: 100000
+			},
+			success: function(result) {
+				console.log(result);
+				var venueList = eval('('+result+')');
+				for(var i = 0; i < venueList.length; i++) {
+					setPlace(venueList[i]);
+				}
+			}
+		})
 		
-		var categories = document.getElementsByName("categorychk");
-		for(var i = 0 ; i < categories.length ; i++){
-			$.ajax({
-				url: '${pageContext.request.contextPath}/placeCont/branch.do?'+"branch="+i+"&city_latitude="+lat+"&city_longitude="+lng,
-				type: 'POST',
-				success: function(data){
-					var list = eval("("+ data +")");
-					for(var i = 0 ; i < list.length ; i++){
-						setPlace(list[i].lat, list[i].lng, list[i].type);
-						var tmp = new Array();
-						tmp.push(list[i].name);
-						tmp.push(list[i].address);
-						if(list[i].img != ''){
-							tmp.push(list[i].img);
-						}else{
-							tmp.push("${pageContext.request.contextPath}/resources/png/noImage.jpg");
-						}
-						setListener(tmp, list[i].type);
-					}
+		function setPlace(venue) {
+			var markerImgUrl;
+			switch(venue.type){
+				case 0: markerImgUrl = "../resources/png/hotel.png";break;
+				case 1: markerImgUrl = "../resources/png/food.png";break;
+				case 2: markerImgUrl = "../resources/png/castle.png";break;
+				case 3: markerImgUrl = "../resources/png/shopping.png";break;
+				case 4: markerImgUrl = "../resources/png/attraction.png";break;
+				default: markerImgUrl = "../resources/png/search.png";break;
+			}
+			
+			// marker 변수: 지도에 찍히는 '핀'의 위치와 아이콘을 정함
+			var marker = new naver.maps.Marker({
+				position : new naver.maps.LatLng(venue.lat, venue.lng),
+				icon : {
+					url: markerImgUrl
+				},
+				animation: naver.maps.Animation.DROP,
+				clickable: true,
+				map: map,
+				title: venue.name
+				
+			});
+			
+			// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
+			var windowForm = $('div#infoWindowForm').clone().removeClass('hiddenDiv').attr('id', 'infoWindowDiv');
+			if(venue.img != '') {
+				windowForm.find('img#venueThumbnail').attr('src', venue.img);	// venue.img에서 이미지 주소 가져옴
+			}
+			windowForm.find('p#venueName').text(venue.name);
+			windowForm.find('p#venueAddress').text(venue.address);
+			var infoWindow = new naver.maps.InfoWindow({
+				content: windowForm[0]
+			})
+			
+			
+			naver.maps.Event.addListener(marker, 'click', function() {
+				if(confirm("일정에 추가하시겠습니까?")){
+					addPath(venue);
 				}
 			});
+			
+			naver.maps.Event.addListener(marker, 'mouseover', function() {
+				infoWindow.open(map, marker);
+			});
+			
+			naver.maps.Event.addListener(marker, 'mouseout', function() {
+				infoWindow.close();
+			});
 		}
+		
+		function addPath(venue) {
+			if(!isAddCondition && !isModifyCondition) {
+				alert('왼쪽에서 일정 만들기를 눌러주세요~');
+			} else {
+				if(isModifyCondition) {
+					console.log("일정 수정하기");
+					// TODO: 일정 수정에서 추가 가능하게 코딩
+				} else if(isAddCondition) {
+					console.log("일정 저장하기");
+					console.log(venue);
+					var path = polyline[pathCount].getPath();
+					path.push(new naver.maps.LatLng(venue.lat, venue.lng));
+					pathObj.push(venue);
+					updateList();
+					
+				}
+			}
+		}
+		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, myPath);
@@ -622,6 +686,35 @@
 	width: 100%;
 	color: white;
 }
+
+#infoWindowDiv {
+	width: 300px;
+	height: 170px;
+}
+
+#venueThumbnailDiv {
+	width: 40%;
+	float: left;
+	padding: 5px;
+}
+
+#venueThumbnail {
+	width: 100%;
+}
+
+#venueInfoDiv {
+	/* width: 60%; */
+	padding: 5px;
+}
+
+#venueName{
+	font-size: 20px;
+}
+
+#venueAddressDiv{
+	clear: both;
+}
+
 </style>
 <!---------------------------------->
 <body>
@@ -705,6 +798,21 @@
 			<input type='button' id='cancelPathBtn' value='취소할게요'> 
 			<input type='button' id='removePathBtn' value='없애주세요'>
 		</div>
+	</div>
+	
+	<div id='infoWindowForm' class='hiddenDiv'>
+	
+		<div id='venueThumbnailDiv'>
+			<img id='venueThumbnail' src='${pageContext.request.contextPath}/resources/png/noImage.jpg'/>
+		</div>
+		<div id='venueInfoDiv'>
+			<p id='venueName'></p>
+		</div>
+	
+		<div id='venueAddressDiv'>
+			<p id='venueAddress'></p>
+		</div>
+		<p>아이콘을 클릭하면 내 일정에 추가됩니다.</p>
 	</div>
 </body>
 </html>

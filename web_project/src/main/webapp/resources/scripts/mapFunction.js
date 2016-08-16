@@ -6,19 +6,17 @@
 	var count = 0;
 	var pathNum = 0;
 	var searchList;
-	var city_code;
-	var siguncode;
 
 	//위치 생성
-	function setPlace(lat, lng, type) {
+	/*function setPlace(lat, lng, type) {
 		var url;
 		switch(type){
-		case 0: url = "../resources/png/hotel.png";break;
-		case 1: url = "../resources/png/food.png";break;
-		case 2: url = "../resources/png/castle.png";break;
-		case 3: url = "../resources/png/shopping.png";break;
-		case 4: url = "../resources/png/attraction.png";break;
-		default: url= "../resources/png/search.png";break;
+			case 0: url = "../resources/png/hotel.png";break;
+			case 1: url = "../resources/png/food.png";break;
+			case 2: url = "../resources/png/castle.png";break;
+			case 3: url = "../resources/png/shopping.png";break;
+			case 4: url = "../resources/png/attraction.png";break;
+			default: url= "../resources/png/search.png";break;
 		}
 		var marker = new naver.maps.Marker({
 			position : new naver.maps.LatLng(lat, lng),
@@ -29,11 +27,14 @@
 		if(type == 's'){
 			marker.setMap(map);
 		}
+		
+		markers.push(marker);
 		var subMarker = new Array();
 		subMarker.push(type);//flag
 		subMarker.push(type);//type
 		subMarker.push(marker);//marker
 		markers.push(subMarker);
+		
 		var infowindow = new naver.maps.InfoWindow();
 		var subWindow = new Array();
 		subWindow.push(type);
@@ -68,16 +69,22 @@
 		naver.maps.Event.addListener(markers[len][2], 'mouseout', function(e) {
 			infowindow.close();
 		});
-	}
+	}*/
 	function closeWindow(len){
 		var infowindow = infowindows[len][2];
 		infowindow.close();
 	}
-	
+	/*
 	function addPath(len, lat, lng, name){
-		if(!isAddCondition) {
+		if(!isAddCondition && !isModifyCondition) {
 			alert('왼쪽에서 일정 만들기를 눌러주세요~');
 		} else {
+			if(isModifyCondition) {
+				
+			} else if(isAddCondition) {
+				
+			}
+			
 			var infowindow = infowindows[len][2];		// ??
 			var marker = markers[len][2];				// ??
 			var path = polyline[pathCount].getPath();
@@ -96,7 +103,7 @@
 			myPath.push(sub);
 		}
 	}
-	
+	*/
 	function updateList(){
 		var pathNum = 0;
 		var path = polyline[pathCount].getPath();
@@ -104,6 +111,8 @@
 		//기존 리스트 삭제
 		deleteList(venueList);
 		//변경된 값을 가진 새로운 리스트 생성
+		console.log('path 길이: ' + path.length);
+		console.log('path: ' + path);
 		for(var i = 0 ; i < path.length ; i++){
 			var newVenue = document.createElement("div");
 			newVenue.id = 'venue_'+i;
@@ -124,12 +133,16 @@
 				document.venueForm.venueName[i].value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude[i].value = path.getAt(i).lat();
 				document.venueForm.venueLongitude[i].value = path.getAt(i).lng();
-				document.venueForm.venueComment[i].value = decodeURIComponent(pathObj[i].comment);
+				if(pathObj[i].comment != null) {
+					document.venueForm.venueComment[i].value = decodeURIComponent(pathObj[i].comment);
+				}
 			} else {
 				document.venueForm.venueName.value = decodeURIComponent(pathObj[i].name);
 				document.venueForm.venueLatitude.value = path.getAt(i).lat();
 				document.venueForm.venueLongitude.value = path.getAt(i).lng();
-				document.venueForm.venueComment.value = decodeURIComponent(pathObj[i].comment);
+				if(pathObj[i].comment != null) {
+					document.venueForm.venueComment.value = decodeURIComponent(pathObj[i].comment);
+				}
 			}
 		}
 	}
@@ -216,6 +229,7 @@
 	}
 	//정규식 변환 함수
 	function regExp(str){
+		str = encodeURIComponent(str);
 		var reg = /\s[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
 		
 		if(reg.test(str)){
