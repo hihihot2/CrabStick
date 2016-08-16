@@ -76,8 +76,15 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
 			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng){
-		System.out.println("placeCont >> setBranch : "+branch);
+	
 		ModelAndView mav = null;
+		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
+		ArrayList<String> sequence_List = recommendationService.all_Sequence();
+		ArrayList<Venue> Venue_Table_Data = recommendationService.all_Data();
+		
+		
+		Apriori apriori = new Apriori();
+		apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
 
 		if(branch == 0){ //호텔 파싱
 
@@ -95,7 +102,7 @@ public class PlaceController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
+			
 			mav.addObject("HOTELS", hotels.getHotelList());
 
 		} else if(branch == 1) { //맛집 파싱
@@ -502,13 +509,7 @@ public class PlaceController {
 			@RequestParam(value="city_longitude") String city_longitude,
 			@RequestParam(value="cityno") String cityno){
 
-		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
-		ArrayList<String> sequence_List = recommendationService.all_Sequence();
-		ArrayList<Venue> Venue_Table_Data = recommendationService.all_Data();
 		
-		
-		Apriori apriori = new Apriori();
-		apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
 		
 		ModelAndView mav = new ModelAndView("plan/showMap");
 
