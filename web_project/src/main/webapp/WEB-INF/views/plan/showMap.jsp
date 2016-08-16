@@ -162,10 +162,160 @@
 <script type="text/javascript">
 	(function($) {
 		$(document).ready(function() {
+			/**
+			 * 선택한 폼을 수정 폼으로 변환하는 메서드
+			 */
+			var showEditForm = function() {
+				var thisElement = $(this);
+				var pathCountOfThisElement = thisElement.parent().find('div#pathDiv').index(this);
+				
+				if(isAddCondition) {
+					// 일정 추가하기가 열려있을 때
+					if(confirm('추가중인 일정을 취소할까요?')) {
+						// 취소
+						$('div#addPathDiv').find('input#cancelPath').click();
+					} else {
+						return;
+					}
+					
+				} else if (isModifyCondition) {
+					// 다른 일정 수정하기가 열려있을 때
+					if(confirm('수정중인 일정을 취소할까요?')) {
+						// 취소
+						$('div.editing').find('input#cancelPathBtn').click();
+					} else {
+						return;
+					}
+				}
+				
+				isModifyCondition = true;
+				$.ajax({
+					url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
+					dataType: 'text',
+					type: 'POST',
+					data: {
+							'pathNo': $(this).find('input#pathNo').val()
+						},
+					success: function(result) {
+						var path = eval('('+result+')');
+						console.log(path)
+						var pathEditDiv = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').addClass('editing').attr('id', 'pathEditDiv');
+						pathEditDiv.find('input#pathName').val(path.path_name);
+						pathEditDiv.find('input#pathNo').val(path.path_no);
+
+						var mapPinList = new Array();
+						
+						for(var i = 0; i < path.venues.length; i++) {
+							var venue = path.venues[i];
+							var venueDiv = $('div#venueDivForm').clone().appendTo(pathEditDiv.find('div#venueListInSavedPath')).removeClass('hiddenDiv').attr('id', 'venueDiv');
+							venueDiv.find('input#venueName').val(venue.ven_name);
+							venueDiv.find('input#venueComment').val(venue.ven_commt);
+							venueDiv.find('input#venueNo').val(venue.ven_no);
+							venueDiv.find('input#venueLatitude').val(venue.ven_lati);
+							venueDiv.find('input#venueLongitude').val(venue.ven_long);
+							venueDiv.find('input#venueOrder').val(venue.ven_order);
+							
+							var pin = new Object();
+							pin.name = venue.ven_name;
+							pin.comment = venue.ven_commt;
+							pin.lat = venue.ven_lati;
+							pin.lng = venue.ven_long;
+							mapPinList.push(pin);
+																			
+							venueDiv.find('img#cancelImg').click(function() {
+								// x 버튼 누를때 하는 일
+								var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
+								pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
+								$(this).parent().parent().remove();
+							})
+						}
+						thisElement.addClass('hiddenDiv').after(pathEditDiv);
+						
+						pathEditDiv.find('input#modifyPathBtn').click(function() {
+							// TODO: 수정 버튼 누를 때 할 일 정의
+							var path = new Object();
+							path.no = pathEditDiv.find('input#pathNo').val() * 1;
+							path.name = pathEditDiv.find('input#pathName').val();
+							path.venues = new Array();
+							
+							var venueDiv = pathEditDiv.find('div#venueDiv').first();
+							do {
+								var venue = new Object();
+								venue.no = venueDiv.find('input#venueNo').val() * 1;
+								venue.name = venueDiv.find('input#venueName').val();
+								venue.comment = venueDiv.find('input#venueComment').val();
+								venue.lat = venueDiv.find('input#venueLatitude').val();
+								venue.lng = venueDiv.find('input#venueLongitude').val();
+								path.venues.push(venue);
+							} while((venueDiv = venueDiv.next()).length > 0);
+							
+							$.ajax({
+								url: "${pageContext.request.contextPath }/planCont/editPath.do",
+								dataType: 'text',
+								type: 'POST',
+								data: {
+									'path': JSON.stringify(path)
+								},
+								success: function(result) {
+									var pathSummary = eval('('+result+')');
+									console.log(pathSummary);
+									
+									thisElement.removeClass('hiddenDiv');
+									thisElement.find('p#pathName').text(pathSummary.path_name);
+									thisElement.find('p#pathSummary').text(pathSummary.path_summary);
+									pathEditDiv.remove();
+								}
+							})
+						});
+						
+						pathEditDiv.find('input#cancelPathBtn').click(function() {
+							// 취소 버튼 누를 때 할 일
+							thisElement.removeClass('hiddenDiv');
+							pathEditDiv.remove();
+							
+							var tempPathLine = polyline[pathCountOfThisElement].getPath();
+							tempPathLine.splice(0, tempPathLine.length);
+							for(var i = 0; i < mapPinList.length; i++) {
+								tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
+							}
+							
+							isModifyCondition = false;
+						});
+						
+						pathEditDiv.find('input#removePathBtn').click(function() {
+							// 삭제 버튼 누를 때 할 일
+							// TODO: 경로 저장 방법에 의해 보류중
+							for(var i = 0; i < polyline.length; i++) {
+								console.log(polyline[i]);
+							}
+							console.log(pathCountOfThisElement);
+							polyline.splice(pathCountOfThisElement, 1);
+							$.ajax({
+								url: "${pageContext.request.contextPath }/planCont/removePath.do",
+								dataType: 'text',
+								type: 'POST',
+								data: {
+									'pathNo': pathEditDiv.find('input#pathNo').val()
+								},
+								success: function(result) {
+									thisElement.remove();
+									pathEditDiv.remove();
+								}
+							})
+							pathCount -= 1;
+							
+							if(pathCount == 0) {
+								$('input[type="button"]#addPath').val('일정 만들기');
+							}
+						});
+						
+					}
+				});
+			}
 			
 			
 			if('${PLAN}' != '') {
-				// 이미 존재하는 플랜을 볼 때
+				// 기존의 존재하는 플랜을 불러오기 할 때 자동으로 플랜 정보, 경로 정보를 불러옴
 				var planInfo = $('div.planInfo');
 				planInfo.find('input#planNo').val('${PLAN.plan_no}');
 				planInfo.find('input#planName').val('${PLAN.plan_name}');
@@ -189,153 +339,15 @@
 					}));
 					
 					// TODO: 핀 찍어야댐!
-				var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
-				pathDiv.find('p#pathName').html('${path.path_name}');
-				pathDiv.find('p#pathSummary').html('${path.path_summary}');
-				pathDiv.find('input#pathNo').val('${path.path_no}');
-				pathDiv.find('input#pathCount').val(pathCount);
-				pathCount++;
-				pathDiv.click(function() {
-					// 경로를 클릭 -> 수정 폼이 등장
-					var thisElement = $(this);
-					var pathCountOfThisElement = pathDiv.parent().find('div#pathDiv').index(this);
-					
-					if(isAddCondition) {
-						// 삽입 상태일 경우 취소하고 수정 폼으로 이행
-						if(confirm('경로 추가 작업을 취소하고 수정으로 넘어갈까요?')) {
-							$('div#addPathDiv').find('input#cancelPath').click();
-						} else {
-							return;
-						}
-					}
-					
-					isModifyCondition = true;
-					$.ajax({
-						url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
-						dataType: 'text',
-						type: 'POST',
-						data: {
-								'pathNo': $(this).find('input#pathNo').val()
-							},
-						success: function(result) {
-							var path = eval('('+result+')');
-							console.log(path)
-							var pathEditDiv = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').attr('id', 'pathEditDiv');
-							pathEditDiv.find('input#pathName').val(path.path_name);
-							pathEditDiv.find('input#pathNo').val(path.path_no);
-
-							var mapPinList = new Array();
-							
-							for(var i = 0; i < path.venues.length; i++) {
-								var venue = path.venues[i];
-								var venueDiv = $('div#venueDivForm').clone().appendTo(pathEditDiv.find('div#venueListInSavedPath')).removeClass('hiddenDiv').attr('id', 'venueDiv');
-								venueDiv.find('input#venueName').val(venue.ven_name);
-								venueDiv.find('input#venueComment').val(venue.ven_commt);
-								venueDiv.find('input#venueNo').val(venue.ven_no);
-								venueDiv.find('input#venueLatitude').val(venue.ven_lati);
-								venueDiv.find('input#venueLongitude').val(venue.ven_long);
-								venueDiv.find('input#venueOrder').val(venue.ven_order);
-								
-								var pin = new Object();
-								pin.name = venue.ven_name;
-								pin.comment = venue.ven_commt;
-								pin.lat = venue.ven_lati;
-								pin.lng = venue.ven_long;
-								mapPinList.push(pin);
-																				
-								venueDiv.find('img#cancelImg').click(function() {
-									// x 버튼 누를때 하는 일
-									var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
-									pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
-									$(this).parent().parent().remove();
-								})
-							}
-							thisElement.addClass('hiddenDiv').after(pathEditDiv);
-							
-							pathEditDiv.find('input#modifyPathBtn').click(function() {
-								// TODO: 수정 버튼 누를 때 할 일 정의
-								var path = new Object();
-								path.no = pathEditDiv.find('input#pathNo').val() * 1;
-								path.name = pathEditDiv.find('input#pathName').val();
-								path.venues = new Array();
-								
-								var venueDiv = pathEditDiv.find('div#venueDiv').first();
-								do {
-									var venue = new Object();
-									venue.no = venueDiv.find('input#venueNo').val() * 1;
-									venue.name = venueDiv.find('input#venueName').val();
-									venue.comment = venueDiv.find('input#venueComment').val();
-									venue.lat = venueDiv.find('input#venueLatitude').val();
-									venue.lng = venueDiv.find('input#venueLongitude').val();
-									path.venues.push(venue);
-								} while((venueDiv = venueDiv.next()).length > 0);
-								
-								$.ajax({
-									url: "${pageContext.request.contextPath }/planCont/editPath.do",
-									dataType: 'text',
-									type: 'POST',
-									data: {
-										'path': JSON.stringify(path)
-									},
-									success: function(result) {
-										var pathSummary = eval('('+result+')');
-										console.log(pathSummary);
-										
-										thisElement.removeClass('hiddenDiv');
-										thisElement.find('p#pathName').text(pathSummary.path_name);
-										thisElement.find('p#pathSummary').text(pathSummary.path_summary);
-										pathEditDiv.remove();
-									}
-								})
-							});
-							
-							pathEditDiv.find('input#cancelPathBtn').click(function() {
-								// 취소 버튼 누를 때 할 일
-								thisElement.removeClass('hiddenDiv');
-								pathEditDiv.remove();
-								
-								var tempPathLine = polyline[pathCountOfThisElement].getPath();
-								tempPathLine.splice(0, tempPathLine.length);
-								for(var i = 0; i < mapPinList.length; i++) {
-									tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
-								}
-							});
-							
-							pathEditDiv.find('input#removePathBtn').click(function() {
-								// 삭제 버튼 누를 때 할 일
-								// TODO: 경로 저장 방법에 의해 보류중
-								for(var i = 0; i < polyline.length; i++) {
-									console.log(polyline[i]);
-								}
-								console.log(pathCountOfThisElement);
-								polyline.splice(pathCountOfThisElement, 1);
-								$.ajax({
-									url: "${pageContext.request.contextPath }/planCont/removePath.do",
-									dataType: 'text',
-									type: 'POST',
-									data: {
-										'pathNo': pathEditDiv.find('input#pathNo').val()
-									},
-									success: function(result) {
-										thisElement.remove();
-										pathEditDiv.remove();
-									}
-								})
-								pathCount -= 1;
-								
-								if(pathCount == 0) {
-									$('input[type="button"]#addPath').val('일정 만들기');
-								}
-							});
-							
-						}
-					})
-				})
-				</c:forEach>
-				
-				
+					var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
+					pathDiv.find('p#pathName').html('${path.path_name}');
+					pathDiv.find('p#pathSummary').html('${path.path_summary}');
+					pathDiv.find('input#pathNo').val('${path.path_no}');
+					pathDiv.find('input#pathCount').val(pathCount);
+					pathCount++;
+					pathDiv.click(showEditForm);
+				</c:forEach>	
 			}
-			
 			
 			var date = new Date();
 			var defaultPlanName = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "에 저장된 나의 여행";
@@ -344,7 +356,9 @@
 			$('input#planName').attr('placeholder', '여행 이름이에요. 예) ' + defaultPlanName);
 			$('input#planComment').attr('placeholder', '여행 설명이에요. 예) ' + defaultPlanComment);
 			
-			// #planCost, #planPersons에 숫자만 입력받게 하기
+			/**
+			 * #planCost, #planPersons에 숫자만 입력받게 하기
+			 */
 			$('#planCost, #planPersons').keydown(function(event) {
 				var keyId = event.keyCode;
 				if( (keyId >= 48 && keyId <= 57) || (keyId >= 96 && keyId <= 105) || keyId == 8 || keyId == 46 || keyId == 37 || keyId == 39 || keyId == 9 ) {
@@ -361,7 +375,9 @@
 				}
 			})
 			
-			// 서버에 경로 저장후 왼쪽 리스트에 하나로 묶어서 저장하기.
+			/**
+			 * 서버에 하나의 path를 저장하고 왼쪽에 경로 제목 + 경로요약으로 묶어서 표시
+			 */
 			$('input#savePath').click(function() {
 				if('${sessionScope.no}' == '') {
 					alert('로그인 하세요')
@@ -436,142 +452,7 @@
 								pathDiv.find('p#pathSummary').html(path.path_summary);
 								pathDiv.find('input#pathNo').val(path.path_no);
 								pathDiv.find('input#pathCount').val(pathCount);
-								pathDiv.click(function() {
-									// 경로를 클릭 -> 수정 폼이 등장
-									var thisElement = $(this);
-									var pathCountOfThisElement = pathDiv.parent().find('div#pathDiv').index(this);
-									
-									if(isAddCondition) {
-										// 삽입 상태일 경우 취소하고 수정 폼으로 이행
-										if(confirm('경로 추가 작업을 취소하고 수정으로 넘어갈까요?')) {
-											$('div#addPathDiv').find('input#cancelPath').click();
-										} else {
-											return;
-										}
-									}
-									
-									isModifyCondition = true;
-									$.ajax({
-										url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
-										dataType: 'text',
-										type: 'POST',
-										data: {
-												'pathNo': $(this).find('input#pathNo').val()
-											},
-										success: function(result) {
-											var path = eval('('+result+')');
-											console.log(path)
-											var pathEditDiv = $('div#pathEditDivForm').clone().removeClass('hiddenDiv').attr('id', 'pathEditDiv');
-											pathEditDiv.find('input#pathName').val(path.path_name);
-											pathEditDiv.find('input#pathNo').val(path.path_no);
-
-											var mapPinList = new Array();
-											
-											for(var i = 0; i < path.venues.length; i++) {
-												var venue = path.venues[i];
-												var venueDiv = $('div#venueDivForm').clone().appendTo(pathEditDiv.find('div#venueListInSavedPath')).removeClass('hiddenDiv').attr('id', 'venueDiv');
-												venueDiv.find('input#venueName').val(venue.ven_name);
-												venueDiv.find('input#venueComment').val(venue.ven_commt);
-												venueDiv.find('input#venueNo').val(venue.ven_no);
-												venueDiv.find('input#venueLatitude').val(venue.ven_lati);
-												venueDiv.find('input#venueLongitude').val(venue.ven_long);
-												venueDiv.find('input#venueOrder').val(venue.ven_order);
-												
-												var pin = new Object();
-												pin.name = venue.ven_name;
-												pin.comment = venue.ven_commt;
-												pin.lat = venue.ven_lati;
-												pin.lng = venue.ven_long;
-												mapPinList.push(pin);
-																								
-												venueDiv.find('img#cancelImg').click(function() {
-													// x 버튼 누를때 하는 일
-													var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
-													pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
-													$(this).parent().parent().remove();
-												})
-											}
-											thisElement.addClass('hiddenDiv').after(pathEditDiv);
-											
-											pathEditDiv.find('input#modifyPathBtn').click(function() {
-												// TODO: 수정 버튼 누를 때 할 일 정의
-												var path = new Object();
-												path.no = pathEditDiv.find('input#pathNo').val() * 1;
-												path.name = pathEditDiv.find('input#pathName').val();
-												path.venues = new Array();
-												
-												var venueDiv = pathEditDiv.find('div#venueDiv').first();
-												do {
-													var venue = new Object();
-													venue.no = venueDiv.find('input#venueNo').val() * 1;
-													venue.name = venueDiv.find('input#venueName').val();
-													venue.comment = venueDiv.find('input#venueComment').val();
-													venue.lat = venueDiv.find('input#venueLatitude').val();
-													venue.lng = venueDiv.find('input#venueLongitude').val();
-													path.venues.push(venue);
-												} while((venueDiv = venueDiv.next()).length > 0);
-												
-												$.ajax({
-													url: "${pageContext.request.contextPath }/planCont/editPath.do",
-													dataType: 'text',
-													type: 'POST',
-													data: {
-														'path': JSON.stringify(path)
-													},
-													success: function(result) {
-														var pathSummary = eval('('+result+')');
-														console.log(pathSummary);
-														
-														thisElement.removeClass('hiddenDiv');
-														thisElement.find('p#pathName').text(pathSummary.path_name);
-														thisElement.find('p#pathSummary').text(pathSummary.path_summary);
-														pathEditDiv.remove();
-													}
-												})
-											});
-											
-											pathEditDiv.find('input#cancelPathBtn').click(function() {
-												// 취소 버튼 누를 때 할 일
-												thisElement.removeClass('hiddenDiv');
-												pathEditDiv.remove();
-												
-												var tempPathLine = polyline[pathCountOfThisElement].getPath();
-												tempPathLine.splice(0, tempPathLine.length);
-												for(var i = 0; i < mapPinList.length; i++) {
-													tempPathLine.push(new naver.maps.LatLng(mapPinList[i].lat, mapPinList[i].lng));
-												}
-											});
-											
-											pathEditDiv.find('input#removePathBtn').click(function() {
-												// 삭제 버튼 누를 때 할 일
-												// TODO: 경로 저장 방법에 의해 보류중
-												for(var i = 0; i < polyline.length; i++) {
-													console.log(polyline[i]);
-												}
-												console.log(pathCountOfThisElement);
-												polyline.splice(pathCountOfThisElement, 1);
-												$.ajax({
-													url: "${pageContext.request.contextPath }/planCont/removePath.do",
-													dataType: 'text',
-													type: 'POST',
-													data: {
-														'pathNo': pathEditDiv.find('input#pathNo').val()
-													},
-													success: function(result) {
-														thisElement.remove();
-														pathEditDiv.remove();
-													}
-												})
-												pathCount -= 1;
-												
-												if(pathCount == 0) {
-													$('input[type="button"]#addPath').val('일정 만들기');
-												}
-											});
-											
-										}
-									})
-								})
+								pathDiv.click(showEditForm);
 								
 								isAddCondition = false;
 								isFirstAdd = false;
@@ -594,8 +475,20 @@
 				}
 			})
 			
-			// 일정 생성 버튼을 누르면 일정이 추가될 수 있도록 폼을 바꿔줌
+			/**
+			 * 일정 생성 버튼을 누르면 일정이 추가될 수 있도록 폼을 바꿔줌
+			 */
 			$('input[type="button"]#addPath').click(function() {
+				if (isModifyCondition) {
+					// 다른 일정 수정하기가 열려있을 때
+					if(confirm('수정중인 일정을 취소할까요?')) {
+						// 취소
+						$('div.editing').find('input#cancelPathBtn').click();
+					} else {
+						return;
+					}
+				}
+				
 				isAddCondition = true;
 				$('div#defaultAddDiv').addClass('hiddenDiv');
 				$('div#addPathDiv').removeClass('hiddenDiv');
@@ -611,7 +504,9 @@
 				updateList();
 			})
 			
-			// 경로 초기화
+			/**
+			 * 경로 초기화
+			 */
 			$('input[type="button"]#cancelPath').click(function() {
 				pathObj = new Array();
 				polyline.pop().getPath().clear();
@@ -758,8 +653,7 @@
 					<input type='button' id='addPath' value='일정 만들기'>
 				</div>
 				<div id='addPathDiv' class='hiddenDiv'>
-					<form name="venueForm"
-						action="${pageContext.request.contextPath}/plancont/addplan.do">
+					<form name="venueForm"	action="${pageContext.request.contextPath}/plancont/addplan.do">
 						<div id='venueList'></div>
 						<input type="button" id='savePath' value="일정 저장"> <input
 							type="button" id='cancelPath' value="일정 취소">
