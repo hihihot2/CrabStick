@@ -375,6 +375,8 @@ public class PlanController {
 			if(iterator.hasNext()) {
 				pathSummary += " - ";
 			}
+			
+			order++;
 		}
 		
 		long pathNo = (Long) pathObject.get("no");
