@@ -81,6 +81,11 @@
 	}
 	function showoverlay(latlng, type, str){
 		//마우스 오른쪽 클릭 후 보이는 tab 창 초기화
+		if(type == 0){
+			alert(0);
+		}else if(type == 1){
+			alert(1);
+		}
 		mapOverlay = function(options) {
 			this._element = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
                     '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +

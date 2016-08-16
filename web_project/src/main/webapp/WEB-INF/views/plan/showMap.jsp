@@ -135,7 +135,10 @@
 			});
 		}
 		
-		
+		var menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+                '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +
+                '</div>');
+		map.getPanes().floatPane.appendChild(menuLayer[0]);
 		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
@@ -144,9 +147,7 @@
 
 		//맵 클릭 이벤트
 		naver.maps.Event.addListener(map, 'click', function(e) {
-			if(overlay.getMap()){
-				overlay.setMap(null);
-			}
+			menuLayer.hide();
 			for(var i = 0 ; i < infowindows.length ; i++){
 				if(infowindows[i][1].getMap()){
 					infowindows[i][1].close();
@@ -154,17 +155,19 @@
 			}
 		});
 		
+		//맵 우클릭 이벤트
+		naver.maps.Event.addListener(map, 'rightclick', function(e) {
+	        menuLayer.show().css({
+	            left: e.offset.x,
+	            top: e.offset.y
+	        });
+		});
 		setListener();
 	});
 	
 	function setListener(){
-		//맵 우클릭 이벤트
-		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			/* if(overlay.getMap()){
-				overlay.setMap(null);
-			} */
-			//showoverlay(e.coord, 0, null);
-		});
+		
+		
 	}
 </script>
 
