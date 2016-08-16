@@ -212,7 +212,8 @@
 
 		<br> <br> <br>
 
-		<h4>${accompany}과 함께 ${purpose}하기 좋은 추천 ${favor_city}(지역)입니다.</h4>
+		<%-- <h4>${accompany}과 함께 ${purpose}하기 좋은 추천 ${favor_city}(지역)입니다.</h4> --%>
+		<h4>고객의 성향에 맞는 여행지를 저희가 추천해보았습니다.</h4>
 		<br>
 
 		<form name="imageform">
@@ -243,6 +244,5 @@
 
 		</form>
 	</div>
-
 </body>
 </html>

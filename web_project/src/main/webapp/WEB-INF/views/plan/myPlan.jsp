@@ -121,8 +121,10 @@
 						</div>
 					</div>				
 			</div>		
+			
 	</c:forEach>
 </c:otherwise>	
 </c:choose>
+
 </body>
 </html>

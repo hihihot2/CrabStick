@@ -24,6 +24,18 @@
 		<result property="loc_c_natu" column="loc_c_natu" />
 	</resultMap>
 
+	<resultMap type="com.crabstick.myapp.venue.Venue" id="VenueResultMap">
+		<result property="ven_no" column="ven_no" />
+		<result property="ven_name" column="ven_name" />
+		<result property="ven_lati" column="ven_lati" />
+		<result property="ven_long" column="ven_long" />
+		<result property="ven_commt" column="ven_commt" />
+		<result property="ven_type" column="ven_type" />
+		<result property="ven_order" column="ven_order" />
+		<result property="path_no" column="path_no" />
+	</resultMap>
+	
+	
 	<!-- 도시 전부 -->
 	<select id="select_All" resultMap="CityResultMap">
 		SELECT * FROM locations
@@ -55,5 +67,25 @@
 		SELECT * FROM LOCATIONS WHERE LOC_NAME LIKE #{loc_name}
 	</select>
 	<!-- 순수 검색 -->
+
+
+	<!-- 트랜잭션 가져오기 -->
+	<select id="select_All_Transaction" resultType="int">
+		SELECT DISTINCT
+		path_no FROM venues
+	</select>
+	<!-- 트랜잭션 가져오기 -->
+	
+	<!-- Venues Data 가져오기  -->
+	<select id="all_Data" resultMap="VenueResultMap">
+		SELECT * FROM venues
+	</select>
+	<!-- Venues Data 가져오기  -->
+	
+	<!-- 빈발 항목 계산을 위한 item 가져오기 -->
+	<select id="all_Sequence" resultType="String">
+		SELECT DISTINCT ven_name FROM venues
+	</select>
+	<!-- 빈발 항목 계산을 위한 item 가져오기 -->
 
 </mapper>
