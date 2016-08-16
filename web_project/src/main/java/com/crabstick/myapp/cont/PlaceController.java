@@ -31,6 +31,8 @@ import com.crabstick.myapp.path.PathService;
 import com.crabstick.myapp.plan.Plan;
 import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.Attraction;
+import com.crabstick.myapp.recommendation.RecommendationService;
+import com.crabstick.myapp.venue.Venue;
 import com.crabstick.myapp.venue.VenueService;
 
 @Controller
@@ -63,6 +65,13 @@ public class PlaceController {
 	public void setService(PlanService planService) {
 		this.planService = planService;
 	}
+	
+	@Resource(name = "recommendationService")
+	private RecommendationService recommendationService;
+	public void setRecommendationService(RecommendationService recommendationService) {
+		this.recommendationService = recommendationService;
+	}
+
 
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
@@ -112,8 +121,8 @@ public class PlaceController {
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			//발급 받은 서비스키
-			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
+			String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
@@ -208,8 +217,8 @@ public class PlaceController {
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			//발급 받은 서비스키
-			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
+			String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
@@ -303,8 +312,8 @@ public class PlaceController {
 
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			//발급 받은 서비스키
-			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
+			String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
@@ -395,8 +404,8 @@ public class PlaceController {
 		else if (branch == 5) { //자연
 			//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 			//발급 받은 서비스키
-			//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-			String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
+			String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+			//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 			mav = new ModelAndView("plan/getAttrJSON");
 			ArrayList<Attraction> attraction_list = new ArrayList<Attraction>();
 
@@ -493,6 +502,14 @@ public class PlaceController {
 			@RequestParam(value="city_longitude") String city_longitude,
 			@RequestParam(value="cityno") String cityno){
 
+		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
+		ArrayList<String> sequence_List = recommendationService.all_Sequence();
+		ArrayList<Venue> Venue_Table_Data = recommendationService.all_Data();
+		
+		
+		Apriori apriori = new Apriori();
+		apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
+		
 		ModelAndView mav = new ModelAndView("plan/showMap");
 
 		mav.addObject("lat",city_latitude);

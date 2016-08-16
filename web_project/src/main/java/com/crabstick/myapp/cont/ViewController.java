@@ -238,14 +238,7 @@ public class ViewController {
 			mav.addObject("travel_accompany", survey[1]); //설문지 2번 (동행)
 			mav.addObject("favor_city", survey[2]);//설문지 3번(여행지 선호도)
 			
-			
-			ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
-			ArrayList<String> sequence_List = recommendationService.all_Sequence();
-			ArrayList<Venue> Venue_Table_Data = recommendationService.all_Data();
-			
-			
-			Apriori apriori = new Apriori();
-			apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
+
 			
 			return mav;
 		} else { // (2) 비 로그인
