@@ -2,7 +2,6 @@
 <!-- TOP.jsp 삽입 부분 -->
 <jsp:include page="top.jsp"></jsp:include>
 <!-- TOP.jsp 삽입 부분 -->
-
 <!-- Main.jsp 부분 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -82,7 +81,6 @@
 					<a href="javascript:select_loc('37.566343','126.977934','1')"><img
 						src="http://i.imgur.com/cwePpLM.jpg" width="400px" height="300px"></a>
 					<div class="center">SEOUL</div>
-					</a>
 					<p>
 						<strong><a
 							href="javascript:select_loc('37.566343','126.977934','1')">SEOUL</a></strong>
@@ -196,6 +194,9 @@
 				</c:forEach>
 			</form>
 		</div>
+	</div>
+	<div>
+		<jsp:include page="bottom.jsp"></jsp:include>
 	</div>
 </body>
 </html>

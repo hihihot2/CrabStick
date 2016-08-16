@@ -2,7 +2,6 @@
 <!-- TOP.jsp 삽입 부분 -->
 <jsp:include page="../top.jsp"></jsp:include>
 <!-- TOP.jsp 삽입 부분 -->
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -99,8 +98,6 @@
 				<input type="button" class="btn btn-warning" value="설문조사 변경" onclick="edit_do('survey')" />
 			</div>
 		</div>
-
-
 	</form>
 </body>
 </html>

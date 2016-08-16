@@ -43,7 +43,7 @@
 	}	
 	//리스너 생성
 	function setListener(obj, type){
-		var enc = encodeURIComponent(name);
+		var enc = encodeURIComponent(obj[0]);
 		var len = markers.length-1;
 		var marker = markers[len][2], infowindow = infowindows[len][2];
 		
@@ -61,6 +61,15 @@
 			if(confirm("일정에 추가하시겠습니까?")){
 				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
 			}
+		});
+		naver.maps.Event.addListener(markers[len][2], 'rightclick', function(e) {
+			if(overlay.getMap()){
+				overlay.setMap(null);
+			}
+			overlay = new CustomOverlay({
+		        position: e.coord
+		    });
+		    overlay.setMap(map);
 		});
 		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {
 			infowindow.open(map, marker);
