@@ -62,6 +62,15 @@
 				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
 			}
 		});
+		naver.maps.Event.addListener(markers[len][2], 'rightclick', function(e) {
+			if(overlay.getMap()){
+				overlay.setMap(null);
+			}
+			overlay = new CustomOverlay({
+		        position: e.coord
+		    });
+		    overlay.setMap(map);
+		});
 		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {
 			infowindow.open(map, marker);
 		});
