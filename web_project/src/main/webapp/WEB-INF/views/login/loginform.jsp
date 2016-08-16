@@ -59,7 +59,8 @@
 			} else {
 				document.loginform.always_login.value = ""
 			}
-			var params = "mem_id=" + document.loginform.mem_id.value
+			var id =  encodeURIComponent(document.loginform.mem_id.value);
+			var params = "mem_id=" + id
 					+ "&mem_pwd=" + document.loginform.mem_pwd.value
 					+ "&always_login=" + document.loginform.always_login.value;
 			sendRequest(

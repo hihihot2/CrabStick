@@ -8,7 +8,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/scripts/httpRequest.js"></script>
 <script type="text/javascript">
 	function dropout_do(){
-		var params = "mem_id="+document.dropout.mem_id.value+"&mem_pwd="+document.dropout.mem_pwd.value;
+		var id =  encodeURIComponent(document.dropout.mem_id.value);
+		var params = "mem_id="+id+"&mem_pwd="+document.dropout.mem_pwd.value;
 		sendRequest("${pageContext.request.contextPath}/logincont/dropout.do", params, dropoutresult, 'POST')
 	}
 	function dropoutresult(){
@@ -17,7 +18,7 @@
 				var str = httpRequest.responseText;
 				if(str==1){
 					alert('삭제되었습니다.')
-					location.href("${pageContext.request.contextPath}/"); 
+					location.href="${pageContext.request.contextPath}/";
 				}else if(str==0){
 					alert('비밀번호가 맞지 않습니다.')
 				}				

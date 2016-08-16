@@ -34,7 +34,6 @@ public class MailController {
 		ModelAndView mav = new ModelAndView("login/findpassJSON");
 		String id =  m.getMem_id();
 		String pass = service.getmem_pass(m);
-		
 		if (pass == null) {
 			pass = "0";
 		}
@@ -77,7 +76,7 @@ public class MailController {
 		return mav;
 	}
 	@RequestMapping(value = "/emailCont/sentMsg.do")
-	public ModelAndView sendMsg(@RequestParam(value="mem_id") String id,
+	public ModelAndView sendMsg(@RequestParam(value="mem_id")String id,
 			HttpSession hs) {
 		ModelAndView mav = new ModelAndView("login/joinformJSON");
 		subject = "회원가입 인증 안내입니다.";
@@ -87,6 +86,7 @@ public class MailController {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			System.out.println(id);
 			messageHelper.setTo(id);
 			messageHelper.setText("인증번호 : " + load_num);
 			messageHelper.setFrom(from);

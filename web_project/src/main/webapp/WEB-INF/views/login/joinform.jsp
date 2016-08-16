@@ -14,7 +14,8 @@
 
 <script type="text/javascript">
 	function id_chk() {
-		var params = "mem_id=" + document.joinform.mem_id.value;
+		var id =  encodeURIComponent(document.joinform.mem_id.value);
+		var params = "mem_id=" + id;
 		sendRequest("${pageContext.request.contextPath}/logincont/idchk.do",
 				params, id_chkresult, 'POST')
 
@@ -54,7 +55,8 @@
 		} else if (5 >= pwdlength) {
 			alert("비밀번호는 6자리 이상으로 설정해주세요")
 		} else {
-			var params = "mem_id=" + document.joinform.mem_id.value;
+			var id =  encodeURIComponent(document.joinform.mem_id.value);
+			var params = "mem_id=" + id;
 			var html = "<input type='text' name='certify'/> "
 					+ "<input type='button' class='btn btn-info' value='인증하기' onclick='sumbit_cert()'/> </h1>"
 					+ "<input type='hidden' name='load_num'>"

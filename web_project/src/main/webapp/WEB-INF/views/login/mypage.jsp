@@ -86,8 +86,8 @@
 
 			<div class="panel-body">
 
-				비밀번호: <input type="text" class="form-control" name="mem_pwd">
-				<br> 비밀번호 확인 : <input type="text" class="form-control"
+				비밀번호: <input type="password" class="form-control" name="mem_pwd">
+				<br> 비밀번호 확인 : <input type="password" class="form-control"
 					name="mem_repwd" /> <br> <input type="button"
 					class="btn btn-info" value="비밀번호 수정" onclick="edit_do('edit')">
 				<input type="button" class="btn btn-warning" value="탈퇴"
