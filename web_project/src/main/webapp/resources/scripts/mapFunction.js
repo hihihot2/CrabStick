@@ -63,10 +63,10 @@
 			}
 		});
 		naver.maps.Event.addListener(marker, 'rightclick', function(e) {
-			/*if(overlay.getMap()){
-				overlay.setMap(null);
-			}*/
-			//showoverlay(marker.getPosition(), 1, enc);
+			markerLayer.show().css({
+	            left: e.offset.x,
+	            top: e.offset.y
+	        });
 		});
 		naver.maps.Event.addListener(marker, 'mouseover', function(e) {
 			infowindow.open(map, marker);

@@ -36,9 +36,8 @@
 	var markers = [];//생성된 마커를 담을 배열
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
-	var overlay;
-	var mapOverlay;
-	var markerOverlay;
+	var menuLayer;
+	var markerLayer;
 	var polyline = new Array(); //라인 변수
 	var pathObj = [];
 	var loc_no;
@@ -135,10 +134,16 @@
 			});
 		}
 		
-		var menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-                '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +
+		menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
                 '</div>');
 		map.getPanes().floatPane.appendChild(menuLayer[0]);
+		menuLayer.hide();
+		
+		markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+                '<input id="ovl" style="width:106px" type="button" value="일정에 추가2">' +
+        '</div>');
+		map.getPanes().floatPane.appendChild(markerLayer[0]);
+		markerLayer.hide();
 		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
@@ -160,15 +165,9 @@
 	        menuLayer.show().css({
 	            left: e.offset.x,
 	            top: e.offset.y
-	        });
+	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
 		});
-		setListener();
 	});
-	
-	function setListener(){
-		
-		
-	}
 </script>
 
 
