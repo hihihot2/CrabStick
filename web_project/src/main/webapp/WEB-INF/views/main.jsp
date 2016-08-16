@@ -195,8 +195,5 @@
 			</form>
 		</div>
 	</div>
-	<div>
-		<jsp:include page="bottom.jsp"></jsp:include>
-	</div>
 </body>
 </html>
