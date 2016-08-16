@@ -94,7 +94,7 @@
 			</div>
 
 			<div class="panel-footer">
-				<h3>설문조사 변경 란</h3>
+				<h3>설문조사 변경</h3>
 				<input type="button" class="btn btn-warning" value="설문조사 변경" onclick="edit_do('survey')" />
 			</div>
 		</div>

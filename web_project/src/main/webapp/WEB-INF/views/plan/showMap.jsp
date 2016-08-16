@@ -37,7 +37,8 @@
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
 	var overlay;
-	var CustomOverlay;
+	var mapOverlay;
+	var markerOverlay;
 	var polyline = new Array(); //라인 변수
 	var pathObj = [];
 	var loc_no;
@@ -134,47 +135,7 @@
 			});
 		}
 		
-		//마우스 오른쪽 클릭 후 보이는 tab 창 초기화
-		CustomOverlay = function(options) {
-		    this._element = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-		                        '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +
-		                        '</div>')
-
-		    this.setPosition(options.position);
-		    this.setMap(options.map || null);
-		};
-		CustomOverlay.prototype = new naver.maps.OverlayView();
-		CustomOverlay.prototype.constructor = CustomOverlay;
-		CustomOverlay.prototype.setPosition = function(position) {
-		    this._position = position;
-		    this.draw();
-		};
-		CustomOverlay.prototype.getPosition = function() {
-		    return this._position;
-		};
-		CustomOverlay.prototype.onAdd = function() {
-		    var overlayLayer = this.getPanes().overlayLayer;
-
-		    this._element.appendTo(overlayLayer);
-		};
-		CustomOverlay.prototype.draw = function() {
-		    if (!this.getMap()) {
-		        return;
-		    }
-		    var projection = this.getProjection(),
-		        position = this.getPosition(),
-		        pixelPosition = projection.fromCoordToOffset(position);
-		    this._element.css('left', pixelPosition.x);
-		    this._element.css('top', pixelPosition.y);
-		};
-		CustomOverlay.prototype.onRemove = function() {
-		    var overlayLayer = this.getPanes().overlayLayer;
-		    this._element.remove();
-		    this._element.off();
-		};
-		overlay = new CustomOverlay({
-			position: null
-		});
+		
 		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
@@ -193,24 +154,18 @@
 			}
 		});
 		
+		setListener();
+	});
+	
+	function setListener(){
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			if(overlay.getMap()){
+			/* if(overlay.getMap()){
 				overlay.setMap(null);
-			}
-			overlay = new CustomOverlay({
-		        position: e.coord
-		    });
-		    overlay.setMap(map);
-		    
-		    $('#ovl').on('click', function() {
-		    	var marker = new naver.maps.Marker({
-		    		position: e.coord,
-		    		map: map
-		    	});
-		    });
+			} */
+			//showoverlay(e.coord, 0, null);
 		});
-	});
+	}
 </script>
 
 
