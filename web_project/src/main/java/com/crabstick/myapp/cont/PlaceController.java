@@ -43,6 +43,7 @@ public class PlaceController {
 	private String foursquareClientSecret = "OWVMGV1NWBD1ZWLT0TIWDKT4BOXHZD3YZTAJAX5UYLYK1BJO";
 	private String expediaConsumerKey = "D9o6vpXU1ANf0zteRzFIAS83NkccKkoJ";
 	private String expediaConsumerSecret = "14Y3QtDfkL4G58kJ";
+	private String visitKoreaKey = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
 
 	@Resource(name = "locationService")
 	private LocationService locationService;

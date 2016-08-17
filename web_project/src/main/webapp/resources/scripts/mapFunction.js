@@ -122,7 +122,6 @@
 	
 	//추가 경로 삭제
 	function delPath(num, len){
-		var marker = markers[len][2];
 		var iDiv = document.getElementById("venue_"+num);
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
@@ -131,8 +130,6 @@
 		pathObj.splice(num, 1);
 		myPath[num][0].setMap(null);
 		myPath.splice(num, 1);
-		/*markers[len][0] = markers[len][1];
-		marker.setMap(null);*/
 		updateList();
 	}
 	
