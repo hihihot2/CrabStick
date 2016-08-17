@@ -134,7 +134,7 @@
 				},
 				beforeSend: function(){
 					loading = $('<div class="wrap-loading display-none">'
-						    +'<div><img style="width:100px;height:70px;" src="../resources/png/loading.gif" /></div>'
+						    +'<div><img style="width:100px;height:100px;" src="../resources/png/loading.gif" /></div>'
 						    +'</div> ');
 					loading.appendTo(map.getElement());
 					$('.wrap-loading').removeClass('display-none');
