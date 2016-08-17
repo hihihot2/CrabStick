@@ -38,6 +38,7 @@
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
 	var overlay;
+	var olflag;
 	var menuLayer;
 	var markerLayer;
 	var polyline = new Array(); //라인 변수
@@ -153,7 +154,8 @@
 				animation: naver.maps.Animation.DROP,
 				clickable: true,
 				map: map,
-				title: venue.name
+				title: venue.name,
+				zIndex: 100
 			});
 			
 			// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
@@ -174,11 +176,18 @@
 			});
 			
 			naver.maps.Event.addListener(marker, 'rightclick', function(e) {
-				/* markerLayer.show().css({
+				markerLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">'); */
-				showoverlay2(marker.getPosition(), 1);
+		        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
+		        /* olflag = 1;
+				showoverlay(marker.getPosition(), 1); */
+				$('#ovl2').on('click', function() {
+					if(confirm("일정에 추가하시겠습니까?")){
+						addPath(venue);
+						markerLayer.hide();
+					}
+				});
 			});
 			
 			naver.maps.Event.addListener(marker, 'mouseover', function() {
@@ -222,15 +231,27 @@
 		map.getPanes().floatPane.appendChild(markerLayer[0]);
 		markerLayer.hide();
 		
-		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
+		//지도의 움직임이 종료 되었을때 실행되는 리스너
 		naver.maps.Event.addListener(map, 'idle', function(e) {
+			markerLayer.hide();
+			menuLayer.hide();
+			/* if(overlay != null){
+				overlay.setMap(null);
+			} */
 			updateMarkers(map, myPath);
 		});
-
-		//맵 클릭 이벤트
-		naver.maps.Event.addListener(map, 'click', function(e) {
-			menuLayer.hide();
+		
+		//지도에서 마우스 버튼을 누를때 실행되는 리스너
+		/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
 			markerLayer.hide();
+			menuLayer.hide();
+			if(overlay != null){
+				overlay.setMap(null);
+			} 
+		}); */
+
+		//지도의 한 지점을 클릭했을 때 실행되는 리스너
+		naver.maps.Event.addListener(map, 'click', function(e) {
 			for(var i = 0 ; i < infowindows.length ; i++){
 				if(infowindows[i][1].getMap()){
 					infowindows[i][1].close();
@@ -240,14 +261,23 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-	        /* menuLayer.show().css({
+	        menuLayer.show().css({
 	            left: e.offset.x,
 	            top: e.offset.y
-	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">'); */
-	        
-			showoverlay(e.coord, 0);
+	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+	        /* if(olflag != 1){
+	        	showoverlay(e.coord, 0);
+	        } */
+	        $('#ovl').on('click', function() {
+	        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
+					addPath(venue);
+					markerLayer.hide();
+				}
+	        })
 		});
+		
 	});
+	
 </script>
 
 
