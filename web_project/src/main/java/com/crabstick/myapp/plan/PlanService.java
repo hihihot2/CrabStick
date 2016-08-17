@@ -10,8 +10,10 @@ public interface PlanService {
 	ArrayList<Plan> selectPlan(int mem_no);
 	
 	void updatePlan(Plan p);
+	void deletePlan(int plan_no);	
 	
 	//한개 plan만 가져오기
 	Plan getPlan(int plan_no);
 	ArrayList<Plan> recent_selectPlan();
+	
 }

@@ -396,4 +396,15 @@ public class PlanController {
 		mav.addObject("PATH_SUMMARY", pathSummary);
 		return mav;
 	}
+	
+	//계획 삭제
+	@RequestMapping(value="/planCont/deleteMyMap.do")
+	public String deleteMyMap(@RequestParam(value="plan_no")int plan_no) {
+		System.out.println("계획삭제 시작");
+		System.out.println("planNo :" + plan_no);
+		planService.deletePlan(plan_no);
+		
+
+		return "redirect:/viewcont/showMyPlan.do";
+	}
 }
