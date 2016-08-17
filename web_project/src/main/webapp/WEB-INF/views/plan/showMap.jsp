@@ -235,7 +235,6 @@ ol, ul {
 	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
 	var pathCount = 0;
 	var venueOrder = 0;
-	var selectVenue = "fisrt";
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -252,7 +251,7 @@ ol, ul {
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
 			center : new naver.maps.LatLng(lat, lng),
-			zoom : 7
+			zoom : 10
 		});
 		//검색창 생성 및 기능 설정
 		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
@@ -300,50 +299,103 @@ ol, ul {
 		contentEl2.appendTo(map.getElement());
 		
 		
-		getRecommandPlaces(lat, lng, 10000, venueOrder, selectVenue);
-		venueOrder += 1;
-		
-		function getRecommandPlaces(latitude, longitude, radius, order, name) {
-			var loading;
-			$.ajax({
-				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
-				type: 'POST',
-				dataType: 'text',
-				data: {
-					lat: latitude,
-					lng: longitude,
-					radius: radius,
-					order: order,
-					name: name
-				},
-				success: function(result) {
-					//console.log(result);
-					var venueList = eval('('+result+')');
-					for(var i = 0; i < venueList.length; i++) {
-						setPlace(venueList[i]);
+		/* session 없는 함수  */
+		if ('${sessionScope.no}' == ''){
+			getRecommandPlaces(lat, lng, 10000, venueOrder);
+			venueOrder += 1;
+			
+			function getRecommandPlaces(latitude, longitude, radius, order) {
+				var loading;
+				$.ajax({
+					url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
+					type: 'POST',
+					dataType: 'text',
+					data: {
+						lat: latitude,
+						lng: longitude,
+						radius: radius,
+						order: order
+					},
+					success: function(result) {
+						//console.log(result);
+						var venueList = eval('('+result+')');
+						for(var i = 0; i < venueList.length; i++) {
+							setPlace(venueList[i]);
+						}
+					},
+					beforeSend: function(){
+						loading = $('<div class="wrap-loading">'
+								+'<div class="loader">'
+								+'<ul class="hexagon-container">'
+								+'<li class="hexagon hex_1"></li>'
+								+'<li class="hexagon hex_2"></li>'
+								+'<li class="hexagon hex_3"></li>'
+								+'<li class="hexagon hex_4"></li>'
+								+'<li class="hexagon hex_5"></li>'
+								+'<li class="hexagon hex_6"></li>'
+								+'<li class="hexagon hex_7"></li>'
+							+'</ul>'
+							+'</div></div> ');
+						loading.appendTo(map.getElement());
+						$('.wrap-loading').removeClass('display-none');
+					},
+					complete: function(){
+						$('.wrap-loading').addClass('display-none');
 					}
-				},
-				beforeSend: function(){
-					loading = $('<div class="wrap-loading">'
-							+'<div class="loader">'
-							+'<ul class="hexagon-container">'
-							+'<li class="hexagon hex_1"></li>'
-							+'<li class="hexagon hex_2"></li>'
-							+'<li class="hexagon hex_3"></li>'
-							+'<li class="hexagon hex_4"></li>'
-							+'<li class="hexagon hex_5"></li>'
-							+'<li class="hexagon hex_6"></li>'
-							+'<li class="hexagon hex_7"></li>'
-						+'</ul>'
-						+'</div></div> ');
-					loading.appendTo(map.getElement());
-					$('.wrap-loading').removeClass('display-none');
-				},
-				complete: function(){
-					$('.wrap-loading').addClass('display-none');
+				})
+			}
+		} else {
+			
+			getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
+			venueOrder += 1;
+			
+			function getRecommandPlaces(latitude, longitude, radius, order, mem_no, type) {
+				if (order==0){
+					alert("성향을 바탕으로 추천 관광지 검색을 시작합니다!");
 				}
-			})
+				var loading;
+				$.ajax({
+					url: '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSession.do',
+					type: 'POST',
+					dataType: 'text',
+					data: {
+						lat: latitude,
+						lng: longitude,
+						radius: radius,
+						order: order,
+						mem_no: mem_no,
+						type: type
+					},
+					success: function(result) {
+						//console.log(result);
+						var venueList = eval('('+result+')');
+						for(var i = 0; i < venueList.length; i++) {
+							setPlace(venueList[i]);
+						}
+					},
+					beforeSend: function(){
+						loading = $('<div class="wrap-loading">'
+								+'<div class="loader">'
+								+'<ul class="hexagon-container">'
+								+'<li class="hexagon hex_1"></li>'
+								+'<li class="hexagon hex_2"></li>'
+								+'<li class="hexagon hex_3"></li>'
+								+'<li class="hexagon hex_4"></li>'
+								+'<li class="hexagon hex_5"></li>'
+								+'<li class="hexagon hex_6"></li>'
+								+'<li class="hexagon hex_7"></li>'
+							+'</ul>'
+							+'</div></div> ');
+						loading.appendTo(map.getElement());
+						$('.wrap-loading').removeClass('display-none');
+					},
+					complete: function(){
+						$('.wrap-loading').addClass('display-none');
+					}
+				})
+			}
 		}
+		
 		
 		function setPlace(venue) {
 			var markerImgUrl;
@@ -410,10 +462,14 @@ ol, ul {
 								x.setMap(null);
 							})
 							allMarkers = new Array();
-							
-							selectVenue = venue.name;
-							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder, selectVenue);
-							venueOrder += 1;
+							if ('${sessionScope.no}' == ''){
+								getRecommandPlaces(venue.lat, venue.lng, 2000, venueOrder);
+								venueOrder += 1;
+							} else {
+								alert(venue.type);
+								getRecommandPlaces(venue.lat, venue.lng, 2000, venueOrder, '${sessionScope.no}', venue.type);
+								venueOrder += 1;
+							}
 						}						
 					} else {
 						alert('일정 만들기를 눌러주세요')

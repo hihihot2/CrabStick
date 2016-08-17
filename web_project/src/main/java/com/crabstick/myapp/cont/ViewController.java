@@ -27,7 +27,6 @@ import com.crabstick.myapp.venue.VenueService;
 public class ViewController {
 	@Resource(name = "loginService")
 	private LoginService service;
-
 	public void setService(LoginService service) {
 		this.service = service;
 	}
@@ -55,6 +54,7 @@ public class ViewController {
 		this.recommendationService = recommendationService;
 	}
 
+	/*  Main */
 	@RequestMapping(value = "/")
 	public ModelAndView main(HttpSession session, HttpServletRequest req) {
 		Cookie[] cookies = req.getCookies();
@@ -221,15 +221,12 @@ public class ViewController {
 				    	
 				    	City city_Temp = All_City.get(index);
 				    	All_City.set(index, All_City.get(index_2));
-				    	All_City.set(index_2, city_Temp);
-				    
+				    	All_City.set(index_2, city_Temp); 
 				    }
 				}
 			}
 			/* 가중치에 따른 정렬 알고리즘*/
-
 			ArrayList<City> recommend_City = new ArrayList<City>();
-
 			for (int i=0; i<6; i++){
 				recommend_City.add(All_City.get(i));
 			}
@@ -237,9 +234,6 @@ public class ViewController {
 			mav.addObject("travel_purpose", survey[0]); //설문지 1번 (목적)
 			mav.addObject("travel_accompany", survey[1]); //설문지 2번 (동행)
 			mav.addObject("favor_city", survey[2]);//설문지 3번(여행지 선호도)
-			
-
-			
 			return mav;
 		} else { // (2) 비 로그인
 			System.out.println("비로그인");
@@ -290,7 +284,7 @@ public class ViewController {
 		City resultCity = resultList.get(0);
 		City update_City = Weight_Loc.updateCity(resultCity , accompany , purpose , favor_city);
 		recommendationService.update_Weight(update_City);
-
+		
 		String lati = resultCity.getLoc_lati();
 		String long2 = resultCity.getLoc_long();
 

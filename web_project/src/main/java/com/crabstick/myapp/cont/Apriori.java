@@ -7,10 +7,8 @@ import com.crabstick.myapp.venue.Venue;
 public class Apriori {
 
 	/* 추천 관광 지역 지지도 계산 */
-	public ArrayList<Venue> apriori_Algorithm(ArrayList<Integer> transactions, ArrayList<String> seqeunces, ArrayList<Venue> venues,int order, String selectVenue) {
-
-
-
+	public ArrayList<Venue> apriori_Algorithm(ArrayList<Integer> transactions, ArrayList<String> seqeunces, ArrayList<Venue> venues, int order, String selectVenue) {
+		/* 필드 */
 		ArrayList<ArrayList<String>> data_Mart = new ArrayList<ArrayList<String>>();
 		ArrayList<String> name = new ArrayList<String>();
 		ArrayList<String> name2 = new ArrayList<String>();
@@ -18,11 +16,10 @@ public class Apriori {
 
 		/* 분석을 위한 데이터 마트 구성 */
 		for (int i=0; i<transactions.size(); i++){
-
 			ArrayList<String> inner_Data = new ArrayList<String>();
 			for (int j=0; j<venues.size(); j++){
 				if (transactions.get(i)==venues.get(j).getPath_no()){
-					inner_Data.add(venues.get(j).getVen_name());
+					inner_Data.add(venues.get(j).getVen_lati()+":"+venues.get(j).getVen_long());
 				}
 			}
 			data_Mart.add(inner_Data);
@@ -62,7 +59,6 @@ public class Apriori {
 
 		/* 1차 경로 선택 후 추천 장소에 대한 업데이트  */
 		if (order>=1 && selectVenueProbability!=0.0){
-
 			for (int i=0; i<seqeunces.size(); i++){
 				int count=0;
 				boolean isMatched = false;
