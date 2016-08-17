@@ -11,18 +11,18 @@
 	</c:forEach>
 	<c:if test="${!empty VENUES && (!empty SIGHTS || !empty SHOPPINGS || !empty RESTS || !empty NATURES)}">,</c:if>
 	<c:forEach var="sight" items="${SIGHTS }" varStatus="status">
-	{name: "", address: "", lat: "", lng: "", img: "", type: 2}<c:if test="${!status.last }">,</c:if>
+	{name: "${sight.title}", address: "${sight.addr1}", lat: "${sight.mapy}", lng: "${sight.mapx}", img: "${sight.imgURL}", type: 2}<c:if test="${!status.last }">,</c:if>
 	</c:forEach>
 	<c:if test="${!empty SIGHTS && (!empty SHOPPINGS || !empty RESTS || !empty NATURES)}">,</c:if>
 	<c:forEach var="shopping" items="${SHOPPINGS }" varStatus="status">
-	{name: "", address: "", lat: "", lng: "", img: "", type: 3}<c:if test="${!status.last }">,</c:if>
+	{name: "${shopping.title}", address: "${shopping.addr1}", lat: "${shopping.mapy}", lng: "${shopping.mapx}", img: "${shopping.imgURL}", type: 3}<c:if test="${!status.last }">,</c:if>
 	</c:forEach>
 	<c:if test="${!empty SHOPPINGS && (!empty RESTS || !empty NATURES)}">,</c:if>
 	<c:forEach var="rest" items="${RESTS }" varStatus="status">
-	{name: "", address: "", lat: "", lng: "", img: "", type: 4}<c:if test="${!status.last }">,</c:if>
+	{name: "${rest.title}", address: "${rest.addr1}", lat: "${rest.mapy}", lng: "${rest.mapx}", img: "${rest.imgURL}", type: 4}<c:if test="${!status.last }">,</c:if>
 	</c:forEach>
 	<c:if test="${!empty RESTS && !empty NATURES}">,</c:if>
 	<c:forEach var="nature" items="${NATURES }" varStatus="status">
-	{name: "", address: "", lat: "", lng: "", img: "", type: 5}<c:if test="${!status.last }">,</c:if>
+	{name: "${nature.title}", address: "${nature.addr1}", lat: "${nature.mapy}", lng: "${nature.mapx}", img: "${nature.imgURL}", type: 5}<c:if test="${!status.last }">,</c:if>
 	</c:forEach>
 ]
