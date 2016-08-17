@@ -297,9 +297,9 @@ ol, ul {
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 		
-		getRecommandPlaces(lat, lng, 1000);
+		getRecommandPlaces(lat, lng, 10000, 0);
 		
-		function getRecommandPlaces(latitude, longitude, radius) {
+		function getRecommandPlaces(latitude, longitude, radius, order) {
 			var loading;
 			$.ajax({
 				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
@@ -308,7 +308,8 @@ ol, ul {
 				data: {
 					lat: latitude,
 					lng: longitude,
-					radius: radius
+					radius: radius,
+					order: order
 				},
 				success: function(result) {
 					//console.log(result);
@@ -375,12 +376,6 @@ ol, ul {
 				content: windowForm[0]
 			})
 			
-			naver.maps.Event.addListener(marker, 'click', function() {
-				if(confirm("일정에 추가하시겠습니까?")){
-					addPath(venue);
-				}
-			});
-			
 			naver.maps.Event.addListener(marker, 'rightclick', function(e) {
 				markerLayer.show().css({
 		            left: e.offset.x,
@@ -389,13 +384,31 @@ ol, ul {
 		        /* olflag = 1;
 				showoverlay(marker.getPosition(), 1); */
 				$('#ovl2').on('click', function() {
-					if(confirm("일정에 추가하시겠습니까?")){
-						addPath(venue);
-						marker.setAnimation(naver.maps.Animation.BOUNCE);
-						marker.setIcon("../resources/png/check.png");
-						markerLayer.hide();
-						myMarkers.push(marker);
-						allMarkers.splice(allMarkers.indexOf(marker), 1);
+					if(isAddCondition) {
+						if(confirm("일정에 추가하시겠습니까?")){
+							addPath(venue);
+							var myMarker = new naver.maps.Marker({
+								position : new naver.maps.LatLng(venue.lat, venue.lng),
+								icon : {
+									url: "../resources/png/check.png"
+								},
+								animation: naver.maps.Animation.BOUNCE,
+								clickable: true,
+								map: map,
+								title: venue.name,
+								zIndex: 100
+							})
+							markerLayer.hide();
+							myMarkers.push(myMarker);
+							allMarkers.map(function(x) {
+								x.setMap(null);
+							})
+							allMarkers = new Array();
+							
+							getRecommandPlaces(venue.lat, venue.lng, 1000);
+						}						
+					} else {
+						alert('일정 만들기를 눌러주세요')
 					}
 				});
 			});
@@ -412,7 +425,6 @@ ol, ul {
 		}
 		
 		function addPath(venue) {
-			alert("1");
 			if(!isAddCondition && !isModifyCondition) {
 				alert('왼쪽에서 일정 만들기를 눌러주세요~');
 			} else {

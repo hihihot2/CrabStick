@@ -117,7 +117,7 @@ public class PlaceController {
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, sdf.format(calendar.getTime()));
 
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
-		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_RESULTS_PER_PAGE, "30");
+		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_RESULTS_PER_PAGE, "10");
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_SORT_ORDER, "true");
 
 		Response hotels = null;
@@ -153,7 +153,7 @@ public class PlaceController {
 		foursquare.addField(Foursquare.EXPLORE_FIELD_LL, lat+","+lng);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
 		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, radius);
-		foursquare.addField(Foursquare.EXPLORE_FIELD_LIMIT, "30");
+		foursquare.addField(Foursquare.EXPLORE_FIELD_LIMIT, "10");
 		ArrayList<Venue> venues = null;
 
 		try {
@@ -187,27 +187,20 @@ public class PlaceController {
 		
 		/* 명소 받아오기 */
 		//발급 받은 서비스키
-		//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
-		String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
+		String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
+//		String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
 		//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 		ArrayList<Attraction> attraction_List = new ArrayList<Attraction>();
 
 		/* XML 파싱 부분 */
 		Document document;
 		try {
-			//URL접근
-			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
-			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
-			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
-			
 
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
-			expression = "//*/item";
+					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=10&pageNo=1");
+			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
 			
 
@@ -281,19 +274,13 @@ public class PlaceController {
 		
 		ArrayList<Attraction> attraction_List_Nature = new ArrayList<Attraction>();
 		try {
-			//URL접근
-			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-		
 
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
-			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
-			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
 		
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
-			expression = "//*/item";
+					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=10&pageNo=1");
+			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
 		
 			if (item_Node.getLength()>0){
@@ -365,19 +352,12 @@ public class PlaceController {
 		ArrayList<Attraction> attraction_List_Rest = new ArrayList<Attraction>();
 
 		try {
-			//URL접근
-			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-		
-
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
-			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
-			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
 		
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
-			expression = "//*/item";
+					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=10&pageNo=1");
+			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
 	
 			if (item_Node.getLength()>0){
@@ -448,19 +428,12 @@ public class PlaceController {
 		
 		ArrayList<Attraction> attraction_List_Shopping = new ArrayList<Attraction>();
 		try {
-			//URL접근
-			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-			
-
 			// xpath 생성
-			XPath  xpath = XPathFactory.newInstance().newXPath();
-			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
-			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
 		
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
-			expression = "//*/item";
+					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius="+radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=10&pageNo=1");
+			XPath  xpath = XPathFactory.newInstance().newXPath();
+			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
 		
 			if (item_Node.getLength()>0){
