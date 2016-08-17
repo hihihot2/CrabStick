@@ -14,6 +14,11 @@
 	function viewplan(planNo){
 		location.href="${pageContext.request.contextPath}/placeCont/showMyMap.do?planNo="+planNo;
 	}
+	
+	function delplan(planNo){
+		
+	}
+	
 
 </script>
 
@@ -117,12 +122,15 @@
 								</p><br>		
 								 <c:set var="cnt" value="${cnt+1}"/>						
 							</c:forEach>
-							<button class="btn btn-lg" onclick="viewplan(${plan.plan_no})" >여행계획 보러가기</button>							
+							<button class="btn btn-lg" onclick="viewplan(${plan.plan_no})" >여행계획 보러가기</button>
+							<button class="btn btn-lg" onclick="delplan(${plan.plan_no})" >계획 삭제</button>							
 						</div>
 					</div>				
 			</div>		
+			
 	</c:forEach>
 </c:otherwise>	
 </c:choose>
+
 </body>
 </html>

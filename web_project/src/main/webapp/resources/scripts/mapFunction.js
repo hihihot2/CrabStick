@@ -7,103 +7,60 @@
 	var pathNum = 0;
 	var searchList;
 
-	//위치 생성
-	/*function setPlace(lat, lng, type) {
-		var url;
-		switch(type){
-			case 0: url = "../resources/png/hotel.png";break;
-			case 1: url = "../resources/png/food.png";break;
-			case 2: url = "../resources/png/castle.png";break;
-			case 3: url = "../resources/png/shopping.png";break;
-			case 4: url = "../resources/png/attraction.png";break;
-			default: url= "../resources/png/search.png";break;
-		}
-		var marker = new naver.maps.Marker({
-			position : new naver.maps.LatLng(lat, lng),
-			icon : {
-				url: url
-			}
-		});
-		if(type == 's'){
-			marker.setMap(map);
-		}
-		
-		markers.push(marker);
-		var subMarker = new Array();
-		subMarker.push(type);//flag
-		subMarker.push(type);//type
-		subMarker.push(marker);//marker
-		markers.push(subMarker);
-		
-		var infowindow = new naver.maps.InfoWindow();
-		var subWindow = new Array();
-		subWindow.push(type);
-		subWindow.push(type);
-		subWindow.push(infowindow);
-		infowindows.push(subWindow);
-	}	
-	//리스너 생성
-	function setListener(obj, type){
-		var enc = encodeURIComponent(obj[0]);
-		var len = markers.length-1;
-		var marker = markers[len][2], infowindow = infowindows[len][2];
-		
-		infowindow.setContent('<div style="width:300px;height:170px;"><div style="width:300px;height:88%;text-align:top;">'
-				+'<table style="width:100%;height:auto;"><tr>'
-				+'<td style="width:70%;text-align:center;"><h3>'+obj[0]+'</h3></td>'
-				+'<td style="width:30%;"><img src="'+obj[2]+'" style="width:110px;height:70px;"></td>'
-				+'</tr></table>'
-				+'Address : '+obj[1]+'<br>'
-				+'</div>'
-				+'<footer style="height:12%;text-align:center;color:blue;">아이콘을 클릭하면 내 일정에 추가됩니다</footer></div>'
-				);
-
-		naver.maps.Event.addListener(markers[len][2], 'click', function(e) {
-			if(confirm("일정에 추가하시겠습니까?")){
-				addPath(len, marker.getPosition().lat(), marker.getPosition().lng(), enc);
-			}
-		});
-		naver.maps.Event.addListener(markers[len][2], 'mouseover', function(e) {
-			infowindow.open(map, marker);
-		});
-		naver.maps.Event.addListener(markers[len][2], 'mouseout', function(e) {
-			infowindow.close();
-		});
-	}*/
 	function closeWindow(len){
 		var infowindow = infowindows[len][2];
 		infowindow.close();
 	}
-	/*
-	function addPath(len, lat, lng, name){
-		if(!isAddCondition && !isModifyCondition) {
-			alert('왼쪽에서 일정 만들기를 눌러주세요~');
-		} else {
-			if(isModifyCondition) {
-				
-			} else if(isAddCondition) {
-				
-			}
-			
-			var infowindow = infowindows[len][2];		// ??
-			var marker = markers[len][2];				// ??
-			var path = polyline[pathCount].getPath();
-			path.push(new naver.maps.LatLng(lat,lng));
-			var venue = new Object();
-			venue.name = name;
-			venue.comment = '';
-			venue.type = '1';	
-			venue.markerNum = len;// <-- 타입을 임의로 지정해 줬으나 나중에는 장소 타입에 따라 다르게 줘야 함
-			pathObj.push(venue);
-			updateList(); //화면 업데이트
-			
-			var sub = new Array();
-			sub.push(marker);
-			sub.push(infowindow);
-			myPath.push(sub);
+
+	function showoverlay(latlng, type, str){
+		//마우스 오른쪽 클릭 후 보이는 tab 창 초기화
+		if(type == 0){
+			alert(0);
+		}else if(type == 1){
+			alert(1);
 		}
+		mapOverlay = function(options) {
+			this._element = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+                    '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +
+                    '</div>')
+		    this.setPosition(options.position);
+		    this.setMap(options.map || null);
+		};
+		mapOverlay.prototype = new naver.maps.OverlayView();
+		mapOverlay.prototype.constructor = mapOverlay;
+		mapOverlay.prototype.setPosition = function(position) {
+		    this._position = position;
+		    this.draw();
+		};
+		mapOverlay.prototype.getPosition = function() {
+		    return this._position;
+		};
+		mapOverlay.prototype.onAdd = function() {
+		    var overlayLayer = this.getPanes().overlayLayer;
+
+		    this._element.appendTo(overlayLayer);
+		};
+		mapOverlay.prototype.draw = function() {
+		    if (!this.getMap()) {
+		        return;
+		    }
+		    var projection = this.getProjection(),
+		        position = this.getPosition(),
+		        pixelPosition = projection.fromCoordToOffset(position);
+		    this._element.css('left', pixelPosition.x);
+		    this._element.css('top', pixelPosition.y);
+		};
+		mapOverlay.prototype.onRemove = function() {
+		    var overlayLayer = this.getPanes().overlayLayer;
+		    this._element.remove();
+		    this._element.off();
+		};
+		overlay = new mapOverlay({
+			position: latlng,
+			map: map
+		});
 	}
-	*/
+	
 	function updateList(){
 		var pathNum = 0;
 		var path = polyline[pathCount].getPath();

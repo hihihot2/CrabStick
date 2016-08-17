@@ -31,11 +31,13 @@
 	//변수 등록
 	var count = 1;
 	var map; //지도 저장 객체
+	var lat, lng; //지도 좌표 변수
 	var myPath = []; //선택한 경로 저장 배열
 	var markers = [];//생성된 마커를 담을 배열
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
-	var zoom; //zoom 상태 판별
+	var menuLayer;
+	var markerLayer;
 	var polyline = new Array(); //라인 변수
 	var pathObj = [];
 	var loc_no;
@@ -54,8 +56,8 @@
 	$(document).ready(function() {
 		//넘겨온 선택지 값 판별
 		loc_no =  <%= request.getAttribute("loc_no")%>
-		var lat = <%= request.getAttribute("lat") %>
-		var lng = <%= request.getAttribute("lang")%>
+		lat = <%= request.getAttribute("lat") %>
+		lng = <%= request.getAttribute("lang")%>
 		
 		// 지도 생성 
 		map = new naver.maps.Map('map', {
@@ -195,6 +197,17 @@
 			}
 		}
 		
+		menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+                '</div>');
+		map.getPanes().floatPane.appendChild(menuLayer[0]);
+		menuLayer.hide();
+		
+		markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+            '<input id="ovl" style="width:106px" type="button" value="일정에 추가2">' +
+       		'</div>');
+		map.getPanes().floatPane.appendChild(markerLayer[0]);
+		markerLayer.hide();
+		
 		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
 		naver.maps.Event.addListener(map, 'idle', function(e) {
 			updateMarkers(map, myPath);
@@ -202,6 +215,7 @@
 
 		//맵 클릭 이벤트
 		naver.maps.Event.addListener(map, 'click', function(e) {
+			menuLayer.hide();
 			for(var i = 0 ; i < infowindows.length ; i++){
 				if(infowindows[i][1].getMap()){
 					infowindows[i][1].close();
@@ -211,12 +225,11 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-			var tmp = '';
-			for(var i = 0 ; i < myPath.length ; i++){
-				tmp += myPath[i][0].getPosition().lat()+",";
-			}
-			alert(tmp);
-		})
+	        menuLayer.show().css({
+	            left: e.offset.x,
+	            top: e.offset.y
+	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+		});
 	});
 </script>
 

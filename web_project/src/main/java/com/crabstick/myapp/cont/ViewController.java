@@ -20,6 +20,7 @@ import com.crabstick.myapp.plan.PlanService;
 import com.crabstick.myapp.recommendation.City;
 import com.crabstick.myapp.recommendation.RecommendationService;
 import com.crabstick.myapp.recommendation.Weight_Loc;
+import com.crabstick.myapp.venue.Venue;
 import com.crabstick.myapp.venue.VenueService;
 
 @Controller
@@ -50,7 +51,6 @@ public class ViewController {
 
 	@Resource(name = "recommendationService")
 	private RecommendationService recommendationService;
-
 	public void setRecommendationService(RecommendationService recommendationService) {
 		this.recommendationService = recommendationService;
 	}
@@ -96,7 +96,6 @@ public class ViewController {
 		if (httpSession.getAttribute("no")!=null) { // (1) 로그인
 
 			int mem_id =  (Integer) httpSession.getAttribute("no") ;
-
 			//TODO 회원 설문 결과 얻어오기
 			Member member = service.getmem_all(mem_id); 
 			String[] survey = member.getMem_survey().split(":");
@@ -238,8 +237,9 @@ public class ViewController {
 			mav.addObject("travel_purpose", survey[0]); //설문지 1번 (목적)
 			mav.addObject("travel_accompany", survey[1]); //설문지 2번 (동행)
 			mav.addObject("favor_city", survey[2]);//설문지 3번(여행지 선호도)
+			
 
-
+			
 			return mav;
 		} else { // (2) 비 로그인
 			System.out.println("비로그인");

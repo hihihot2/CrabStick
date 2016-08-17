@@ -2,22 +2,30 @@ package com.crabstick.myapp.recommendation;
 
 import java.util.ArrayList;
 
+import com.crabstick.myapp.venue.Venue;
+
 public interface RecommendationService {
 	
-	//TODO 1. 도시 추천
-	/*
-	 * process 
-	 * 로그인한 사용자일 경우,
-	 * 사용자 설문 결과 (주 여행 지역의 답변과 관련 1)대도시, 2)자연경관, 3)유적지, 4)상관없음) 를 대표하는 도시를 추천해줘야함.
-	 * 로그인을 하지 않은 사용자일 경우 일반적으로 유명한 도시? or 플래너에 가장 많이 등록된 도시를 추천(추후 논의)
-	 *   
-	 * */
-	
+	/* 검색 메서드 */
 	public ArrayList<City> searchByName(String loc_name);
+	/* 검색 메서드 */
 	
-	//검색 업뎃
+	/*검색 업뎃 메서드*/
 	public void update_Weight(City update_City);
-	//도시 DB 모두 불러오기
+	/*검색 업뎃 메서드*/
+	
+	/*도시 DB 모두 불러오기*/
 	public ArrayList<City> All_City();
+	/*도시 DB 모두 불러오기*/
+	
+	/* Venues Table로부터 Transaction(경로 정보가 담긴 하나의 행을 의미) 번호 받아오기 */
+	public ArrayList<Integer> all_Transactions();
+
+	/* Venues Table의 자료 가져오기*/
+	public ArrayList<Venue> all_Data();
+	
+	/* Venues Table로 부터 빈발 항목 판별을 위한 지역 데이터 가져오기*/
+	public ArrayList<String> all_Sequence();
+
 	
 }
