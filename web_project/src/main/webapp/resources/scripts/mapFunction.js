@@ -12,7 +12,7 @@
 		infowindow.close();
 	}
 
-	function showoverlay(latlng){
+	function showoverlay(latlng, type){
 		if(overlay != null){
 			overlay.setMap(null);
 		}
@@ -20,6 +20,53 @@
 		mapOverlay = function(options) {
 			this._element = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
                     '<input id="ovl" style="width:106px" type="button" value="일정에 추가">' +
+                    '</div>')
+		    this.setPosition(options.position);
+		    this.setMap(options.map || null);
+		};
+		mapOverlay.prototype = new naver.maps.OverlayView();
+		mapOverlay.prototype.constructor = mapOverlay;
+		mapOverlay.prototype.setPosition = function(position) {
+		    this._position = position;
+		    this.draw();
+		};
+		mapOverlay.prototype.getPosition = function() {
+		    return this._position;
+		};
+		mapOverlay.prototype.onAdd = function() {
+		    var overlayLayer = this.getPanes().overlayLayer;
+
+		    this._element.appendTo(overlayLayer);
+		};
+		mapOverlay.prototype.draw = function() {
+		    if (!this.getMap()) {
+		        return;
+		    }
+		    var projection = this.getProjection(),
+		        position = this.getPosition(),
+		        pixelPosition = projection.fromCoordToOffset(position);
+		    this._element.css('left', pixelPosition.x);
+		    this._element.css('top', pixelPosition.y);
+		};
+		mapOverlay.prototype.onRemove = function() {
+		    var overlayLayer = this.getPanes().overlayLayer;
+		    this._element.remove();
+		    this._element.off();
+		};
+		overlay = new mapOverlay({
+			position: latlng,
+			map: map
+		});
+	}
+	function showoverlay2(latlng, type){
+		if(overlay != null){
+			overlay.setMap(null);
+		}
+		alert('ismarker');
+		//마우스 오른쪽 클릭 후 보이는 tab 창 초기화
+		mapOverlay = function(options) {
+			this._element = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+                    '<input id="ovl" style="width:106px" type="button" value="일정에 추가2">' +
                     '</div>')
 		    this.setPosition(options.position);
 		    this.setMap(options.map || null);

@@ -178,7 +178,7 @@
 		            left: e.offset.x,
 		            top: e.offset.y
 		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">'); */
-				showoverlay(marker.getPosition());
+				showoverlay2(marker.getPosition(), 1);
 			});
 			
 			naver.maps.Event.addListener(marker, 'mouseover', function() {
@@ -245,7 +245,7 @@
 	            top: e.offset.y
 	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">'); */
 	        
-			showoverlay(e.coord);
+			showoverlay(e.coord, 0);
 		});
 	});
 </script>
