@@ -215,18 +215,16 @@
 	
 	//추가 경로 삭제
 	function delPath(num, len){
-		var marker = markers[len][2];
 		var iDiv = document.getElementById("venue_"+num);
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-		myPath[num][0].setMap(null);
-		myPath.splice(num, 1);
-		/*markers[len][0] = markers[len][1];
-		marker.setMap(null);*/
+//		myPath[num][0].setMap(null);
+//		myPath.splice(num, 1);
 		updateList();
+//		myMarkers.splice(num)
 	}
 	
 	// 화면의 리스트 삭제
