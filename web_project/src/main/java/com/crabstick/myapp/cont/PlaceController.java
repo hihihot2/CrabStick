@@ -121,28 +121,41 @@ public class PlaceController {
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_SORT_ORDER, "true");
 
 		Response hotels = null;
+
 		ArrayList<Attraction> recommandList = new ArrayList<Attraction>();
+		List<Hotel> hotelList2 = new ArrayList<Hotel>();
+
 		try {
 			/* 모든 호텔 정보 */
 			hotels = expedia.getHotels();
-			
+
 			/* 추천지역 검토 */
 			List<Hotel> hotelList = hotels.getHotelList();
 
 			for(Hotel hotel : hotelList) {
+				boolean isMatched = false;
 				for(com.crabstick.myapp.venue.Venue recommend_Venue : recommend_Venue_List) {
 					if(hotel.getName().equals(recommend_Venue.getVen_name())) {
 						Attraction attraction = new Attraction();
 						attraction.setTitle(hotel.getName());
 						attraction.setMapx(hotel.getLongitude());
 						attraction.setMapy(hotel.getLatitude());
+						attraction.setAddr1(hotel.getAddress());
+						attraction.setImgURL(Expedia.MEDIA_URL+hotel.getThumbnailUrl());
 						recommandList.add(attraction);
-					}
+						isMatched = true;
+					} 
+				}
+
+				if(!isMatched) {
+					hotelList2.add(hotel);
 				}
 			}
 
+			hotels.setHotelList((ArrayList<Hotel>) hotelList2);
 
-			
+
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,21 +174,25 @@ public class PlaceController {
 			ArrayList<Group> venueGroups = foursquare.getVenues();
 			for(Group group : venueGroups) {
 				for(Venue venue : group.getItems()) {
-
+					boolean isMatched = false;
 					for(com.crabstick.myapp.venue.Venue recommend_Venue : recommend_Venue_List) {
 						if(venue.getName().equals(recommend_Venue.getVen_name())) {
 							Attraction attraction = new Attraction();
 							attraction.setTitle(venue.getName());
 							attraction.setMapx(Double.toString(venue.getLocation().getLng()));
 							attraction.setMapy(Double.toString(venue.getLocation().getLat()));
+							attraction.setAddr1(venue.getLocation().getAddress());
 							recommandList.add(attraction);
+							isMatched = true;
 						}
 					}
 					/* 모든 맛집 정보 */
-					venues.add(venue);
+					if (!isMatched){
+						venues.add(venue);
+					}
 				}
 			}
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -184,7 +201,7 @@ public class PlaceController {
 			e.printStackTrace();
 		}
 
-		
+
 		/* 명소 받아오기 */
 		//발급 받은 서비스키
 		//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
@@ -203,13 +220,13 @@ public class PlaceController {
 			XPath  xpath = XPathFactory.newInstance().newXPath();
 			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
 			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
-			
+
 
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
 			expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-			
+
 
 			if (item_Node.getLength()>0){
 
@@ -275,27 +292,27 @@ public class PlaceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/* 자연 불러오기 */
-		
-		
+
+
 		ArrayList<Attraction> attraction_List_Nature = new ArrayList<Attraction>();
 		try {
 			//URL접근
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-		
+
 
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
 			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
 			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
-		
+
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
 			expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-		
+
 			if (item_Node.getLength()>0){
 
 				for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
@@ -359,27 +376,27 @@ public class PlaceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/* 휴식 카테고리 */
-		
+
 		ArrayList<Attraction> attraction_List_Rest = new ArrayList<Attraction>();
 
 		try {
 			//URL접근
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-		
+
 
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
 			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
 			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
-		
+
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
 			expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-	
+
 			if (item_Node.getLength()>0){
 
 				for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
@@ -443,26 +460,26 @@ public class PlaceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/* 쇼핑 센터 불러오기 */
-		
+
 		ArrayList<Attraction> attraction_List_Shopping = new ArrayList<Attraction>();
 		try {
 			//URL접근
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=1&pageNo=1");
-			
+
 
 			// xpath 생성
 			XPath  xpath = XPathFactory.newInstance().newXPath();
 			String expression = "//*/totalCount"; //xml <item> </item> 노드 읽기
 			int totalCount = Integer.parseInt(xpath.compile(expression).evaluate(document));
-		
+
 			document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=38&mapX="+lng+"&mapY="+lat+"&radius=10000&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows="+totalCount+"&pageNo=1");
 			expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-		
+
 			if (item_Node.getLength()>0){
 
 				for( int idx=-1; idx<item_Node.getLength()-1; idx++ ){// -1 부터 시작하는 이유는 맨 처음 item에 setTextContent 를 부여 못하기때문
@@ -544,7 +561,7 @@ public class PlaceController {
 		mav.addObject("RESTS", attraction_List_Rest);
 		mav.addObject("NATURES", attraction_List_Nature);
 		return mav;
-		
+
 	}
 
 

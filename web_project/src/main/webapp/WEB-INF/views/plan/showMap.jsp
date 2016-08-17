@@ -154,6 +154,7 @@
 				case 3: markerImgUrl = "../resources/png/shopping.png";break;
 				case 4: markerImgUrl = "../resources/png/rest.png";break;
 				case 5: markerImgUrl = "../resources/png/attraction.png";break;
+				case 6: markerImgUrl = "../resources/png/search.png";break;
 				default: markerImgUrl = "../resources/png/search.png";break;
 			}
 			
@@ -216,7 +217,6 @@
 		}
 		
 		function addPath(venue) {
-			alert("1");
 			if(!isAddCondition && !isModifyCondition) {
 				alert('왼쪽에서 일정 만들기를 눌러주세요~');
 			} else {
