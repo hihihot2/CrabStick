@@ -392,32 +392,31 @@ ol, ul {
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
 						if(isAddCondition) {
-							if(confirm("일정에 추가하시겠습니까?")){
-								addPath(venue);
-								var myMarker = new naver.maps.Marker({
-									position : new naver.maps.LatLng(venue.lat, venue.lng),
-									icon : {
-										url: "../resources/png/check.png"
-									},
-									animation: naver.maps.Animation.BOUNCE,
-									clickable: true,
-									map: map,
-									title: venue.name,
-									zIndex: 100
-								})
-								markerLayer.hide();
-								if(myMarkers.length > 0) {
-									myMarkers[myMarkers.length - 1].setAnimation(null);
-								}
-								myMarkers.push(myMarker);
-								allMarkers.map(function(x) {
-									x.setMap(null);
-								})
-								allMarkers = new Array();
-								
-								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
-								venueOrder += 1;
-							}						
+							
+							addPath(venue);
+							var myMarker = new naver.maps.Marker({
+								position : new naver.maps.LatLng(venue.lat, venue.lng),
+								icon : {
+									url: "../resources/png/check.png"
+								},
+								animation: naver.maps.Animation.BOUNCE,
+								clickable: true,
+								map: map,
+								title: venue.name,
+								zIndex: 100
+							})
+							markerLayer.hide();
+							if(myMarkers.length > 0) {
+								myMarkers[myMarkers.length - 1].setAnimation(null);
+							}
+							myMarkers.push(myMarker);
+							allMarkers.map(function(x) {
+								x.setMap(null);
+							})
+							allMarkers = new Array();
+							
+							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+							venueOrder += 1;						
 						} else {
 							alert('일정 만들기를 눌러주세요')
 						}
