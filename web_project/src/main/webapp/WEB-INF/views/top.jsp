@@ -244,7 +244,7 @@ h4 {
 				<div class="navbar-header">
 					<a class="navbar-brand" href="javascript:home()">LOGO, Our Web
 						site Name</a>
-
+<%-- <img src="${pageContext.request.contextPath}/resources/png/horse.png"> --%>
 
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
