@@ -9814,7 +9814,7 @@ jQuery.fn.extend( {
 		// Running getBoundingClientRect on a
 		// disconnected node in IE throws an error
 		if ( !elem.getClientRects().length ) {
-			return { top: 0, left: 0 };
+			return { top: 50, left: 250 };
 		}
 
 		rect = elem.getBoundingClientRect();

@@ -222,8 +222,6 @@ ol, ul {
 	var myMarkers = new Array();
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
-	var overlay;
-	var olflag;
 	var menuLayer;
 	var markerLayer;
 	var polyline = new Array(); //라인 변수
@@ -233,7 +231,9 @@ ol, ul {
 	var isModifyCondition = false;
 	var isFirstAdd = true;
 	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
-	var pathCount = 0;
+	var pathCount = 0;	
+	var setPlace;
+	var addPath;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -253,10 +253,11 @@ ol, ul {
 			zoom : 7
 		});
 		//검색창 생성 및 기능 설정
-		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
+		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;top:10px;left:200px;">'
 				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
 				+ '</div>');
 		contentEl.appendTo(map.getElement());
+		
 		$('#searchData').autocomplete({
 			source: function(request, response){
 				var params = "data="+encodeURIComponent(request.term);
@@ -340,7 +341,7 @@ ol, ul {
 			})
 		}
 		
-		function setPlace(venue) {
+		setPlace = function(venue) {
 			var markerImgUrl;
 			switch(venue.type){
 				case 0: markerImgUrl = "../resources/png/hotel.png";break;
@@ -382,9 +383,7 @@ ol, ul {
 		            left: e.offset.x,
 		            top: e.offset.y
 		        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
-		        /* olflag = 1;
-				showoverlay(marker.getPosition(), 1); */
-				$('#ovl2').on('click', function() {
+		        $('#ovl2').on('click', function() {
 					if(isAddCondition) {
 						if(confirm("일정에 추가하시겠습니까?")){
 							addPath(venue);
@@ -425,7 +424,7 @@ ol, ul {
 			allMarkers.push(marker);
 		}
 		
-		function addPath(venue) {
+		addPath = function(venue) {
 			if(!isAddCondition && !isModifyCondition) {
 				alert('왼쪽에서 일정 만들기를 눌러주세요~');
 			} else {
