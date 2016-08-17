@@ -33,7 +33,8 @@
 	var map; //지도 저장 객체
 	var lat, lng; //지도 좌표 변수
 	var myPath = []; //선택한 경로 저장 배열
-	var markers = [];//생성된 마커를 담을 배열
+	var allMarkers = new Array();//생성된 마커를 담을 배열
+	var myMarkers = new Array();
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
 	var overlay;
@@ -109,24 +110,28 @@
 				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(5,'+lat+','+lng+')> 자연<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
-
-		$.ajax({
-			url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
-			type: 'POST',
-			dataType: 'text',
-			data: {
-				lat: lat,
-				lng: lng,
-				radius: 100000
-			},
-			success: function(result) {
-				//console.log(result);
-				var venueList = eval('('+result+')');
-				for(var i = 0; i < venueList.length; i++) {
-					setPlace(venueList[i]);
+		
+		getRecommandPlaces(lat, lng, 1000);
+		
+		function getRecommandPlaces(latitude, longitude, radius) {
+			$.ajax({
+				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
+				type: 'POST',
+				dataType: 'text',
+				data: {
+					lat: latitude,
+					lng: longitude,
+					radius: radius
+				},
+				success: function(result) {
+					//console.log(result);
+					var venueList = eval('('+result+')');
+					for(var i = 0; i < venueList.length; i++) {
+						setPlace(venueList[i]);
+					}
 				}
-			}
-		});
+			})
+		}
 		
 		function setPlace(venue) {
 			var markerImgUrl;
@@ -149,7 +154,6 @@
 				clickable: true,
 				map: map,
 				title: venue.name
-				
 			});
 			
 			// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
@@ -162,7 +166,6 @@
 			var infoWindow = new naver.maps.InfoWindow({
 				content: windowForm[0]
 			})
-			
 			
 			naver.maps.Event.addListener(marker, 'click', function() {
 				if(confirm("일정에 추가하시겠습니까?")){
@@ -185,6 +188,8 @@
 			naver.maps.Event.addListener(marker, 'mouseout', function() {
 				infoWindow.close();
 			});
+			
+			allMarkers.push(marker);
 		}
 		
 		function addPath(venue) {
