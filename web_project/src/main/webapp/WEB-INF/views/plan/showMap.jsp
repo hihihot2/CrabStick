@@ -1090,14 +1090,14 @@ ol, ul {
 	</div>
 
 	<div id='pathEditDivForm' class='hiddenDiv'>
-		<input type='text' name='pathName' id='pathName' placeholder='경로 이름을 입력해주세요.'>
+		<input type='text' name='pathName' id='pathName' placeholder='경로 이름 입력'>
 		<input type='hidden' name='pathNo' id='pathNo'>
 		<div id='venueListInSavedPath'></div>
 
 		<div id='btnsDiv'>
-			<input type='button' id='modifyPathBtn' value='수정할게요'>
-			<input type='button' id='cancelPathBtn' value='취소할게요'> 
-			<input type='button' id='removePathBtn' value='없애주세요'>
+			<input type='button' id='modifyPathBtn' value='수정'>
+			<input type='button' id='cancelPathBtn' value='취소'> 
+			<input type='button' id='removePathBtn' value='삭제'>
 		</div>
 	</div>
 	
