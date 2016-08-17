@@ -7,8 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <!-- jQuery  -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery-3.1.0.js"></script>
 <script src="${pageContext.request.contextPath}/resources/scripts/jquery-ui.js"></script>
+<!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
 <script
 	src="${pageContext.request.contextPath}/resources/scripts/jquery_cookie.js"
 	type="text/javascript"></script>
