@@ -78,7 +78,7 @@
 	
 	<!-- Venues Data 가져오기  -->
 	<select id="all_Data" resultMap="VenueResultMap">
-		SELECT * FROM venues
+		SELECT * FROM venues ORDER BY path_no ASC, ven_order ASC
 	</select>
 	<!-- Venues Data 가져오기  -->
 	
