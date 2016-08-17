@@ -185,6 +185,8 @@
 				$('#ovl2').on('click', function() {
 					if(confirm("일정에 추가하시겠습니까?")){
 						addPath(venue);
+						marker.setAnimation(naver.maps.Animation.BOUNCE);
+						marker.setIcon("../resources/png/check.png");
 						markerLayer.hide();
 					}
 				});
@@ -270,7 +272,7 @@
 	        } */
 	        $('#ovl').on('click', function() {
 	        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-					addPath(venue);
+					//addPath(venue);
 					markerLayer.hide();
 				}
 	        })
