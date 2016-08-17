@@ -229,7 +229,7 @@
 							<a
 								href="javascript:modal_open('${List.loc_no}', '${List.loc_commt}')">${List.loc_name}</a>
 						</h4>
-						<p>사진을 클릭하시면</p><p style="color: #ff0000">${List.loc_name}</p><p>에 대해 더 알 수 있습니다.</p>
+						<p>사진을 클릭하시면</p><b style="color: #ff0000">${List.loc_name}</b>에 대해 더 알 수 있습니다.
 					</div>
 				</c:forEach>
 			</div>
