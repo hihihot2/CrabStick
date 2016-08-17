@@ -220,6 +220,7 @@ ol, ul {
 	var myPath = []; //선택한 경로 저장 배열
 	var allMarkers = new Array();//생성된 마커를 담을 배열
 	var myMarkers = new Array();
+	var myMarkersArray = new Array();
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
 	var overlay;
@@ -235,6 +236,7 @@ ol, ul {
 	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
 	var pathCount = 0;
 	var venueOrder = 0;
+	var getRecommandPlaces;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -242,196 +244,198 @@ ol, ul {
     regionGeoJson = [],
     loadCount = 0;	
 	
-	$(document).ready(function() {
-		//넘겨온 선택지 값 판별
-		loc_no =  <%= request.getAttribute("loc_no")%>
-		lat = <%= request.getAttribute("lat") %>
-		lng = <%= request.getAttribute("lang")%>
-		
-		// 지도 생성 
-		map = new naver.maps.Map('map', {
-			center : new naver.maps.LatLng(lat, lng),
-			zoom : 7
-		});
-		//검색창 생성 및 기능 설정
-		var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
-				+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
-				+ '</div>');
-		contentEl.appendTo(map.getElement());
-		$('#searchData').autocomplete({
-			source: function(request, response){
-				var params = "data="+encodeURIComponent(request.term);
-				//sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
-				$.ajax({
-					url: '../plancont/searchloc.do?'+params,
-					type: 'POST',
-					success: function(data){
-						var search = eval("("+ data +")");
-						var tmp = [];var tmp2 = new Array();
-						for(var i = 0 ; i < search.length ; i++){
-							var before = search[i].title;
-							tmp.push(regTag(before));
-							var sub_tmp2 = new Array();
-							sub_tmp2.push(regTag(before));
-							sub_tmp2.push(search[i].addr);
-							tmp2.push(sub_tmp2);
+
+
+
+	/******** 동희 작업구역 *********/
+	(function($) {
+		$(document).ready(function() {
+			//넘겨온 선택지 값 판별
+			loc_no =  <%= request.getAttribute("loc_no")%>
+			lat = <%= request.getAttribute("lat") %>
+			lng = <%= request.getAttribute("lang")%>
+			
+			// 지도 생성 
+			map = new naver.maps.Map('map', {
+				center : new naver.maps.LatLng(lat, lng),
+				zoom : 10
+			});
+			//검색창 생성 및 기능 설정
+			var contentEl = $('<div style="width:250px;position:absolute;background-color:#fff;margin:10px;">'
+					+ '<input id="searchData" style="width:250px" type="text" onkeyup="keyEventChk()" placeholder="장소를 검색하세요">'
+					+ '</div>');
+			contentEl.appendTo(map.getElement());
+			$('#searchData').autocomplete({
+				source: function(request, response){
+					var params = "data="+encodeURIComponent(request.term);
+					//sendRequest("../plancont/searchloc.do", params, setSearchPlace, 'POST');
+					$.ajax({
+						url: '../plancont/searchloc.do?'+params,
+						type: 'POST',
+						success: function(data){
+							var search = eval("("+ data +")");
+							var tmp = [];var tmp2 = new Array();
+							for(var i = 0 ; i < search.length ; i++){
+								var before = search[i].title;
+								tmp.push(regTag(before));
+								var sub_tmp2 = new Array();
+								sub_tmp2.push(regTag(before));
+								sub_tmp2.push(search[i].addr);
+								tmp2.push(sub_tmp2);
+							}
+							searchList = tmp2;
+							response(tmp);
 						}
-						searchList = tmp2;
-						response(tmp);
+					});
+				},
+				select: function(event, ui){
+					if(event.keyCode == 13){
+						$('searchData').val(ui.item.value);
 					}
-				});
-			},
-			select: function(event, ui){
-				if(event.keyCode == 13){
-					$('searchData').val(ui.item.value);
 				}
-			}
-		});
-		//체크박스 생성 및 기능 설정
-		var contentEl2 = $('<div style="border:2px solid;width:70px;height:180px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_hotel.png" /> 호텔<br>'
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_food.png" /> 맛집<br>' 
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_castle.png" /> 명소<br>' 
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_shopping.png" /> 쇼핑<br>' 
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_rest.png" /> 휴식<br>' 
-				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_attraction.png" /> 자연<br>' 
-				+ '</div>');
-		contentEl2.appendTo(map.getElement());
-		
-		getRecommandPlaces(lat, lng, 10000, venueOrder);
-		venueOrder += 1;
-		
-		function getRecommandPlaces(latitude, longitude, radius, order) {
-			var loading;
-			$.ajax({
-				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
-				type: 'POST',
-				dataType: 'text',
-				data: {
-					lat: latitude,
-					lng: longitude,
-					radius: radius,
-					order: order
-				},
-				success: function(result) {
-					//console.log(result);
-					var venueList = eval('('+result+')');
-					for(var i = 0; i < venueList.length; i++) {
-						setPlace(venueList[i]);
+			});
+			//체크박스 생성 및 기능 설정
+			var contentEl2 = $('<div style="border:2px solid;width:70px;height:180px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_hotel.png" /> 호텔<br>'
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_food.png" /> 맛집<br>' 
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_castle.png" /> 명소<br>' 
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_shopping.png" /> 쇼핑<br>' 
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_rest.png" /> 휴식<br>' 
+					+ '<img style="width:30px;height:30px;" src="../resources/png/cover_attraction.png" /> 자연<br>' 
+					+ '</div>');
+			contentEl2.appendTo(map.getElement());
+			
+			getRecommandPlaces = function(latitude, longitude, radius, order) {
+				var loading;
+				$.ajax({
+					url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
+					type: 'POST',
+					dataType: 'text',
+					data: {
+						lat: latitude,
+						lng: longitude,
+						radius: radius,
+						order: order
+					},
+					success: function(result) {
+						//console.log(result);
+						var venueList = eval('('+result+')');
+						for(var i = 0; i < venueList.length; i++) {
+							setPlace(venueList[i]);
+						}
+					},
+					beforeSend: function(){
+						loading = $('<div class="wrap-loading">'
+								+'<div class="loader">'
+								+'<ul class="hexagon-container">'
+								+'<li class="hexagon hex_1"></li>'
+								+'<li class="hexagon hex_2"></li>'
+								+'<li class="hexagon hex_3"></li>'
+								+'<li class="hexagon hex_4"></li>'
+								+'<li class="hexagon hex_5"></li>'
+								+'<li class="hexagon hex_6"></li>'
+								+'<li class="hexagon hex_7"></li>'
+							+'</ul>'
+							+'</div></div> ');
+						loading.appendTo(map.getElement());
+						$('.wrap-loading').removeClass('display-none');
+					},
+					complete: function(){
+						$('.wrap-loading').addClass('display-none');
 					}
-				},
-				beforeSend: function(){
-					loading = $('<div class="wrap-loading">'
-							+'<div class="loader">'
-							+'<ul class="hexagon-container">'
-							+'<li class="hexagon hex_1"></li>'
-							+'<li class="hexagon hex_2"></li>'
-							+'<li class="hexagon hex_3"></li>'
-							+'<li class="hexagon hex_4"></li>'
-							+'<li class="hexagon hex_5"></li>'
-							+'<li class="hexagon hex_6"></li>'
-							+'<li class="hexagon hex_7"></li>'
-						+'</ul>'
-						+'</div></div> ');
-					loading.appendTo(map.getElement());
-					$('.wrap-loading').removeClass('display-none');
-				},
-				complete: function(){
-					$('.wrap-loading').addClass('display-none');
+				})
+			}
+			
+			function setPlace(venue) {
+				var markerImgUrl;
+				switch(venue.type){
+					case 0: markerImgUrl = "../resources/png/hotel.png";break;
+					case 1: markerImgUrl = "../resources/png/food.png";break;
+					case 2: markerImgUrl = "../resources/png/castle.png";break;
+					case 3: markerImgUrl = "../resources/png/shopping.png";break;
+					case 4: markerImgUrl = "../resources/png/rest.png";break;
+					case 5: markerImgUrl = "../resources/png/attraction.png";break;
+					case 6: markerImgUrl = "../resources/png/star.png";break;
+					default: markerImgUrl = "../resources/png/search.png";break;
 				}
-			})
-		}
-		
-		function setPlace(venue) {
-			var markerImgUrl;
-			switch(venue.type){
-				case 0: markerImgUrl = "../resources/png/hotel.png";break;
-				case 1: markerImgUrl = "../resources/png/food.png";break;
-				case 2: markerImgUrl = "../resources/png/castle.png";break;
-				case 3: markerImgUrl = "../resources/png/shopping.png";break;
-				case 4: markerImgUrl = "../resources/png/rest.png";break;
-				case 5: markerImgUrl = "../resources/png/attraction.png";break;
-				case 6: markerImgUrl = "../resources/png/star.png";break;
-				default: markerImgUrl = "../resources/png/search.png";break;
-			}
-			
-			// marker 변수: 지도에 찍히는 '핀'의 위치와 아이콘을 정함
-			var marker = new naver.maps.Marker({
-				position : new naver.maps.LatLng(venue.lat, venue.lng),
-				icon : {
-					url: markerImgUrl
-				},
-				animation: naver.maps.Animation.DROP,
-				clickable: true,
-				map: map,
-				title: venue.name,
-				zIndex: 100
-			});
-			
-			// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
-			var windowForm = $('div#infoWindowForm').clone().removeClass('hiddenDiv').attr('id', 'infoWindowDiv');
-			if(venue.img != '') {
-				windowForm.find('img#venueThumbnail').attr('src', venue.img);	// venue.img에서 이미지 주소 가져옴
-			}
-			windowForm.find('p#venueName').text(venue.name);
-			windowForm.find('p#venueAddress').text(venue.address);
-			var infoWindow = new naver.maps.InfoWindow({
-				content: windowForm[0]
-			})
-			
-			naver.maps.Event.addListener(marker, 'rightclick', function(e) {
-				markerLayer.show().css({
-		            left: e.offset.x,
-		            top: e.offset.y
-		        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
-		        /* olflag = 1;
-				showoverlay(marker.getPosition(), 1); */
-				$('#ovl2').on('click', function() {
-					if(isAddCondition) {
-						if(confirm("일정에 추가하시겠습니까?")){
-							addPath(venue);
-							var myMarker = new naver.maps.Marker({
-								position : new naver.maps.LatLng(venue.lat, venue.lng),
-								icon : {
-									url: "../resources/png/check.png"
-								},
-								animation: naver.maps.Animation.BOUNCE,
-								clickable: true,
-								map: map,
-								title: venue.name,
-								zIndex: 100
-							})
-							markerLayer.hide();
-							myMarkers.push(myMarker);
-							allMarkers.map(function(x) {
-								x.setMap(null);
-							})
-							allMarkers = new Array();
-							
-							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
-							venueOrder += 1;
-						}						
-					} else {
-						alert('일정 만들기를 눌러주세요')
-					}
+				
+				// marker 변수: 지도에 찍히는 '핀'의 위치와 아이콘을 정함
+				var marker = new naver.maps.Marker({
+					position : new naver.maps.LatLng(venue.lat, venue.lng),
+					icon : {
+						url: markerImgUrl
+					},
+					animation: naver.maps.Animation.DROP,
+					clickable: true,
+					map: map,
+					title: venue.name,
+					zIndex: 100
 				});
-			});
+				
+				// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
+				var windowForm = $('div#infoWindowForm').clone().removeClass('hiddenDiv').attr('id', 'infoWindowDiv');
+				if(venue.img != '') {
+					windowForm.find('img#venueThumbnail').attr('src', venue.img);	// venue.img에서 이미지 주소 가져옴
+				}
+				windowForm.find('p#venueName').text(venue.name);
+				windowForm.find('p#venueAddress').text(venue.address);
+				var infoWindow = new naver.maps.InfoWindow({
+					content: windowForm[0]
+				})
+				
+				naver.maps.Event.addListener(marker, 'rightclick', function(e) {
+					markerLayer.show().css({
+			            left: e.offset.x,
+			            top: e.offset.y
+			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
+			        /* olflag = 1;
+					showoverlay(marker.getPosition(), 1); */
+					$('#ovl2').on('click', function() {
+						if(isAddCondition) {
+							if(confirm("일정에 추가하시겠습니까?")){
+								addPath(venue);
+								var myMarker = new naver.maps.Marker({
+									position : new naver.maps.LatLng(venue.lat, venue.lng),
+									icon : {
+										url: "../resources/png/check.png"
+									},
+									animation: naver.maps.Animation.BOUNCE,
+									clickable: true,
+									map: map,
+									title: venue.name,
+									zIndex: 100
+								})
+								markerLayer.hide();
+								if(myMarkers.length > 0) {
+									myMarkers[myMarkers.length - 1].setAnimation(null);
+								}
+								myMarkers.push(myMarker);
+								allMarkers.map(function(x) {
+									x.setMap(null);
+								})
+								allMarkers = new Array();
+								
+								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+								venueOrder += 1;
+							}						
+						} else {
+							alert('일정 만들기를 눌러주세요')
+						}
+					});
+				});
+				
+				naver.maps.Event.addListener(marker, 'mouseover', function() {
+					infoWindow.open(map, marker);
+				});
+				
+				naver.maps.Event.addListener(marker, 'mouseout', function() {
+					infoWindow.close();
+				});
+				
+				allMarkers.push(marker);
+			}
 			
-			naver.maps.Event.addListener(marker, 'mouseover', function() {
-				infoWindow.open(map, marker);
-			});
-			
-			naver.maps.Event.addListener(marker, 'mouseout', function() {
-				infoWindow.close();
-			});
-			
-			allMarkers.push(marker);
-		}
-		
-		function addPath(venue) {
-			if(!isAddCondition && !isModifyCondition) {
-				alert('왼쪽에서 일정 만들기를 눌러주세요~');
-			} else {
+			function addPath(venue) {
 				if(isModifyCondition) {
 					console.log("일정 수정하기");
 					// TODO: 일정 수정에서 추가 가능하게 코딩
@@ -444,73 +448,65 @@ ol, ul {
 					updateList();
 				}
 			}
-		}
-		
-		menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-                '</div>');
-		map.getPanes().floatPane.appendChild(menuLayer[0]);
-		menuLayer.hide();
-		
-		markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-            '</div>');
-		map.getPanes().floatPane.appendChild(markerLayer[0]);
-		markerLayer.hide();
-		
-		//지도의 움직임이 종료 되었을때 실행되는 리스너
-		naver.maps.Event.addListener(map, 'idle', function(e) {
-			markerLayer.hide();
+			
+			getRecommandPlaces(lat, lng, 10000, venueOrder);
+			venueOrder += 1;
+			
+			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+	                '</div>');
+			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
-			/* if(overlay != null){
-				overlay.setMap(null);
-			} */
-			updateMarkers(map, myPath);
-		});
-		
-		//지도에서 마우스 버튼을 누를때 실행되는 리스너
-		/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
+			
+			markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+	            '</div>');
+			map.getPanes().floatPane.appendChild(markerLayer[0]);
 			markerLayer.hide();
-			menuLayer.hide();
-			if(overlay != null){
-				overlay.setMap(null);
-			} 
-		}); */
+			
+			//지도의 움직임이 종료 되었을때 실행되는 리스너
+			naver.maps.Event.addListener(map, 'idle', function(e) {
+				markerLayer.hide();
+				menuLayer.hide();
+				/* if(overlay != null){
+					overlay.setMap(null);
+				} */
+				updateMarkers(map, myPath);
+			});
+			
+			//지도에서 마우스 버튼을 누를때 실행되는 리스너
+			/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
+				markerLayer.hide();
+				menuLayer.hide();
+				if(overlay != null){
+					overlay.setMap(null);
+				} 
+			}); */
 
-		//지도의 한 지점을 클릭했을 때 실행되는 리스너
-		naver.maps.Event.addListener(map, 'click', function(e) {
-			for(var i = 0 ; i < infowindows.length ; i++){
-				if(infowindows[i][1].getMap()){
-					infowindows[i][1].close();
+			//지도의 한 지점을 클릭했을 때 실행되는 리스너
+			naver.maps.Event.addListener(map, 'click', function(e) {
+				for(var i = 0 ; i < infowindows.length ; i++){
+					if(infowindows[i][1].getMap()){
+						infowindows[i][1].close();
+					}
 				}
-			}
-		});
-		
-		//맵 우클릭 이벤트
-		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-	        menuLayer.show().css({
-	            left: e.offset.x,
-	            top: e.offset.y
-	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
-	        /* if(olflag != 1){
-	        	showoverlay(e.coord, 0);
-	        } */
-	        $('#ovl').on('click', function() {
-	        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-					//addPath(venue);
-					markerLayer.hide();
-				}
-	        })
-		});
-		
-	});
-	
-</script>
-
-
-
-<!----------- 동희 작업구역 ------------>
-<script type="text/javascript">
-	(function($) {
-		$(document).ready(function() {
+			});
+			
+			//맵 우클릭 이벤트
+			naver.maps.Event.addListener(map, 'rightclick', function(e) {
+		        menuLayer.show().css({
+		            left: e.offset.x,
+		            top: e.offset.y
+		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+		        /* if(olflag != 1){
+		        	showoverlay(e.coord, 0);
+		        } */
+		        $('#ovl').on('click', function() {
+		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
+						//addPath(venue);
+						markerLayer.hide();
+					}
+		        })
+			});
+			
 			/**
 			 * 선택한 폼을 수정 폼으로 변환하는 메서드
 			 */
@@ -661,6 +657,7 @@ ol, ul {
 					}
 				});
 			}
+			
 			
 			
 			if('${PLAN}' != '') {
@@ -857,13 +854,19 @@ ol, ul {
 			 * 경로 초기화
 			 */
 			$('input[type="button"]#cancelPath').click(function() {
+				myMarkers.map(function(x) {
+					x.setMap(null);
+				});
+				myMarkers = new Array();
+				venueOrder = 0;
 				pathObj = new Array();
 				polyline.pop().getPath().clear();
 				
 				isAddCondition = false;
 				$('div#defaultAddDiv').removeClass('hiddenDiv')
 				$('div#addPathDiv').addClass('hiddenDiv')
-				deleteMarker();
+				
+				getRecommandPlaces(lat, lng, 10000, venueOrder);
 			});
 			
 			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다 (아직 안됨)
