@@ -191,8 +191,9 @@
   }
 }
 
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
-
+ol, ul {
+	list-style: none
+}
 </style>
 
 <style type="text/css">
@@ -286,13 +287,13 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 			}
 		});
 		//체크박스 생성 및 기능 설정
-		var contentEl2 = $('<div style="border:2px solid;width:65px;height:133px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(0,'+lat+','+lng+')> 호텔<br>'
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(1,'+lat+','+lng+')> 맛집<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(2,'+lat+','+lng+')> 명소<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(3,'+lat+','+lng+')> 쇼핑<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(4,'+lat+','+lng+')> 휴식<br>' 
-				+ '<input type="checkbox" name="categorychk" onclick=checkcategory(5,'+lat+','+lng+')> 자연<br>' 
+		var contentEl2 = $('<div style="border:2px solid;width:70px;height:180px;position:absolute;top:50px;left:0;background-color:#fff;margin:10px;text-align:center;">'
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_hotel.png" /> 호텔<br>'
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_food.png" /> 맛집<br>' 
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_castle.png" /> 명소<br>' 
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_shopping.png" /> 쇼핑<br>' 
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_rest.png" /> 휴식<br>' 
+				+ '<img style="width:30px;height:30px;" src="../resources/png/cover_attraction.png" /> 자연<br>' 
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 		
@@ -345,7 +346,8 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 				case 1: markerImgUrl = "../resources/png/food.png";break;
 				case 2: markerImgUrl = "../resources/png/castle.png";break;
 				case 3: markerImgUrl = "../resources/png/shopping.png";break;
-				case 4: markerImgUrl = "../resources/png/attraction.png";break;
+				case 4: markerImgUrl = "../resources/png/rest.png";break;
+				case 5: markerImgUrl = "../resources/png/attraction.png";break;
 				default: markerImgUrl = "../resources/png/search.png";break;
 			}
 			
