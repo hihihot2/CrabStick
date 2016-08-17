@@ -188,6 +188,8 @@
 						marker.setAnimation(naver.maps.Animation.BOUNCE);
 						marker.setIcon("../resources/png/check.png");
 						markerLayer.hide();
+						myMarkers.push(marker);
+						allMarkers.splice(allMarkers.indexOf(marker), 1);
 					}
 				});
 			});
@@ -218,7 +220,6 @@
 					path.push(new naver.maps.LatLng(venue.lat, venue.lng));
 					pathObj.push(venue);
 					updateList();
-					
 				}
 			}
 		}

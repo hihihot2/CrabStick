@@ -221,9 +221,10 @@
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-		myPath[num][0].setMap(null);
-		myPath.splice(num, 1);
+//		myPath[num][0].setMap(null);
+//		myPath.splice(num, 1);
 		updateList();
+//		myMarkers.splice(num)
 	}
 	
 	// 화면의 리스트 삭제

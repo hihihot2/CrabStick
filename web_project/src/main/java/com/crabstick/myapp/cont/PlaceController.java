@@ -601,7 +601,7 @@ public class PlaceController {
 		ModelAndView mav = new ModelAndView("plan/getRecommandPlacesJSON");
 		mav.addObject("VENUES", venues);
 		mav.addObject("HOTELS", hotels);
-		mav.addObject("RECOMMENDS", recommandList);
+		mav.addObject("RECOMMS", recommandList);
 		//		아래와 같은 오브젝트들도 같이 전달 되어야 함
 		//		mav.addObject("SIGHTS", sights);
 		//		mav.addObject("SHOPPINGS", shoppings);
