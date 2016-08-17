@@ -15,8 +15,13 @@
 		location.href="${pageContext.request.contextPath}/placeCont/showMyMap.do?planNo="+planNo;
 	}
 	
-	function delplan(planNo){
-		
+	function delplan(plan_no){
+		var flag = confirm("계획을 삭제하시겠습니까?")
+		if(!flag){
+			return
+		}else{
+			location.href="${pageContext.request.contextPath}/planCont/deleteMyMap.do?plan_no="+plan_no;
+		}		
 	}
 	
 
@@ -77,7 +82,7 @@
 </head>
 <body>
 <c:choose>
-<c:when test="${PLANLIST eq null}">
+<c:when test="${empty PLANLIST}">
 	<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">
@@ -94,7 +99,6 @@
 <c:otherwise>	
 	<c:forEach items="${PLANLIST}" var="plan">
 		<input type="hidden" name="plan_no" value="${plan.plan_no}" >
-	
 			<div class="col-sm-3 col-xs-10">
 				<div class="panel panel-default text-center">
 					<div class="panel-heading">

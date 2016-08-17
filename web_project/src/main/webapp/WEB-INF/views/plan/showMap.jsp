@@ -37,6 +37,8 @@
 	var myMarkers = new Array();
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
+	var overlay;
+	var olflag;
 	var menuLayer;
 	var markerLayer;
 	var polyline = new Array(); //라인 변수
@@ -112,8 +114,6 @@
 		
 		getRecommandPlaces(lat, lng, 1000);
 		
-		
-
 		function getRecommandPlaces(latitude, longitude, radius) {
 			$.ajax({
 				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
@@ -125,7 +125,7 @@
 					radius: radius
 				},
 				success: function(result) {
-					console.log(result);
+					//console.log(result);
 					var venueList = eval('('+result+')');
 					for(var i = 0; i < venueList.length; i++) {
 						setPlace(venueList[i]);
@@ -154,7 +154,8 @@
 				animation: naver.maps.Animation.DROP,
 				clickable: true,
 				map: map,
-				title: venue.name
+				title: venue.name,
+				zIndex: 100
 			});
 			
 			// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
@@ -178,7 +179,17 @@
 				markerLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        });
+		        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
+		        /* olflag = 1;
+				showoverlay(marker.getPosition(), 1); */
+				$('#ovl2').on('click', function() {
+					if(confirm("일정에 추가하시겠습니까?")){
+						addPath(venue);
+						marker.setAnimation(naver.maps.Animation.BOUNCE);
+						marker.setIcon("../resources/png/check.png");
+						markerLayer.hide();
+					}
+				});
 			});
 			
 			naver.maps.Event.addListener(marker, 'mouseover', function() {
@@ -193,6 +204,7 @@
 		}
 		
 		function addPath(venue) {
+			alert("1");
 			if(!isAddCondition && !isModifyCondition) {
 				alert('왼쪽에서 일정 만들기를 눌러주세요~');
 			} else {
@@ -217,19 +229,31 @@
 		menuLayer.hide();
 		
 		markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-            '<input id="ovl" style="width:106px" type="button" value="일정에 추가2">' +
-       		'</div>');
+            '</div>');
 		map.getPanes().floatPane.appendChild(markerLayer[0]);
 		markerLayer.hide();
 		
-		//화면 최적화 이벤트 -> 화면 경계상의 마커만 표시
+		//지도의 움직임이 종료 되었을때 실행되는 리스너
 		naver.maps.Event.addListener(map, 'idle', function(e) {
+			markerLayer.hide();
+			menuLayer.hide();
+			/* if(overlay != null){
+				overlay.setMap(null);
+			} */
 			updateMarkers(map, myPath);
 		});
-
-		//맵 클릭 이벤트
-		naver.maps.Event.addListener(map, 'click', function(e) {
+		
+		//지도에서 마우스 버튼을 누를때 실행되는 리스너
+		/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
+			markerLayer.hide();
 			menuLayer.hide();
+			if(overlay != null){
+				overlay.setMap(null);
+			} 
+		}); */
+
+		//지도의 한 지점을 클릭했을 때 실행되는 리스너
+		naver.maps.Event.addListener(map, 'click', function(e) {
 			for(var i = 0 ; i < infowindows.length ; i++){
 				if(infowindows[i][1].getMap()){
 					infowindows[i][1].close();
@@ -243,8 +267,19 @@
 	            left: e.offset.x,
 	            top: e.offset.y
 	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+	        /* if(olflag != 1){
+	        	showoverlay(e.coord, 0);
+	        } */
+	        $('#ovl').on('click', function() {
+	        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
+					//addPath(venue);
+					markerLayer.hide();
+				}
+	        })
 		});
+		
 	});
+	
 </script>
 
 
