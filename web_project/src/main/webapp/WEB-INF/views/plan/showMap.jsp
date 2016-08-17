@@ -169,6 +169,13 @@
 				}
 			});
 			
+			naver.maps.Event.addListener(marker, 'rightclick', function(e) {
+				markerLayer.show().css({
+		            left: e.offset.x,
+		            top: e.offset.y
+		        });
+			});
+			
 			naver.maps.Event.addListener(marker, 'mouseover', function() {
 				infoWindow.open(map, marker);
 			});
