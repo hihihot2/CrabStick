@@ -37,6 +37,7 @@
 	var myMarkers = new Array();
 	var infowindows = [];//생성된 윈도우를 담을 배열
 	var userSearch;
+	var overlay;
 	var menuLayer;
 	var markerLayer;
 	var polyline = new Array(); //라인 변수
@@ -112,8 +113,6 @@
 		
 		getRecommandPlaces(lat, lng, 1000);
 		
-		
-
 		function getRecommandPlaces(latitude, longitude, radius) {
 			$.ajax({
 				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
@@ -125,7 +124,7 @@
 					radius: radius
 				},
 				success: function(result) {
-					console.log(result);
+					//console.log(result);
 					var venueList = eval('('+result+')');
 					for(var i = 0; i < venueList.length; i++) {
 						setPlace(venueList[i]);
@@ -175,10 +174,11 @@
 			});
 			
 			naver.maps.Event.addListener(marker, 'rightclick', function(e) {
-				markerLayer.show().css({
+				/* markerLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        });
+		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">'); */
+				showoverlay2(marker.getPosition(), 1);
 			});
 			
 			naver.maps.Event.addListener(marker, 'mouseover', function() {
@@ -193,6 +193,7 @@
 		}
 		
 		function addPath(venue) {
+			alert("1");
 			if(!isAddCondition && !isModifyCondition) {
 				alert('왼쪽에서 일정 만들기를 눌러주세요~');
 			} else {
@@ -217,8 +218,7 @@
 		menuLayer.hide();
 		
 		markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
-            '<input id="ovl" style="width:106px" type="button" value="일정에 추가2">' +
-       		'</div>');
+            '</div>');
 		map.getPanes().floatPane.appendChild(markerLayer[0]);
 		markerLayer.hide();
 		
@@ -230,6 +230,7 @@
 		//맵 클릭 이벤트
 		naver.maps.Event.addListener(map, 'click', function(e) {
 			menuLayer.hide();
+			markerLayer.hide();
 			for(var i = 0 ; i < infowindows.length ; i++){
 				if(infowindows[i][1].getMap()){
 					infowindows[i][1].close();
@@ -239,10 +240,12 @@
 		
 		//맵 우클릭 이벤트
 		naver.maps.Event.addListener(map, 'rightclick', function(e) {
-	        menuLayer.show().css({
+	        /* menuLayer.show().css({
 	            left: e.offset.x,
 	            top: e.offset.y
-	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+	        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">'); */
+	        
+			showoverlay(e.coord, 0);
 		});
 	});
 </script>
