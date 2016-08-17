@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.crabstick.api.expedia.Expedia;
+import com.crabstick.api.expedia.objects.Hotel;
 import com.crabstick.api.expedia.objects.Response;
 import com.crabstick.api.foursquare.Foursquare;
 import com.crabstick.api.foursquare.objects.Group;
@@ -67,7 +69,7 @@ public class PlaceController {
 	public void setService(PlanService planService) {
 		this.planService = planService;
 	}
-	
+
 	@Resource(name = "recommendationService")
 	private RecommendationService recommendationService;
 	public void setRecommendationService(RecommendationService recommendationService) {
@@ -78,15 +80,9 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/branch.do") // ajax 처리를 위한 함수
 	public ModelAndView setBranch(@RequestParam(value="branch")int branch, 
 			@RequestParam(value="city_latitude")String lat, @RequestParam(value="city_longitude")String lng){
-	
+
 		ModelAndView mav = null;
-		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
-		ArrayList<String> sequence_List = recommendationService.all_Sequence();
-		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
-		
-		
-		Apriori apriori = new Apriori();
-		apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
+
 
 		if(branch == 0){ //호텔 파싱
 
@@ -104,7 +100,7 @@ public class PlaceController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			mav.addObject("HOTELS", hotels.getHotelList());
 
 		} else if(branch == 1) { //맛집 파싱
@@ -505,10 +501,21 @@ public class PlaceController {
 		mav.addObject("type", branch);
 		return mav;
 	}
-	
+
 	@RequestMapping(value="/placeCont/getRecommandPlaces.do")
 	public ModelAndView getRecommandPlaces(@RequestParam(value="lat")String lat, @RequestParam(value="lng")String lng, @RequestParam(value="radius")String radius) {
-		
+
+
+
+		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
+		ArrayList<String> sequence_List = recommendationService.all_Sequence();
+		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
+
+
+		Apriori apriori = new Apriori();
+		ArrayList<com.crabstick.myapp.venue.Venue> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
+		ArrayList<Attraction> recommandList = new ArrayList<Attraction>();
+
 		/**************************************************
 		 * 이하 추천 장소를 가져오는 알고리즘 입력 부분
 		 * 현재 임의로 맛집, 호텔 각각 10개씩 가져옴
@@ -517,21 +524,38 @@ public class PlaceController {
 		Expedia expedia = new Expedia(expediaConsumerKey, Expedia.API_HOTEL_SEARCH);
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_LATTITUDE, lat);
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_LONGITUDE, lng);
-		
+
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		calendar.add(Calendar.DAY_OF_MONTH, 100);
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_IN_DATE, sdf.format(calendar.getTime()));
 		calendar.add(Calendar.DAY_OF_MONTH, 2);
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_CHECK_OUT_DATE, sdf.format(calendar.getTime()));
-		
+
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_ROOM1, "2");
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_RESULTS_PER_PAGE, "30");
 		expedia.addField(Expedia.HOTEL_SEARCH_PARAMETER_SORT_ORDER, "true");
 
 		Response hotels = null;
+
 		try {
-			hotels = expedia.getHotels();			
+			
+			
+			List<Hotel> hotelList = expedia.getHotels().getHotelList();
+			for(Hotel hotel : hotelList) {
+				System.out.println(hotel.getName());
+				for(com.crabstick.myapp.venue.Venue venue : recommend_Venue_List) {
+					if(hotel.getName().equals(venue.getVen_name())) {
+						Attraction attr = new Attraction();
+						attr.setTitle(hotel.getName());
+						attr.setMapx(hotel.getLongitude());
+						attr.setMapy(hotel.getLatitude());
+						recommandList.add(attr);
+					}
+				}
+			}
+			hotels = expedia.getHotels();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -543,16 +567,26 @@ public class PlaceController {
 		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, radius);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_LIMIT, "30");
 		ArrayList<Venue> venues = null;
-		
+
 		try {
 			venues = new ArrayList<Venue>();
 			ArrayList<Group> venueGroups = foursquare.getVenues();
 			for(Group group : venueGroups) {
 				for(Venue venue : group.getItems()) {
+					System.out.println(venue.getName());
+					for(com.crabstick.myapp.venue.Venue venue_2 : recommend_Venue_List) {
+						if(venue.getName().equals(venue_2.getVen_name())) {
+							Attraction attr = new Attraction();
+							attr.setTitle(venue.getName());
+							attr.setMapx(""+venue.getLocation().getLng());
+							attr.setMapy(""+venue.getLocation().getLat());
+							recommandList.add(attr);
+						}
+					}
 					venues.add(venue);
 				}
 			}
-			
+			System.out.println(recommandList.size());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -560,21 +594,22 @@ public class PlaceController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/**************************************************/
-		
+
 		ModelAndView mav = new ModelAndView("plan/getRecommandPlacesJSON");
 		mav.addObject("VENUES", venues);
 		mav.addObject("HOTELS", hotels);
-//		아래와 같은 오브젝트들도 같이 전달 되어야 함
-//		mav.addObject("SIGHTS", sights);
-//		mav.addObject("SHOPPINGS", shoppings);
-//		mav.addObject("RESTS", rests);
-//		mav.addObject("NATURES", natures);
+		mav.addObject("RECOMMENDS", recommandList);
+		//		아래와 같은 오브젝트들도 같이 전달 되어야 함
+		//		mav.addObject("SIGHTS", sights);
+		//		mav.addObject("SHOPPINGS", shoppings);
+		//		mav.addObject("RESTS", rests);
+		//		mav.addObject("NATURES", natures);
 		return mav;
 	}
-	
-	
+
+
 	/**
 	 * PLAN을 새로 만들 때 호출되는 메서드
 	 * @param city_latitude
@@ -587,8 +622,8 @@ public class PlaceController {
 			@RequestParam(value="city_longitude") String city_longitude,
 			@RequestParam(value="cityno") String cityno){
 
-		
-		
+
+
 		ModelAndView mav = new ModelAndView("plan/showMap");
 
 		mav.addObject("lat",city_latitude);
