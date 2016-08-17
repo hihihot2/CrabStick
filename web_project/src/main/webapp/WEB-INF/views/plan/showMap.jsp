@@ -349,7 +349,7 @@ ol, ul {
 				case 3: markerImgUrl = "../resources/png/shopping.png";break;
 				case 4: markerImgUrl = "../resources/png/rest.png";break;
 				case 5: markerImgUrl = "../resources/png/attraction.png";break;
-				case 6: markerImgUrl = "../resources/png/search.png";break;
+				case 6: markerImgUrl = "../resources/png/star.png";break;
 				default: markerImgUrl = "../resources/png/search.png";break;
 			}
 			
