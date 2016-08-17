@@ -234,6 +234,7 @@ ol, ul {
 	var isFirstAdd = true;
 	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
 	var pathCount = 0;
+	var venueOrder = 0;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -297,7 +298,8 @@ ol, ul {
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 		
-		getRecommandPlaces(lat, lng, 10000, 0);
+		getRecommandPlaces(lat, lng, 10000, venueOrder);
+		venueOrder += 1;
 		
 		function getRecommandPlaces(latitude, longitude, radius, order) {
 			var loading;
@@ -406,7 +408,8 @@ ol, ul {
 							})
 							allMarkers = new Array();
 							
-							getRecommandPlaces(venue.lat, venue.lng, 1000);
+							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+							venueOrder += 1;
 						}						
 					} else {
 						alert('일정 만들기를 눌러주세요')

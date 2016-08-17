@@ -88,7 +88,7 @@ public class PlaceController {
 	 * 익스피디아, 포스퀘어, 한국관광공사 API 접근 
 	 */
 	@RequestMapping(value="/placeCont/getRecommandPlaces.do")
-	public ModelAndView getRecommandPlaces(@RequestParam(value="lat")String lat, @RequestParam(value="lng")String lng, @RequestParam(value="radius")String radius) {
+	public ModelAndView getRecommandPlaces(@RequestParam(value="lat")String lat, @RequestParam(value="lng")String lng, @RequestParam(value="radius")String radius, @RequestParam(value="order")int order) {
 
 
 		/* DB 데이터 분석 부분 */		
