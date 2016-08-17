@@ -287,12 +287,15 @@ public class PlanController {
 			while(iterator.hasNext()) {
 				JSONObject venue = (JSONObject) iterator.next();
 				String venueName = (String) venue.get("venueName");
-				String venueComment = (String) venue.get("venueComment");
-				String venueType = (String) venue.get("venueType");
+				String venueComment = "";
+				if(venue.get("venueComment") != null) {
+					venueComment = (String) venue.get("venueComment");
+				}
+				Long venueType = (Long) venue.get("venueType");
 				String lat = (String) venue.get("lat");
 				String lng = (String) venue.get("lng");
 				
-				venueList.add((new Venue(0, venueName, lat, lng, venueComment, venueType, order, 0)));
+				venueList.add((new Venue(0, venueName, lat, lng, venueComment, ""+venueType, order, 0)));
 				order++;
 				
 				pathSummary += venueName;
