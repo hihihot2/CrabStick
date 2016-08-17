@@ -87,13 +87,20 @@ public class MailController {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 			System.out.println(id);
-			messageHelper.setTo(id);
-			messageHelper.setText("인증번호 : " + load_num);
-			messageHelper.setFrom(from);
-			messageHelper.setSubject(subject);
-			mailSender.send(message);
-			System.out.println("전송완료 " + load_num);
-			mav.addObject("load_num", load_num);
+			try {
+				messageHelper.setTo(id);
+				messageHelper.setText("인증번호 : " + load_num);
+				messageHelper.setFrom(from);
+				messageHelper.setSubject(subject);
+				mailSender.send(message);
+				System.out.println("전송완료 " + load_num);
+				mav.addObject("load_num", load_num);
+			} catch(Exception e){
+				System.out.println("error발생");
+				int error = 1;
+				mav.addObject("load_num", error);
+				return mav;
+			}
 		} catch(Exception e){
 			e.printStackTrace();
 		}
