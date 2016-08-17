@@ -542,7 +542,6 @@ public class PlaceController {
 		foursquare.addField(Foursquare.EXPLORE_FIELD_SECTION, Foursquare.PARAMETER_SECTION_FOOD);		
 		foursquare.addField(Foursquare.EXPLORE_FIELD_RADIUS, radius);
 		foursquare.addField(Foursquare.EXPLORE_FIELD_LIMIT, "30");
-		
 		ArrayList<Venue> venues = null;
 		
 		try {
@@ -566,7 +565,7 @@ public class PlaceController {
 		
 		ModelAndView mav = new ModelAndView("plan/getRecommandPlacesJSON");
 		mav.addObject("VENUES", venues);
-		mav.addObject("HOTELS", hotels.getHotelList());
+		mav.addObject("HOTELS", hotels);
 //		아래와 같은 오브젝트들도 같이 전달 되어야 함
 //		mav.addObject("SIGHTS", sights);
 //		mav.addObject("SHOPPINGS", shoppings);
