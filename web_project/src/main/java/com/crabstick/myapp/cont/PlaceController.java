@@ -88,15 +88,15 @@ public class PlaceController {
 	 * 익스피디아, 포스퀘어, 한국관광공사 API 접근 
 	 */
 	@RequestMapping(value="/placeCont/getRecommandPlaces.do")
-	public ModelAndView getRecommandPlaces(@RequestParam(value="lat")String lat, @RequestParam(value="lng")String lng, @RequestParam(value="radius")String radius, @RequestParam(value="order")int order) {
+	public ModelAndView getRecommandPlaces(@RequestParam(value="lat")String lat, @RequestParam(value="lng")String lng, @RequestParam(value="radius")String radius, @RequestParam(value="order")int order, @RequestParam(value="name") String name) {
 
-
+		
 		/* DB 데이터 분석 부분 */		
 		ArrayList<Integer> transaction_List = recommendationService.all_Transactions();
 		ArrayList<String> sequence_List = recommendationService.all_Sequence();
 		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
 		Apriori apriori = new Apriori();
-		ArrayList<com.crabstick.myapp.venue.Venue> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data);
+		ArrayList<com.crabstick.myapp.venue.Venue> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List ,Venue_Table_Data,order,name);
 		/* DB 데이터 분석 부분 */
 
 

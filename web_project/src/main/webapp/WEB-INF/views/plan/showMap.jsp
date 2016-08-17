@@ -235,6 +235,7 @@ ol, ul {
 	var pathColors = ["#4A89DC", "#E9573F", "#3BAFDA", "#967ADC", "#434A54", "#37BC9B", "#DA4453", "#D770AD"];
 	var pathCount = 0;
 	var venueOrder = 0;
+	var selectVenue = "fisrt";
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -298,10 +299,11 @@ ol, ul {
 				+ '</div>');
 		contentEl2.appendTo(map.getElement());
 		
-		getRecommandPlaces(lat, lng, 10000, venueOrder);
+		
+		getRecommandPlaces(lat, lng, 10000, venueOrder, selectVenue);
 		venueOrder += 1;
 		
-		function getRecommandPlaces(latitude, longitude, radius, order) {
+		function getRecommandPlaces(latitude, longitude, radius, order, name) {
 			var loading;
 			$.ajax({
 				url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
@@ -311,7 +313,8 @@ ol, ul {
 					lat: latitude,
 					lng: longitude,
 					radius: radius,
-					order: order
+					order: order,
+					name: name
 				},
 				success: function(result) {
 					//console.log(result);
@@ -408,7 +411,8 @@ ol, ul {
 							})
 							allMarkers = new Array();
 							
-							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+							selectVenue = venue.name;
+							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder, selectVenue);
 							venueOrder += 1;
 						}						
 					} else {
