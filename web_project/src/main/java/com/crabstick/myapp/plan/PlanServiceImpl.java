@@ -47,4 +47,10 @@ public class PlanServiceImpl implements PlanService {
 		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);
 		return planmapper.recent_select();
 	}
+
+	@Override
+	public void deletePlan(int plan_no) {
+		PlanMapper planmapper = sqlSession.getMapper(PlanMapper.class);		
+		planmapper.delete(plan_no);
+	}
 }

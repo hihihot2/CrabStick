@@ -622,6 +622,8 @@ public class PlaceController {
 		mav.addObject("PLAN", plan);
 		return mav;
 	}
+	
+
 
 
 }
