@@ -41,7 +41,6 @@
 		var pwd = document.joinform.mem_pwd.value;
 		var name = document.joinform.mem_name.value;
 		var pwdlength = pwd.length
-		alert(chk)
 		//아이디 중복체크 여부확인 chk값이  1이여야함
 		if (chk == 0) {
 			alert('아이디 중복체크 하세요')
@@ -66,12 +65,16 @@
 					"${pageContext.request.contextPath}/emailCont/sentMsg.do", params, chk_mail, 'POST')
 		}
 	}
-	var result
+	
 	function chk_mail() {
 		if (httpRequest.readyState == 4) {
 			if (httpRequest.status == 200) {
 				var str = httpRequest.responseText;
 				result = eval("(" + str + ")");
+				if(str==1){
+					alert('유효하지 않는 이메일입니다. 다시확인하세요');
+					document.getElementById("msgconfirm").innerHTML = ""
+				}
 				var html = "<input type='hidden' name='load_num' value= "+ result +" >"
 				document.getElementById("msgconfirm").innerHTML += html
 			}
