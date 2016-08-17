@@ -61,7 +61,6 @@
 		<h1>여행을 떠나보세요</h1>
 		<p>Find the city you love. Discover new place.</p>
 		<form class="form-inline">
-
 			<button type="button" class="btn btn-success"
 				onclick="startPlan(${no})">플래너 시작하기 >></button>
 			<button type="button" class="btn btn-warning"
