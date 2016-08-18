@@ -84,7 +84,7 @@
 	
 	<!-- 빈발 항목 계산을 위한 item 가져오기 -->
 	<select id="all_Sequence" resultType="String">
-		SELECT DISTINCT ven_name FROM venues
+		SELECT DISTINCT ven_lati||':'||ven_long FROM venues
 	</select>
 	<!-- 빈발 항목 계산을 위한 item 가져오기 -->
 
