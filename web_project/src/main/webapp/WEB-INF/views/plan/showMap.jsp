@@ -439,6 +439,7 @@ ol, ul {
 							})
 							allMarkers = new Array();
 							
+							venueOrder += 1;						
 							if('${sessionScope.no}' == '') {
 								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
 								
@@ -446,7 +447,7 @@ ol, ul {
 								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder, '${sessionScope.no}', venue.type);
 							}
 							
-							venueOrder += 1;						
+							
 						} else {
 							alert('일정 만들기를 눌러주세요')
 						}
@@ -564,6 +565,7 @@ ol, ul {
 					}
 				}
 				
+				venueOrder = 0;
 				isModifyCondition = true;
 				$.ajax({
 					url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
@@ -900,7 +902,7 @@ ol, ul {
 				} else {
 					getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
 				}
-				venueOrder += 1;
+				/* venueOrder += 1; */
 				
 				
 				isAddCondition = true;

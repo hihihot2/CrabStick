@@ -231,7 +231,7 @@
 				x.setMap(null);
 			})
 			allMarkers = new Array();
-			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder);
+			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder, '${sessionScope.no}', pathObj[num-1].type);
 		}
 	}
 	
