@@ -318,9 +318,9 @@ ol, ul {
 				var url;
 				
 				if(mem_no == '') {
-					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSession.do';
+					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do';
 				} else {
-					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSessionHasSession.do';
+					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSession.do';
 				}
 				
 				$.ajax({
@@ -355,16 +355,15 @@ ol, ul {
 							+'<li class="hexagon hex_7"></li>'
 							+'</ul>'
 							+'</div>';
-						if(venueCount == 0) {
+						if(venueOrder == 0) {
 							div += '<p class="info">사용자의 취향을 토대로 추천해드립니다</p>'
 						}
 						div += '</div> ';
 						loading = $(div);
 						loading.appendTo(map.getElement());
-						$('.wrap-loading').removeClass('display-none');
 					},
 					complete: function(){
-						$('.wrap-loading').addClass('display-none');
+						$('.wrap-loading').remove()
 					}
 				})
 			}
