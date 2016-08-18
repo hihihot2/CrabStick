@@ -491,7 +491,7 @@ ol, ul {
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
 			
-			markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			markerLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	            '</div>');
 			map.getPanes().floatPane.appendChild(markerLayer[0]);
 			markerLayer.hide();
@@ -529,7 +529,7 @@ ol, ul {
 		        menuLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
 		        		alert(e.coord.lat()+","+e.coord.lng());
@@ -927,6 +927,8 @@ ol, ul {
 	width: 20%;
 	padding: 10px;
 	clear: none;
+	height: 900px;
+	overflow-y: auto;
 }
 
 .SideBar input, select {
