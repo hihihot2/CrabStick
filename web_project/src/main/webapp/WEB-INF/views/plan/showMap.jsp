@@ -411,7 +411,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가">');
+			        }).html('<input id="ovl2" style="width:116px" type="button" value="일정에 추가">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -478,7 +478,7 @@ ol, ul {
 				}
 			}
 			
-			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			menuLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	                '</div>');
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
@@ -601,8 +601,11 @@ ol, ul {
 							venueDiv.find('img#cancelImg').click(function() {
 								// x 버튼 누를때 하는 일
 								var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
-								pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
+								var venueIndex = $(this).parent().parent().parent().find('img#cancelImg').index(this);
+								pathLineOnMap.splice(venueIndex, 1);
 								$(this).parent().parent().remove();
+								myMarkersArray[pathCountOfThisElement][venueIndex].setMap(null);
+								myMarkersArray[pathCountOfThisElement].splice(venueIndex, 1);
 							})
 						}
 						thisElement.addClass('hiddenDiv').after(pathEditDiv);
@@ -642,6 +645,8 @@ ol, ul {
 									pathEditDiv.remove();
 								}
 							})
+							
+							isModifyCondition = false;
 						});
 						
 						pathEditDiv.find('input#cancelPathBtn').click(function() {
@@ -662,7 +667,7 @@ ol, ul {
 							// TODO: 삭제 버튼 누를 때 할 일
 							console.log('경로 번호: ' + pathCountOfThisElement);
 							var tempPathLine = polyline[pathCountOfThisElement].getPath();
-							tempPathLine.splice(0, tempPathLine.length);
+							tempPathLine.splice(0, tempPathLine.length - 1);
 							polyline.splice(pathCountOfThisElement, 1);
 							myMarkersArray[pathCountOfThisElement].map(function(x) {
 								x.setMap(null);
@@ -692,8 +697,6 @@ ol, ul {
 					}
 				});
 			}
-			
-			
 			
 			if('${PLAN}' != '') {
 				// 기존의 존재하는 플랜을 불러오기 할 때 자동으로 플랜 정보, 경로 정보를 불러옴
