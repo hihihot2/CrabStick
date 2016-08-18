@@ -478,14 +478,6 @@ ol, ul {
 				}
 			}
 			
-			if('${sessionScope.no}' == '') {
-				getRecommandPlaces(lat, lng, 10000, venueOrder);
-				
-			} else {
-				getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
-			}
-			venueOrder += 1;
-			
 			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	                '</div>');
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
@@ -667,11 +659,8 @@ ol, ul {
 						});
 						
 						pathEditDiv.find('input#removePathBtn').click(function() {
-							// 삭제 버튼 누를 때 할 일
-							for(var i = 0; i < polyline.length; i++) {
-								console.log(polyline[i]);
-							}
-							console.log(pathCountOfThisElement);
+							// TODO: 삭제 버튼 누를 때 할 일
+							console.log('경로 번호: ' + pathCountOfThisElement);
 							var tempPathLine = polyline[pathCountOfThisElement].getPath();
 							tempPathLine.splice(0, tempPathLine.length);
 							polyline.splice(pathCountOfThisElement, 1);
@@ -696,6 +685,8 @@ ol, ul {
 							if(pathCount == 0) {
 								$('input[type="button"]#addPath').val('일정 만들기');
 							}
+							
+							isModifyCondition = false;
 						});
 						
 					}
@@ -899,6 +890,15 @@ ol, ul {
 						return;
 					}
 				}
+			
+				if('${sessionScope.no}' == '') {
+					getRecommandPlaces(lat, lng, 10000, venueOrder);
+					
+				} else {
+					getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
+				}
+				venueOrder += 1;
+				
 				
 				isAddCondition = true;
 				$('div#defaultAddDiv').addClass('hiddenDiv');
