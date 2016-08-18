@@ -411,7 +411,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가">');
+			        }).html('<input id="ovl2" style="width:116px" type="button" value="일정에 추가">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -478,7 +478,7 @@ ol, ul {
 				}
 			}
 			
-			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			menuLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	                '</div>');
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
