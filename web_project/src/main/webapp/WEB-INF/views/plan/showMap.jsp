@@ -1157,6 +1157,14 @@ ol, ul {
 							<option label='휴식' value='4' selected>
 						</select>
 					</c:when>
+					<c:otherwise>
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4'>
+						</select>
+					</c:otherwise>
 				</c:choose>
 			</div>
 			<div class='pathInfo'>

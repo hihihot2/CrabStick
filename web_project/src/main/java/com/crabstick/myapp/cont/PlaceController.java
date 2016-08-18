@@ -969,14 +969,17 @@ public class PlaceController {
 			@RequestParam(value="cityno") String cityno, HttpSession hs){
 		
 		ModelAndView mav = new ModelAndView("plan/showMap");
-		int mem_no = (Integer) hs.getAttribute("no");
-		Member member = service.getmem_all(mem_no); 
-		String[] survey = member.getMem_survey().split(":");
-		String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
-		
-		for(int i=0; i<purpose_Name.length;i++){
-			if(survey[0].equals(purpose_Name[i])){
-				mav.addObject("survey", i+1);
+		if(hs.getAttribute("no")!=null){
+			int mem_no = (Integer) hs.getAttribute("no");
+			Member member = service.getmem_all(mem_no); 
+			String[] survey = member.getMem_survey().split(":");
+			String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
+			
+			
+			for(int i=0; i<purpose_Name.length;i++){
+				if(survey[0].equals(purpose_Name[i])){
+					mav.addObject("survey", i+1);
+				}
 			}
 		}
 
