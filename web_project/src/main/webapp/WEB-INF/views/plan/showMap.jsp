@@ -888,6 +888,7 @@ ol, ul {
 								
 								pathCount += 1;
 								pathObj = new Array();
+								venueOrder = 0;
 							},
 							error: function(request, error) {
 							}

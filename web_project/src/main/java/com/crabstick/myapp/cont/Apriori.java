@@ -210,16 +210,7 @@ public class Apriori {
 					Map_Path.remove(mem_no+"PP"+i);
 				}
 			}
-		} else {
-			if (order<Map_Path.size()){
-				Map_Path.remove(mem_no+"PP"+order);
-				
-				for (int i = order, k = i+1; order<Map_Path.size(); i++){
-					Map_Path.replace(mem_no+"PP"+i, Map_Path.get(mem_no+"PP"+k));
-				}
-				Map_Path.remove(mem_no+"PP"+Map_Path.size());
-			}
-		}
+		} 
 	}
 
 }
