@@ -935,6 +935,11 @@ ol, ul {
 				$('div#addPathDiv').addClass('hiddenDiv')
 				
 				getRecommandPlaces(lat, lng, 10000, venueOrder);
+				
+				allMarkers.map(function(x) {
+					x.setMap(null);
+				})
+				allMarkers = new Array();
 			});
 			
 			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다 (아직 안됨)
