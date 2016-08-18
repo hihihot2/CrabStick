@@ -63,7 +63,7 @@ public class Apriori {
 
 				}
 				result[i]=(double) count/data_Mart.size();
-				if (result[i]>=0.25){ // 지지도 0.1 이상일 때, 최초 추천장소로 등록 
+				if (result[i]>=0.1){ // 지지도 0.1 이상일 때, 최초 추천장소로 등록 
 					name.add(seqeunces.get(i));
 				}
 
@@ -105,7 +105,7 @@ public class Apriori {
 					}
 				}
 				result[i]=(double)count/data_Mart.size();
-				if (result[i]>=0.2 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.2이상 & 신뢰도 0.5 이상
+				if (result[i]>=0.05 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.05이상 & 신뢰도 0.5 이상
 					name2.add(seqeunces.get(i));
 				}
 
@@ -157,7 +157,7 @@ public class Apriori {
 					}
 				}
 				result[i]=(double)count/data_Mart.size();
-				if (result[i]>=0.1 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.25이상 & 신뢰도 50% 이상
+				if (result[i]>=0.025 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.025이상 & 신뢰도 50% 이상
 					name3.add(seqeunces.get(i));
 				}
 
