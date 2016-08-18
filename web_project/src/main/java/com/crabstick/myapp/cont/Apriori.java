@@ -177,6 +177,7 @@ public class Apriori {
 				for (int j = 0; j<seqeunces.size(); j++){
 					if (name.get(i).equals(seqeunces.get(j))){
 						recommend_Venues.add(seqeunces.get(j));
+						System.out.println("추천"+seqeunces.get(j));
 					}
 				}
 			}
@@ -185,6 +186,7 @@ public class Apriori {
 				for (int j = 0; j<seqeunces.size(); j++){
 					if (name2.get(i).equals(seqeunces.get(j))){
 						recommend_Venues.add(seqeunces.get(j));
+						System.out.println("추천"+seqeunces.get(j));
 					}
 				}
 			}
@@ -193,6 +195,7 @@ public class Apriori {
 				for (int j = 0; j<seqeunces.size(); j++){
 					if (name3.get(i).equals(seqeunces.get(j))){
 						recommend_Venues.add(seqeunces.get(j));
+						System.out.println("추천"+seqeunces.get(j));
 					}
 				}
 			}
