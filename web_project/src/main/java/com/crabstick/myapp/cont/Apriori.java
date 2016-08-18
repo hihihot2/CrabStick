@@ -8,26 +8,23 @@ import com.crabstick.myapp.venue.Venue;
 
 public class Apriori {
 	static Map<String,String> Map_V = new HashMap<String, String>();
-
+	static Map<String,String> Map_Path = new HashMap<String, String>();
 	/* 추천 관광 지역 지지도 계산 */
+	
 	public ArrayList<String> apriori_Algorithm(ArrayList<Integer> transactions, ArrayList<String> seqeunces, ArrayList<Venue> venues, int order, String selectVenue, int mem_no) {
 		System.out.println("오더 순서"+order);
 		if (order>0){
-			
+			Map_Path.put(mem_no+"PP"+order, selectVenue);
 			if (order==1){
 				Map_V.put(mem_no+"DD"+order, selectVenue);
-				System.out.println("최초 장소:"+Map_V.get(mem_no+"DD1"));
 			} else if (order==2){
 				Map_V.put(mem_no+"DD"+order, selectVenue);
-				System.out.println("최초 장소"+Map_V.get(mem_no+"DD1"));
-				System.out.println("두번째 장소"+Map_V.get(mem_no+"DD2"));
-			} else if (order==3){
+			} else if (order>=3){
 				Map_V.replace(mem_no+"DD1", Map_V.get(mem_no+"DD2"));
 				Map_V.replace(mem_no+"DD2", selectVenue);
-				System.out.println("최초 장소"+Map_V.get(mem_no+"DD1"));
-				System.out.println("두번째 장소"+Map_V.get(mem_no+"DD2"));
 			}
 		}
+		
 		/* 필드 */
 		ArrayList<ArrayList<String>> data_Mart = new ArrayList<ArrayList<String>>();
 		ArrayList<String> name = new ArrayList<String>();
@@ -66,14 +63,13 @@ public class Apriori {
 
 				}
 				result[i]=(double) count/data_Mart.size();
-				if (result[i]>=0.25){ // 지지도 0.1 이상일 때, 최초 추천장소로 등록 
+				if (result[i]>=0.1){ // 지지도 0.1 이상일 때, 최초 추천장소로 등록 
 					name.add(seqeunces.get(i));
 				}
 
 
 				if (seqeunces.get(i).equals(Map_V.get(mem_no+"DD1"))){
 					selectVenueProbability = result[i];
-					System.out.println(Map_V.get(mem_no+"DD1")+"의 사전확률"+result[i]);
 				}
 
 			}
@@ -109,14 +105,13 @@ public class Apriori {
 					}
 				}
 				result[i]=(double)count/data_Mart.size();
-				if (result[i]>=0.2 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.2이상 & 신뢰도 0.5 이상
+				if (result[i]>=0.05 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.05이상 & 신뢰도 0.5 이상
 					name2.add(seqeunces.get(i));
 				}
 
 
 				if (seqeunces.get(i).equals(Map_V.get(mem_no+"DD2"))){
 					selectVenueProbability = result[i];
-					System.out.println(Map_V.get(mem_no+"DD1")+"과"+Map_V.get(mem_no+"DD2")+"의 사전병행확률"+result[i]);
 				}
 
 			}
@@ -162,7 +157,7 @@ public class Apriori {
 					}
 				}
 				result[i]=(double)count/data_Mart.size();
-				if (result[i]>=0.1 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.25이상 & 신뢰도 50% 이상
+				if (result[i]>=0.025 && ((result[i]/selectVenueProbability)>=0.5)){ // 지지도 0.025이상 & 신뢰도 50% 이상
 					name3.add(seqeunces.get(i));
 				}
 
@@ -197,10 +192,14 @@ public class Apriori {
 				}
 			}
 		}
-
+		System.out.println("반환 갯수"+recommend_Venues.size());
 		return recommend_Venues;
-
-
+	}
+	
+	public boolean check_Path(String location){
+		
+		return Map_Path.containsValue(location);
+		
 	}
 
 }

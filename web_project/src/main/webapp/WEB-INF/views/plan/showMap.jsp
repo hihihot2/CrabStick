@@ -411,7 +411,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가">');
+			        }).html('<input id="ovl2" style="width:116px" type="button" value="일정에 추가">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -478,15 +478,7 @@ ol, ul {
 				}
 			}
 			
-			if('${sessionScope.no}' == '') {
-				getRecommandPlaces(lat, lng, 10000, venueOrder);
-				
-			} else {
-				getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
-			}
-			venueOrder += 1;
-			
-			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			menuLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	                '</div>');
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
@@ -609,8 +601,11 @@ ol, ul {
 							venueDiv.find('img#cancelImg').click(function() {
 								// x 버튼 누를때 하는 일
 								var pathLineOnMap = polyline[pathCountOfThisElement].getPath();
-								pathLineOnMap.splice($(this).parent().parent().parent().find('img#cancelImg').index(this), 1);
+								var venueIndex = $(this).parent().parent().parent().find('img#cancelImg').index(this);
+								pathLineOnMap.splice(venueIndex, 1);
 								$(this).parent().parent().remove();
+								myMarkersArray[pathCountOfThisElement][venueIndex].setMap(null);
+								myMarkersArray[pathCountOfThisElement].splice(venueIndex, 1);
 							})
 						}
 						thisElement.addClass('hiddenDiv').after(pathEditDiv);
@@ -650,6 +645,8 @@ ol, ul {
 									pathEditDiv.remove();
 								}
 							})
+							
+							isModifyCondition = false;
 						});
 						
 						pathEditDiv.find('input#cancelPathBtn').click(function() {
@@ -667,13 +664,15 @@ ol, ul {
 						});
 						
 						pathEditDiv.find('input#removePathBtn').click(function() {
-							// 삭제 버튼 누를 때 할 일
-							// TODO: 경로 저장 방법에 의해 보류중
-							for(var i = 0; i < polyline.length; i++) {
-								console.log(polyline[i]);
-							}
-							console.log(pathCountOfThisElement);
+							// TODO: 삭제 버튼 누를 때 할 일
+							console.log('경로 번호: ' + pathCountOfThisElement);
+							var tempPathLine = polyline[pathCountOfThisElement].getPath();
+							tempPathLine.splice(0, tempPathLine.length - 1);
 							polyline.splice(pathCountOfThisElement, 1);
+							myMarkersArray[pathCountOfThisElement].map(function(x) {
+								x.setMap(null);
+							})
+							myMarkersArray.splice(pathCountOfThisElement, 1);
 							$.ajax({
 								url: "${pageContext.request.contextPath }/planCont/removePath.do",
 								dataType: 'text',
@@ -691,13 +690,13 @@ ol, ul {
 							if(pathCount == 0) {
 								$('input[type="button"]#addPath').val('일정 만들기');
 							}
+							
+							isModifyCondition = false;
 						});
 						
 					}
 				});
 			}
-			
-			
 			
 			if('${PLAN}' != '') {
 				// 기존의 존재하는 플랜을 불러오기 할 때 자동으로 플랜 정보, 경로 정보를 불러옴
@@ -711,8 +710,20 @@ ol, ul {
 				
 				<c:forEach var="path" items="${PLAN.pathlist }">
 					var arr = new Array();
+					var myMarker = new Array();
 					<c:forEach var="venue" items="${path.venuelist}">
 						console.log('latitude: ${venue.ven_lati}, longitude: ${venue.ven_long}');
+						myMarker.push(new naver.maps.Marker({
+							position : new naver.maps.LatLng('${venue.ven_lati}', '${venue.ven_long}'),
+							icon : {
+								url: "../resources/png/check.png"
+							},
+							animation: naver.maps.Animation.DROP,
+							clickable: true,
+							map: map,
+							title: '${venue.ven_name}',
+							zIndex: 100
+						}));
 						arr.push(new naver.maps.LatLng('${venue.ven_lati}','${venue.ven_long}'));
 					</c:forEach>
 					polyline.push(new naver.maps.Polyline({
@@ -722,6 +733,7 @@ ol, ul {
 						strokeWeight: 5, //라인 두깨
 						strokeStyle: 'longdash'
 					}));
+					myMarkersArray.push(myMarker);
 					
 					// TODO: 핀 찍어야댐!
 					var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
@@ -769,6 +781,15 @@ ol, ul {
 					action_do('login');
 				} else {
 					if(pathObj.length > 1) {
+						// TODO: 여기 핀 멈추고 다른 핀 삭제 하게
+						myMarkers[myMarkers.length - 1].setAnimation(null);
+						myMarkersArray.push(myMarkers);
+						myMarkers = new Array();
+						allMarkers.map(function(x) {
+							x.setMap(null);
+						})
+						allMarkers = new Array();
+					
 						var arr = new Array();
 						
 						for(var i = 0; i < pathObj.length; i++) {
@@ -849,7 +870,6 @@ ol, ul {
 								pathObj = new Array();
 							},
 							error: function(request, error) {
-								alert('message: ' + request.responseText);
 							}
 						})
 					} else if (pathObj.length == 0){
@@ -873,6 +893,15 @@ ol, ul {
 						return;
 					}
 				}
+			
+				if('${sessionScope.no}' == '') {
+					getRecommandPlaces(lat, lng, 10000, venueOrder);
+					
+				} else {
+					getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
+				}
+				venueOrder += 1;
+				
 				
 				isAddCondition = true;
 				$('div#defaultAddDiv').addClass('hiddenDiv');

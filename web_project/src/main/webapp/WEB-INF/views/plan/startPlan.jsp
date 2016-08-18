@@ -42,9 +42,9 @@
 				});
 			},
 			select : function(event, ui) {
-				if (event.keyCode == 13) {
+				/* if (event.keyCode == 13) {
 					$('locSearch').val(ui.item.value);
-				}
+				} */ 
 			}
 		})
 	})
@@ -72,7 +72,12 @@
 					+ "&favor_city=" + favor_city;
 		}
 	}
-
+	function findCity(){
+		if (event.keyCode == 13) {
+			find_loc()
+		} 
+	} 
+	
 	function modal_open(loc_no, loc_commt) {
 
 		var form = document.searchform;
@@ -194,9 +199,8 @@
 		<h2>SEARCH you want to visit city</h2>
 		<form name="searchform">
 			<div class="form-group input-group">
-
 				<input type="text" class="form-control" id="locSearch"
-					name="searchText" placeholder="원하는 도시명을 검색하세요"> <span
+					name="searchText" placeholder="원하는 도시명을 검색하세요" onkeyup="findCity()"> <span
 					class="input-group-btn">
 					<button class="btn btn-default" type="button" name="searchBtn"
 						onclick="find_loc('${accompany}','${purpose}','${favor_city}')">

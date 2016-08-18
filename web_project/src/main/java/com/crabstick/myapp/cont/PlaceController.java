@@ -158,19 +158,33 @@ public class PlaceController {
 					hotels = expedia.getHotels();
 					List<Hotel> parsing_List = hotels.getHotelList();
 					List<Hotel> refreshing_List = new ArrayList<Hotel>();
-					for (Hotel hotel: parsing_List){
-						if (hotel.getHotelGuestRating()!=null){
 
-							String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
-							hotel.setName(name_Merge_Rating);
-							refreshing_List.add(hotel);
+					for (Hotel hotel: parsing_List){
+						boolean isMatched = false;
+						if (hotel.getHotelGuestRating()!=null){
+							for (String info: recommend_Venue_List){
+								if ( (hotel.getLatitude()+":"+hotel.getLongitude()).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(hotel.getAddress());
+									attr.setTitle(hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)");
+									attr.setMapy(hotel.getLatitude());
+									attr.setMapx(hotel.getLongitude());
+									recommandList.add(attr);
+									isMatched = true;
+								}
+							}
+							if (!isMatched){
+								if (!apriori.check_Path(hotel.getLatitude()+":"+hotel.getLongitude())){
+									String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
+									hotel.setName(name_Merge_Rating);
+									refreshing_List.add(hotel);
+								}
+							}
 
 						}
 					}
 
 					hotels.setHotelList((ArrayList<Hotel>)refreshing_List);
-
-					System.out.println("호텔 사이즈:"+hotels.getHotelList().size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -202,15 +216,29 @@ public class PlaceController {
 					for(Group group : venueGroups) {
 						for(Venue venue : group.getItems()) {
 							/* 모든 맛집 정보 */
+							boolean isMatched = false;
 							if (venue.getRating() != null){
-								String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
-								venue.setName(name_Merge_Rating);
-								venues.add(venue);
+								for (String info: recommend_Venue_List){
+									if ( (venue.getLocation().getLat()+":"+venue.getLocation().getLng()).equals(info)){
+										Attraction attr = new Attraction();
+										attr.setAddr1(venue.getLocation().getAddress());
+										attr.setTitle(venue.getName()+"(평점 : "+venue.getRating()+"/10점)");
+										attr.setMapy(Double.toString(venue.getLocation().getLat()));
+										attr.setMapx(Double.toString(venue.getLocation().getLng()));
+										recommandList.add(attr);
+										isMatched = true;
+									}
+								}
+								if (!isMatched){
+									if (!apriori.check_Path( Double.toString(venue.getLocation().getLat())+":"+Double.toString(venue.getLocation().getLng())) ){
+										String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
+										venue.setName(name_Merge_Rating);
+										venues.add(venue);
+									}
+								}
 							}
 						}
 					}
-
-					System.out.println("맛집 사이즈:"+venues.size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
@@ -279,11 +307,26 @@ public class PlaceController {
 							expression = "//*/firstimage";
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
-
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List.add(attraction);
-							} else {
+							
+							
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
 							}
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List.add(attraction);
+								}
+							}
+
 							if (attraction_List.size()==15 && order!=0){
 								break;
 							}
@@ -321,10 +364,24 @@ public class PlaceController {
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List_Nature.add(attraction);
-							} else {
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
 							}
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List_Nature.add(attraction);
+								}
+							}
+
 							if (attraction_List_Nature.size()==15 && order!=0){
 								break;
 							}
@@ -361,14 +418,27 @@ public class PlaceController {
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List_Rest.add(attraction);
-							} else {
+							
+							
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
+							}
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List_Rest.add(attraction);
+								}
 							}
 
-							if (attraction_List_Rest.size()==15 && order!=0){
-								break;
-							}
+							
 						}
 					}
 
@@ -378,15 +448,12 @@ public class PlaceController {
 			e.printStackTrace();
 		} 
 		if (attraction_List.size()!=0){
-			System.out.println("명소:"+attraction_List.size());
 			mav.addObject("SIGHTS", attraction_List);	
 		}
 		if (attraction_List_Nature.size()!=0){
-			System.out.println("자연:"+attraction_List_Nature.size());
 			mav.addObject("NATURES", attraction_List_Nature);		
 		}
 		if (attraction_List_Rest.size()!=0){
-			System.out.println("휴식"+attraction_List_Rest.size());
 			mav.addObject("RESTS", attraction_List_Rest);	
 		}
 
@@ -451,10 +518,28 @@ public class PlaceController {
 								String image_Url = xpath.compile(expression).evaluate(document);
 								attraction.setImgURL(image_Url);
 
-								attraction_List_Shopping.add(attraction);
+								boolean isMatched = false;
+								for (String info: recommend_Venue_List){
+									if ((_latitude+":"+_longitude).equals(info)){
+										Attraction attr = new Attraction();
+										attr.setAddr1(addr1);
+										attr.setTitle(title+"("+tel+")");
+										attr.setMapy(_latitude);
+										attr.setMapx(_longitude);
+										recommandList.add(attr);
+										isMatched = true;
+									}
+								}
+								if (!isMatched){
+									if (!apriori.check_Path(_latitude+":"+_longitude)){
+										attraction_List_Shopping.add(attraction);
+									}
+								}
+
 								if (attraction_List_Shopping.size()==10 && order!=0){
 									break;
 								}
+								
 							}
 						}
 					}
