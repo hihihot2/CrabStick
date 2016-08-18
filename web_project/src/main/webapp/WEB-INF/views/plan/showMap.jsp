@@ -366,6 +366,9 @@ ol, ul {
 					},
 					complete: function(){
 						$('.wrap-loading').remove()
+					},
+					error: function(){
+						alert('주변 정보를 불러오는데 실패하였습니다. 새로고침(f5)을 눌러주세요');
 					}
 				})
 			}
@@ -492,9 +495,6 @@ ol, ul {
 			naver.maps.Event.addListener(map, 'idle', function(e) {
 				markerLayer.hide();
 				menuLayer.hide();
-				/* if(overlay != null){
-					overlay.setMap(null);
-				} */
 				updateMarkers(map, myPath);
 			});
 			
@@ -524,7 +524,6 @@ ol, ul {
 		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-		        		alert(e.coord.lat()+","+e.coord.lng());
 		        		var venue = {
 								name: "사용자 위치 설정",
 								address: "사용자 설정 위치 주소",
