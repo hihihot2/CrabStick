@@ -124,10 +124,10 @@ public class PlaceController {
 		ArrayList<String> sequence_List = recommendationService.all_Sequence();
 		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
 		Apriori apriori = new Apriori();
-		ArrayList<com.crabstick.myapp.venue.Venue> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List, Venue_Table_Data, order, lat+":"+lng);
+		ArrayList<String> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List, Venue_Table_Data, order, lat+":"+lng, mem_no);
 		/* DB 데이터 분석 부분 */
 
-		System.out.println("회원 설문:"+survey[0]+",,지역"+lat+":"+lng);
+
 		// TODO 호텔 가져오기
 		if(order!=0){
 			if (!type.equals("0")){
@@ -160,9 +160,11 @@ public class PlaceController {
 					List<Hotel> refreshing_List = new ArrayList<Hotel>();
 					for (Hotel hotel: parsing_List){
 						if (hotel.getHotelGuestRating()!=null){
+
 							String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
 							hotel.setName(name_Merge_Rating);
 							refreshing_List.add(hotel);
+
 						}
 					}
 
@@ -232,7 +234,7 @@ public class PlaceController {
 			} else {
 				String new_Radius = Integer.toString((Integer.parseInt(radius)*3));
 				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+new_Radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=30&pageNo=1");
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+new_Radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=40&pageNo=1");
 			}
 			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
@@ -282,7 +284,7 @@ public class PlaceController {
 								attraction_List.add(attraction);
 							} else {
 							}
-							if (attraction_List.size()==10 && order!=0){
+							if (attraction_List.size()==15 && order!=0){
 								break;
 							}
 						}
@@ -323,7 +325,7 @@ public class PlaceController {
 								attraction_List_Nature.add(attraction);
 							} else {
 							}
-							if (attraction_List_Nature.size()==10 && order!=0){
+							if (attraction_List_Nature.size()==15 && order!=0){
 								break;
 							}
 						}
@@ -364,7 +366,7 @@ public class PlaceController {
 							} else {
 							}
 
-							if (attraction_List_Rest.size()==10 && order!=0){
+							if (attraction_List_Rest.size()==15 && order!=0){
 								break;
 							}
 						}
