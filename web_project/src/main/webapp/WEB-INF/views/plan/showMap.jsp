@@ -254,7 +254,26 @@ ol, ul {
     regionGeoJson = [],
     loadCount = 0;	
 	
-
+	function delPath(num){
+		var iDiv = document.getElementById("venue_"+num);
+		var addvenue =  iDiv.parentNode;
+		addvenue.removeChild(iDiv);
+		var path = polyline[pathCount].getPath();
+		path.removeAt(num);
+		pathObj.splice(num, 1);
+		updateList();
+		myMarkers[num].setMap(null);
+		myMarkers.splice(num, 1);
+		venueOrder -= 1;
+		if(myMarkers.length == num) {
+			myMarkers[num-1].setAnimation(naver.maps.Animation.BOUNCE);
+			allMarkers.map(function(x) {
+				x.setMap(null);
+			})
+			allMarkers = new Array();
+			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder, '${sessionScope.no}', pathObj[num-1].type);
+		}
+	}
 
 
 	/******** 동희 작업구역 *********/
@@ -949,6 +968,8 @@ ol, ul {
 				$(location).attr('href', '${pageContext.request.contextPath}/myapp');
 				/* location.href='${pageContext.request.contextPath}/myapp'; */
 			})
+			
+			
 		})
 	})(jQuery)
 </script>
@@ -1102,12 +1123,40 @@ ol, ul {
 				<input type='text' id='planComment'>
 				<input type="text" id='planCost' placeholder='여행 비용'> 
 				<input type="text" id='planPersons'	placeholder='여행 인원 (기본 값: 1)'> 
-				<select id='planStyle'>
-					<option label='문화 탐방' value='1'>
-					<option label='식도락' value='2'>
-					<option label='쇼핑' value='3'>
-					<option label='휴식' value='4'>
-				</select>
+				<c:choose>
+					<c:when test="${survey == '1' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' selected>
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '2' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2' selected>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '3' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3' selected>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '4' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4' selected>
+						</select>
+					</c:when>
+				</c:choose>
 			</div>
 			<div class='pathInfo'>
 				<!-- 경로 정보 입력 -->
