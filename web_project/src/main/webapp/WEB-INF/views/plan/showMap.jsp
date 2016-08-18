@@ -366,6 +366,9 @@ ol, ul {
 					},
 					complete: function(){
 						$('.wrap-loading').remove()
+					},
+					error: function(){
+						alert('주변 정보를 불러오는데 실패하였습니다. 새로고침(f5)을 눌러주세요');
 					}
 				})
 			}
