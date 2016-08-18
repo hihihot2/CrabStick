@@ -168,10 +168,10 @@ public class PlaceController {
 
 					hotels.setHotelList((ArrayList<Hotel>)refreshing_List);
 
+					System.out.println("호텔 사이즈:"+hotels.getHotelList().size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				System.out.println("호텔 사이즈:"+hotels.getHotelList().size());
 				mav.addObject("HOTELS", hotels);
 			} else {
 			}
@@ -208,10 +208,10 @@ public class PlaceController {
 						}
 					}
 
+					System.out.println("맛집 사이즈:"+venues.size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-				System.out.println("맛집 사이즈:"+venues.size());
 				mav.addObject("VENUES", venues);
 			} else {
 			}
@@ -456,10 +456,10 @@ public class PlaceController {
 							}
 						}
 					}
+					System.out.println("쇼핑센터 사이즈:"+attraction_List_Shopping.size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-				System.out.println("쇼핑센터 사이즈:"+attraction_List_Shopping.size());
 				mav.addObject("SHOPPINGS", attraction_List_Shopping);
 			}
 		}
