@@ -210,7 +210,7 @@ public class Apriori {
 					Map_Path.remove(mem_no+"PP"+i);
 				}
 			}
-		}
+		} 
 	}
 
 }
