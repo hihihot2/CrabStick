@@ -366,6 +366,9 @@ ol, ul {
 					},
 					complete: function(){
 						$('.wrap-loading').remove()
+					},
+					error: function(){
+						alert('주변 정보를 불러오는데 실패하였습니다. 새로고침(f5)을 눌러주세요');
 					}
 				})
 			}
@@ -439,6 +442,7 @@ ol, ul {
 							})
 							allMarkers = new Array();
 							
+							venueOrder += 1;						
 							if('${sessionScope.no}' == '') {
 								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
 								
@@ -446,7 +450,7 @@ ol, ul {
 								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder, '${sessionScope.no}', venue.type);
 							}
 							
-							venueOrder += 1;						
+							
 						} else {
 							alert('일정 만들기를 눌러주세요')
 						}
@@ -492,9 +496,6 @@ ol, ul {
 			naver.maps.Event.addListener(map, 'idle', function(e) {
 				markerLayer.hide();
 				menuLayer.hide();
-				/* if(overlay != null){
-					overlay.setMap(null);
-				} */
 				updateMarkers(map, myPath);
 			});
 			
@@ -524,7 +525,6 @@ ol, ul {
 		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-		        		alert(e.coord.lat()+","+e.coord.lng());
 		        		var venue = {
 								name: "사용자 위치 설정",
 								address: "사용자 설정 위치 주소",
@@ -564,6 +564,7 @@ ol, ul {
 					}
 				}
 				
+				venueOrder = 0;
 				isModifyCondition = true;
 				$.ajax({
 					url: "${pageContext.request.contextPath }/planCont/getPathDetails.do",
@@ -900,7 +901,7 @@ ol, ul {
 				} else {
 					getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
 				}
-				venueOrder += 1;
+				/* venueOrder += 1; */
 				
 				
 				isAddCondition = true;
@@ -935,6 +936,11 @@ ol, ul {
 				$('div#addPathDiv').addClass('hiddenDiv')
 				
 				getRecommandPlaces(lat, lng, 10000, venueOrder);
+				
+				allMarkers.map(function(x) {
+					x.setMap(null);
+				})
+				allMarkers = new Array();
 			});
 			
 			// 새로고침 시 플랜 새로 만들기가 아닌 내 플랜 보기로 옮겨간다 (아직 안됨)

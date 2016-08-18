@@ -171,7 +171,7 @@
 						+	"<p><input type='text' name='venueComment' id='venueComment' placeholder='장소에 관해 메모해주세요.' onkeyup='modifyComment("+i+",this.form)'></p>"
 						+"</div>"
 						+"<div id='cancelDiv'>"
-						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+","+pathObj[i].markerNum+")'/>"
+						+	"<img id='cancelImg' src='http://plainicon.com/dboard/userprod/2803_dd580/prod_thumb/plainicon.com-43958-32px.png' onclick='delPath("+i+")'/>"
 						+"</div>"
 						+"<input type='hidden' name='venueLatitude' id='venueLatitude'>"
 						+"<input type='hidden' name='venueLongitude' id='venueLongitude'>"
@@ -214,17 +214,25 @@
 	}
 	
 	//추가 경로 삭제
-	function delPath(num, len){
+	function delPath(num){
 		var iDiv = document.getElementById("venue_"+num);
 		var addvenue =  iDiv.parentNode;
 		addvenue.removeChild(iDiv);
 		var path = polyline[pathCount].getPath();
 		path.removeAt(num);
 		pathObj.splice(num, 1);
-//		myPath[num][0].setMap(null);
-//		myPath.splice(num, 1);
 		updateList();
-//		myMarkers.splice(num)
+		myMarkers[num].setMap(null);
+		myMarkers.splice(num, 1);
+		venueOrder -= 1;
+		if(myMarkers.length == num) {
+			myMarkers[num-1].setAnimation(naver.maps.Animation.BOUNCE);
+			allMarkers.map(function(x) {
+				x.setMap(null);
+			})
+			allMarkers = new Array();
+			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder, '${sessionScope.no}', pathObj[num-1].type);
+		}
 	}
 	
 	// 화면의 리스트 삭제
