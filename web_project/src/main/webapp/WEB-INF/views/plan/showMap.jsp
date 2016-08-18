@@ -491,7 +491,7 @@ ol, ul {
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
 			
-			markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			markerLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	            '</div>');
 			map.getPanes().floatPane.appendChild(markerLayer[0]);
 			markerLayer.hide();
@@ -529,7 +529,7 @@ ol, ul {
 		        menuLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
+		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
 		        		alert(e.coord.lat()+","+e.coord.lng());
@@ -668,12 +668,17 @@ ol, ul {
 						
 						pathEditDiv.find('input#removePathBtn').click(function() {
 							// 삭제 버튼 누를 때 할 일
-							// TODO: 경로 저장 방법에 의해 보류중
 							for(var i = 0; i < polyline.length; i++) {
 								console.log(polyline[i]);
 							}
 							console.log(pathCountOfThisElement);
+							var tempPathLine = polyline[pathCountOfThisElement].getPath();
+							tempPathLine.splice(0, tempPathLine.length);
 							polyline.splice(pathCountOfThisElement, 1);
+							myMarkersArray[pathCountOfThisElement].map(function(x) {
+								x.setMap(null);
+							})
+							myMarkersArray.splice(pathCountOfThisElement, 1);
 							$.ajax({
 								url: "${pageContext.request.contextPath }/planCont/removePath.do",
 								dataType: 'text',
@@ -711,8 +716,20 @@ ol, ul {
 				
 				<c:forEach var="path" items="${PLAN.pathlist }">
 					var arr = new Array();
+					var myMarker = new Array();
 					<c:forEach var="venue" items="${path.venuelist}">
 						console.log('latitude: ${venue.ven_lati}, longitude: ${venue.ven_long}');
+						myMarker.push(new naver.maps.Marker({
+							position : new naver.maps.LatLng('${venue.ven_lati}', '${venue.ven_long}'),
+							icon : {
+								url: "../resources/png/check.png"
+							},
+							animation: naver.maps.Animation.DROP,
+							clickable: true,
+							map: map,
+							title: '${venue.ven_name}',
+							zIndex: 100
+						}));
 						arr.push(new naver.maps.LatLng('${venue.ven_lati}','${venue.ven_long}'));
 					</c:forEach>
 					polyline.push(new naver.maps.Polyline({
@@ -722,6 +739,7 @@ ol, ul {
 						strokeWeight: 5, //라인 두깨
 						strokeStyle: 'longdash'
 					}));
+					myMarkersArray.push(myMarker);
 					
 					// TODO: 핀 찍어야댐!
 					var pathDiv = $('div#pathDivForm').clone().appendTo('div#pathList').removeClass('hiddenDiv').attr('id', 'pathDiv');
@@ -769,6 +787,15 @@ ol, ul {
 					action_do('login');
 				} else {
 					if(pathObj.length > 1) {
+						// TODO: 여기 핀 멈추고 다른 핀 삭제 하게
+						myMarkers[myMarkers.length - 1].setAnimation(null);
+						myMarkersArray.push(myMarkers);
+						myMarkers = new Array();
+						allMarkers.map(function(x) {
+							x.setMap(null);
+						})
+						allMarkers = new Array();
+					
 						var arr = new Array();
 						
 						for(var i = 0; i < pathObj.length; i++) {
@@ -849,7 +876,6 @@ ol, ul {
 								pathObj = new Array();
 							},
 							error: function(request, error) {
-								alert('message: ' + request.responseText);
 							}
 						})
 					} else if (pathObj.length == 0){
@@ -927,6 +953,8 @@ ol, ul {
 	width: 20%;
 	padding: 10px;
 	clear: none;
+	height: 900px;
+	overflow-y: auto;
 }
 
 .SideBar input, select {
