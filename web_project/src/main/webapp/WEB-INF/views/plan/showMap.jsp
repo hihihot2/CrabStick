@@ -245,6 +245,8 @@ ol, ul {
 	var pathCount = 0;
 	var venueOrder = 0;
 	var getRecommandPlaces;
+	var setPlace;
+	var addPath;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -368,7 +370,7 @@ ol, ul {
 				})
 			}
 			
-			function setPlace(venue) {
+			setPlace = function(venue) {
 				var markerImgUrl;
 				switch(venue.type){
 					case 0: markerImgUrl = "../resources/png/hotel.png";break;
@@ -409,7 +411,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가" onclick="addPath('+venue+')">');
+			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -462,7 +464,7 @@ ol, ul {
 				allMarkers.push(marker);
 			}
 			
-			function addPath(venue) {
+			addPath = function(venue) {
 				if(isModifyCondition) {
 					console.log("일정 수정하기");
 					// TODO: 일정 수정에서 추가 가능하게 코딩
@@ -505,13 +507,13 @@ ol, ul {
 			});
 			
 			//지도에서 마우스 버튼을 누를때 실행되는 리스너
-			/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
+			naver.maps.Event.addListener(map, 'mouseup', function(e) {
 				markerLayer.hide();
 				menuLayer.hide();
 				if(overlay != null){
 					overlay.setMap(null);
 				} 
-			}); */
+			});
 
 			//지도의 한 지점을 클릭했을 때 실행되는 리스너
 			naver.maps.Event.addListener(map, 'click', function(e) {

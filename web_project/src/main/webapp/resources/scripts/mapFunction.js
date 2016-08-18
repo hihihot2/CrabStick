@@ -6,91 +6,6 @@
 	var count = 0;
 	var pathNum = 0;
 	var searchList;
-
-	function setPlace(venue) {
-		var markerImgUrl;
-		switch(venue.type){
-			case 0: markerImgUrl = "../resources/png/hotel.png";break;
-			case 1: markerImgUrl = "../resources/png/food.png";break;
-			case 2: markerImgUrl = "../resources/png/castle.png";break;
-			case 3: markerImgUrl = "../resources/png/shopping.png";break;
-			case 4: markerImgUrl = "../resources/png/rest.png";break;
-			case 5: markerImgUrl = "../resources/png/attraction.png";break;
-			case 6: markerImgUrl = "../resources/png/star.png";break;
-			default: markerImgUrl = "../resources/png/search.png";break;
-		}
-		
-		// marker 변수: 지도에 찍히는 '핀'의 위치와 아이콘을 정함
-		var marker = new naver.maps.Marker({
-			position : new naver.maps.LatLng(venue.lat, venue.lng),
-			icon : {
-				url: markerImgUrl
-			},
-			animation: naver.maps.Animation.DROP,
-			clickable: true,
-			map: map,
-			title: venue.name,
-			zIndex: 100
-		});
-		
-		// infoWindow 변수: 핀에 대한 정보를 담는 윈도우
-		var windowForm = $('div#infoWindowForm').clone().removeClass('hiddenDiv').attr('id', 'infoWindowDiv');
-		if(venue.img != '') {
-			windowForm.find('img#venueThumbnail').attr('src', venue.img);	// venue.img에서 이미지 주소 가져옴
-		}
-		windowForm.find('p#venueName').text(venue.name);
-		windowForm.find('p#venueAddress').text(venue.address);
-		var infoWindow = new naver.maps.InfoWindow({
-			content: windowForm[0]
-		})
-		
-		naver.maps.Event.addListener(marker, 'rightclick', function(e) {
-			markerLayer.show().css({
-	            left: e.offset.x,
-	            top: e.offset.y
-	        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
-	        /* olflag = 1;
-			showoverlay(marker.getPosition(), 1); */
-			$('#ovl2').on('click', function() {
-				if(isAddCondition) {
-					if(confirm("일정에 추가하시겠습니까?")){
-						addPath(venue);
-						var myMarker = new naver.maps.Marker({
-							position : new naver.maps.LatLng(venue.lat, venue.lng),
-							icon : {
-								url: "../resources/png/check.png"
-							},
-							animation: naver.maps.Animation.BOUNCE,
-							clickable: true,
-							map: map,
-							title: venue.name,
-							zIndex: 100
-						})
-						markerLayer.hide();
-						myMarkers.push(myMarker);
-						allMarkers.map(function(x) {
-							x.setMap(null);
-						})
-						allMarkers = new Array();
-						
-						getRecommandPlaces(venue.lat, venue.lng, 1000);
-					}						
-				} else {
-					alert('일정 만들기를 눌러주세요')
-				}
-			});
-		});
-		
-		naver.maps.Event.addListener(marker, 'mouseover', function() {
-			infoWindow.open(map, marker);
-		});
-		
-		naver.maps.Event.addListener(marker, 'mouseout', function() {
-			infoWindow.close();
-		});
-		
-		allMarkers.push(marker);
-	}
 	
 	function closeWindow(len){
 		var infowindow = infowindows[len][2];
@@ -413,15 +328,6 @@
 						type: 's'
 				};
 				setPlace(venue);
-				/*var tmp = new Array();
-				tmp.push(data);
-				tmp.push(regTag(loc.address));
-				if(loc.img != ''){
-					tmp.push(loc.img);
-				}else{
-					tmp.push("../resources/png/noImage.jpg");
-				}
-				setListener(tmp, 's');*/
 			}else {
 				alert("해당 브라우저에서 지원하는 기능이 아닙니다");
 			}
