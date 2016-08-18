@@ -109,16 +109,17 @@
 
 					</ul>
 					<div class="tab-content">
-						<h2>저희 OOO 추천 시스템은</h2>
+						<h2>저희  추천 시스템은</h2>
 						<h2>간단한 성향 판단을 통해서 보다 편리하게 여행 계획을</h2>
 						<h2>수립하실 수 있도록 맞춤형 선택지를 추천해드립니다.</h2>
 						<br>
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary" onclick="start_()">자신의
-								여행 성향 측정하러 가기 >></button>
-						</div>
+
 					</div>
+
 				</div>
+					<div class="btn-group">
+					<button type="button" class="btn btn-primary"   style="margin-left: 340%"  onclick="start_()">자신의 여행 성향 측정하러 가기 >></button>
+					</div>	
 				<input type="hidden" name="survey_Level">
 				<input type="hidden" name="survey_Answer">
 
@@ -137,7 +138,10 @@
 						
 
 						<br>
-						<div class="btn-group">
+						
+					</div>
+				</div>
+				<div class="btn-group" style="margin-left: 41%" >
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('지역 문화 탐방')">지역 문화 탐방</button>
 							<button type="button" class="btn btn-primary"
@@ -147,8 +151,6 @@
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('휴식')">휴식</button>
 						</div>
-					</div>
-				</div>
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
 
@@ -166,7 +168,10 @@
 					<div class="tab-content">
 						<h2>Q2. 주로 누구와 여행을 즐기십니까?</h2>
 						<br>
-						<div class="btn-group">
+						
+					</div>
+				</div>
+						<div class="btn-group" style="margin-left: 44%">
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('혼자')">혼자</button>
 							<button type="button" class="btn btn-primary"
@@ -176,9 +181,6 @@
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('연인')">연인</button>
 						</div>
-					</div>
-				</div>
-
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
 
@@ -194,8 +196,10 @@
 					</ul>
 					<div class="tab-content">
 						<h2>Q3. 주로 어느 지역에 여행 다니는 것을 선호합니까?</h2>
-						<br>
-						<div class="btn-group">
+						<br>						
+					</div>
+				</div>
+						<div class="btn-group" style="margin-left: 40%"> 
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('대도시')">대도시</button>
 							<button type="button" class="btn btn-primary"
@@ -205,9 +209,6 @@
 							<button type="button" class="btn btn-primary"
 								onclick="Question_('상관없음')">상관 없음</button>
 						</div>
-					</div>
-				</div>
-
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
 
@@ -225,10 +226,12 @@
 						<h2>Q4. 하루 평균 얼마 정도의 여행 경비를 선호합니까?</h2>
 						<h3>예시> 10만원 입력 시 '10' 으로 입력</h3>
 						<br>
-						<input type="text" id="cost" style="color: #000000"> 만 (KRW)
-						<br>
-						<br>
-						<div class="btn-group">
+						<input type="text" id="cost" style="color: #000000" > 만 (KRW)						
+					</div>
+				</div>						
+						
+						<div class="btn-group" style="margin-left: 43%">
+						
 							<c:choose>
 								<c:when test="${test_no ne '0' }">
 									<button type="button" class="btn btn-primary" onclick="Question_3()">회원 설문수정</button>
@@ -238,9 +241,6 @@
 								</c:otherwise>
 							</c:choose>
 					</div>
-					</div>
-				</div>
-				
 				<input type="hidden" name="survey_Level" value="${level}">
 				<input type="hidden" name="survey_Answer" value="${answer}">
 			</c:when>
