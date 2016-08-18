@@ -12,6 +12,14 @@
 <meta charset="UTF-8">
 <title>:: 계획 만들기 ::</title>
 <style type="text/css">
+.info {
+	position: fixed;
+	top: 60%;
+	left: 40%;
+	font-size: 20px;
+	color: #FFFFFF;
+}
+
 .loader {
   position: fixed;
   top: 50%;
@@ -305,17 +313,27 @@ ol, ul {
 					+ '</div>');
 			contentEl2.appendTo(map.getElement());
 			
-			getRecommandPlaces = function(latitude, longitude, radius, order) {
+			getRecommandPlaces = function(latitude, longitude, radius, order, mem_no, type) {
 				var loading;
+				var url;
+				
+				if(mem_no == '') {
+					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSession.do';
+				} else {
+					url = '${pageContext.request.contextPath}/placeCont/getRecommandPlacesHasSessionHasSession.do';
+				}
+				
 				$.ajax({
-					url: '${pageContext.request.contextPath}/placeCont/getRecommandPlaces.do',
+					url: url,
 					type: 'POST',
 					dataType: 'text',
 					data: {
 						lat: latitude,
 						lng: longitude,
 						radius: radius,
-						order: order
+						order: order,
+						mem_no: mem_no,
+						type: type
 					},
 					success: function(result) {
 						//console.log(result);
@@ -325,18 +343,23 @@ ol, ul {
 						}
 					},
 					beforeSend: function(){
-						loading = $('<div class="wrap-loading">'
-								+'<div class="loader">'
-								+'<ul class="hexagon-container">'
-								+'<li class="hexagon hex_1"></li>'
-								+'<li class="hexagon hex_2"></li>'
-								+'<li class="hexagon hex_3"></li>'
-								+'<li class="hexagon hex_4"></li>'
-								+'<li class="hexagon hex_5"></li>'
-								+'<li class="hexagon hex_6"></li>'
-								+'<li class="hexagon hex_7"></li>'
+						var div = '<div class="wrap-loading">'
+							+'<div class="loader">'
+							+'<ul class="hexagon-container">'
+							+'<li class="hexagon hex_1"></li>'
+							+'<li class="hexagon hex_2"></li>'
+							+'<li class="hexagon hex_3"></li>'
+							+'<li class="hexagon hex_4"></li>'
+							+'<li class="hexagon hex_5"></li>'
+							+'<li class="hexagon hex_6"></li>'
+							+'<li class="hexagon hex_7"></li>'
 							+'</ul>'
-							+'</div></div> ');
+							+'</div>';
+						if(venueCount == 0) {
+							div += '<p class="info">사용자의 취향을 토대로 추천해드립니다</p>'
+						}
+						div += '</div> ';
+						loading = $(div);
 						loading.appendTo(map.getElement());
 						$('.wrap-loading').removeClass('display-none');
 					},
@@ -387,7 +410,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가2" onclick="addPath('+venue+')">');
+			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가" onclick="addPath('+venue+')">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -415,7 +438,13 @@ ol, ul {
 							})
 							allMarkers = new Array();
 							
-							getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+							if('${sessionScope.no}' == '') {
+								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder);
+								
+							} else {
+								getRecommandPlaces(venue.lat, venue.lng, 1000, venueOrder, '${sessionScope.no}', venue.type);
+							}
+							
 							venueOrder += 1;						
 						} else {
 							alert('일정 만들기를 눌러주세요')
@@ -448,7 +477,12 @@ ol, ul {
 				}
 			}
 			
-			getRecommandPlaces(lat, lng, 10000, venueOrder);
+			if('${sessionScope.no}' == '') {
+				getRecommandPlaces(lat, lng, 10000, venueOrder);
+				
+			} else {
+				getRecommandPlaces(lat, lng, 10000, venueOrder, '${sessionScope.no}', null);
+			}
 			venueOrder += 1;
 			
 			menuLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
@@ -1008,7 +1042,7 @@ ol, ul {
     right:0;
     top:0;
     bottom:0;
-    background: rgba(0,0,0,0.2); /*not in ie */
+    background: rgba(0,0,0,0.4); /*not in ie */
     filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');    /* ie */
 }
     .display-none{ /*감추기*/
