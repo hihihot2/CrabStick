@@ -495,9 +495,6 @@ ol, ul {
 			naver.maps.Event.addListener(map, 'idle', function(e) {
 				markerLayer.hide();
 				menuLayer.hide();
-				/* if(overlay != null){
-					overlay.setMap(null);
-				} */
 				updateMarkers(map, myPath);
 			});
 			
@@ -527,7 +524,6 @@ ol, ul {
 		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-		        		alert(e.coord.lat()+","+e.coord.lng());
 		        		var venue = {
 								name: "사용자 위치 설정",
 								address: "사용자 설정 위치 주소",
