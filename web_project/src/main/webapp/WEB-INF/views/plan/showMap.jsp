@@ -1102,12 +1102,40 @@ ol, ul {
 				<input type='text' id='planComment'>
 				<input type="text" id='planCost' placeholder='여행 비용'> 
 				<input type="text" id='planPersons'	placeholder='여행 인원 (기본 값: 1)'> 
-				<select id='planStyle'>
-					<option label='문화 탐방' value='1'>
-					<option label='식도락' value='2'>
-					<option label='쇼핑' value='3'>
-					<option label='휴식' value='4'>
-				</select>
+				<c:choose>
+					<c:when test="${survey == '1' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' selected>
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '2' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2' selected>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '3' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3' selected>
+							<option label='휴식' value='4'>
+						</select>
+					</c:when>
+					<c:when test="${survey == '4' }">
+						<select id='planStyle'>
+							<option label='지역 문화 탐방' value='1' >
+							<option label='식도락' value='2'>
+							<option label='쇼핑' value='3'>
+							<option label='휴식' value='4' selected>
+						</select>
+					</c:when>
+				</c:choose>
 			</div>
 			<div class='pathInfo'>
 				<!-- 경로 정보 입력 -->

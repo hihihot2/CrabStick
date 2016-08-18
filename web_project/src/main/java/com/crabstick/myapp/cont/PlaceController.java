@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -14,7 +15,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.poi.hssf.util.HSSFColor.GOLD;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -966,9 +966,20 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/showMap.do")
 	public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
 			@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno){
-
+			@RequestParam(value="cityno") String cityno, HttpSession hs){
+		
 		ModelAndView mav = new ModelAndView("plan/showMap");
+		int mem_no = (Integer) hs.getAttribute("no");
+		Member member = service.getmem_all(mem_no); 
+		String[] survey = member.getMem_survey().split(":");
+		String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
+		
+		for(int i=0; i<purpose_Name.length;i++){
+			if(survey[0].equals(purpose_Name[i])){
+				mav.addObject("survey", i+1);
+			}
+		}
+
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
