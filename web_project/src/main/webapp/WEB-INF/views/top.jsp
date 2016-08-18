@@ -244,8 +244,9 @@ h4 {
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="javascript:home()">LOGO, Our Web
-						site Name</a>
+					<a class="navbar-brand" href="javascript:home()">
+					<img src="${pageContext.request.contextPath}/resources/png/horse.png" style="padding-right:10px">
+					</a>
 
 
 				</div>

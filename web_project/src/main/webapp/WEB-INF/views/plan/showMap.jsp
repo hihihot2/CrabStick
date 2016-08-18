@@ -245,6 +245,8 @@ ol, ul {
 	var pathCount = 0;
 	var venueOrder = 0;
 	var getRecommandPlaces;
+	var setPlace;
+	var addPath;
 	
 	var HOME_PATH = window.HOME_PATH || '.',
     urlPrefix = HOME_PATH +'/',
@@ -368,7 +370,7 @@ ol, ul {
 				})
 			}
 			
-			function setPlace(venue) {
+			setPlace = function(venue) {
 				var markerImgUrl;
 				switch(venue.type){
 					case 0: markerImgUrl = "../resources/png/hotel.png";break;
@@ -400,7 +402,7 @@ ol, ul {
 					windowForm.find('img#venueThumbnail').attr('src', venue.img);	// venue.img에서 이미지 주소 가져옴
 				}
 				windowForm.find('p#venueName').text(venue.name);
-				windowForm.find('p#venueAddress').text(venue.address);
+				windowForm.find('p#venueAddress').text('<'+venue.address+'>');
 				var infoWindow = new naver.maps.InfoWindow({
 					content: windowForm[0]
 				})
@@ -409,7 +411,7 @@ ol, ul {
 					markerLayer.show().css({
 			            left: e.offset.x,
 			            top: e.offset.y
-			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가" onclick="addPath('+venue+')">');
+			        }).html('<input id="ovl2" style="width:106px" type="button" value="일정에 추가">');
 			        /* olflag = 1;
 					showoverlay(marker.getPosition(), 1); */
 					$('#ovl2').on('click', function() {
@@ -462,7 +464,7 @@ ol, ul {
 				allMarkers.push(marker);
 			}
 			
-			function addPath(venue) {
+			addPath = function(venue) {
 				if(isModifyCondition) {
 					console.log("일정 수정하기");
 					// TODO: 일정 수정에서 추가 가능하게 코딩
@@ -489,7 +491,7 @@ ol, ul {
 			map.getPanes().floatPane.appendChild(menuLayer[0]);
 			menuLayer.hide();
 			
-			markerLayer = $('<div style="position:absolute;left:0;top:0;width:110px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
+			markerLayer = $('<div style="position:absolute;left:0;top:0;width:120px;background-color:#F2F0EA;text-align:center;border:2px solid #6C483B;">' +
 	            '</div>');
 			map.getPanes().floatPane.appendChild(markerLayer[0]);
 			markerLayer.hide();
@@ -505,13 +507,13 @@ ol, ul {
 			});
 			
 			//지도에서 마우스 버튼을 누를때 실행되는 리스너
-			/* naver.maps.Event.addListener(map, 'mousedown', function(e) {
+			naver.maps.Event.addListener(map, 'mouseup', function(e) {
 				markerLayer.hide();
 				menuLayer.hide();
 				if(overlay != null){
 					overlay.setMap(null);
 				} 
-			}); */
+			});
 
 			//지도의 한 지점을 클릭했을 때 실행되는 리스너
 			naver.maps.Event.addListener(map, 'click', function(e) {
@@ -527,14 +529,19 @@ ol, ul {
 		        menuLayer.show().css({
 		            left: e.offset.x,
 		            top: e.offset.y
-		        }).html('<input id="ovl" style="width:106px" type="button" value="일정에 추가">');
-		        /* if(olflag != 1){
-		        	showoverlay(e.coord, 0);
-		        } */
+		        }).html('<input id="ovl" style="width:116px" type="button" value="사용자 경로 생성">');
 		        $('#ovl').on('click', function() {
 		        	if(confirm("해당 위치를 새로운 경로로 설정하시겠습니까?")){
-						//addPath(venue);
-						markerLayer.hide();
+		        		alert(e.coord.lat()+","+e.coord.lng());
+		        		var venue = {
+								name: "사용자 위치 설정",
+								address: "사용자 설정 위치 주소",
+								lat: e.coord.lat(),
+								lng: e.coord.lng(),
+								img: null,
+								type: 'u'
+						};
+						setPlace(venue);
 					}
 		        })
 			});
@@ -946,6 +953,8 @@ ol, ul {
 	width: 20%;
 	padding: 10px;
 	clear: none;
+	height: 900px;
+	overflow-y: auto;
 }
 
 .SideBar input, select {
@@ -960,16 +969,10 @@ ol, ul {
 	padding: 10px;
 }
 
-/* 	#planName, #planComment, #planCost, #planPersons, #planStyle {
-		width: 100%;
-	} */
 .planInfo {
 	margin-bottom: 10px;
 }
 
-/* #addPath {
-		width: 100%;
-	} */
 #savePath, #cancelPath {
 	width: 49%;
 }
@@ -1075,11 +1078,7 @@ ol, ul {
     }
 
 </style>
-<!---------------------------------->
 <body>
-<!-- <div class="wrap-loading display-none">
-    <div><img src="../resources/png/loading.gif" /></div>
-</div>  -->
 	<br>
 	<br>
 	<br>
@@ -1165,16 +1164,16 @@ ol, ul {
 	<div id='infoWindowForm' class='hiddenDiv'>
 	
 		<div id='venueThumbnailDiv'>
-			<img id='venueThumbnail' src='${pageContext.request.contextPath}/resources/png/noImage.jpg'/>
+			<img style="width:100px;height:70px;" id='venueThumbnail' src='${pageContext.request.contextPath}/resources/png/noImage.jpg'/>
 		</div>
 		<div id='venueInfoDiv'>
-			<p id='venueName'></p>
+			<p id='venueName' style="size:3;"></p>
 		</div>
 	
 		<div id='venueAddressDiv'>
 			<p id='venueAddress'></p>
 		</div>
-		<p>아이콘을 클릭하면 내 일정에 추가됩니다.</p>
+		<p><font size="2" color="blue">아이콘을 우클릭하면 내 일정에 추가됩니다.</font></p>
 	</div>
 </body>
 </html>
