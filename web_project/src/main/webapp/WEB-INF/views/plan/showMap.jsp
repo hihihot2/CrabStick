@@ -550,7 +550,7 @@ ol, ul {
 								lat: e.coord.lat(),
 								lng: e.coord.lng(),
 								img: null,
-								type: 'u'
+								type: 8
 						};
 						setPlace(venue);
 					}

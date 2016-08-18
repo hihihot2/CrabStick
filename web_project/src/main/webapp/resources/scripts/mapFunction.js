@@ -317,7 +317,7 @@
 						lat: loc.lat,
 						lng: loc.lng,
 						img: null,
-						type: 's'
+						type: 7
 				};
 				setPlace(venue);
 			}else {
