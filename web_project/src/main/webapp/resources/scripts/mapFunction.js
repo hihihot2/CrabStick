@@ -154,6 +154,34 @@
 		});
 	}
 	
+	
+	
+	function modifyName(num, form) {
+		if(form.venueName.length < 2) {
+			pathObj[num].name = form.venueName.value;
+		} else {
+			pathObj[num].name = form.venueName[num].value;
+		}
+	}
+	
+	function modifyComment(num, form) {
+		if(form.venueComment.length < 2) {
+			pathObj[num].comment = form.venueComment.value;			
+		} else {
+			pathObj[num].comment = form.venueComment[num].value;
+		}
+	}
+	
+	
+	
+	// 화면의 리스트 삭제
+	function deleteList(parentNode){
+		while(parentNode.hasChildNodes()){
+			var childNode = parentNode.firstChild;
+			parentNode.removeChild(childNode);
+		}
+	}
+	
 	function updateList(){
 		var pathNum = 0;
 		var path = polyline[pathCount].getPath();
@@ -197,51 +225,7 @@
 		}
 	}
 	
-	function modifyName(num, form) {
-		if(form.venueName.length < 2) {
-			pathObj[num].name = form.venueName.value;
-		} else {
-			pathObj[num].name = form.venueName[num].value;
-		}
-	}
 	
-	function modifyComment(num, form) {
-		if(form.venueComment.length < 2) {
-			pathObj[num].comment = form.venueComment.value;			
-		} else {
-			pathObj[num].comment = form.venueComment[num].value;
-		}
-	}
-	
-	//추가 경로 삭제
-	function delPath(num){
-		var iDiv = document.getElementById("venue_"+num);
-		var addvenue =  iDiv.parentNode;
-		addvenue.removeChild(iDiv);
-		var path = polyline[pathCount].getPath();
-		path.removeAt(num);
-		pathObj.splice(num, 1);
-		updateList();
-		myMarkers[num].setMap(null);
-		myMarkers.splice(num, 1);
-		venueOrder -= 1;
-		if(myMarkers.length == num) {
-			myMarkers[num-1].setAnimation(naver.maps.Animation.BOUNCE);
-			allMarkers.map(function(x) {
-				x.setMap(null);
-			})
-			allMarkers = new Array();
-			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder, '${sessionScope.no}', pathObj[num-1].type);
-		}
-	}
-	
-	// 화면의 리스트 삭제
-	function deleteList(parentNode){
-		while(parentNode.hasChildNodes()){
-			var childNode = parentNode.firstChild;
-			parentNode.removeChild(childNode);
-		}
-	}
 	
 	//화면 업데이트 경계내부의 marker만 표시
 	function updateMarkers(map, markers) {

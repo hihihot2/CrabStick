@@ -254,7 +254,26 @@ ol, ul {
     regionGeoJson = [],
     loadCount = 0;	
 	
-
+	function delPath(num){
+		var iDiv = document.getElementById("venue_"+num);
+		var addvenue =  iDiv.parentNode;
+		addvenue.removeChild(iDiv);
+		var path = polyline[pathCount].getPath();
+		path.removeAt(num);
+		pathObj.splice(num, 1);
+		updateList();
+		myMarkers[num].setMap(null);
+		myMarkers.splice(num, 1);
+		venueOrder -= 1;
+		if(myMarkers.length == num) {
+			myMarkers[num-1].setAnimation(naver.maps.Animation.BOUNCE);
+			allMarkers.map(function(x) {
+				x.setMap(null);
+			})
+			allMarkers = new Array();
+			getRecommandPlaces(pathObj[num-1].lat, pathObj[num-1].lng, 1000, venueOrder, '${sessionScope.no}', pathObj[num-1].type);
+		}
+	}
 
 
 	/******** 동희 작업구역 *********/
@@ -949,6 +968,8 @@ ol, ul {
 				$(location).attr('href', '${pageContext.request.contextPath}/myapp');
 				/* location.href='${pageContext.request.contextPath}/myapp'; */
 			})
+			
+			
 		})
 	})(jQuery)
 </script>
