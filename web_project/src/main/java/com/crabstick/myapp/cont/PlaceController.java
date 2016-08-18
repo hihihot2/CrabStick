@@ -159,18 +159,29 @@ public class PlaceController {
 					List<Hotel> parsing_List = hotels.getHotelList();
 					List<Hotel> refreshing_List = new ArrayList<Hotel>();
 					for (Hotel hotel: parsing_List){
+						boolean isMatched = false;
 						if (hotel.getHotelGuestRating()!=null){
-
-							String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
-							hotel.setName(name_Merge_Rating);
-							refreshing_List.add(hotel);
+							for (String info: recommend_Venue_List){
+								if ( (hotel.getLatitude()+":"+hotel.getLongitude()).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(hotel.getAddress());
+									attr.setTitle(hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)");
+									attr.setMapy(hotel.getLatitude());
+									attr.setMapx(hotel.getLongitude());
+									recommandList.add(attr);
+									isMatched = true;
+								}
+							}
+							if (!isMatched){
+								String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
+								hotel.setName(name_Merge_Rating);
+								refreshing_List.add(hotel);
+							}
 
 						}
 					}
 
 					hotels.setHotelList((ArrayList<Hotel>)refreshing_List);
-
-					System.out.println("호텔 사이즈:"+hotels.getHotelList().size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -202,15 +213,27 @@ public class PlaceController {
 					for(Group group : venueGroups) {
 						for(Venue venue : group.getItems()) {
 							/* 모든 맛집 정보 */
+							boolean isMatched = false;
 							if (venue.getRating() != null){
-								String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
-								venue.setName(name_Merge_Rating);
-								venues.add(venue);
+								for (String info: recommend_Venue_List){
+									if ( (venue.getLocation().getLat()+":"+venue.getLocation().getLng()).equals(info)){
+										Attraction attr = new Attraction();
+										attr.setAddr1(venue.getLocation().getAddress());
+										attr.setTitle(venue.getName()+"(평점 : "+venue.getRating()+"/10점)");
+										attr.setMapy(Double.toString(venue.getLocation().getLat()));
+										attr.setMapx(Double.toString(venue.getLocation().getLng()));
+										recommandList.add(attr);
+										isMatched = true;
+									}
+								}
+								if (!isMatched){
+									String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
+									venue.setName(name_Merge_Rating);
+									venues.add(venue);
+								}
 							}
 						}
 					}
-
-					System.out.println("맛집 사이즈:"+venues.size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
