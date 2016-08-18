@@ -10,9 +10,10 @@ public class Apriori {
 	static Map<String,String> Map_V = new HashMap<String, String>();
 	static Map<String,String> Map_Path = new HashMap<String, String>();
 	/* 추천 관광 지역 지지도 계산 */
-	
+
 	public ArrayList<String> apriori_Algorithm(ArrayList<Integer> transactions, ArrayList<String> seqeunces, ArrayList<Venue> venues, int order, String selectVenue, int mem_no) {
 		System.out.println("오더 순서"+order);
+		System.out.println("경로"+Map_Path.size()+"장소"+Map_V.size());
 		if (order>0){
 			Map_Path.put(mem_no+"PP"+order, selectVenue);
 			if (order==1){
@@ -24,7 +25,7 @@ public class Apriori {
 				Map_V.replace(mem_no+"DD2", selectVenue);
 			}
 		}
-		
+
 		/* 필드 */
 		ArrayList<ArrayList<String>> data_Mart = new ArrayList<ArrayList<String>>();
 		ArrayList<String> name = new ArrayList<String>();
@@ -195,11 +196,21 @@ public class Apriori {
 		System.out.println("반환 갯수"+recommend_Venues.size());
 		return recommend_Venues;
 	}
-	
+
 	public boolean check_Path(String location){
-		
 		return Map_Path.containsValue(location);
-		
+	}
+
+	public void init_Path(int mem_no, int order){
+		if (order==0){
+			if (Map_V.get(mem_no+"DD1")!=null || Map_V.get(mem_no+"DD2")!=null){
+				Map_V.remove(mem_no+"DD1");
+				Map_V.remove(mem_no+"DD2");
+				for (int i = 1; i<=Map_Path.size(); i++){
+					Map_Path.remove(mem_no+"PP"+i);
+				}
+			}
+		}
 	}
 
 }

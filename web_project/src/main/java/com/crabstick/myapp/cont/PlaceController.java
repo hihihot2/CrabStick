@@ -107,6 +107,8 @@ public class PlaceController {
 		if (type.equals("")){
 			type = "noValue";
 		}
+		
+		
 
 		ModelAndView mav = new ModelAndView("plan/getRecommandPlacesJSON");
 		ArrayList<Attraction> recommandList = new ArrayList<Attraction>();
@@ -124,9 +126,9 @@ public class PlaceController {
 		ArrayList<String> sequence_List = recommendationService.all_Sequence();
 		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
 		Apriori apriori = new Apriori();
+		apriori.init_Path(mem_no, order);
 		ArrayList<String> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List, Venue_Table_Data, order, lat+":"+lng, mem_no);
 		/* DB 데이터 분석 부분 */
-
 
 		// TODO 호텔 가져오기
 		if(order!=0){
