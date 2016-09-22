@@ -61,6 +61,7 @@ public class Apriori {
 		if (order>=1 && selectVenueProbability!=0.0){
 			for (int i=0; i<seqeunces.size(); i++){
 				int count=0;
+				int index=0;
 				boolean isMatched = false;
 				double[] result = new double[seqeunces.size()];
 
@@ -69,13 +70,14 @@ public class Apriori {
 
 						for (int k=0; k<data_Mart.get(j).size(); k++){
 							if (selectVenue.equals(data_Mart.get(j).get(k))){
+								index=k;
 								isMatched = true;
 								break;
 							}
 						}
 
 						if (isMatched){
-							for (int k=0; k<data_Mart.get(j).size(); k++){
+							for (int k=index+1; k<data_Mart.get(j).size(); k++){
 								if (seqeunces.get(i).equals(data_Mart.get(j).get(k))){
 									count++;
 									break;
@@ -86,7 +88,6 @@ public class Apriori {
 					result[i]=(double)count/data_Mart.size();
 					System.out.println(seqeunces.get(i)+"과"+selectVenue+"의 빈발 지지도 "+ result[i]);
 					if (result[i]>=0.5 && result[i]/selectVenueProbability>=0.5){ // 지지도0.5이상 & 신뢰도 0.5 이상
-						System.out.println(selectVenue+","+seqeunces.get(i));
 						name2.add(seqeunces.get(i));
 					}
 
@@ -101,7 +102,7 @@ public class Apriori {
 		}
 
 		ArrayList<Venue> recommend_Venues = new ArrayList<Venue>();
-		
+
 		if (order==0){
 			for (int i = 0 ; i<name.size(); i++){
 				for (int j = 0; j<venues.size(); j++){
