@@ -55,6 +55,12 @@
 		document.loginpage.action = "${pageContext.request.contextPath}/logincont/joinpage.do";
 		document.loginpage.submit();
 	}
+	
+	function myplan_do(){
+		document.loginpage.action = "${pageContext.request.contextPath}/viewcont/showMyPlan.do";
+		document.loginpage.submit();
+	}
+	
 </script>
 
 
@@ -244,8 +250,9 @@ h4 {
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="javascript:home()">LOGO, Our Web
-						site Name</a>
+					<a class="navbar-brand" href="javascript:home()">
+					<img src="${pageContext.request.contextPath}/resources/png/horse.png" style="padding-right:10px">
+					</a>
 
 
 				</div>
@@ -261,6 +268,9 @@ h4 {
 								<li><a href="javascript:mypage_do()"><span
 										class="glyphicon glyphicon-user" style="padding-right: 5px"></span>My
 										page</a></li>
+								<li><a href="javascript:myplan_do()"><span
+										class="glyphicon pencil" style="padding-right: 5px">
+										</span>My Planner</a></li>
 							
 							</c:when>
 							
@@ -269,7 +279,7 @@ h4 {
 										class="glyphicon glyphicon-log-in" style="padding-right: 5px"></span>Log
 										In</a></li>
 								<li><a href="javascript:join_go()"><span
-										class="glyphicon glyphicon-globe" style="padding-right: 5px"></span>Join
+										style="padding-right: 5px"></span>Join
 										Us</a></li>
 							</c:otherwise>
 						</c:choose>

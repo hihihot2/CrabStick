@@ -115,12 +115,12 @@
 		</div>
 		<br>
 
-		<h2>최근 여행 수기입니다</h2>
+		<!-- <h2>최근 여행 수기입니다</h2>
 		<div id="myCarousel" class="carousel slide text-center"
 			data-ride="carousel">
-			<!-- Indicators -->
+			Indicators
 
-			<!-- Wrapper for slides -->
+			Wrapper for slides
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
 					<h4>
@@ -142,7 +142,7 @@
 				</div>
 			</div>
 
-			<!-- Left and right controls -->
+			Left and right controls
 			<a class="left carousel-control" href="#myCarousel" role="button"
 				data-slide="prev"> <span
 				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -154,10 +154,6 @@
 			</a>
 		</div>
 	</div>
-	<!-- Container (BEST 도시 or 플래너 Section) -->
-
-
-	<!-- Container (호텔 업데이트 정보 요런거?) -->
 	<div class="container-fluid bg-grey">
 		<div class="text-center">
 			<h2>최신 등록된 여행계획 정보</h2>
@@ -194,6 +190,6 @@
 				</c:forEach>
 			</form>
 		</div>
-	</div>
+	</div> -->
 </body>
 </html>

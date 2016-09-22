@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -14,7 +15,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.poi.hssf.util.HSSFColor.GOLD;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -107,12 +107,14 @@ public class PlaceController {
 		if (type.equals("")){
 			type = "noValue";
 		}
+		
+		
 
 		ModelAndView mav = new ModelAndView("plan/getRecommandPlacesJSON");
 		ArrayList<Attraction> recommandList = new ArrayList<Attraction>();
-		//String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
+		String key = "w7AsuB%2BGDEOxLnV40NaLBqqMrfwXHxoia3eDdF7U0gaeH%2Bdoxr%2BnTzd44cy25eqMTO23boo4lGvOboJp6Sa4CQ%3D%3D";
 		//String key = "%2BzkCsJG8T4Mc408ug306EphfPVrmOHMSC9eY52USE%2BzMmV4OZ4%2Fzpzlqh220vkBb9fJAE1am%2B0LtDr%2FAzs2UIA%3D%3D";
-		String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
+		//String key = "t%2FSK%2Brzp5k8nLo7iyovH4M0zZFOdkA8BYVCtjz3k%2BnKAb6MFSz1Eg%2FoZSCOhimTDxDRFSRgHVF1Kw3b2NtlieA%3D%3D";
 
 		/* session을 통한 설문지 처리 */
 		Member member = service.getmem_all(mem_no); 
@@ -124,10 +126,10 @@ public class PlaceController {
 		ArrayList<String> sequence_List = recommendationService.all_Sequence();
 		ArrayList<com.crabstick.myapp.venue.Venue> Venue_Table_Data = recommendationService.all_Data();
 		Apriori apriori = new Apriori();
-		ArrayList<com.crabstick.myapp.venue.Venue> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List, Venue_Table_Data, order, lat+":"+lng);
+		apriori.init_Path(mem_no, order);
+		ArrayList<String> recommend_Venue_List = apriori.apriori_Algorithm(transaction_List, sequence_List, Venue_Table_Data, order, lat+":"+lng, mem_no);
 		/* DB 데이터 분석 부분 */
 
-		System.out.println("회원 설문:"+survey[0]+",,지역"+lat+":"+lng);
 		// TODO 호텔 가져오기
 		if(order!=0){
 			if (!type.equals("0")){
@@ -158,20 +160,36 @@ public class PlaceController {
 					hotels = expedia.getHotels();
 					List<Hotel> parsing_List = hotels.getHotelList();
 					List<Hotel> refreshing_List = new ArrayList<Hotel>();
+
 					for (Hotel hotel: parsing_List){
+						boolean isMatched = false;
 						if (hotel.getHotelGuestRating()!=null){
-							String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
-							hotel.setName(name_Merge_Rating);
-							refreshing_List.add(hotel);
+							for (String info: recommend_Venue_List){
+								if ( (hotel.getLatitude()+":"+hotel.getLongitude()).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(hotel.getAddress());
+									attr.setTitle(hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)");
+									attr.setMapy(hotel.getLatitude());
+									attr.setMapx(hotel.getLongitude());
+									recommandList.add(attr);
+									isMatched = true;
+								}
+							}
+							if (!isMatched){
+								if (!apriori.check_Path(hotel.getLatitude()+":"+hotel.getLongitude())){
+									String name_Merge_Rating = hotel.getName()+"(평점 : "+hotel.getHotelGuestRating()+"/5점)";
+									hotel.setName(name_Merge_Rating);
+									refreshing_List.add(hotel);
+								}
+							}
+
 						}
 					}
 
 					hotels.setHotelList((ArrayList<Hotel>)refreshing_List);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				System.out.println("호텔 사이즈:"+hotels.getHotelList().size());
 				mav.addObject("HOTELS", hotels);
 			} else {
 			}
@@ -200,18 +218,32 @@ public class PlaceController {
 					for(Group group : venueGroups) {
 						for(Venue venue : group.getItems()) {
 							/* 모든 맛집 정보 */
+							boolean isMatched = false;
 							if (venue.getRating() != null){
-								String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
-								venue.setName(name_Merge_Rating);
-								venues.add(venue);
+								for (String info: recommend_Venue_List){
+									if ( (venue.getLocation().getLat()+":"+venue.getLocation().getLng()).equals(info)){
+										Attraction attr = new Attraction();
+										attr.setAddr1(venue.getLocation().getAddress());
+										attr.setTitle(venue.getName()+"(평점 : "+venue.getRating()+"/10점)");
+										attr.setMapy(Double.toString(venue.getLocation().getLat()));
+										attr.setMapx(Double.toString(venue.getLocation().getLng()));
+										recommandList.add(attr);
+										isMatched = true;
+									}
+								}
+								if (!isMatched){
+									if (!apriori.check_Path( Double.toString(venue.getLocation().getLat())+":"+Double.toString(venue.getLocation().getLng())) ){
+										String name_Merge_Rating = venue.getName()+"(평점 : "+venue.getRating()+"/10점)";
+										venue.setName(name_Merge_Rating);
+										venues.add(venue);
+									}
+								}
 							}
 						}
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-				System.out.println("맛집 사이즈:"+venues.size());
 				mav.addObject("VENUES", venues);
 			} else {
 			}
@@ -232,7 +264,7 @@ public class PlaceController {
 			} else {
 				String new_Radius = Integer.toString((Integer.parseInt(radius)*3));
 				document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+new_Radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=30&pageNo=1");
+						"http://api.visitkorea.or.kr/openapi/service/rest/KorService/locationBasedList?ServiceKey="+key+"&contentTypeId=12&mapX="+lng+"&mapY="+lat+"&radius="+new_Radius+"&listYN=Y&MobileOS=ETC&MobileApp=TourAPI3.0_Guide&arrange=B&numOfRows=40&pageNo=1");
 			}
 			String expression = "//*/item";
 			NodeList item_Node = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
@@ -277,12 +309,27 @@ public class PlaceController {
 							expression = "//*/firstimage";
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
-
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List.add(attraction);
-							} else {
+							
+							
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
 							}
-							if (attraction_List.size()==10 && order!=0){
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List.add(attraction);
+								}
+							}
+
+							if (attraction_List.size()==15 && order!=0){
 								break;
 							}
 						}
@@ -319,11 +366,25 @@ public class PlaceController {
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List_Nature.add(attraction);
-							} else {
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
 							}
-							if (attraction_List_Nature.size()==10 && order!=0){
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List_Nature.add(attraction);
+								}
+							}
+
+							if (attraction_List_Nature.size()==15 && order!=0){
 								break;
 							}
 						}
@@ -359,14 +420,27 @@ public class PlaceController {
 							String image_Url = xpath.compile(expression).evaluate(document);
 							attraction.setImgURL(image_Url);
 
-							if (!lat.equals(_latitude)&&!lng.equals(_longitude)){
-								attraction_List_Rest.add(attraction);
-							} else {
+							
+							
+							boolean isMatched = false;
+							for (String info: recommend_Venue_List){
+								if ((_latitude+":"+_longitude).equals(info)){
+									Attraction attr = new Attraction();
+									attr.setAddr1(addr1);
+									attr.setTitle(title+"("+tel+")");
+									attr.setMapy(_latitude);
+									attr.setMapx(_longitude);
+									recommandList.add(attr);
+									isMatched = true;
+								}
+							}
+							if (!isMatched){
+								if (!apriori.check_Path(_latitude+":"+_longitude)){
+									attraction_List_Rest.add(attraction);
+								}
 							}
 
-							if (attraction_List_Rest.size()==10 && order!=0){
-								break;
-							}
+							
 						}
 					}
 
@@ -376,15 +450,12 @@ public class PlaceController {
 			e.printStackTrace();
 		} 
 		if (attraction_List.size()!=0){
-			System.out.println("명소:"+attraction_List.size());
 			mav.addObject("SIGHTS", attraction_List);	
 		}
 		if (attraction_List_Nature.size()!=0){
-			System.out.println("자연:"+attraction_List_Nature.size());
 			mav.addObject("NATURES", attraction_List_Nature);		
 		}
 		if (attraction_List_Rest.size()!=0){
-			System.out.println("휴식"+attraction_List_Rest.size());
 			mav.addObject("RESTS", attraction_List_Rest);	
 		}
 
@@ -449,17 +520,35 @@ public class PlaceController {
 								String image_Url = xpath.compile(expression).evaluate(document);
 								attraction.setImgURL(image_Url);
 
-								attraction_List_Shopping.add(attraction);
+								boolean isMatched = false;
+								for (String info: recommend_Venue_List){
+									if ((_latitude+":"+_longitude).equals(info)){
+										Attraction attr = new Attraction();
+										attr.setAddr1(addr1);
+										attr.setTitle(title+"("+tel+")");
+										attr.setMapy(_latitude);
+										attr.setMapx(_longitude);
+										recommandList.add(attr);
+										isMatched = true;
+									}
+								}
+								if (!isMatched){
+									if (!apriori.check_Path(_latitude+":"+_longitude)){
+										attraction_List_Shopping.add(attraction);
+									}
+								}
+
 								if (attraction_List_Shopping.size()==10 && order!=0){
 									break;
 								}
+								
 							}
 						}
 					}
+					System.out.println("쇼핑센터 사이즈:"+attraction_List_Shopping.size());
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-				System.out.println("쇼핑센터 사이즈:"+attraction_List_Shopping.size());
 				mav.addObject("SHOPPINGS", attraction_List_Shopping);
 			}
 		}
@@ -877,13 +966,26 @@ public class PlaceController {
 	@RequestMapping(value="/placeCont/showMap.do")
 	public ModelAndView showMap(@RequestParam(value="city_latitude") String city_latitude,
 			@RequestParam(value="city_longitude") String city_longitude,
-			@RequestParam(value="cityno") String cityno){
-
+			@RequestParam(value="cityno") String cityno, HttpSession hs){
+		
 		ModelAndView mav = new ModelAndView("plan/showMap");
+		if(hs.getAttribute("no")==null){
+			mav = new ModelAndView("login/loginform");
+			return mav;
+		} 
+		int mem_no = (Integer) hs.getAttribute("no");
+		Member member = service.getmem_all(mem_no); 
+		String[] survey = member.getMem_survey().split(":");
+		String[] purpose_Name = {"지역 문화 탐방","지역 음식 체험","쇼핑","휴식"};
+		
+		for(int i=0; i<purpose_Name.length;i++){
+			if(survey[0].equals(purpose_Name[i])){
+				mav.addObject("survey", i+1);
+			}
+		}
 		mav.addObject("lat",city_latitude);
 		mav.addObject("lang",city_longitude);
 		mav.addObject("loc_no",cityno);
-
 		return mav;
 	}
 
